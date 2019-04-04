@@ -1,24 +1,34 @@
-import Vue from 'vue'
-import './plugins/axios'
-import api from '@/api/'
-import App from './App.vue'
-import store from './store'
-import router from './router'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import "./registerServiceWorker";
+
+// element ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
-Vue.config.productionTip = false
-Vue.use(api)
-Vue.use(ElementUI)
+//远程api
+import api from './api';
+Vue.use(api);
+
+//添加dialog移动
+import dialogDrag from './components/dialogDrag'
+Vue.use(dialogDrag);
+
+//使用按钮权限
+import permission from './components/permission';
+Vue.use(permission);
+
+//图表
+import VCharts from 'v-charts'
+Vue.use(VCharts)
+
+Vue.config.productionTip = false;
+
 new Vue({
-  store,
   router,
-  created() {
-    
-   this.$api.common.getSearchHotWord().catch(function(error){
-    console.log(error)
-   });
-  
-  },
+  store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount("#app");
