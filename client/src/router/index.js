@@ -175,9 +175,14 @@ const getMenuData = data => {
 const genRoute = async (router, store) => {
     let suceess = true;
     try {
-        //同步获取数据，锁死整个页面
-        let resp = await getUserPermission(),
-            pdata = resp.data;
+        //TODO 开启------------------
+        // //同步获取数据，锁死整个页面
+        // let resp = await getUserPermission(),
+        //     pdata = resp.data;
+        //-----------------------------
+
+        let resp = { code: 0 },
+            pdata = [];
 
         if (resp.code == 0) {
             let mdata = getMenuData(pdata, menu, action),
@@ -309,7 +314,26 @@ router.beforeEach(async (to, from, next) => {
     let loadingInstance = null;
 
     //获取当前登录的用户
-    let user = store.getters.userInfo;
+    // let user = store.getters.userInfo;
+
+    // //TODO 测试使用 --------------------
+    let user = {
+        id: 1,
+        uname: "admin",
+        avatar: "",
+        personal_name: "",
+        phone: "",
+        status: 0,
+        ct_user: "",
+        ct_time: "2018-12-29 15:02:09",
+        mfy_user: "admin",
+        mfy_time: "2019-01-15 13:41:08",
+        token: "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
+    };
+    store.commit("setUserInfo", user);
+
+    // //---------------------------------------
+
     if (!user.uname) {
         let checkError = false;
 

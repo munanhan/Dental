@@ -1,47 +1,48 @@
 <template>
-    <el-container class="content">
-        <div
-            class="aside"
-            :style="{
+    <el-container class="content theme-purple">
+        <el-header
+            class="header title theme-title-backgroud-color"
+            height="40px"
+        >
+            图片
+        </el-header>
+
+        <el-container class="main">
+            <div
+                class="aside"
+                :style="{
                 width: navWidth
             }"
-        >
-            <el-aside :width="navWidth">
-                <div>
-                    <el-header
-                        class="header title"
-                        v-show="showNav"
-                    >
-                        招聘管理系统
-                    </el-header>
+            >
+                <el-aside :width="navWidth">
+                    <div>
 
-                    <el-header
+                        <!-- <el-header
                         class="header title small-title"
                         v-show="!showNav"
                     >
                         招
-                    </el-header>
+                    </el-header> -->
 
-                    <div class="navbar">
-                        <el-menu
+                        <div class="navbar">
+                            <!-- <el-menu
                             :default-active="$route.path"
                             background-color="#eff1f6"
                             router
-                            :collapse="!showNav"
-                        >
-                            <menu-tree
-                                :menu="menu"
-                                :collapse="!showNav"
-                            ></menu-tree>
-                        </el-menu>
+                            
+                        > -->
+                            <!-- :collapse="!showNav" -->
+                            <menu-tree :menu="menu"></menu-tree>
+                            <!-- :collapse="!showNav" -->
+                            <!-- </el-menu> -->
 
+                        </div>
                     </div>
-                </div>
 
-            </el-aside>
-        </div>
-        <el-container class="main">
-            <el-header class="header">
+                </el-aside>
+            </div>
+
+            <!-- <el-header class="header">
                 <el-row
                     type="flex"
                     class="row-bg"
@@ -77,9 +78,9 @@
                         </el-dropdown>
                     </el-col>
                 </el-row>
-            </el-header>
+            </el-header> -->
             <el-main class="main-content">
-                <div class="main-header">
+                <!-- <div class="main-header">
                     <el-breadcrumb separator="/">
 
                         <template v-for="(item, index) in $route.meta.paths">
@@ -107,7 +108,7 @@
                             ></i>
                         </el-tooltip>
                     </div>
-                </div>
+                </div> -->
 
                 <div
                     class="main-body"
@@ -122,7 +123,7 @@
                 </div>
             </el-main>
         </el-container>
-        
+
         <change-password :show.sync="changePasswordDialog">
         </change-password>
 
@@ -152,63 +153,64 @@ export default {
         return {
             bodyHeight: 500,
 
-            // menu: [
-            // {
-            //     url: "/dashboard",
-            //     name: "首页",
-            //     icon: "fa fa-list-alt"
-            // },
-            // {
-            //     name: "简历管理",
-            //     icon: "fa fa-address-book",
-            //     children: [
-            //         {
-            //             url: "/resume/index",
-            //             name: "简历信息",
-            //             icon: "fa fa-address-card"
-            //         }
-            //     ]
-            // },
-            // {
-            //     id: "5",
-            //     name: "用户管理",
-            //     icon: "fa fa-users",
-            //     children: [
-            //         {
-            //             url: "/user/index",
-            //             name: "用户信息",
-            //             icon: "fa fa-user-friends"
-            //         },
-            //         {
-            //             url: "/user/role",
-            //             name: "用户角色",
-            //             icon: "fa fa-users-cog"
-            //         },
-            //         {
-            //             url: "/user/permission",
-            //             name: "用户权限",
-            //             icon: "fa fa-user-shield"
-            //         }
-            //     ]
-            // },
-            // {
-            //     id: "6",
-            //     name: "报表",
-            //     icon: "fa fa-database",
-            //     children: [
-            //         {
-            //             url: "/report/personal_recruitment",
-            //             name: "个人招聘统计",
-            //             icon: "fa fa-user-friends"
-            //         }
-            //     ]
-            // },
-            // {
-            //     url: "/test",
-            //     name: "测试",
-            //     icon: "fa fa-list-alt"
-            // }
-            // ],
+            menu: [
+                {
+                    url: "/dashboard",
+                    name: "首页",
+                    icon: "fa fa-list-alt"
+                },                
+                {   
+                    id: 88,
+                    name: "简历管理",
+                    icon: "fa fa-address-book",
+                    children: [
+                        {
+                            url: "/resume/index",
+                            name: "简历信息",
+                            icon: "fa fa-address-card"
+                        }
+                    ]
+                },
+                {
+                    id: "5",
+                    name: "用户管理",
+                    icon: "fa fa-users",
+                    children: [
+                        {
+                            url: "/user/index",
+                            name: "用户信息",
+                            icon: "fa fa-user-friends"
+                        },
+                        {
+                            url: "/user/role",
+                            name: "用户角色",
+                            icon: "fa fa-users-cog"
+                        },
+                        {
+                            url: "/user/permission",
+                            name: "用户权限",
+                            icon: "fa fa-user-shield"
+                        }
+                    ]
+                },
+                {
+                    id: "6",
+                    name: "报表",
+                    icon: "fa fa-database",
+                    children: [
+                        {
+                            url: "/report/personal_recruitment",
+                            name: "个人招聘统计",
+                            icon: "fa fa-user-friends"
+                        }
+                    ]
+                },
+                {
+                    url: "/test",
+                    name: "测试",
+                    icon: "fa fa-list-alt"
+                }
+            ],
 
             mainBodyTimer: null,
 
@@ -216,7 +218,7 @@ export default {
 
             userImageDialog: false,
 
-            navWidth: "200px",
+            navWidth: "80px",
             showNav: true
         };
     },
@@ -240,7 +242,7 @@ export default {
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
 
-                      //抛出事件
+                    //抛出事件
                     if (window.fireEvent) {
                         window.fireEvent("bodyChange");
                     } else {
@@ -256,62 +258,57 @@ export default {
     },
 
     methods: {
-        // updateAvatar(data){
-        //     let that = this;
-        //     that.userAvatar = `url(${data})`;
+        // handleFullScreen() {
+        //     let isFullscreen =
+        //             document.fullScreen ||
+        //             document.mozFullScreen ||
+        //             document.webkitIsFullScreen,
+        //         element = document.documentElement;
+
+        //     if (!isFullscreen) {
+        //         //进入全屏,多重短路表达式
+        //         //普通
+        //         (element.requestFullscreen && element.requestFullscreen()) ||
+        //             //moz
+        //             (element.mozRequestFullScreen &&
+        //                 element.mozRequestFullScreen()) ||
+        //             //webkit
+        //             (element.webkitRequestFullscreen &&
+        //                 element.webkitRequestFullscreen()) ||
+        //             //ie
+        //             (element.msRequestFullscreen &&
+        //                 element.msRequestFullscreen());
+        //     } else {
+        //         //退出全屏,三目运算符
+        //         //普通
+        //         document.exitFullscreen
+        //             ? document.exitFullscreen()
+        //             : //moz
+        //             document.mozCancelFullScreen
+        //             ? document.mozCancelFullScreen()
+        //             : //webkit
+        //             document.webkitExitFullscreen
+        //             ? document.webkitExitFullscreen()
+        //             : //ie
+        //             document.msExitFullscreen
+        //             ? document.msExitFullscreen()
+        //             : "";
+        //     }
         // },
 
-        handleFullScreen() {
-            let isFullscreen =
-                    document.fullScreen ||
-                    document.mozFullScreen ||
-                    document.webkitIsFullScreen,
-                element = document.documentElement;
+        // navCollapse() {
+        //     let that = this;
+        //     that.showNav = !that.showNav;
 
-            if (!isFullscreen) {
-                //进入全屏,多重短路表达式
-                //普通
-                (element.requestFullscreen && element.requestFullscreen()) ||
-                    //moz
-                    (element.mozRequestFullScreen &&
-                        element.mozRequestFullScreen()) ||
-                    //webkit
-                    (element.webkitRequestFullscreen &&
-                        element.webkitRequestFullscreen()) ||
-                    //ie
-                    (element.msRequestFullscreen &&
-                        element.msRequestFullscreen());
-            } else {
-                //退出全屏,三目运算符
-                //普通
-                document.exitFullscreen
-                    ? document.exitFullscreen()
-                    : //moz
-                    document.mozCancelFullScreen
-                    ? document.mozCancelFullScreen()
-                    : //webkit
-                    document.webkitExitFullscreen
-                    ? document.webkitExitFullscreen()
-                    : //ie
-                    document.msExitFullscreen
-                    ? document.msExitFullscreen()
-                    : "";
-            }
-        },
-
-        navCollapse() {
-            let that = this;
-            that.showNav = !that.showNav;
-
-            if (that.showNav) {
-                //右侧拉开的时候加个延迟，避免加载闪动
-                setTimeout(() => {
-                    that.navWidth = "200px";
-                }, 140);
-            } else {
-                that.navWidth = "64px";
-            }
-        },
+        //     if (that.showNav) {
+        //         //右侧拉开的时候加个延迟，避免加载闪动
+        //         setTimeout(() => {
+        //             that.navWidth = "200px";
+        //         }, 140);
+        //     } else {
+        //         that.navWidth = "64px";
+        //     }
+        // },
 
         logout() {
             let that = this;
@@ -334,8 +331,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@header-color: #7266ba;
-@title-color: #6453ca;
+// @header-color: #7266ba;
+// @title-color: #6453ca;
 @nav-color: #eff1f6;
 
 .content {
@@ -346,19 +343,19 @@ export default {
 
     .title {
         position: absolute;
-        font-size: 25px;
-        line-height: 60px;
-        background-color: @title-color !important;
-        text-align: center;
+        font-size: 18px;
+        line-height: 40px;
+        // background-color: @title-color !important;
+        // text-align: center;
     }
 
-    .small-title {
-        padding: 0;
-    }
+    // .small-title {
+    //     padding: 0;
+    // }
 
     .header {
-        border-bottom: @header-color;
-        background-color: @header-color;
+        // border-bottom: @header-color;
+        // background-color: @header-color;
         color: white;
         width: 100%;
 
@@ -399,9 +396,9 @@ export default {
                 }
             }
 
-            .collapse {
-                transform: rotate(90deg);
-            }
+            // .collapse {
+            //     transform: rotate(90deg);
+            // }
         }
 
         .header {
@@ -426,26 +423,26 @@ export default {
                 background-color: #f7f7f7;
                 border-bottom: 1px solid #dcdfe6;
 
-                .full-screen {
-                    position: absolute;
-                    top: 14px;
-                    right: 20px;
-                    i {
-                        font-size: 24px;
-                        color: #8a8d92;
-                        cursor: pointer;
+                // .full-screen {
+                //     position: absolute;
+                //     top: 14px;
+                //     right: 20px;
+                //     i {
+                //         font-size: 24px;
+                //         color: #8a8d92;
+                //         cursor: pointer;
 
-                        &:hover {
-                            color: @header-color;
-                        }
-                    }
-                }
+                //         &:hover {
+                //             color: @header-color;
+                //         }
+                //     }
+                // }
             }
 
             .main-body {
                 position: absolute;
                 overflow: auto;
-                top: 55px;
+                top: 40px;
                 bottom: 0px;
             }
         }
@@ -458,7 +455,7 @@ export default {
 
         .navbar {
             position: absolute;
-            top: 60px;
+            top: 40px;
             bottom: 0;
             width: 100%;
             background-color: @nav-color;

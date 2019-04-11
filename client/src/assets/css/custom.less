@@ -26,35 +26,40 @@
 
 @color: #7266ba;
 @hover-color: #6254b2;
+@header-color: #7266ba;
 
-.navbar {
-    .el-menu {
-        border: none;
+//主题紫色
+.theme-purple {
+    .el-button--primary,
+    .el-pagination.is-background .el-pager li:not(.disabled).active{
+        background: @color;
+        border-color: @color;
+    
+        &:focus,
+        &:hover {
+            background: @hover-color;
+            border-color: @hover-color;
+        }
     }
 
-    .el-menu-item.is-active {
-        color: #7266ba;
-        border-right: 4px solid @color;
-        background-color: rgba(0, 0, 0, 0.06) !important;
+    .theme-font-color{
+        color: @color;
     }
 
-    .el-submenu .el-menu-item.is-active {
-        border-right: 6px solid @color;
+    .theme-backgroup-{
+        background-color: @hover-color;
+    }
+
+    .theme-title-backgroud-color{
+        background-color: @header-color;
+    }
+
+    .theme-nav-active-font-color{
+        color: @hover-color;
     }
 }
 
 //修改默认primary的颜色
-body .el-button--primary,
-body .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background: @color;
-    border-color: @color;
-
-    &:focus,
-    &:hover {
-        background: @hover-color;
-        border-color: @hover-color;
-    }
-}
 
 .view-form {
     .el-input.is-disabled .el-input__inner {
