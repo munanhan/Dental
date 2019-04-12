@@ -4,10 +4,20 @@
             class="header title theme-title-backgroud-color"
             height="40px"
         >
-            <div class="header-left">
-                牙医管家
-            </div>
-            <div class="header-right"></div>
+            <el-row
+                type="flex"
+                class="row-bg"
+                justify="space-between"
+            >
+                <el-col class="header-left">
+                    牙医管家
+                </el-col>
+                <el-col class="header-right">
+                    <i class="head-icon fa fa-user"></i>
+                    <i class="head-icon fa fa-chevron-circle-down"></i>
+                </el-col>
+            </el-row>
+
         </el-header>
 
         <el-container class="main">
@@ -286,12 +296,18 @@ export default {
         box-sizing: border-box;
         border-bottom: 1px solid #cacaca;
 
+        .head-icon{
+            margin-right: 10px;
+        }
+
         .header-left {
             text-align: left;
+            width: 30%;
         }
 
         .header-right {
             text-align: right;
+            width: 60%;
         }
 
         .dropdown-link {
