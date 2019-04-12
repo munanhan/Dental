@@ -4,7 +4,10 @@
             class="header title theme-title-backgroud-color"
             height="40px"
         >
-            图片
+            <div class="header-left">
+                牙医管家
+            </div>
+            <div class="header-right"></div>
         </el-header>
 
         <el-container class="main">
@@ -15,101 +18,12 @@
             }"
             >
                 <el-aside :width="navWidth">
-                    <div>
-
-                        <!-- <el-header
-                        class="header title small-title"
-                        v-show="!showNav"
-                    >
-                        招
-                    </el-header> -->
-
-                        <div class="navbar">
-                            <!-- <el-menu
-                            :default-active="$route.path"
-                            background-color="#eff1f6"
-                            router
-                            
-                        > -->
-                            <!-- :collapse="!showNav" -->
-                            <menu-tree :menu="menu"></menu-tree>
-                            <!-- :collapse="!showNav" -->
-                            <!-- </el-menu> -->
-
-                        </div>
+                    <div class="navbar theme-nav">
+                        <menu-tree :menu="menu"></menu-tree>
                     </div>
-
                 </el-aside>
             </div>
-
-            <!-- <el-header class="header">
-                <el-row
-                    type="flex"
-                    class="row-bg"
-                    justify="space-between"
-                >
-                    <el-col class="header-left">
-                        <i
-                            @click="navCollapse"
-                            class="shrink fa fa-align-justify"
-                            :class="{ 'collapse': !showNav }"
-                        ></i>
-                    </el-col>
-                    <el-col>
-                        <el-dropdown class="dropdown-link">
-                            <span>
-                                <span
-                                    @click="userImageDialog = true"
-                                    class="inline-block bg-cover user-image"
-                                    :style="{
-                                        backgroundImage: `url(${userInfo.avatar})`
-                                    }"
-                                ></span>
-                                <span class="inline-block">{{userInfo.uname}}</span>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native="changePasswordDialog = true">
-                                    修改密码
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="logout">
-                                    退出登录
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-                </el-row>
-            </el-header> -->
             <el-main class="main-content">
-                <!-- <div class="main-header">
-                    <el-breadcrumb separator="/">
-
-                        <template v-for="(item, index) in $route.meta.paths">
-                            <template v-if="item.url">
-                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
-                            </template>
-
-                            <template v-else>
-                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
-                            </template>
-
-                        </template>
-
-                        <el-breadcrumb-item>{{$route.meta.name}}</el-breadcrumb-item>
-                    </el-breadcrumb>
-
-                    <div class="full-screen">
-                        <el-tooltip
-                            effect="dark"
-                            content="全屏"
-                            placement="top"
-                        ><i
-                                class="fa fa-expand-arrows-alt"
-                                @click="handleFullScreen"
-                            ></i>
-                        </el-tooltip>
-                    </div>
-                </div> -->
-
                 <div
                     class="main-body"
                     ref="mainBody"
@@ -158,8 +72,8 @@ export default {
                     url: "/dashboard",
                     name: "首页",
                     icon: "fa fa-list-alt"
-                },                
-                {   
+                },
+                {
                     id: 88,
                     name: "简历管理",
                     icon: "fa fa-address-book",
@@ -225,9 +139,6 @@ export default {
 
     computed: {
         ...mapGetters(["userInfo", "menu"])
-        // asideWidth() {
-        //     return this.showNav ? this.navWidth : 0;
-        // }
     },
 
     created() {
@@ -258,57 +169,43 @@ export default {
     },
 
     methods: {
-        // handleFullScreen() {
-        //     let isFullscreen =
-        //             document.fullScreen ||
-        //             document.mozFullScreen ||
-        //             document.webkitIsFullScreen,
-        //         element = document.documentElement;
+        handleFullScreen() {
+            let isFullscreen =
+                    document.fullScreen ||
+                    document.mozFullScreen ||
+                    document.webkitIsFullScreen,
+                element = document.documentElement;
 
-        //     if (!isFullscreen) {
-        //         //进入全屏,多重短路表达式
-        //         //普通
-        //         (element.requestFullscreen && element.requestFullscreen()) ||
-        //             //moz
-        //             (element.mozRequestFullScreen &&
-        //                 element.mozRequestFullScreen()) ||
-        //             //webkit
-        //             (element.webkitRequestFullscreen &&
-        //                 element.webkitRequestFullscreen()) ||
-        //             //ie
-        //             (element.msRequestFullscreen &&
-        //                 element.msRequestFullscreen());
-        //     } else {
-        //         //退出全屏,三目运算符
-        //         //普通
-        //         document.exitFullscreen
-        //             ? document.exitFullscreen()
-        //             : //moz
-        //             document.mozCancelFullScreen
-        //             ? document.mozCancelFullScreen()
-        //             : //webkit
-        //             document.webkitExitFullscreen
-        //             ? document.webkitExitFullscreen()
-        //             : //ie
-        //             document.msExitFullscreen
-        //             ? document.msExitFullscreen()
-        //             : "";
-        //     }
-        // },
-
-        // navCollapse() {
-        //     let that = this;
-        //     that.showNav = !that.showNav;
-
-        //     if (that.showNav) {
-        //         //右侧拉开的时候加个延迟，避免加载闪动
-        //         setTimeout(() => {
-        //             that.navWidth = "200px";
-        //         }, 140);
-        //     } else {
-        //         that.navWidth = "64px";
-        //     }
-        // },
+            if (!isFullscreen) {
+                //进入全屏,多重短路表达式
+                //普通
+                (element.requestFullscreen && element.requestFullscreen()) ||
+                    //moz
+                    (element.mozRequestFullScreen &&
+                        element.mozRequestFullScreen()) ||
+                    //webkit
+                    (element.webkitRequestFullscreen &&
+                        element.webkitRequestFullscreen()) ||
+                    //ie
+                    (element.msRequestFullscreen &&
+                        element.msRequestFullscreen());
+            } else {
+                //退出全屏,三目运算符
+                //普通
+                document.exitFullscreen
+                    ? document.exitFullscreen()
+                    : //moz
+                    document.mozCancelFullScreen
+                    ? document.mozCancelFullScreen()
+                    : //webkit
+                    document.webkitExitFullscreen
+                    ? document.webkitExitFullscreen()
+                    : //ie
+                    document.msExitFullscreen
+                    ? document.msExitFullscreen()
+                    : "";
+            }
+        },
 
         logout() {
             let that = this;
@@ -331,10 +228,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// @header-color: #7266ba;
-// @title-color: #6453ca;
-@nav-color: #eff1f6;
-
 .content {
     position: absolute;
     top: 0;
@@ -345,19 +238,20 @@ export default {
         position: absolute;
         font-size: 18px;
         line-height: 40px;
-        // background-color: @title-color !important;
-        // text-align: center;
     }
 
-    // .small-title {
-    //     padding: 0;
-    // }
-
     .header {
-        // border-bottom: @header-color;
-        // background-color: @header-color;
-        color: white;
         width: 100%;
+        box-sizing: border-box;
+        border-bottom: 1px solid #cacaca;
+
+        .header-left {
+            text-align: left;
+        }
+
+        .header-right {
+            text-align: right;
+        }
 
         .dropdown-link {
             line-height: 60px;
@@ -384,30 +278,9 @@ export default {
     .main {
         position: relative;
 
-        .header-left {
-            text-align: left;
-            line-height: 60px;
-            .shrink {
-                cursor: pointer;
-                transition: all 0.3s;
-
-                &:hover {
-                    color: #ec8e00;
-                }
-            }
-
-            // .collapse {
-            //     transform: rotate(90deg);
-            // }
-        }
-
-        .header {
-            text-align: right;
-        }
-
         .main-content {
             position: relative;
-            padding: 0;
+            padding: 0;            
 
             .main-header,
             .main-body,
@@ -444,6 +317,7 @@ export default {
                 overflow: auto;
                 top: 40px;
                 bottom: 0px;
+                background-color: #e2e2e2;
             }
         }
     }
@@ -458,8 +332,6 @@ export default {
             top: 40px;
             bottom: 0;
             width: 100%;
-            background-color: @nav-color;
-            border: 1px solid #e6e6e6;
             overflow-x: hidden !important;
             box-sizing: border-box;
         }

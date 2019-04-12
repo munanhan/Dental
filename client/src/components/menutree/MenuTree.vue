@@ -29,7 +29,7 @@
                                 }"
                                 class="sub-content"
                             >
-                                <ul class="sub-menu">
+                                <ul class="sub-menu theme-nav">
                                     <router-link
                                         v-for="(citem, index) in item.children"
                                         :key="citem.name + index + citem.url"
@@ -70,84 +70,7 @@
                     </div>
                 </router-link>
             </template>
-
-            <!-- </li> -->
-
-            <!-- <li class="menu-item active">
-                <div class="menu-content">
-                    <i class="menu-icon fa fa-user"></i>
-                    <div class="menu-text">首页</div>
-                </div>
-            </li>
-            <li class="menu-item">
-                <div class="menu-content">
-                    <i class="menu-icon fa fa-user"></i>
-                    <div class="menu-text">66666</div>
-                </div>
-            </li>
-
-            <li class="menu-item">
-                <div class="menu-content">
-                    <i class="menu-icon fa fa-user"></i>
-                    <div class="menu-text">66666</div>
-                </div>
-            </li>
-
-            <li class="menu-item">
-                <div class="menu-content">
-                    <i class="menu-icon fa fa-user"></i>
-                    <div class="menu-text">66666</div>
-                </div>
-            </li>
-
-            <li class="menu-item">
-                <div class="menu-content">
-                    <i class="menu-icon fa fa-user"></i>
-                    <div class="menu-text">66666</div>
-                </div>
-            </li> -->
         </ul>
-
-        <!-- <template v-for="(item, index) in menu">
-            <template v-if="item.children && item.children.length">
-                <el-submenu
-                    :key="item.name + index + item.url"
-                    :index="item.name + index + item.url"
-                >
-                    <template slot="title">
-                        <span
-                            class="menu-icon"
-                            v-if="item.icon"
-                        >
-                            <i :class="item.icon"></i>
-                        </span>
-                        <span v-show="!collapse">
-                            {{item.name}}
-                        </span>
-                    </template>
-
-                    <menu-tree :menu="item.children"></menu-tree>
-                </el-submenu>
-            </template>
-
-            <template v-if="!item.children">
-                <el-menu-item
-                    :key="item.name + index + item.url"
-                    :index="item.url"
-                >
-                    <span
-                        class="menu-icon"
-                        v-if="item.icon"
-                    >
-                        <i :class="item.icon"></i>
-                    </span>
-
-                    <span v-show="!collapse">
-                        {{item.name}}
-                    </span>
-                </el-menu-item>
-            </template>
-        </template> -->
     </div>
 </template>
 
@@ -160,10 +83,6 @@ export default {
             type: Array,
             default: () => []
         }
-        // collapse: {
-        //     type: Boolean,
-        //     default: false
-        // }
     },
 
     data() {
@@ -261,7 +180,8 @@ ul li {
     text-align: center;
 
     .active {
-        background-color: rgba(0, 0, 0, 0.1) !important;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.24) !important;
     }
 
     .menu-item {
@@ -270,11 +190,10 @@ ul li {
         align-items: center;
         justify-content: center;
         transition: 0.3s;
-        color: #303133;
 
         &:hover {
             cursor: pointer;
-            background-color: #c4c8d2;
+            background-color: rgba(0, 0, 0, 0.2);
         }
 
         .menu-content {
@@ -294,12 +213,13 @@ ul li {
 
                 //二级菜单
                 .sub-menu {
-                    background-color: #eff1f6;
+                    // background-color: #eff1f6;
                     border: 1px solid #e3e3e3;
-                    border-radius: 4px;
+                    border-radius: 8px;
                     display: flex;
                     flex-wrap: wrap;
                     max-width: 270px;
+                    overflow: hidden;
 
                     .sub-menu-item {
                         width: 90px;
@@ -308,7 +228,7 @@ ul li {
 
                         &:hover {
                             cursor: pointer;
-                            background-color: #c4c8d2;
+                            background-color: rgba(0, 0, 0, 0.2);
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "short_name": "client",
+  "name": "牙医管理",
+  "short_name": "牙医管理",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
