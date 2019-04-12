@@ -12,7 +12,7 @@
 export default {
     methods: {
         home() {
-            this.$router.replace("/dashboard");
+            this.$router.replace("/home");
         }
     }
 };

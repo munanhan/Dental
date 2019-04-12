@@ -55,7 +55,7 @@ export default {
 
                         setTimeout(() => {
                             let redirect = decodeURIComponent(
-                                that.$route.query.redirect || "/dashboard"
+                                that.$route.query.redirect || "/home"
                             );
 
                             that.$router.push({
