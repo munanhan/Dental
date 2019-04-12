@@ -3,20 +3,16 @@ import VueRouter from "vue-router";
 import store from "../store";
 //组件模块登记
 import components from "./components";
-import {
-    Loading
-} from 'element-ui';
+import { Loading } from "element-ui";
 
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
-import {
-    getUserInfo,
-    getUserPermission
-} from "../api/user";
+import { getUserInfo, getUserPermission } from "../api/user";
 
 Vue.use(VueRouter);
 
 //基础的路由
-const routes = [{
+const routes = [
+    {
         //登陆
         path: "/login",
         component: () => import("@views/login"),
@@ -29,14 +25,16 @@ const routes = [{
         component: () => import("@views/layout/Layout"),
         redirect: "/home",
 
-        children: [{
-            path: "home",
-            component: () => import("@views/home/Index"),
-            meta: {
-                name: "首页",
-                icon: "list-alt"
+        children: [
+            {
+                path: "home",
+                component: () => import("@views/home/Index"),
+                meta: {
+                    name: "首页",
+                    icon: "list-alt"
+                }
             }
-        }]
+        ]
     },
     {
         path: "/error",
@@ -44,7 +42,7 @@ const routes = [{
         meta: {
             notAuth: true
         }
-    },
+    }
     //去除404页面，等待登陆后自动添加，未登录一直跳登录页面
     // {
     //     path: "/404",
@@ -62,12 +60,111 @@ const getMenuData = data => {
         //做多份，防止menu里面过多的数据，用于处理路由的
         routerQuickTarget = {},
         action = {},
-        menu = [{
-            url: "/home",
-            name: "首页",
-            icon: "fa fa-list-alt"
-        }],
+        menu = [
+            {
+                url: "/home",
+                name: "首页",
+                icon: "fa fa-list-alt"
+            }
+        ],
         routerArr = [];
+
+    //TODO 测试使用
+    menu.push(
+        {
+            url: "/patient",
+            name: "患者",
+            icon: "fa fa-user"
+        },
+        {
+            url: "/appointment",
+            name: "预约",
+            icon: "fa fa-calendar-alt"
+        },
+        {
+            url: "/communication",
+            name: "沟通",
+            icon: "fa fa-play-circle"
+        },
+        {
+            url: "/statistics",
+            name: "统计",
+            icon: "fa fa-list-alt"
+        },
+        {
+            url: "/shop",
+            name: "商城",
+            icon: "fa fa-shopping-cart"
+        },
+        {
+            id: "6",
+            name: "更多",
+            icon: "fa fa-th-list",
+            children: [
+                {
+                    url: "/custom_service",
+                    name: "客服",
+                    icon: "fa fa-intercom"
+                },
+                {
+                    url: "/warehouse",
+                    name: "库房",
+                    icon: "fa fa-warehouse"
+                },
+                {
+                    url: "/return_visit",
+                    name: "回访",
+                    icon: "fa fa-phone-volume"
+                },
+                {
+                    url: "/message",
+                    name: "短信",
+                    icon: "fa fa-envelope"
+                },
+                {
+                    url: "/inquiry",
+                    name: "问诊",
+                    icon: "fa fa-stethoscope"
+                },
+                {
+                    url: "/micro_website",
+                    name: "微官网",
+                    icon: "fa fa-university"
+                },
+                {
+                    url: "/expenditure",
+                    name: "支出",
+                    icon: "fa fa-money-check-alt"
+                },
+                {
+                    url: "/disinfect",
+                    name: "消毒",
+                    icon: "fa fa-recycle"
+                },
+                {
+                    url: "/attendance;",
+                    name: "考勤",
+                    icon: "fa fa-calendar-alt"
+                },
+                {
+                    url: "/recovery;",
+                    name: "回收",
+                    icon: "fa fa-box-open"
+                },
+                {
+                    url: "/marketing",
+                    name: "营销",
+                    icon: "fa fa-pen-nib"
+                },
+                {
+                    url: "/setting",
+                    name: "管理",
+                    icon: "fa fa-user-cog"
+                }
+            ]
+        }
+    );
+    //------------------
 
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
@@ -98,9 +195,11 @@ const getMenuData = data => {
                 routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
             } else {
                 //子
-                if (item.p_component) { //如果子页面注册了组件，表示这个是个功能页面
+                if (item.p_component) {
+                    //如果子页面注册了组件，表示这个是个功能页面
                     //无法使用webpage的import的预编译,所以要预先定义组件列表
-                    routerQuickTarget[item.id]["component"] = components[item.p_component];
+                    routerQuickTarget[item.id]["component"] =
+                        components[item.p_component];
 
                     //注入url快速索引表，用于检查页面
                     // urlArr[item.url] = true;
@@ -186,11 +285,7 @@ const genRoute = async (router, store) => {
 
         if (resp.code == 0) {
             let mdata = getMenuData(pdata, menu, action),
-                {
-                    menu,
-                    action,
-                    routerArr
-                } = mdata;
+                { menu, action, routerArr } = mdata;
 
             store.commit("setMenu", menu);
             store.commit("setActions", action);
@@ -328,7 +423,8 @@ router.beforeEach(async (to, from, next) => {
         ct_time: "2018-12-29 15:02:09",
         mfy_user: "admin",
         mfy_time: "2019-01-15 13:41:08",
-        token: "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
+        token:
+            "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
     };
     store.commit("setUserInfo", user);
 
@@ -352,12 +448,9 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 store.commit("clearUserInfo");
             }
-
         } catch (error) {
             checkError = true;
-
         } finally {
-
             //关闭loading
             loadingInstance && loadingInstance.close();
 
@@ -392,12 +485,11 @@ router.beforeEach(async (to, from, next) => {
             }
 
             loadingInstance && loadingInstance.close();
-
         } else if (toPath == "/login") {
-
             //登录后还想跳到登录页面的，直接跳首页
             router.replace("/home");
-        } else { //menu都有了直接next
+        } else {
+            //menu都有了直接next
             next();
         }
 

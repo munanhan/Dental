@@ -97,6 +97,13 @@ export default {
         that.$nextTick(() => {
             that.resizeSubMenu();
         });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeSubMenu);
+        } else {
+            window.attachEvent("bodyChange", that.resizeSubMenu);
+        }
     },
 
     watch: {
@@ -109,9 +116,11 @@ export default {
                         var item = cpData[i];
 
                         if (item.children && item.children.length) {
-                            item.showChild = false;
+                            //一开始就展示子菜单，然后将左偏移到-100%，不显示，为了计算高度
+                            item.height = 0;
+                            item.showChild = true;
                             item.childTop = "0px";
-                            item.childLeft = "0px";
+                            item.childLeft = "-100%"; 
                             item.zIndex = 3616;
                         }
 
@@ -130,8 +139,6 @@ export default {
         subShowHandler(sub, flag) {
             let that = this;
 
-            // debugger
-
             if (flag != sub.showChild) {
                 sub.showChild = flag;
             }
@@ -139,17 +146,15 @@ export default {
 
         resizeSubMenu() {
             let that = this,
-                left = that.$refs.navMenu.offsetWidth;
+                left = that.$refs.navMenu.offsetWidth,
+                bodyHeight = document.body.clientHeight;
 
             for (var i = 0; i < that.menuData.length; i++) {
                 var item = that.menuData[i];
 
                 if (item.children && item.children.length) {
-                    item.childLeft = `${left}px`;
-
-                    var rect = that.$refs[
-                            "nav" + item.id
-                        ][0].getBoundingClientRect(),
+                    var ele = that.$refs["nav" + item.id][0],
+                        rect = ele.getBoundingClientRect(),
                         // whether the IE version is lower than 11
                         isIE = navigator.userAgent.indexOf("MSIE") != -1,
                         // fix ie document bounding top always 0 bug
@@ -158,7 +163,24 @@ export default {
                                 ? -element.scrollTop
                                 : rect.top;
 
+                    //用于计算是否超出屏幕
+                    var height =
+                            item.height ||
+                            ele.querySelector(".sub-content").offsetHeight,
+                        lessHeight = bodyHeight - rectTop;
+
+                    item.height = height;
+
+                    if (lessHeight < height) {
+                        //总可视高度减去容器的高度就知道要弹出的高度
+                        rectTop = bodyHeight - height;
+                    }
+
+                    //----------------------
+
+                    item.childLeft = `${left}px`;
                     item.childTop = `${rectTop}px`;
+                    item.showChild = false;
                 }
             }
         }
@@ -250,11 +272,4 @@ ul li {
     transform: scale(0);
 }
 
-// .menu-icon {
-//     display: inline-block;
-//     width: 28px;
-//     margin-top: -2px;
-//     margin-right: 14px;
-//     // margin-left: 6px;
-// }
 </style>

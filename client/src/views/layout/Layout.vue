@@ -67,64 +67,105 @@ export default {
         return {
             bodyHeight: 500,
 
-            menu: [
-                {
-                    url: "/home",
-                    name: "首页",
-                    icon: "fa fa-list-alt"
-                },
-                {
-                    id: 88,
-                    name: "简历管理",
-                    icon: "fa fa-address-book",
-                    children: [
-                        {
-                            url: "/resume/index",
-                            name: "简历信息",
-                            icon: "fa fa-address-card"
-                        }
-                    ]
-                },
-                {
-                    id: "5",
-                    name: "用户管理",
-                    icon: "fa fa-users",
-                    children: [
-                        {
-                            url: "/user/index",
-                            name: "用户信息",
-                            icon: "fa fa-user-friends"
-                        },
-                        {
-                            url: "/user/role",
-                            name: "用户角色",
-                            icon: "fa fa-users-cog"
-                        },
-                        {
-                            url: "/user/permission",
-                            name: "用户权限",
-                            icon: "fa fa-user-shield"
-                        }
-                    ]
-                },
-                {
-                    id: "6",
-                    name: "报表",
-                    icon: "fa fa-database",
-                    children: [
-                        {
-                            url: "/report/personal_recruitment",
-                            name: "个人招聘统计",
-                            icon: "fa fa-user-friends"
-                        }
-                    ]
-                },
-                {
-                    url: "/test",
-                    name: "测试",
-                    icon: "fa fa-list-alt"
-                }
-            ],
+            // menu: [
+            //     {
+            //         url: "/home",
+            //         name: "首页",
+            //         icon: "fa fa-list-alt"
+            //     },
+            //     {
+            //         url: "/patient",
+            //         name: "患者",
+            //         icon: "fa fa-user"
+            //     },
+            //     {
+            //         url: "/appointment",
+            //         name: "预约",
+            //         icon: "fa fa-calendar-alt"
+            //     },
+            //     {
+            //         url: "/communication",
+            //         name: "沟通",
+            //         icon: "fa fa-play-circle"
+            //     },
+            //     {
+            //         url: "/statistics",
+            //         name: "统计",
+            //         icon: "fa fa-list-alt"
+            //     },
+            //     {
+            //         url: "/shop",
+            //         name: "商城",
+            //         icon: "fa fa-shopping-cart"
+            //     },
+            //     {
+            //         id: "6",
+            //         name: "更多",
+            //         icon: "fa fa-th-list",
+            //         children: [
+            //             {
+            //                 url: "/custom_service",
+            //                 name: "客服",
+            //                 icon: "fa fa-intercom"
+            //             },
+            //             {
+            //                 url: "/warehouse",
+            //                 name: "库房",
+            //                 icon: "fa fa-warehouse"
+            //             },
+            //             {
+            //                 url: "/return_visit",
+            //                 name: "回访",
+            //                 icon: "fa fa-phone-volume"
+            //             },
+            //             {
+            //                 url: "/message",
+            //                 name: "短信",
+            //                 icon: "fa fa-envelope"
+            //             },
+            //             {
+            //                 url: "/inquiry",
+            //                 name: "问诊",
+            //                 icon: "fa fa-stethoscope"
+            //             },
+            //             {
+            //                 url: "/micro_website",
+            //                 name: "微官网",
+            //                 icon: "fa fa-university"
+            //             },
+            //             {
+            //                 url: "/expenditure",
+            //                 name: "支出",
+            //                 icon: "fa fa-money-check-alt"
+            //             },
+            //             {
+            //                 url: "/disinfect",
+            //                 name: "消毒",
+            //                 icon: "fa fa-dumpster"
+            //             },
+            //             {
+            //                 url: "/attendance;",
+            //                 name: "考勤",
+            //                 icon: "fa fa-calendar-alt"
+            //             },
+            //             {
+            //                 url: "/recovery;",
+            //                 name: "回收",
+            //                 icon: "fa fa-box-open"
+            //             },
+            //             {
+            //                 url: "/marketing",
+            //                 name: "营销",
+            //                 icon: "fa fa-pen-nib"
+            //             },
+            //             {
+            //                 url: "/setting",
+            //                 name: "管理",
+            //                 icon: "fa fa-user-cog"
+            //             }
+            //         ]
+            //     }
+            // ],
 
             mainBodyTimer: null,
 
@@ -280,7 +321,7 @@ export default {
 
         .main-content {
             position: relative;
-            padding: 0;            
+            padding: 0;
 
             .main-header,
             .main-body,
