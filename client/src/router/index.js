@@ -27,11 +27,11 @@ const routes = [{
     {
         path: "/",
         component: () => import("@views/layout/Layout"),
-        redirect: "/dashboard",
+        redirect: "/home",
 
         children: [{
-            path: "dashboard",
-            component: () => import("@views/dashboard/Index"),
+            path: "home",
+            component: () => import("@views/home/Index"),
             meta: {
                 name: "首页",
                 icon: "list-alt"
@@ -63,7 +63,7 @@ const getMenuData = data => {
         routerQuickTarget = {},
         action = {},
         menu = [{
-            url: "/dashboard",
+            url: "/home",
             name: "首页",
             icon: "fa fa-list-alt"
         }],
@@ -396,7 +396,7 @@ router.beforeEach(async (to, from, next) => {
         } else if (toPath == "/login") {
 
             //登录后还想跳到登录页面的，直接跳首页
-            router.replace("/dashboard");
+            router.replace("/home");
         } else { //menu都有了直接next
             next();
         }

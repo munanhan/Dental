@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/dashboard';
+const prefix = '/home';
 
 export function get(data) {
     return request({

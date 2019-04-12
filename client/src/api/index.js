@@ -1,8 +1,8 @@
-import * as dashboard from './dashboard'
+import * as home from './home'
 import * as user from './user'
 
 const apis = {
-    dashboard,
+    home,
     user
 }
 

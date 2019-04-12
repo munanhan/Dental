@@ -69,7 +69,7 @@ export default {
 
             menu: [
                 {
-                    url: "/dashboard",
+                    url: "/home",
                     name: "首页",
                     icon: "fa fa-list-alt"
                 },
