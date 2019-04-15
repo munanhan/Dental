@@ -22,7 +22,7 @@
     export default {
         name: '',
         components:{
-            calendar,
+            // calendar,
         },
         data() {
             return {
