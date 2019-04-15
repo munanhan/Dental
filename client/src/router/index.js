@@ -89,7 +89,6 @@ const getMenuData = data => {
                 }
             };
 
-            //TODO: 需要修改------------------------
             if (item.parent_id == 0) {
                 //父
                 routerQuickTarget[item.id]["component"] = resolve =>
@@ -126,7 +125,6 @@ const getMenuData = data => {
                 }
             }
 
-            //----------------------------------------------
         } else if (item.p_type == 1) {
             action[item["p_act_name"]] = true;
         }
@@ -238,7 +236,7 @@ const genRoute = async (router, store) => {
                     url: "/statistics",
                     p_type: 0,
                     p_name: "统计",
-                    p_icon: "fa fa-list-alt",
+                    p_icon: "fa fa-calculator",
                     p_component: "/statistics/Index",
                     api: ""
                 },
@@ -256,7 +254,7 @@ const genRoute = async (router, store) => {
                     id: 6,
                     parent_id: 0,
                     p_name: "更多",
-                    p_icon: "fa fa-shopping-cart",
+                    p_icon: "fa fa-window-restore",
                     api: "",
                     p_type: 0,
                     url: "",
