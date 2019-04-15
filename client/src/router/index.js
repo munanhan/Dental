@@ -69,103 +69,6 @@ const getMenuData = data => {
         ],
         routerArr = [];
 
-    //TODO 测试使用
-    menu.push(
-        {
-            url: "/patient",
-            name: "患者",
-            icon: "fa fa-user"
-        },
-        {
-            url: "/appointment",
-            name: "预约",
-            icon: "fa fa-calendar-alt"
-        },
-        {
-            url: "/communication",
-            name: "沟通",
-            icon: "fa fa-play-circle"
-        },
-        {
-            url: "/statistics",
-            name: "统计",
-            icon: "fa fa-list-alt"
-        },
-        {
-            url: "/shop",
-            name: "商城",
-            icon: "fa fa-shopping-cart"
-        },
-        {
-            id: "6",
-            name: "更多",
-            icon: "fa fa-th-list",
-            children: [
-                {
-                    url: "/custom_service",
-                    name: "客服",
-                    icon: "fa fa-intercom"
-                },
-                {
-                    url: "/warehouse",
-                    name: "库房",
-                    icon: "fa fa-warehouse"
-                },
-                {
-                    url: "/return_visit",
-                    name: "回访",
-                    icon: "fa fa-phone-volume"
-                },
-                {
-                    url: "/message",
-                    name: "短信",
-                    icon: "fa fa-envelope"
-                },
-                {
-                    url: "/inquiry",
-                    name: "问诊",
-                    icon: "fa fa-stethoscope"
-                },
-                {
-                    url: "/micro_website",
-                    name: "微官网",
-                    icon: "fa fa-university"
-                },
-                {
-                    url: "/expenditure",
-                    name: "支出",
-                    icon: "fa fa-money-check-alt"
-                },
-                {
-                    url: "/disinfect",
-                    name: "消毒",
-                    icon: "fa fa-recycle"
-                },
-                {
-                    url: "/attendance;",
-                    name: "考勤",
-                    icon: "fa fa-calendar-alt"
-                },
-                {
-                    url: "/recovery;",
-                    name: "回收",
-                    icon: "fa fa-box-open"
-                },
-                {
-                    url: "/marketing",
-                    name: "营销",
-                    icon: "fa fa-pen-nib"
-                },
-                {
-                    url: "/setting",
-                    name: "管理",
-                    icon: "fa fa-user-cog"
-                }
-            ]
-        }
-    );
-    //------------------
-
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
 
@@ -186,13 +89,33 @@ const getMenuData = data => {
                 }
             };
 
+            //TODO: 需要修改------------------------
             if (item.parent_id == 0) {
                 //父
                 routerQuickTarget[item.id]["component"] = resolve =>
                     require.ensure([], () =>
                         resolve(require("@views/layout/Layout"))
-                    );
-                routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
+                    );                
+
+                //如果父组件有个组件的话，直接注入当中
+                if (item.p_component) {
+
+                    routerQuickTarget[item.id]["redirect"] = `${item.url}`;
+
+                    routerQuickTarget[item.id].path = '';
+
+                    var childItem = {
+                        path: item.url,
+                        meta: [ {name: item.p_name} ],
+                        component: components[item.p_component]
+                    };
+
+                    routerQuickTarget[item.id].children = [childItem];
+
+                }else{
+                    routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
+                }
+
             } else {
                 //子
                 if (item.p_component) {
@@ -200,9 +123,6 @@ const getMenuData = data => {
                     //无法使用webpage的import的预编译,所以要预先定义组件列表
                     routerQuickTarget[item.id]["component"] =
                         components[item.p_component];
-
-                    //注入url快速索引表，用于检查页面
-                    // urlArr[item.url] = true;
                 }
             }
 
@@ -281,7 +201,187 @@ const genRoute = async (router, store) => {
         //-----------------------------
 
         let resp = { code: 0 },
-            pdata = [];
+            pdata = [
+                {
+                    id: 1,
+                    parent_id: 0,
+                    url: "/patient",
+                    p_type: 0,
+                    p_name: "患者",
+                    p_icon: "fa fa-user",
+                    p_component: "/patient/Index",
+                    api: ""
+                },
+                {
+                    id: 2,
+                    parent_id: 0,
+                    url: "/appointment",
+                    p_type: 0,
+                    p_name: "预约",
+                    p_icon: "fa fa-calendar-alt",
+                    p_component: "/appointment/Index",
+                    api: ""
+                },
+                {
+                    id: 3,
+                    parent_id: 0,
+                    url: "/communication",
+                    p_type: 0,
+                    p_name: "沟通",
+                    p_icon: "fa fa-play-circle",
+                    p_component: "/communication/Index",
+                    api: ""
+                },
+                {
+                    id: 4,
+                    parent_id: 0,
+                    url: "/statistics",
+                    p_type: 0,
+                    p_name: "统计",
+                    p_icon: "fa fa-list-alt",
+                    p_component: "/statistics/Index",
+                    api: ""
+                },
+                {
+                    id: 5,
+                    parent_id: 0,
+                    url: "/shop",
+                    p_type: 0,
+                    p_name: "商城",
+                    p_icon: "fa fa-shopping-cart",
+                    p_component: "/shop/Index",
+                    api: ""
+                },
+                {
+                    id: 6,
+                    parent_id: 0,
+                    p_name: "更多",
+                    p_icon: "fa fa-shopping-cart",
+                    api: "",
+                    p_type: 0,
+                    url: "",
+                },
+                {
+                    id: 7,
+                    parent_id: 6,
+                    url: "/custom_service",
+                    p_type: 0,
+                    p_name: "客服",
+                    p_icon: "fa fa-user-clock",
+                    p_component: "/custom_service/Index",
+                    api: ""
+                },
+                {
+                    id: 8,
+                    parent_id: 6,
+                    url: "/warehouse",
+                    p_type: 0,
+                    p_name: "库房",
+                    p_icon: "fa fa-warehouse",
+                    p_component: "/warehouse/Index",
+                    api: ""
+                },
+                {
+                    id: 9,
+                    parent_id: 6,
+                    url: "/return_visit",
+                    p_type: 0,
+                    p_name: "回访",
+                    p_icon: "fa fa-phone-volume",
+                    p_component: "/return_visit/Index",
+                    api: ""
+                },
+                {
+                    id: 10,
+                    parent_id: 6,
+                    url: "/message",
+                    p_type: 0,
+                    p_name: "短信",
+                    p_icon: "fa fa-envelope",
+                    p_component: "/message/Index",
+                    api: ""
+                },
+                {
+                    id: 11,
+                    parent_id: 6,
+                    url: "/inquiry",
+                    p_type: 0,
+                    p_name: "问诊",
+                    p_icon: "fa fa-stethoscope",
+                    p_component: "/inquiry/Index",
+                    api: ""
+                },
+                {
+                    id: 12,
+                    parent_id: 6,
+                    url: "/micro_website",
+                    p_type: 0,
+                    p_name: "微官网",
+                    p_icon: "fa fa-university",
+                    p_component: "/micro_website/Index",
+                    api: ""
+                },
+                {
+                    id: 13,
+                    parent_id: 6,
+                    url: "/expenditure",
+                    p_type: 0,
+                    p_name: "支出",
+                    p_icon: "fa fa-money-check-alt",
+                    p_component: "/expenditure/Index",
+                    api: ""
+                },
+                {
+                    id: 14,
+                    parent_id: 6,
+                    url: "/disinfect",
+                    p_type: 0,
+                    p_name: "消毒",
+                    p_icon: "fa fa-recycle",
+                    p_component: "/disinfect/Index",
+                    api: ""
+                },
+                {
+                    id: 15,
+                    parent_id: 6,
+                    url: "/attendance",
+                    p_type: 0,
+                    p_name: "考勤",
+                    p_icon: "fa fa-calendar-alt",
+                    p_component: "/attendance/Index",
+                    api: ""
+                },
+                {
+                    id: 16,
+                    parent_id: 6,
+                    url: "/recovery",
+                    p_type: 0,
+                    p_name: "回收",
+                    p_icon: "fa fa-box-open",
+                    p_component: "/recovery/Index",
+                    api: ""
+                },
+                {
+                    id: 17,
+                    parent_id: 6,
+                    url: "/marketing",
+                    p_type: 0,
+                    p_name: "营销",
+                    p_icon: "fa fa-pen-nib",
+                    p_component: "/marketing/Index",
+                    api: ""
+                },
+                {
+                    id: 18,
+                    parent_id: 6,
+                    url: "/setting",
+                    p_type: 0,
+                    p_name: "管理",
+                    p_icon: "fa fa-user-cog",
+                    p_component: "/setting/Index",
+                    api: ""
+                }
+            ];
 
         if (resp.code == 0) {
             let mdata = getMenuData(pdata, menu, action),

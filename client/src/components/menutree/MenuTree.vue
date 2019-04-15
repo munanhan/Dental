@@ -22,7 +22,7 @@
 
                         <transition name="fade">
                             <div
-                                v-show="item.children.length && item.showChild"
+                                v-show="item.showChild && item.children.length"
                                 :style="{
                                     left: item.childLeft,
                                     top: item.childTop,                                    
@@ -212,6 +212,7 @@ ul li {
         align-items: center;
         justify-content: center;
         transition: 0.3s;
+        cursor: pointer;
 
         &:hover {
             cursor: pointer;
