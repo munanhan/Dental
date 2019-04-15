@@ -39,15 +39,18 @@
     "extends": [
       "plugin:vue/essential"
     ],
-    "rules": {
-    },
+    "rules": {},
     "parserOptions": {
       "parser": "babel-eslint"
     }
   },
   "postcss": {
     "plugins": {
-      "autoprefixer": { "browsers": ["last 5 versions"] }
+      "autoprefixer": {
+        "browsers": [
+          "last 5 versions"
+        ]
+      }
     }
   },
   "browserslist": [
