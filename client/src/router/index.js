@@ -89,7 +89,6 @@ const getMenuData = data => {
                 }
             };
 
-            //TODO: 需要修改------------------------
             if (item.parent_id == 0) {
                 //父
                 routerQuickTarget[item.id]["component"] = resolve =>
@@ -126,7 +125,6 @@ const getMenuData = data => {
                 }
             }
 
-            //----------------------------------------------
         } else if (item.p_type == 1) {
             action[item["p_act_name"]] = true;
         }
