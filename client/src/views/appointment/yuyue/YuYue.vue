@@ -4,10 +4,10 @@
         <el-container>
             
                 
-                <yuyue-left></yuyue-left>
-                <yuyue-right></yuyue-right>
-
-
+                <yuyue-left :chooseDay.sync="chooseDay"></yuyue-left>
+                <yuyue-right :chooseDay.sync="chooseDay"></yuyue-right>
+              
+              
         </el-container>
 
 
@@ -15,20 +15,28 @@
 </template>
 
 <script>
-    import YuyueLeft from '@/components/yuyue/YuyueLeft.vue';
-    import YuyueRight from '@/components/yuyue/YuyueRight.vue';
+    import { formatDate } from '@/common/util.js';
+    import YuyueLeft from './YuyueLeft.vue';
+    import YuyueRight from './YuyueRight.vue';
+    import Calender from './Calender.vue';
     export default {
         name: '',
         components: {
             YuyueLeft,
             YuyueRight,
+            Calender
         },
         data() {
             return {
+                chooseDay: formatDate(new Date(), 'yyyy-MM-dd'),
             }
         },
 
-        methods: {}
+        
+
+        methods: {
+           
+        }
     }
 </script>
 

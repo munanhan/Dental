@@ -1,12 +1,11 @@
 <template>
     <div>
-    111
        <YuYue></YuYue> 
     </div>
 </template>
 
 <script>
-import YuYue from '@/components/yuyue/YuYue.vue'
+import YuYue from './yuyue/YuYue.vue'
 export default {
     name: 'Appointment',
     components:{

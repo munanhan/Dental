@@ -9,7 +9,11 @@
             </el-col>
             <el-col>
                 <div class="date" v-show="isRight">
-                      
+     
+                  <MyCalender :chooseDay.sync="chooseDay"></MyCalender>
+                   
+
+                 
                 </div>
             </el-col>
 
@@ -18,33 +22,50 @@
 </template>
 
 <script>
-    
+    import MyCalender from './Calender.vue';
     export default {
         name: '',
+        props:{
+            chooseDayleft:String,
+        },
         components:{
-            // calendar,
+            MyCalender,
         },
         data() {
             return {
                 isRight: true,
                 rightClass: 'fas fa-align-right',
                 leftClass: 'fas fa-align-left',
-
-
-
+                chooseDay:this.chooseDayleft,
+    
                 
             }
         },
-
+        watch: {
+            chooseDay(newChooseDay,oldChooseDay){
+                this.$emit('update:chooseDay',newChooseDay);
+            }
+        },
         methods: {
             toggleClass() {
                 this.isRight = !this.isRight;
 
-            }
+            },
+       
         }
     }
 </script>
 
 <style lang="less">
-    @import '~@/assets/css/yuyue/yuyueLeft.less';
+  
+    .yuyue-left {
+    height: 100%;
+    background-color: #f3f3f3;
+
+    .date {
+        width: 400px;
+        
+    }
+}
+
 </style>
