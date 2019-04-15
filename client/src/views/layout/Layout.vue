@@ -24,8 +24,8 @@
             <div
                 class="aside"
                 :style="{
-                width: navWidth
-            }"
+                    width: navWidth
+                }"
             >
                 <el-aside :width="navWidth">
                     <div class="navbar theme-nav">

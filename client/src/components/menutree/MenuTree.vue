@@ -120,7 +120,7 @@ export default {
                             item.height = 0;
                             item.showChild = true;
                             item.childTop = "0px";
-                            item.childLeft = "-100%"; 
+                            item.childLeft = "-100%";
                             item.zIndex = 3616;
                         }
 
@@ -262,15 +262,27 @@ ul li {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: all 0.2s;
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1, 1);
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
     transform-origin: top left;
 }
-
-.fade-enter, .fade-leave  /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter,
+.fade-leave-active {
     opacity: 0;
-    transform: scale(0);
+    transform: scale(0.45, 0.45);
 }
 
+// .fade-enter-active,
+// .fade-leave-active {
+//     transition: all 0.2s;
+//     opacity: 1;
+//     transform: scale(1);
+//     transform-origin: top left;
+// }
+
+// .fade-enter, .fade-leave-to  /* .fade-leave-active below version 2.1.8 */ {
+//     opacity: 0;
+//     transform: scale(0);
+// }
 </style>
