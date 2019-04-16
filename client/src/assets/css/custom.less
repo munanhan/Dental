@@ -24,17 +24,20 @@
     }
 }
 
-@color: #7266ba;
-@hover-color: #6254b2;
-@header-color: #eff1f6;
+// @color: #7266ba;
+// @hover-color: #6254b2;
+// @header-color: #eff1f6;
+//导入变量
+@import './var';
 
 //主题紫色
 .theme-purple {
+
     .el-button--primary,
-    .el-pagination.is-background .el-pager li:not(.disabled).active{
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
         background: @color;
         border-color: @color;
-    
+
         &:focus,
         &:hover {
             background: @hover-color;
@@ -42,25 +45,33 @@
         }
     }
 
-    .theme-font-color{
+    .theme-font-color {
         color: @color;
+
+        :hover {
+            color: @hover-color;
+        }
     }
 
-    .theme-backgroup-{
+    .theme-backgroup-color {
         background-color: @hover-color;
+
+        :hover {
+            background-color: @backgroud-color;
+        }
     }
 
-    .theme-title-backgroud-color{
+    .theme-title-backgroud-color {
         color: @color;
         background-color: @header-color;
     }
 
-    .theme-nav{
+    .theme-nav {
         color: white;
-        background-color: #7266ba;
+        background-color: @color;
     }
 
-    .theme-nav-active-font-color{
+    .theme-nav-active-font-color {
         color: @hover-color;
     }
 }

@@ -374,7 +374,7 @@ export default {
                 overflow: auto;
                 top: 40px;
                 bottom: 0px;
-                background-color: #e2e2e2;
+                background-color: #efefef;
             }
         }
     }
