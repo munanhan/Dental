@@ -12,7 +12,10 @@
      
                   <MyCalender :chooseDay.sync="chooseDay"></MyCalender>
                    
-
+                    <div class="clear">
+                        <span>预约回收站</span>
+                        <div>清空</div>
+                    </div>
                  
                 </div>
             </el-col>
@@ -58,13 +61,34 @@
 
 <style lang="less">
   
-    .yuyue-left {
+.yuyue-left {
+    width: 400px;
     height: 100%;
     background-color: #f3f3f3;
 
     .date {
-        width: 400px;
-        
+        width: 100%;
+        .clear{
+            border: 1px solid #ccc;
+            border-left:none; 
+            border-right:none; 
+            line-height: 40px;
+            display: flex;
+            font-size: 18px;
+            span{
+                padding-left:20px; 
+            }
+            div{
+              margin-left:auto;
+              border:1px solid green;
+              width: 60px;
+              text-align: center;
+              border-radius: 10px;
+              color: green;
+            }
+          
+            
+        }
     }
 }
 

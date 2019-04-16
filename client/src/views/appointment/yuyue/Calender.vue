@@ -22,6 +22,7 @@
                   <div>六</div>
                 </div>
                 <div class="week-day">
+                   
                   <div class="every-day" v-for="item in 42">
                     <div v-if="item - beginDay > 0 && item - beginDay <= curDays"
                          :class="{
@@ -36,6 +37,7 @@
                     <div v-else-if="item - beginDay <= 0" class="other-day">{{ prevDays - beginDay + item}}</div>
                     <div v-else class="other-day">{{ item - beginDay - curDays }}</div>
                   </div>
+                  
                 </div>
               </div>
     </div>
@@ -50,6 +52,7 @@
         props:['chooseDay'],
         data() {
             return {
+                forNum:42,
                 year: null,
                 month: null,
                 day: null,

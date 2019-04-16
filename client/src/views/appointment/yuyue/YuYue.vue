@@ -18,13 +18,13 @@
     import { formatDate } from '@/common/util.js';
     import YuyueLeft from './YuyueLeft.vue';
     import YuyueRight from './YuyueRight.vue';
-    import Calender from './Calender.vue';
+ 
     export default {
         name: '',
         components: {
             YuyueLeft,
             YuyueRight,
-            Calender
+     
         },
         data() {
             return {
