@@ -43,6 +43,9 @@
         </span>
         </div>
     </div>
+    <div class="date-body">
+
+    </div>
   </div>
 </template>
 
@@ -72,7 +75,7 @@ export default {
         4:'周四',
         5:'周五',
         6:'周六',
-        7:'周七',
+        0:'周日',
       },
      
       yuyue_date : this.$store.state.yuyue_date,
@@ -113,7 +116,24 @@ export default {
   },
   computed:{
      severalDays(){
-       return '今天';
+      //  let nowDate =formatDate(new Date(), 'yyyy-MM-dd');
+      let nowTime = new Date(formatDate(new Date(), 'yyyy-MM-dd')).getTime();
+      let chooseTime = new Date(this.yuyue_date.chooseDate).getTime();
+      let days =Math.ceil((chooseTime - nowTime)/1000/60/60/24);
+      let strDays = null;
+      if(days > 0){
+          days==1 && (strDays ='明天');
+          days==2 && (strDays ='后天');
+          days > 2 && (strDays = `（${days}天后）`);
+      }else if(days == 0){
+        strDays = '今天';
+      }else{
+        days = Math.abs(days);
+          days==1 && (strDays ='昨天');
+          days==2 && (strDays ='前天');
+          days > 2 && (strDays = `（${days}天前）`);
+      }
+       return strDays;
      }
   },
 };
@@ -123,6 +143,8 @@ export default {
 .yuyue-right {
   background-color: #fff;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   ul > li {
     list-style: none;
   }
@@ -241,6 +263,11 @@ export default {
       font-weight: 800;
       margin-left:20px ;
     }
+  }
+  .date-body{
+    flex: auto;
+  
+    background-color: #c8c2eb;
   }
 }
 </style>
