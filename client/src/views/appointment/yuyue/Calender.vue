@@ -23,7 +23,7 @@
                 </div>
                 <div class="week-day">
                    
-                  <div class="every-day" v-for="item in 42">
+                  <div class="every-day" v-for="item in 42" :key="item">
                     <div v-if="item - beginDay > 0 && item - beginDay <= curDays"
                          :class="{
                            'now-day': `${year}-${month}-${item - beginDay}` === curDate,

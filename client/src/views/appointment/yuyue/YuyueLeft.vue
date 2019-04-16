@@ -7,8 +7,8 @@
                     <i :class="[isRight ? rightClass :leftClass]" @click=toggleClass()></i>
                 </div>
             </el-col>
-            <el-col>
-                <div class="date" v-show="isRight">
+            <el-col v-show="isRight">
+                <div class="date" >
      
                   <MyCalender :chooseDay.sync="chooseDay"></MyCalender>
                    
@@ -62,12 +62,12 @@
 <style lang="less">
   
 .yuyue-left {
-    width: 400px;
+    // width: 400px;
     height: 100%;
     background-color: #f3f3f3;
 
     .date {
-        width: 100%;
+        width: 400px;
         .clear{
             border: 1px solid #ccc;
             border-left:none; 
@@ -79,12 +79,13 @@
                 padding-left:20px; 
             }
             div{
-              margin-left:auto;
+              margin-left:55%;
               border:1px solid green;
               width: 60px;
               text-align: center;
-              border-radius: 10px;
+              border-radius: 12px;
               color: green;
+              background-color: #fff;
             }
           
             
