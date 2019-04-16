@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="appoinment">
        <YuYue></YuYue> 
     </div>
 </template>
@@ -24,5 +24,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+  .appoinment{
+    height: 100%;
+  }
 </style>
