@@ -342,7 +342,7 @@ export default {
             .main-header,
             .main-body,
             .main-footer {
-                padding: 20px;
+                // padding: 20px;
                 position: absolute;
                 left: 0;
                 right: 0;
