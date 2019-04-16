@@ -1,3 +1,4 @@
+import Vue from 'vue'
 export default {
     setUserInfo(state, value) {
 
@@ -26,5 +27,8 @@ export default {
     updateAvatar(state, value) {
         //处理缓存
         state.user.avatar = value + '?d=' + Date.now();
+    },
+    updateYuyueDate(state,options) {
+        Vue.set(state.yuyue_date, options.name, options.value);    
     },
 }
