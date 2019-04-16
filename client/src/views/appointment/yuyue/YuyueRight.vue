@@ -12,21 +12,49 @@
       <div class="add-yuyue">新增预约</div>
       <div class="net-yuyue">网上预约</div>
       <div class="search">
-        <input type="text" ref="inputSearch" name="search" placeholder="姓名、拼音、电话查询" value="">
+        <input
+          type="text"
+          ref="inputSearch"
+          name="search"
+          placeholder="姓名、拼音、电话查询"
+          value
+          @keyup.enter="search"
+        >
         <i class="fas fa-search" @click="search"></i>
       </div>
     </div>
-    {{chooseDay}}
+    <div class="date-header">
+      <div class="prev-day" @click="handlePrev">
+        <div></div>
+      </div>
+      <div :class="['today',$store.state.yuyue_date.chooseDate!= $store.state.yuyue_date.curDate? 'red':''] " @click="chooseToday">今</div>
+      <div class="next-day" @click="handleNext">
+        <div></div>
+      </div>
+      <div class="show-date">
+        <span>
+          {{this.yuyue_date.chooseDate}}
+        </span> 
+        <span>
+          {{week[new Date(this.yuyue_date.chooseDate).getDay()]}}
+        </span>
+        <span>
+          {{severalDays}}
+        </span>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { formatDate } from '@/common/util.js';
 export default {
   name: "",
   props: ["chooseDay"],
   components: {},
   created() {
-    // console.log(this.chooseDay);
+    
+
   },
   data() {
     return {
@@ -36,10 +64,21 @@ export default {
         { select: "月" },
         { select: "列表" },
         { select: "排班" }
-      ]
+      ],
+      week:{
+        1:'周一',
+        2:'周二',
+        3:'周三',
+        4:'周四',
+        5:'周五',
+        6:'周六',
+        7:'周七',
+      },
+     
+      yuyue_date : this.$store.state.yuyue_date,
     };
   },
-
+  
   methods: {
     activeLi(item, index) {
       this.$nextTick(function() {
@@ -50,11 +89,33 @@ export default {
         this.$set(item, "active", true);
       });
     },
-    search(){
-     let  $search = this.$refs.inputSearch;
+    search() {
+      let $search = this.$refs.inputSearch;
       console.log($search.value);
-    }
-  }
+    },
+    handlePrev() {
+      let date = new Date(this.yuyue_date.chooseDate);
+      date.setDate(date.getDate() -1);
+      let upDate =formatDate(date, 'yyyy-MM-dd');
+      this.yuyue_date.myCalender.choosePrevNextDay(upDate);
+      
+    },
+    handleNext() {
+      let date = new Date(this.yuyue_date.chooseDate);
+      date.setDate(date.getDate() +1);
+      let upDate =formatDate(date, 'yyyy-MM-dd');
+      this.yuyue_date.myCalender.choosePrevNextDay(upDate);
+    },
+    chooseToday() {
+      this.yuyue_date.myCalender.chooseToday();
+    },
+   
+  },
+  computed:{
+     severalDays(){
+       return '今天';
+     }
+  },
 };
 </script>
 
@@ -67,9 +128,7 @@ export default {
   }
   .navbar {
     width: 100%;
-    // border: 1px solid black;
     display: flex;
-    // justify-content:space-between;
     ul {
       display: flex;
       padding: 0;
@@ -79,7 +138,7 @@ export default {
         width: 50px;
         line-height: 35px;
         text-align: center;
-        border: 1px solid green;
+        border: 1px solid #7266ba;
         margin-right: 2px;
         &:first-of-type {
           border-top-left-radius: 7px;
@@ -90,43 +149,97 @@ export default {
           border-bottom-right-radius: 7px;
         }
         &.active-li {
-          background-color: green;
+          background-color: #7266ba;
         }
         &:hover:not(.active-li) {
-          background-color: #c7feb5;
+          background-color: #a79de4;
         }
       }
     }
-    .add-yuyue,.net-yuyue {
+    .add-yuyue,
+    .net-yuyue {
       line-height: 35px;
-      border: 1px solid green;
+      border: 1px solid #7266ba;
       padding: 0 15px;
       border-radius: 8px;
       margin-left: 5%;
       &:hover {
-        background-color: #c7feb5;
-          color: green;
+        background-color: #a79de4;
+        color: #7266ba;
       }
     }
-    .add-yuyue{
-        background-color: green;
-        color: #fff;
+    .add-yuyue {
+      background-color: #7266ba;
+      color: #fff;
     }
-    .net-yuyue{
+    .net-yuyue {
       background-color: #fff;
-        color: green;
+      color: #7266ba;
     }
-    .search{
-      margin-left:auto;
+    .search {
+      margin-left: auto;
       line-height: 35px;
-      border: 1px solid green;
+      border: 1px solid #7266ba;
       border-radius: 8px;
       font-size: 18px;
-      input{
+      input {
         outline: none;
         border: none;
-        padding:0 10px
+        height: 25px;
+        padding: 0 10px;
       }
+    }
+  }
+  .date-header {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    line-height: 30px;
+
+    .prev-day,
+    .next-day {
+      border: 1px solid #ccc;
+      border-radius: 50%;
+
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .prev-day div {
+      position: relative;
+      left: 15px;
+      top: 8px;
+      width: 15px;
+      height: 15px;
+      border-left: 1px solid #000;
+      border-bottom: 1px solid #000;
+      transform: rotateZ(45deg);
+    }
+    .next-day div {
+      position: relative;
+      /* left: -15px; */
+      top: 8px;
+      width: 15px;
+      height: 15px;
+      border-right: 1px solid #000;
+      border-top: 1px solid #000;
+      transform: rotateZ(45deg);
+    }
+
+    .today {
+      font-size: 16px;
+      color: transparent;
+      padding: 0 10px;
+      cursor: pointer;
+      &.red {
+        color: red;
+      }
+    }
+    .show-date{
+      font-size: 20px;
+      font-weight: 800;
+      margin-left:20px ;
     }
   }
 }

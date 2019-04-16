@@ -4,8 +4,8 @@
         <el-container>
             
                 
-                <yuyue-left :chooseDay.sync="chooseDay"></yuyue-left>
-                <yuyue-right :chooseDay.sync="chooseDay"></yuyue-right>
+                <yuyue-left ></yuyue-left>
+                <yuyue-right ></yuyue-right>
               
               
         </el-container>
@@ -28,7 +28,7 @@
         },
         data() {
             return {
-                chooseDay: formatDate(new Date(), 'yyyy-MM-dd'),
+               
             }
         },
 

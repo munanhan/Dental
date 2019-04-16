@@ -9,7 +9,7 @@
                 <div></div>
             </div>
           
-            <div class="show-date">{{ `${year}年${month}月${day}日` }}</div>
+            <div class="show-date">{{$store.state.yuyue_date.chooseDate}}</div>
         </div>
         <div class="date-content">
                 <div class="week-header">
@@ -27,7 +27,7 @@
                     <div v-if="item - beginDay > 0 && item - beginDay <= curDays"
                          :class="{
                            'now-day': `${year}-${month}-${item - beginDay}` === curDate,
-                           'active-day': `${year}-${month}-${item - beginDay}` === `${year}-${month}-${day}`
+                           'active-day': `${year}-${month}-${item - beginDay}` === $store.state.yuyue_date.chooseDate
                          }"
                          :data-day="item - beginDay"
                          @click="handlechooseDate"
@@ -70,6 +70,10 @@
                 this.month = date.getMonth() + 1;
                 this.day = date.getDate();
                 this.curDate = `${this.year}-${this.month}-${this.day}`;
+                this.$store.commit('updateYuyueDate',{
+                        name:'curDate',
+                        value:this.curDate,
+                    });
             },
             handlePrev() {
                 if (this.month === 1) {
@@ -96,19 +100,21 @@
                this.year = year;
                this.month = month;
                this.day = day;
+            },
+            choosePrevNextDay(date){
+                let [year,month,day] = date.split('-');
+               this.year = year;
+               this.month = month;
+               this.day = day;
             }
         },
         watch: {
-            // chooseDate(oldDate,newDate){
-            //     if('null-null-null' != newDate){
-            //         this.$store.commit('updatachooseDate',newDate);
-            //     }else{
-            //         this.$store.commit('updatachooseDate',oldDate);
-            //     }
-           
-            // },
+          
             chooseDate(newDate,oldDate){
-                    this.$emit('update:chooseDay', newDate)
+                    this.$store.commit('updateYuyueDate',{
+                             name:'chooseDate',
+                             value:newDate,
+                        });
                 
             },
         },

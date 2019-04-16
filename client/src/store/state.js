@@ -11,4 +11,11 @@ export default {
 
     //按钮功能
     btn_act: null,
+
+    //预约时间
+    yuyue_date:{
+        'curDate':null,
+        'chooseDate':null,
+        'myCalender':null,
+    },
 }

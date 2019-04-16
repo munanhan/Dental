@@ -10,7 +10,7 @@
             <el-col v-show="isRight">
                 <div class="date" >
      
-                  <MyCalender :chooseDay.sync="chooseDay"></MyCalender>
+                  <MyCalender ref="myCalender" ></MyCalender>
                    
                     <div class="clear">
                         <span>预约回收站</span>
@@ -28,8 +28,8 @@
     import MyCalender from './Calender.vue';
     export default {
         name: '',
-        props:{
-            chooseDayleft:String,
+        created(){
+           
         },
         components:{
             MyCalender,
@@ -45,16 +45,20 @@
             }
         },
         watch: {
-            chooseDay(newChooseDay,oldChooseDay){
-                this.$emit('update:chooseDay',newChooseDay);
-            }
+          
         },
         methods: {
             toggleClass() {
                 this.isRight = !this.isRight;
 
             },
-       
+        },
+        mounted(){
+             this.$store.commit('updateYuyueDate',{
+                             name:'myCalender',
+                             value:this.$refs.myCalender,
+                        });
+            //  console.log(this.$refs.myCalender.chooseToday);
         }
     }
 </script>
