@@ -39,7 +39,7 @@
                 >
                     <div class="video-cover">
                         <div class="video-mask">
-							<i class="fa fa-play-circle play-icon"></i>
+                            <i class="fa fa-play-circle play-icon"></i>
 
                             <div class="mask-bottom ">
                                 <div class="mask-bottom-left">
@@ -59,7 +59,7 @@
                 >
                     <div class="video-cover">
                         <div class="video-mask">
-							<i class="fa fa-play-circle play-icon"></i>
+                            <i class="fa fa-play-circle play-icon"></i>
 
                             <div class="mask-bottom">
                                 <div class="mask-bottom-left">
@@ -85,6 +85,23 @@ export default {
     data() {
         return {
             communicationData: [
+                {
+                    label: "收藏",
+                    children: [
+                        {
+                            label: "收藏"
+                        }
+                    ]
+                },
+                {
+                    label: "播放列表",
+                    children: [
+                        {
+                            label: "播放列表"
+                        }
+                    ]
+                },
+
                 {
                     label: "儿童",
                     children: [
@@ -166,8 +183,8 @@ export default {
 
         .video-item {
             height: 200px;
-			padding: 5px;
-			box-sizing: border-box;
+            padding: 5px;
+            box-sizing: border-box;
 
             .video-cover {
                 height: 100%;
@@ -176,10 +193,10 @@ export default {
                 background-size: 100% 100%;
                 background-image: url("../../assets/img/empty.png");
                 position: relative;
-				cursor: pointer;
-				border-radius: 8px;
-				overflow: hidden;
-				
+                cursor: pointer;
+                border-radius: 8px;
+                overflow: hidden;
+
                 .video-mask {
                     position: absolute;
                     top: 0;
@@ -188,15 +205,15 @@ export default {
                     right: 0;
                     background: rgba(0, 0, 0, 0.3);
                     opacity: 0;
-					transition: all 0.3s;
-					
-					.play-icon{
-						position: absolute;
-						font-size: 50px;
-						left: 50%;
-						top: 50%;
-						transform: translate(-50%, -50%);
-					}
+                    transition: all 0.3s;
+
+                    .play-icon {
+                        position: absolute;
+                        font-size: 50px;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
 
                     .mask-bottom {
                         position: absolute;
@@ -209,8 +226,8 @@ export default {
 
                         .mask-bottom-left,
                         .mask-bottom-right {
-							padding: 5px 10px;
-							transition: .2s all;
+                            padding: 5px 10px;
+                            transition: 0.2s all;
 
                             &:hover {
                                 color: white;
