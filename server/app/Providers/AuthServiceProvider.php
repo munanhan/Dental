@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\RouteRegistrar;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Passport::routes();
+
+        //多用户多表验证
+//        Passport::routes(function (RouteRegistrar $router){
+//            $router->forAccessTokens();
+//        },['prefix'=>'api/oauth','middleware'=>'passport']);
+
+        //设置token有效期，默认永久
+        Passport::tokensExpireIn(now()->addDays(30));
+
+        Passport::refreshTokensExpireIn(now()->addDays(30));
     }
 }
