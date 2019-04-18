@@ -124,6 +124,26 @@ export const delCookie = (name) => {
 }
 
 /**
+ * 返回这周的开始和结束日期，date数据格式
+ * @return { Object } 
+ *          ex: { ltMonStart: 2018-01-01, ltMonEnd: 2018-01-07 }
+ */
+export const getCurWeek = () => {
+    let start = new Date(),
+        end = new Date(),
+        dayOfWeek = start.getDay(),
+        oneDayTime = 3600 * 24 * 1000;
+
+    start.setTime(start.getTime() - oneDayTime * dayOfWeek);
+    end.setTime(end.getTime() + oneDayTime * (6 - dayOfWeek));
+
+    return {
+        start,
+        end
+    }
+}
+
+/**
  * 返回上周的开始和结束日期，date数据格式
  * @return { Object } 
  *          ex: { ltMonStart: 2018-01-01, ltMonEnd: 2018-01-07 }
@@ -170,6 +190,22 @@ export const getLtMonth = () => {
 }
 
 /**
+ * 返回当前月的开始和结束时间，date数据格式
+ * @return { Object }
+ *          ex: { monthDayStart: 2018-01-01, monthDayCur: 2018-01-30 }
+ */
+export const getCurMonth = () => {
+    let now = new Date(),
+        year = now.getFullYear(),
+        month = now.getMonth() + 1;
+
+    return {
+        start: new Date(year + '-' + month + '-01'),
+        end: new Date(year, month, 0)
+    }
+}
+
+/**
  * 返回当前月的开始到当前，date数据格式
  * @return { Object }
  *          ex: { monthDayStart: 2018-01-01, monthDayCur: 2018-01-30 }
@@ -183,6 +219,17 @@ export const getCurMonthDay = () => {
         monthDayStart: year + "-" + month + "-" + "01",
         monthDayCur: year + "-" + month + "-" + now.getDate()
     }
+}
+
+/**
+ * 返回昨天
+ * @return { Object }
+ *          ex: 2019-01-02, date格式
+ */
+export const getYesterday = () => {
+    let nowTime = (new Date()).getTime();
+
+    return new Date(nowTime - 1000 * 60 * 60 * 24);
 }
 
 /**

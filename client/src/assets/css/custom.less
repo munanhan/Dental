@@ -53,6 +53,26 @@
         }
     }
 
+    .el-radio-button {
+        color: @color;
+
+        &:not(.is-active) .el-radio-button__inner:hover {
+            color: @color;
+        }
+
+        .el-radio-button__orig-radio {
+            &:hover {
+                color: @color;
+            }
+
+            &:checked+.el-radio-button__inner {
+                background-color: @color;
+                border-color: @color;
+                box-shadow: -1px 0 0 0 @color;
+            }
+        }
+    }
+
     .theme-backgroup-color {
         background-color: @hover-color;
 
