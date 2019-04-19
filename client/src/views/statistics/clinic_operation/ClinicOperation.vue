@@ -644,6 +644,7 @@ export default {
             }
         },
 
+        //右边的目录点击后，左边要滚动到相应的位置
         pointSelect(item) {
             let that = this,
                 contentEle = that.$refs.content;
@@ -653,6 +654,7 @@ export default {
 
                 if(actItem == item){
                     actItem.select = true;
+                    //记录当前活动的
                     that.activeIndex = i;
                 }else{
                     actItem.select = false;
@@ -686,11 +688,14 @@ export default {
                         ele.scrollTo(0, top);
                         cancelAnimationFrame(scroll);
                     } else {
+
+                        //设置左边滚动的时候不要监听状态，防止死循环
                         that.notifyScrollStop = false;
                         requestAnimationFrame(scroll);
                     }
                 };
 
+            //设置左边滚动的时候不要监听状态，防止死循环
             that.notifyScrollStop = true;
 
             requestAnimationFrame(scroll);
@@ -717,12 +722,13 @@ export default {
                             that.activities[idx].select = true;
                             hasSet = true;
 
-                            that.activeIndex = idx;
+                            //记录当前活动的
+                            that.activeIndex = idx;                            
                         } else {
                             that.activities[idx].select = false && !hasSet;
                         }
                     }
-                }, 300);
+                }, 200);
             }
         },
 
