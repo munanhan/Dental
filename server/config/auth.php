@@ -42,10 +42,16 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
-            'hash' => false,
+            //'hash' => false,
         ],
+
+        'admin'=>[
+            'driver' => 'passport',
+            'provider' => 'clinics',
+            'hash' => false,
+        ]
     ],
 
     /*
@@ -71,10 +77,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'clinics' => [
+             'driver' => 'eloquent',
+             'model' => App\Clinic::class,
+         ],
     ],
 
     /*
@@ -95,6 +101,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'admin' => [
+            'provider' => 'clinics',
             'table' => 'password_resets',
             'expire' => 60,
         ],
