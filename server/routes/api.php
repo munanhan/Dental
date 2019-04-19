@@ -17,14 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'auth:api'], function(){
+/*
+ * We can improve the endpoints by using implicit route model binding.
+ * This way, Laravel will inject the User instance in our methods and automatically return a 404 if it isn’t found.
+ * We’ll have to make changes on the routes file and on the controller:
+ */
 
-    Route::get('users', 'Api\UserController@getDetails');
-    Route::post('users', 'Api\UserController@getDetails');
-    Route::get('users/{id}', 'Api\UserController@getDetails');
-    Route::get('users', 'Api\UserController@getDetails');
-    Route::delete('logout','APi\LoginController@logout');
-    Route::get('test','Api\UserController@test');
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('users', 'UserController@index');
+    Route::get('users/{user}', 'UserController@show');
+    Route::post('users', 'UserController@store');
+    Route::put('users/{user}', 'UserController@update');
+    Route::delete('users/{user}', 'UserController@delete');
 });
 
 Route::post('login','Api\LoginController@login');

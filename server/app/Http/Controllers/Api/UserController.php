@@ -4,58 +4,38 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use APP\User;
 
 class UserController extends Controller
 {
-    public function getDetails()
+    public function index()
     {
-        $user=Auth::user();
+        return User::all();
+    }
+
+    public function show(User $user)
+    {
         return $user;
     }
 
-    public function test()
-    {
-        return ['this is a word'];
-    }
-
-    /***
-     *  Create a new record
-     * @param Request $request
-     */
     public function store(Request $request)
     {
-        // Validate the request...
+        $user = User::create($request->all());
 
-        $user = new User;
-
-        $user->name = $request->name;
-
-        $user->save();
+        return response()->json($user, 201);
     }
 
-    /***
-     * Update a record
-     * @param Request $request
-     */
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
-        $user = User::find(1);
+        $user->update($request->all());
 
-        $user->name = $request->name;
-
-        $user->save();
+        return response()->json($user, 200);
     }
 
-    /***
-     * Conditional update
-     * @param Request $request
-     */
-    public function updateWhere(Request $request)
+    public function delete(User $user)
     {
-        User::where('status',1)
-            ->where('phone','13451728874')
-            ->update(['name'=>'han']);
+        $user->delete();
+
+        return response()->json(null, 204);
     }
 }
