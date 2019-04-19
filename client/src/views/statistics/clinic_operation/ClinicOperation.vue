@@ -1,15 +1,15 @@
 <template>
     <div class="clinic">
         <div class="search">
-            <span class="mr10">统计日期</span>
-            <span class="mr10">
+            <span class="mr-10">统计日期</span>
+            <span class="mr-10">
                 <el-radio-group v-model="search.dateTypes">
                     <el-radio-button label="天"></el-radio-button>
                     <el-radio-button label="月"></el-radio-button>
                 </el-radio-group>
             </span>
 
-            <span class="mr10">
+            <span class="mr-10">
                 <el-date-picker
                     v-model="search.dateRange"
                     type="daterange"
@@ -770,10 +770,6 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
-
-.mr10 {
-    margin-right: 10px;
-}
 
 .clinic {
     position: relative;
