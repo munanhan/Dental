@@ -204,10 +204,10 @@ export default {
   .outside-tab {
     width: 100%;
   }
-  .outside-top {
-  }
-  .outside-middle {
-  }
+//   .outside-top {
+//   }
+//   .outside-middle {
+//   }
   .outside-bottom {
     position: absolute;
     left: 0;

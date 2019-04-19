@@ -99,11 +99,12 @@
             class="patient-right"
             style="{background-image:url(/i/eg_bg_04.gif);}"
           >
+          <div style="position: relative;">313213156151</div>
             <div class="block">
-              <span class="demonstration"></span>
+              <span class="demonstration" style="position: absolute;bottom:0;"></span>
               <el-rate
                 v-model="value2"
-                :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                :colors="['red', 'red', '#FF9900']"
               >
               </el-rate>
             </div>
@@ -287,6 +288,7 @@ export default {
           width: 850px;
         }
         .patient-right {
+          
           // height: 100%;
           // width: 300px;
           border: 1px solid red;
