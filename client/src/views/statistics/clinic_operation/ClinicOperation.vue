@@ -32,14 +32,20 @@
 
         </div>
 
-        <div class="clinic-content">
+        <div
+            class="clinic-content"
+            ref="content"
+        >
 
             <div class="clinic-left">
                 <!-- <div class="clinic-item">
 
             </div> -->
 
-                <div class="clinic-item clearfix">
+                <div
+                    class="clinic-item clearfix"
+                    ref="_1"
+                >
                     <div class="pull-right">期初欠数： <span class="tip">20.10</span></div>
                     <el-table
                         :data="tableData"
@@ -95,7 +101,10 @@
                     <div class="pull-right">期末欠数： <span class="tip">20.10</span></div>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_2"
+                >
                     <el-table
                         :data="tableData"
                         border
@@ -140,7 +149,10 @@
                     </el-table>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_3"
+                >
                     <div><span class="chart-tip">&nbsp;</span>就诊人数</div>
                     <ve-line
                         :data="visitData"
@@ -148,7 +160,10 @@
                     ></ve-line>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_4"
+                >
                     <div><span class="chart-tip">&nbsp;</span>营业收入</div>
                     <ve-line
                         :data="businessData"
@@ -156,22 +171,34 @@
                     ></ve-line>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_5"
+                >
                     <div><span class="chart-tip">&nbsp;</span>患者来源收费统计</div>
                     <ve-pie :data="patientCost"></ve-pie>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_6"
+                >
                     <div><span class="chart-tip">&nbsp;</span>患者来源人数统计</div>
                     <ve-pie :data="patientNum"></ve-pie>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_7"
+                >
                     <div><span class="chart-tip">&nbsp;</span>收费分类统计</div>
                     <ve-pie :data="classificationOfCharges"></ve-pie>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_8"
+                >
                     <div><span class="chart-tip">&nbsp;</span>预约统计</div>
                     <ve-line
                         :data="bookData"
@@ -179,7 +206,10 @@
                     ></ve-line>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_9"
+                >
                     <div><span class="chart-tip">&nbsp;</span>预约项目一览</div>
                     <ve-histogram
                         :data="bookProjectData"
@@ -187,7 +217,10 @@
                     ></ve-histogram>
                 </div>
 
-                <div class="clinic-item">
+                <div
+                    class="clinic-item"
+                    ref="_10"
+                >
                     <div><span class="chart-tip">&nbsp;</span>预约状态分析</div>
                     <ve-pie :data="reservation_status"></ve-pie>
                 </div>
@@ -199,8 +232,13 @@
                     <el-timeline-item
                         v-for="(activity, index) in activities"
                         :key="index"
+                        color="#0bbd87"
                     >
-                        {{activity.content}}
+                        <div
+                            @click="pointSelect(activity)"
+                            class="select-target"
+                            :class="{ 'active': activity.select}"
+                        >{{activity.content}}</div>
                     </el-timeline-item>
                 </el-timeline>
             </div>
@@ -229,33 +267,53 @@ export default {
 
             activities: [
                 {
+                    target: "_1",
+                    select: true,
                     content: "收入分类"
                 },
                 {
+                    target: "_2",
+                    select: false,
                     content: "就诊人次"
                 },
                 {
+                    target: "_3",
+                    select: false,
                     content: "就诊人数"
                 },
                 {
+                    target: "_4",
+                    select: false,
                     content: "营业收入"
                 },
                 {
+                    target: "_5",
+                    select: false,
                     content: "患者来源"
                 },
                 {
+                    target: "_6",
+                    select: false,
                     content: "来源人数"
                 },
                 {
+                    target: "_7",
+                    select: false,
                     content: "收费分类"
                 },
                 {
+                    target: "_8",
+                    select: false,
                     content: "预约人数"
                 },
                 {
+                    target: "_9",
+                    select: false,
                     content: "预约项目"
                 },
                 {
+                    target: "_10",
+                    select: false,
                     content: "预约状态"
                 }
             ],
@@ -540,7 +598,9 @@ export default {
             },
             //--------------------------------
 
-            contentHeight: 0
+            //记录元素的偏移高度
+            contentHeight: 0,
+            eleHeight: {}
         };
     },
 
@@ -562,11 +622,60 @@ export default {
     watch: {},
     computed: {},
     methods: {
+        resizeContent() {
+            let that = this,
+                contentEle = that.$refs.content,
+                contentHeight = contentEle.clientHeight,
+                scrollHeight = contentEle.scrollHeight;
 
-        resizeContent(){
-            let that = this;
+            that.contentHeight = contentHeight + scrollHeight;
 
-            
+            for (var i = 1; i <= 10; i++) {
+                //因为１０是外边距
+                that.eleHeight["_" + i] = that.$refs["_" + i].offsetTop - 10;
+            }
+        },
+
+        pointSelect(item) {
+            let that = this,
+                contentEle = that.$refs.content;
+
+            for (var i = 0; i < that.activities.length; i++) {
+                var actItem = that.activities[i];
+
+                actItem.select = actItem == item;
+            }
+
+            that.scrollAmin(contentEle, that.eleHeight[item.target], 300);
+
+            //　苹果电脑兼容性不好，无法兼容
+            // contentEle.scrollTo({
+            //     top: that.eleHeight[item.target], 
+            //     behavior: "smooth" 
+            // })
+        },
+
+        //滚动动画
+        //参考：　https://www.jianshu.com/p/b11b058ff5d8
+        scrollAmin(ele, top, duration) {        
+            let that = this,
+                curTop = ele.scrollTop,
+                durTop = top - curTop,
+                startTime = +new Date(),                
+                scroll = function(){
+                    const time = +new Date() - startTime;
+
+                    ele.scrollTo(0, curTop + durTop * (time / duration));
+
+                    requestAnimationFrame(scroll);
+
+                    if(time >= duration){
+                        ele.scrollTo(0, top);
+                        cancelAnimationFrame(scroll);
+                    }
+                }
+
+                requestAnimationFrame(scroll);
         },
 
         afterGetData(res) {
@@ -584,46 +693,36 @@ export default {
 }
 
 .clinic {
-    // padding: 0 10px;
-
-    // position: absolute;
-    // top: 10px;
-    // bottom: 0;
-    // left: 10px;
-    // right: 10px;
     position: relative;
     height: 100%;
     box-sizing: border-box;
-    // display: flex;
-    // flex-direction: row;
 
     .search {
-        padding: 0 10px 10px;
+        padding: 10px;
         border-bottom: 1px solid #e3e3e3;
         height: 40px;
         width: 100%;
     }
 
     .clinic-content {
-        display: flex;
-        height: 100%;
-        top: 15px;
-        // flex: 1 auto;
         position: absolute;
         overflow: auto;
-        top: 70px;
+        top: 60px;
         bottom: 0;
         left: 0;
         right: 0;
 
         .clinic-left {
-            flex: 1 auto;
             position: absolute;
             left: 10px;
             right: 200px;
 
             .clinic-item {
                 margin-bottom: 15px;
+
+                &:first-of-type {
+                    margin-top: 15px;
+                }
             }
 
             .date-type {
@@ -640,9 +739,21 @@ export default {
         }
 
         .clinic-right {
-            width: 200px;
+            width: 150px;
             position: fixed;
-            right: 0;
+            right: 40px;
+            margin-top: 30px;
+
+            .select-target {
+                cursor: pointer;
+                &:hover {
+                    color: #0bbd87;
+                }
+            }
+
+            .active {
+                color: #0bbd87;
+            }
         }
     }
 }
