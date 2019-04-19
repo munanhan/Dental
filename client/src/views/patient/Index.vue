@@ -436,8 +436,8 @@ el-tabs__header is-top .move-line {
   }
 }
 
-.patient-content {
-}
+// .patient-content {
+// }
 
 .el-button {
   margin-left: 40px;

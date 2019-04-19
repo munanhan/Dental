@@ -9,7 +9,7 @@
           @click="activeLi(item,index)"
         >{{item.select}}</li>
       </ul>
-      <div class="add-yuyue">新增预约</div>
+      <div class="add-yuyue" @click="addYuyue()">新增预约</div>
       <div class="net-yuyue">网上预约</div>
       <div class="search">
         <input
@@ -27,40 +27,80 @@
       <div class="prev-day" @click="handlePrev">
         <div></div>
       </div>
-      <div :class="['today',$store.state.yuyue_date.chooseDate!= $store.state.yuyue_date.curDate? 'red':''] " @click="chooseToday">今</div>
+      <div
+        :class="['today',$store.state.yuyue_date.chooseDate!= $store.state.yuyue_date.curDate? 'red':''] "
+        @click="chooseToday"
+      >今</div>
       <div class="next-day" @click="handleNext">
         <div></div>
       </div>
       <div class="show-date">
-        <span>
-          {{this.yuyue_date.chooseDate}}
-        </span> 
-        <span>
-          {{week[new Date(this.yuyue_date.chooseDate).getDay()]}}
-        </span>
-        <span>
-          {{severalDays}}
-        </span>
-        </div>
+        <span>{{this.yuyue_date.chooseDate}}</span>
+        <span>{{week[new Date(this.yuyue_date.chooseDate).getDay()]}}</span>
+        <span>{{severalDays}}</span>
+      </div>
     </div>
     <div class="date-body">
-
+      <div v-show="navBar[0].active" class="day">
+        <el-row class="day-header">
+          <div>
+            <span>24h</span>
+          </div>
+          <div class="doctor1">
+            王医生
+          </div>
+          <div class="doctor2">
+            未指定医生
+          </div>
+          <div>
+            <span>24h</span>
+          </div>
+        </el-row>
+        <el-row class="day-other" v-for="(item,index) in dayTime" :key="index">
+          <div class="other-left">
+              <div><span class="big-font">{{item}}</span><span>00</span></div>
+              <div><span>30</span></div>
+          </div>
+           <div class="other-center" @click="addYuyue(item)">
+              <div data-time="00">1</div>
+              <div data-time="00">2</div>
+              <div data-time="30">3</div>
+              <div data-time="30">4</div>
+           </div>
+          <div class="other-left">
+              <div><span>00</span><span class="big-font">{{item}}</span></div>
+              <div><span class="span-left">30</span></div>
+          </div>
+         
+          
+        </el-row>
+      </div>
+      <div v-show="navBar[1].active" class="week">1</div>
+      <div v-show="navBar[2].active" class="month">2</div>
+      <div v-show="navBar[3].active" class="list">3</div>
+      <div v-show="navBar[4].active" class="paiban">4</div>
     </div>
+       
+    <!-- 新增预约 start -->
+      <add-yuyue :show.sync="addYuyueShow" :dayTime="dayTime" :yuyue_time="yuyue_time"></add-yuyue>
+    <!-- 新增预约  end-->
+
   </div>
 </template>
 
 <script>
-import { formatDate } from '@/common/util.js';
+import { formatDate,addClass} from "@/common/util.js";
+import AddYuyue from "./AddYuyue.vue";
 export default {
   name: "",
   props: ["chooseDay"],
-  components: {},
-  created() {
-    
-
+  components: {
+    AddYuyue,
   },
+  created() {},
   data() {
     return {
+      addYuyueShow:false,
       navBar: [
         { select: "天", active: true },
         { select: "周" },
@@ -68,20 +108,22 @@ export default {
         { select: "列表" },
         { select: "排班" }
       ],
-      week:{
-        1:'周一',
-        2:'周二',
-        3:'周三',
-        4:'周四',
-        5:'周五',
-        6:'周六',
-        0:'周日',
+      week: {
+        1: "周一",
+        2: "周二",
+        3: "周三",
+        4: "周四",
+        5: "周五",
+        6: "周六",
+        0: "周日"
       },
-     
-      yuyue_date : this.$store.state.yuyue_date,
+      dayTime:['09','10','11','12','13','14','15','16','17','18','19','20','21','22'],
+
+      yuyue_date: this.$store.state.yuyue_date,
+      yuyue_time:null,
     };
   },
-  
+
   methods: {
     activeLi(item, index) {
       this.$nextTick(function() {
@@ -98,44 +140,55 @@ export default {
     },
     handlePrev() {
       let date = new Date(this.yuyue_date.chooseDate);
-      date.setDate(date.getDate() -1);
-      let upDate =formatDate(date, 'yyyy-MM-dd');
+      date.setDate(date.getDate() - 1);
+      let upDate = formatDate(date, "yyyy-MM-dd");
       this.yuyue_date.myCalender.choosePrevNextDay(upDate);
-      
     },
     handleNext() {
       let date = new Date(this.yuyue_date.chooseDate);
-      date.setDate(date.getDate() +1);
-      let upDate =formatDate(date, 'yyyy-MM-dd');
+      date.setDate(date.getDate() + 1);
+      let upDate = formatDate(date, "yyyy-MM-dd");
       this.yuyue_date.myCalender.choosePrevNextDay(upDate);
     },
     chooseToday() {
       this.yuyue_date.myCalender.chooseToday();
     },
-   
-  },
-  computed:{
-     severalDays(){
-      //  let nowDate =formatDate(new Date(), 'yyyy-MM-dd');
-      let nowTime = new Date(formatDate(new Date(), 'yyyy-MM-dd')).getTime();
-      let chooseTime = new Date(this.yuyue_date.chooseDate).getTime();
-      let days =Math.ceil((chooseTime - nowTime)/1000/60/60/24);
-      let strDays = null;
-      if(days > 0){
-          days==1 && (strDays ='明天');
-          days==2 && (strDays ='后天');
-          days > 2 && (strDays = `（${days}天后）`);
-      }else if(days == 0){
-        strDays = '今天';
-      }else{
-        days = Math.abs(days);
-          days==1 && (strDays ='昨天');
-          days==2 && (strDays ='前天');
-          days > 2 && (strDays = `（${days}天前）`);
+    addYuyue(item){
+     
+
+        this.addYuyueShow = true;
+      
+      if(item){
+          let time =event.target.attributes['data-time'].value;
+          let yuyueDate = `${item} : ${time}`;
+          this.yuyue_time = yuyueDate;
+            
       }
-       return strDays;
-     }
+   
+    }
   },
+  computed: {
+    severalDays() {
+      //  let nowDate =formatDate(new Date(), 'yyyy-MM-dd');
+      let nowTime = new Date(formatDate(new Date(), "yyyy-MM-dd")).getTime();
+      let chooseTime = new Date(this.yuyue_date.chooseDate).getTime();
+      let days = Math.ceil((chooseTime - nowTime) / 1000 / 60 / 60 / 24);
+      let strDays = null;
+      if (days > 0) {
+        days == 1 && (strDays = "明天");
+        days == 2 && (strDays = "后天");
+        days > 2 && (strDays = `（${days}天后）`);
+      } else if (days == 0) {
+        strDays = "今天";
+      } else {
+        days = Math.abs(days);
+        days == 1 && (strDays = "昨天");
+        days == 2 && (strDays = "前天");
+        days > 2 && (strDays = `（${days}天前）`);
+      }
+      return strDays;
+    }
+  }
 };
 </script>
 
@@ -258,16 +311,104 @@ export default {
         color: red;
       }
     }
-    .show-date{
+    .show-date {
       font-size: 20px;
       font-weight: 800;
-      margin-left:20px ;
+      margin-left: 20px;
     }
   }
-  .date-body{
+  .date-body {
     flex: auto;
-  
     background-color: #c8c2eb;
+    display: flex;
+    .day {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      .day-header {
+        display: flex;
+        flex-basis: 50px;
+        line-height: 50px;
+        padding-bottom:10px; 
+        text-align: center;
+        .doctor1{
+          flex:1;
+          border: 1px solid rgb(173, 171, 171);
+          background-color: #fff;
+        }
+         .doctor2{
+           flex:1;
+          border: 1px solid rgb(173, 171, 171);
+          border-left: none;
+          background-color: #fff;
+        }
+        div:first-of-type,div:last-of-type{
+           flex-basis: 80px;
+        }
+      }
+       .day-other {
+          flex: auto;
+         
+          display: flex;
+          .other-left{
+            flex-basis: 80px;
+            display: flex;
+            flex-direction: column;
+            div{
+              flex: auto;
+              &:first-of-type{
+                display: flex;
+                padding: 0 10px;
+                span{
+                  flex: auto;
+                  border-top: 1px solid #e6e6e6;
+                  &.big-font{
+                    font-size:20px; 
+                  }
+                }
+              }
+              &:last-of-type{
+                 display: flex;
+                  padding: 0 10px;
+                span{
+                  margin-left: auto;
+                  border-top: 1px solid #e6e6e6;
+                }
+                .span-left{
+                  margin:0;
+                }
+              }
+            }
+          }
+          .other-center{
+            flex: auto;
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #d2d2d2;
+            div{
+              width: 50%;
+              box-sizing: border-box;
+              background-color: #fff;
+              text-align: center;
+              &:hover{
+                cursor: pointer;
+                background-color: #c8c2eb;
+              }
+              &:nth-of-type(1){
+                border-bottom: 1px solid #e6e6e6;
+                border-right: 1px solid #e6e6e6;
+              }
+               &:nth-of-type(2){
+                border-bottom: 1px solid #e6e6e6;
+              }
+               &:nth-of-type(3){
+                border-right: 1px solid #e6e6e6;
+              }
+            }
+          }
+       
+      }
+    }
   }
 }
 </style>
