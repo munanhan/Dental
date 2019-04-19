@@ -614,9 +614,9 @@ export default {
 
         //监听事件,由layout那边的resize抛出的
         if (window.addEventListener) {
-            window.addEventListener("bodyChange", that.resizeSubMenu);
+            window.addEventListener("bodyChange", that.resizeContent);
         } else {
-            window.attachEvent("bodyChange", that.resizeSubMenu);
+            window.attachEvent("bodyChange", that.resizeContent);
         }
     },
     watch: {},
@@ -656,7 +656,7 @@ export default {
         },
 
         //滚动动画
-        //参考：　https://www.jianshu.com/p/b11b058ff5d8
+        //参考：　https://www.jianshu.com/p/b11b058ff5d8，注：这个页面的案例是有错误的
         scrollAmin(ele, top, duration) {        
             let that = this,
                 curTop = ele.scrollTop,
@@ -665,13 +665,15 @@ export default {
                 scroll = function(){
                     const time = +new Date() - startTime;
 
+                    //如果设置间隔的５００毫秒，则当前的高度加上要变动的高度乘以下次时间变动占间隔的的占比
                     ele.scrollTo(0, curTop + durTop * (time / duration));
 
-                    requestAnimationFrame(scroll);
-
-                    if(time >= duration){
+                    //如果超过了间隔，就取消动画效果
+                    if(time >= duration){ 
                         ele.scrollTo(0, top);
                         cancelAnimationFrame(scroll);
+                    }else {
+                        requestAnimationFrame(scroll);
                     }
                 }
 
