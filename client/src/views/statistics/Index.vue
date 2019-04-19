@@ -120,6 +120,11 @@ export default {
 .statistics {
     height: 100%;
 
+    /deep/ .el-tabs{
+        position: relative;
+        height: 100%;
+    }
+
     /deep/ .el-tabs__header {
         margin-bottom: 0;
         .el-tabs__nav-scroll {
