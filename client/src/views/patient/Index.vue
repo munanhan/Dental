@@ -2,35 +2,135 @@
   <el-container class="patient">
 
     <div class="content-left">
-      <div style="border:1px solid red;width:350px;margin-right:10px">
+      <div class="left_top">
         <el-tabs
           v-model="activeName"
-          @tab-click="handleClick"
+          class="left_tab"
         >
           <el-tab-pane
-            label="用户管理"
+            label="今日工作"
             name="first"
           >
-		  
-		  </el-tab-pane>
+
+            <div
+              class="left-detail"
+              style="position:relative;"
+            >
+              12312312312312312
+
+            </div>
+
+            <div style="
+                     position:absolute;
+                     left;0;bottom:0; 
+                     width: 100%;
+                     height: 60px;
+                     background-color:white;
+                     ">
+              <div class="visit-bottom-content">
+                <el-button type="success">新增患者</el-button>
+                <el-button>复诊预约</el-button>
+              </div>
+            </div>
+          </el-tab-pane>
+
           <el-tab-pane
-            label="配置管理"
-            name="second"
-          >配置管理</el-tab-pane>
+            label="全部患者"
+            name="patient"
+            class="patient-content"
+          >
+            <div style="position:relative;background-color: rgba(255,255,255,.5);">
+              <div
+                class="top-content"
+                style="border:1px solid #e3e3e3;padding:5px 0px"
+              >
+                <el-select
+                  v-model="value"
+                  placeholder="患者信息"
+                  style="width:105px;padding-left:5px"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+                <el-input
+                  v-model="input"
+                  style="width:200px;padding-left:5px"
+                  placeholder="姓名、拼音、电话"
+                  suffix-icon="el-icon-search"
+                ></el-input>
+                <i
+                  class="fa fa-sort-down"
+                  style="margin-left:20px;
+                       cursor:pointer"
+                ></i>
+              </div>
+
+              <div>
+                <el-tree
+                  style="height:100%;
+                       background-color:#efefef"
+                  :data="data"
+                  :props="defaultProps"
+                ></el-tree>
+              </div>
+            </div>
+
+            <div
+              class="botton-content"
+              style="
+                     position:absolute;
+                     left;0;bottom:0; 
+                     width: 100%;
+                     height: 60px;
+                     background-color:white;
+                     "
+            >
+              <div class="visit-bottom-content">
+                <el-button type="success">新增患者</el-button>
+                <el-button>复诊预约</el-button>
+              </div>
+            </div>
+
+          </el-tab-pane>
+
           <el-tab-pane
-            label="角色管理"
-            name="third"
-          >角色管理</el-tab-pane>
-          
+            label="最近访问"
+            name="visit"
+            class="visit-content"
+          >
+            <div class="visit-top-content">
+              <el-input
+                style="width:300px;margin-left:10px;"
+                v-model="search"
+                placeholder="姓名、拼音、电话"
+                suffix-icon="el-icon-search"
+              ></el-input>
+            </div>
+            <div class="visit-bottom-content">
+              <el-button type="success">新增患者</el-button>
+              <el-button>复诊预约</el-button>
+            </div>
+          </el-tab-pane>
+
         </el-tabs>
       </div>
+
       <div></div>
+
     </div>
 
     <div class="content-right">
       <!-- tab -->
 
-      <el-tabs v-model="curTab">
+      <el-tabs
+        v-model="curTab"
+        class="right_top"
+      >
 
         <el-tab-pane
           label="患者信息"
@@ -90,122 +190,6 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-
-    <!-- <el-aside
-      class="my-aside"
-      width="380px"
-    >
-      <div class="today_top">
-
-        <el-tabs @tab-click="handleClick">
-          <el-tab-pane
-            label="当天工作"
-            name="first"
-          >
-          </el-tab-pane>
-
-          <el-tab-pane
-            label="全部患者"
-            name="second"
-          >
-            <el-container>
-              <div style="display:flex;">
-                <template>
-                  <el-select
-                    style="width:105px;padding-left:10px"
-                    v-model="value"
-                    placeholder="患者信息"
-                  >
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
-                  <el-input
-                    v-model="input"
-                    style="width:200px;padding-left:5px"
-                    placeholder="姓名、拼音、电话"
-                    suffix-icon="el-icon-search"
-                  ></el-input>
-                </template>
-              </div>
-            </el-container>
-          </el-tab-pane>
-
-          <el-tab-pane
-            label="最近访问"
-            name="third"
-          >角色管理</el-tab-pane>
-        </el-tabs>
-      </div>
-
-    </el-aside>
-
-    <div
-      class="container"
-      style="height: 99.8%; border: 1px solid red"
-    >
-      <div class="tab-pane">
-        <div
-          class="tab-pane-content"
-          :style="{
-            left: `${left}px`,
-            width: `${width}px`
-          }"
-        ></div>
-        <div
-          class="move-line"
-          @mousedown.stop.prevent="maskMouseHandler($event)"
-        ></div>
-
-      </div>
-      <div class="content"></div>
-    </div>
-
-    <el-container>
-      <el-header>
-        <el-tabs @tab-click="handleClick">
-          <el-tab-pane
-            label="患者信息"
-            name="first"
-          >
-            <div style="background-color: rgb(238, 241, 246)">adasdas</div>
-          </el-tab-pane>
-          <el-tab-pane
-            label="处置记录"
-            name="second"
-          >配置管理</el-tab-pane>
-          <el-tab-pane
-            label="收费信息"
-            name="third"
-          >角色管理</el-tab-pane>
-          <el-tab-pane
-            label="影像信息"
-            name="fourth"
-          >定时任务补偿</el-tab-pane>
-          <el-tab-pane
-            label="病历信息"
-            name="5"
-          >定时任务补偿</el-tab-pane>
-          <el-tab-pane
-            label="外加工"
-            name="6"
-          >定时任务补偿</el-tab-pane>
-          <el-tab-pane
-            label="回访信息"
-            name="7"
-          >定时任务补偿</el-tab-pane>
-          <el-tab-pane
-            label="咨询信息"
-            name="8"
-          >定时任务补偿</el-tab-pane>
-        </el-tabs>
-      </el-header>
-    </el-container> -->
-
   </el-container>
 </template>
 
@@ -237,8 +221,10 @@ export default {
 
   data() {
     return {
+      input: "",
+      search: "",
       curTab: "pationInfo",
-
+      activeName: "patient",
       //   pationRefresh: false,
       //   disposalRecordsRefresh: false,
 
@@ -247,6 +233,29 @@ export default {
       // 	disposalRecords: "disposalRecordsRefresh"
 
       //   },
+      options: [
+        {
+          value: "选项1",
+          label: "患者信息"
+        },
+        {
+          value: "选项2",
+          label: "病历号"
+        },
+        {
+          value: "选项3",
+          label: "会员号"
+        },
+        {
+          value: "选项4",
+          label: "检查医生"
+        },
+        {
+          value: "选项5",
+          label: "高级查询..."
+        }
+      ],
+      value: "",
 
       pationInfo: false,
       disposalRecords: false,
@@ -255,7 +264,34 @@ export default {
       medicalRecordsInfo: false,
       outsideProcessing: false,
       returnVisitInfo: false,
-      consultingInfo: false
+      consultingInfo: false,
+
+      data: [
+        {
+          label: "最近患者(0)",
+          children: [
+            {
+              label: "二级 1-1"
+            }
+          ]
+        },
+        {
+          label: "黑名单(0)",
+          children: [
+            {
+              label: "二级 1-1"
+            }
+          ]
+        },
+        {
+          label: "治疗完成(0)",
+          children: [{}]
+        }
+      ],
+      defaultProps: {
+        children: "children",
+        label: "label"
+      }
     };
   },
   created() {},
@@ -280,28 +316,31 @@ export default {
 
     handleClick(tab, event) {
       console.log(tab, event);
-    },
-
-    maskMouseHandler(evt) {
-      let that = this;
-
-      //调整移动的区间范围
-      that.maxMoveWidth = that.outerWidth - that.maskWidth;
-      that.maxMoveHeight = that.outerHeight - that.maskHeight;
-
-      //点击鼠标点击的位置
-      that.disX = evt.clientX;
-      that.disY = evt.clientY;
-
-      //记录原来的mask的位置，从这个位置开始计算左右移动距离，- 0 是为了复制值
-      that.orginTop = that.top - 0;
-      that.orginLeft = that.left - 0;
-
-      // 如果存在可移动的范围的时候才绑定
-      // 全局监听松开事件，放在在内容选择框外松开
-      document.addEventListener("mouseup", that.onMouseUp);
-      document.addEventListener("mousemove", that.onMouseMove);
     }
+
+    // maskMouseHandler(evt) {
+    //   let that = this;
+
+    //   //调整移动的区间范围
+    //   that.maxMoveWidth = that.outerWidth - that.maskWidth;
+    //   that.maxMoveHeight = that.outerHeight - that.maskHeight;
+
+    //   //点击鼠标点击的位置
+    //   that.disX = evt.clientX;
+    //   that.disY = evt.clientY;
+
+    //   //记录原来的mask的位置，从这个位置开始计算左右移动距离，- 0 是为了复制值
+    //   that.orginTop = that.top - 0;
+    //   that.orginLeft = that.left - 0;
+
+    //   // 如果存在可移动的范围的时候才绑定
+    //   // 全局监听松开事件，放在在内容选择框外松开
+    //   document.addEventListener("mouseup", that.onMouseUp);
+    //   document.addEventListener("mousemove", that.onMouseMove);
+    // }
+  },
+  handleNodeClick(data) {
+    console.log(data);
   }
 };
 </script>
@@ -312,12 +351,13 @@ export default {
   .my-aside {
     background-color: rgb(238, 241, 246);
     .today_top {
-      border: 1px solid red;
+      border: 1px solid rgb(167, 164, 164);
       height: 100%;
       box-sizing: border-box;
     }
   }
 }
+
 .el-header {
   background-color: rgb(235, 235, 235);
   line-height: 60px;
@@ -326,4 +366,87 @@ export default {
 el-tabs__header is-top .move-line {
   border: 1px solid rgb(235, 235, 235);
 }
+
+.content-left {
+  .left_top {
+    border: 1px solid #d8d6d6;
+    width: 365px;
+    margin-right: 10px;
+    height: 100%;
+    box-sizing: border-box;
+
+    .left_tab {
+      position: relative;
+      height: 100%;
+
+      //   display: flex;
+      //   flex: 1 auto;
+      width: 100%;
+
+      /deep/ .el-tabs__content {
+        position: absolute;
+        // overflow: auto;
+        top: 40px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      //   .left-detail{
+      // 	//   position: absolute;
+      // 	//   top: 60px;
+      // 	//   bottom: 0;
+      //   }
+    }
+  }
+}
+
+.content-right {
+  width: 100%;
+  .right_top {
+    margin-right: 10px;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+
+    /deep/ .el-tabs__content {
+      position: absolute;
+      top: 45px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: white;
+    }
+  }
+}
+
+.visit-content {
+  .visit-top-content {
+    border: 1px solid #e3e3e3;
+    padding: 5px 0px;
+    position: relative;
+  }
+  .visit-bottom-content {
+    margin-top: 800px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: white;
+  }
+}
+
+.patient-content {
+}
+
+.el-button {
+  margin-left: 40px;
+  margin-top: 10px;
+  width: 120px;
+}
+//  /deep/ .el-table{
+
+//        position: relative;
+//        height: 100%;
+// }
 </style>

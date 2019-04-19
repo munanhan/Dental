@@ -7,7 +7,7 @@ export default {
     props: {
         editItem: {
             type: Object,
-            default: {}
+            default: () => {}
         }
     },
 
