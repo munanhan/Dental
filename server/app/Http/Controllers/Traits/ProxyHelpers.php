@@ -30,7 +30,7 @@ trait ProxyHelpers
             $response = $client->post($url, ['form_params' => $params]);
 
             if($response->getStatusCode() ===200){
-                return json_decode($response->getBody()->getContents(), true);
+                return returnMessage('Login successful','200', json_decode($response->getBody()->getContents(), true));
             }
 
         } catch (RequestException $exception) {
@@ -58,7 +58,7 @@ trait ProxyHelpers
             $respond = $client->post($url, ['form_params' => $params]);
 
             if ($respond->getStatusCode() ===200 ) {
-                return json_decode($respond->getBody()->getContents(), true);
+                return returnMessage('Login successful','200', json_decode($respond->getBody()->getContents(), true));
             }
 
         } catch (RequestException $exception) {

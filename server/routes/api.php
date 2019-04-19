@@ -19,16 +19,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function(){
 
-    Route::get('details', 'Api\UserController@getDetails');
-
+    Route::get('users', 'Api\UserController@getDetails');
+    Route::post('users', 'Api\UserController@getDetails');
+    Route::get('users/{id}', 'Api\UserController@getDetails');
+    Route::get('users', 'Api\UserController@getDetails');
+    Route::delete('logout','APi\LoginController@logout');
+    Route::get('test','Api\UserController@test');
 });
 
 Route::post('login','Api\LoginController@login');
 
-Route::post('register','Api\RegisterController@register');
+Route::post('registration','Api\RegisterController@register');
 
 Route::post('refreshment','APi\LoginController@refreshToken');
 
-Route::post('logout','APi\LoginController@logout');
 
-Route::get('test','Api\UserController@test');
+
+
