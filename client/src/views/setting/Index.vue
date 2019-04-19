@@ -80,7 +80,7 @@ import StaffManagement from "./StaffManagement/Index";
 import DisposalCharging from "./DisposalCharging";
 import DisposalCombination from "./DisposalCombination";
 import CaseTemplate from "./CaseTemplate";
-import MemberUpgrade from "./MemberUpgrade";
+import MemberUpgrade from "./MemberUpgrade/Index";
 import PatientRecyclingBin from "./PatientRecyclingBin";
 import OperationRecord from "./OperationRecord";
 

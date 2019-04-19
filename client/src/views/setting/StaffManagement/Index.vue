@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="content">
       <el-row>
-        <el-col :span="21">
+        <!-- <el-col :span="21">
           <el-input placeholder="请输入姓名" v-model="staff" class="">
             <template slot="prepend">员工姓名</template>
               <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
@@ -14,12 +14,34 @@
                   >
                   添加员工
           </el-button>
+        </el-col> -->
+      <div class="search">
+        <el-col :span="2">
+          <div class="staff_name">
+            <span class="mr10">员工姓名</span>
+          </div>
         </el-col>
+        <el-col :span="4">
+              <span class="mr10">
+                  <el-input v-model="staff" placeholder="请输入姓名"></el-input>
+              </span>
+        </el-col>
+        <el-col :span="2">
+              <span class="">
+                  <el-button type="primary" @click="search">查询</el-button>
+              </span>
+        </el-col>
+        <el-col :span="2">
+              <span>
+                  <el-button type="primary" @click="addDialog = true">新增员工</el-button>
+              </span>
+        </el-col>
+      </div>
       </el-row>
 
       <el-row>
         <el-col :span="24">
-          <div class="">
+          <div>
             <el-table
               :data="tableData"
               style="width: 100%">
@@ -300,13 +322,27 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
 .staff_name{
   padding: 10px;
 }
 .btn_class{
     background: white;
-    text-align: center;;
+    text-align: center;
 }
+.search {
+    padding: 10px;
+    border-bottom: 1px solid #e3e3e3;
+    height: 40px;
+    width: 100%;
+    background: white;
+}
+.content{
+    background: white;
+    height: 800px;
+}
+
 /*.title{
   text-align: center;
   margin-bottom: 10px;
