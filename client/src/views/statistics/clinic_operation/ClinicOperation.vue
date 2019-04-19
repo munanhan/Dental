@@ -35,6 +35,7 @@
         <div
             class="clinic-content"
             ref="content"
+            @scroll="notifyScroll"
         >
 
             <div class="clinic-left">
@@ -227,8 +228,8 @@
 
             </div>
 
-            <div class="clinic-right">
-                <el-timeline>
+            <div class="clinic-right" @wheel.stop.prevent="cateScroll">
+                <el-timeline >
                     <el-timeline-item
                         v-for="(activity, index) in activities"
                         :key="index"
@@ -237,7 +238,7 @@
                         <div
                             @click="pointSelect(activity)"
                             class="select-target"
-                            :class="{ 'active': activity.select}"
+                            :class="{ 'active': activity.select}"                            
                         >{{activity.content}}</div>
                     </el-timeline-item>
                 </el-timeline>
@@ -304,7 +305,7 @@ export default {
                 {
                     target: "_8",
                     select: false,
-                    content: "预约人数"
+                    content: "预约统计"
                 },
                 {
                     target: "_9",
@@ -600,7 +601,14 @@ export default {
 
             //记录元素的偏移高度
             contentHeight: 0,
-            eleHeight: {}
+            eleHeight: {},
+            //记录当前活动的
+            activeIndex: 0,
+
+            //停止监听滚动，用于右边点击和右边鼠标滚动的时候使用
+            notifyScrollStop: false,
+            scrollTimer: null,
+            rightWheelTimer: null
         };
     },
 
@@ -643,41 +651,108 @@ export default {
             for (var i = 0; i < that.activities.length; i++) {
                 var actItem = that.activities[i];
 
-                actItem.select = actItem == item;
+                if(actItem == item){
+                    actItem.select = true;
+                    that.activeIndex = i;
+                }else{
+                    actItem.select = false;
+                }
             }
 
             that.scrollAmin(contentEle, that.eleHeight[item.target], 300);
 
-            //　苹果电脑兼容性不好，无法兼容
+            //　苹果电脑浏览器兼容性不好，无法兼容
             // contentEle.scrollTo({
-            //     top: that.eleHeight[item.target], 
-            //     behavior: "smooth" 
+            //     top: that.eleHeight[item.target],
+            //     behavior: "smooth"
             // })
         },
 
         //滚动动画
         //参考：　https://www.jianshu.com/p/b11b058ff5d8，注：这个页面的案例是有错误的
-        scrollAmin(ele, top, duration) {        
+        scrollAmin(ele, top, duration) {
             let that = this,
                 curTop = ele.scrollTop,
                 durTop = top - curTop,
-                startTime = +new Date(),                
-                scroll = function(){
+                startTime = +new Date(),
+                scroll = function() {
                     const time = +new Date() - startTime;
 
                     //如果设置间隔的５００毫秒，则当前的高度加上要变动的高度乘以下次时间变动占间隔的的占比
                     ele.scrollTo(0, curTop + durTop * (time / duration));
 
                     //如果超过了间隔，就取消动画效果
-                    if(time >= duration){ 
+                    if (time >= duration) {
                         ele.scrollTo(0, top);
                         cancelAnimationFrame(scroll);
-                    }else {
+                    } else {
+                        that.notifyScrollStop = false;
                         requestAnimationFrame(scroll);
                     }
+                };
+
+            that.notifyScrollStop = true;
+
+            requestAnimationFrame(scroll);
+        },
+
+        //监听左边变动的高度，然后设置颜色
+        notifyScroll(event) {
+            let that = this;
+
+            //如果停止监听的时候，则开始检测
+            if (!that.notifyScrollStop) {
+                clearTimeout(that.scrollTimer);
+
+                that.scrollTimer = setTimeout(() => {
+                    let contentEle = that.$refs.content,
+                        curTop = contentEle.scrollTop,
+                        hasSet = false;
+
+                    for (var key in that.eleHeight) {
+                        var item = that.eleHeight[key],
+                            idx = +key.replace("_", "") - 1;
+
+                        if (item >= curTop && !hasSet) {
+                            that.activities[idx].select = true;
+                            hasSet = true;
+
+                            that.activeIndex = idx;
+                        } else {
+                            that.activities[idx].select = false && !hasSet;
+                        }
+                    }
+                }, 300);
+            }
+        },
+
+        //右边滚动
+        cateScroll(event) {
+            let that = this;
+
+            clearTimeout(that.rightWheelTimer);
+
+            that.rightWheelTimer = setTimeout(() => {
+                let count = 0,
+                    rsIdx = that.activeIndex;
+
+                if (event.wheelDelta) {
+                    count = Math.floor(event.wheelDelta / 120);
+                } else if (event.detail != null) {
+                    count = -Math.floor(event.deltaY / 3);
                 }
 
-                requestAnimationFrame(scroll);
+                //单次滚动，只滚动一条，不滚动多条，降低触发频率
+                rsIdx += (count > 0? -1: 1);
+
+                if (rsIdx < 0) {
+                    rsIdx = 0;
+                } else if (rsIdx >= that.activities.length) {
+                    rsIdx = that.activities.length - 1;
+                }
+
+                that.pointSelect(that.activities[rsIdx]);
+            }, 300);
         },
 
         afterGetData(res) {
@@ -737,6 +812,7 @@ export default {
 
             .chart-tip {
                 background-color: @color;
+                margin-right: 5px;
             }
         }
 
