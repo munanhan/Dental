@@ -359,6 +359,7 @@ export default {
       flex: auto;
       display: flex;
       .other-left {
+        color: #fff;
         display: flex;
         flex-direction: column;
         background-color: @hover-color;
