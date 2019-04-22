@@ -26,7 +26,7 @@
                 ></el-input>
 
                 <div>
-                    <span class="forget-pass">忘记密码</span>
+                    <span class="forget-pass">忘记密码?</span>
                 </div>
 
                 <el-button
