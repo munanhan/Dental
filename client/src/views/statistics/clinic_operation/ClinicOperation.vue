@@ -28,6 +28,8 @@
 
             <span>
                 <el-button type="primary" @click="getData">查询</el-button>
+
+                <!-- <el-button type="primary" @click="test">测试</el-button> -->
             </span>
 
         </div>
@@ -246,15 +248,31 @@
 
         </div>
 
+        <!-- 收费方式         -->
+        <pay-type :show.sync='payTypeDialog'></pay-type>
+
+        <!-- 初复诊记录明细 -->
+        <first-visit :show.sync='firstVisitDialog'></first-visit>
+
+        <!-- 复诊记录明细 -->
+        <further-vist :show.sync='furtherVistDialog'></further-vist>
+
+        <!-- 收费单流水 -->
+        <toll-sheet :show.sync='tollSheetDialog'></toll-sheet>
     </div>
 </template>
 
 <script>
 import Base from "../Base";
 import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
+import PayType from './PayType';
+import FirstVisit from './FirstVisit';
+import FurtherVist from './FurtherVist';
+import TollSheet from './TollSheet';
+
 export default {
     name: "ClinicOperation",
-    components: {},
+    components: { PayType, FirstVisit, FurtherVist, TollSheet },
 
     mixins: [Base],
 
@@ -608,7 +626,19 @@ export default {
             //停止监听滚动，用于右边点击和右边鼠标滚动的时候使用
             notifyScrollStop: false,
             scrollTimer: null,
-            rightWheelTimer: null
+            rightWheelTimer: null,
+
+            //收费方式
+            payTypeDialog: false,
+
+            //初诊记录明细
+            firstVisitDialog: false,
+
+            //复诊记录明细
+            furtherVistDialog: false,
+
+            //收费单流水
+            tollSheetDialog: false
         };
     },
 
@@ -630,6 +660,18 @@ export default {
     watch: {},
     computed: {},
     methods: {
+
+        // test(){
+        //     let that = this;
+        //     // that.payTypeDialog = true;
+
+        //     // that.firstVisitDialog = true;
+
+        //     // that.furtherVistDialog = true;
+
+        //     that.tollSheetDialog = true;
+        // },
+
         resizeContent() {
             let that = this,
                 contentEle = that.$refs.content,

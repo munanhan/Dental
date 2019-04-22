@@ -3,53 +3,138 @@
         title="收费方式"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog"
+        class="custom-dialog pay-type"
         :close-on-click-modal="false"
         v-dialog-drag
+        width="1200px"
+        top="2vh"
     >
-        <div class="search">
-            <span class="mr-10">收费时间</span>
-            <span class="mr-10">
-                <el-date-picker
-                    v-model="search.dateRange"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :picker-options="pickerOptions"
-                    format="yyyy-MM-dd"
-                    value-format="yyyy-MM-dd"
-                    :clearable="false"
-                >
-                </el-date-picker>
-            </span>
 
-            <span class="mr-10">收费时间</span>
-
-            <span class="mr-10">
-                <el-select
-                    v-model="value"
-                    placeholder="请选择支付方式"
-                >
-                    <el-option
-                        v-for="item in payType"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+        <div class="action-bar">
+            <div class="search-item">
+                <span class="mr-10">收费时间</span>
+                <span class="mr-10">
+                    <el-date-picker
+                        v-model="search.dateRange"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        :clearable="false"
                     >
-                    </el-option>
-                </el-select>
-            </span>
+                    </el-date-picker>
+                </span>
+            </div>
 
-            <span>
-                <el-button type="primary" @click="getData">查询</el-button>
-            </span>
+            <div class="search-item">
+                <span class="mr-10">收费时间</span>
+
+                <span class="mr-10">
+                    <el-select
+                        v-model="search.type"
+                        placeholder="请选择支付方式"
+                        class="pay-select"
+                    >
+                        <el-option
+                            v-for="item in payType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        >
+                        </el-option>
+                    </el-select>
+                </span>
+            </div>
+
+            <el-button
+                type="primary"
+                @click="getData"
+            >查询</el-button>
 
         </div>
         <div>
-            <table></table>
+            <el-table
+                border
+                class="width100 mb-10 pay-table"
+                :data="tableData"
+                :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                show-summary
+            >
+                <el-table-column
+                    label="收费时间"
+                    width="120"
+                    align="center"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="单据号"
+                    width="120"
+                    align="center"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="病历号"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="性别"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="电话1"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="电话2"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="患者姓名"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="收费金额"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="收费方式"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="收款员"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+            </el-table>
         </div>
         <div
             slot="footer"
@@ -62,17 +147,17 @@
 
 <script>
 import DialogForm from "../../base/DialogForm";
+import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
 export default {
     name: "PayType",
 
-    mixins: [ DialogForm ],
+    mixins: [DialogForm],
 
-    components: {},
-    props: {},
     data() {
         return {
             search: {
-                dateRange: [new Date(), new Date()]
+                dateRange: [new Date(), new Date()],
+                type: 0
             },
 
             payType: [
@@ -119,33 +204,30 @@ export default {
                         }
                     }
                 ]
-            }
+            },
+
+            tableData: []
         };
     },
-    created() {},
     mounted() {
         let that = this;
-        that.getDate();
+        that.getData();
     },
-    watch: {},
-    computed: {},
     methods: {
-        getDate(){
+        getData() {
             let that = this;
-
-
         }
-
     }
 };
 </script>
 <style lang="less" scoped>
 .pay-type {
-    .search {
-        padding: 10px;
-        border-bottom: 1px solid #e3e3e3;
-        height: 40px;
-        width: 100%;
+    .pay-select {
+        width: 130px;
+    }
+
+    .pay-table {
+        min-height: 300px;
     }
 }
 </style>
