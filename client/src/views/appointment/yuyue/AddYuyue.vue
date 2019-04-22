@@ -316,10 +316,10 @@ export default {
     display: flex;
     color: #000;
     .search {
-      color: #7266ba;
+      color: @color;
       margin-left: 10px;
       line-height: 25px;
-      border: 1px solid #7266ba;
+      border: 1px solid @color;
       border-radius: 8px;
       font-size: 14px;
       input {
@@ -361,7 +361,7 @@ export default {
       .other-left {
         display: flex;
         flex-direction: column;
-        background-color: #b8abff;
+        background-color: @hover-color;
         >div{
             flex: auto;
               > div {
