@@ -94,7 +94,7 @@
     <div class="charge-bottom">
       <el-button
         class="button"
-        type="success"
+        type="primary"
       >收费</el-button>
       <el-button class="button">其他</el-button>
       <el-button class="button">预交款</el-button>
@@ -106,7 +106,7 @@
 
 <script>
 export default {
-  name: "ChargeInfo",
+  name: "ReturnVisitInfo",
   components: {},
   props: {
     refresh: {
@@ -163,7 +163,6 @@ export default {
 
 .button {
   width: 130px;
-  border: 1px solid green;
   margin-top: 10px;
   margin-left: 10px;
 }

@@ -7,7 +7,7 @@
       <div class="image-bottom">
 
         <el-button
-          type="success"
+          type="primary"
           style="margin-left:10px;width: 90px;"
         >初诊</el-button>
         <el-button class="medical-button">复诊</el-button>
@@ -74,7 +74,6 @@ export default {
     width: 100%;
     height: 61px;
     .medical-button {
-      border: 1px solid green;
       margin-left: 10px;
       margin-top: 10px;
       width: 100px;

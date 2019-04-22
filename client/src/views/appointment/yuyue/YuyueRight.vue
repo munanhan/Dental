@@ -193,6 +193,7 @@ export default {
 </script>
 
 <style lang="less">
+@import '~@/assets/css/var.less';
 .yuyue-right {
   background-color: #fff;
   width: 100%;
@@ -213,7 +214,7 @@ export default {
         width: 50px;
         line-height: 35px;
         text-align: center;
-        border: 1px solid #7266ba;
+        border: 1px solid @color;
         margin-right: 2px;
         &:first-of-type {
           border-top-left-radius: 7px;
@@ -224,37 +225,37 @@ export default {
           border-bottom-right-radius: 7px;
         }
         &.active-li {
-          background-color: #7266ba;
+          background-color: @color;
         }
         &:hover:not(.active-li) {
-          background-color: #a79de4;
+          background-color: @hover-color;
         }
       }
     }
     .add-yuyue,
     .net-yuyue {
       line-height: 35px;
-      border: 1px solid #7266ba;
+      border: 1px solid @color;
       padding: 0 15px;
       border-radius: 8px;
       margin-left: 5%;
       &:hover {
-        background-color: #a79de4;
-        color: #7266ba;
+        background-color: @hover-color;
+        color: @color;
       }
     }
     .add-yuyue {
-      background-color: #7266ba;
+      background-color: @color;
       color: #fff;
     }
     .net-yuyue {
       background-color: #fff;
-      color: #7266ba;
+      color: @color;
     }
     .search {
       margin-left: auto;
       line-height: 35px;
-      border: 1px solid #7266ba;
+      border: 1px solid @color;
       border-radius: 8px;
       font-size: 18px;
       input {
@@ -319,7 +320,7 @@ export default {
   }
   .date-body {
     flex: auto;
-    background-color: #c8c2eb;
+    background-color: @backgroud-color;
     display: flex;
     .day {
       display: flex;

@@ -10,7 +10,9 @@
                 justify="space-between"
             >
                 <el-col class="header-left">
-                    牙医管家
+                    <div class="home-logo"></div>
+
+                    医云智能
                 </el-col>
                 <el-col class="header-right">
                     <i class="head-icon fa fa-user"></i>
@@ -303,6 +305,10 @@ export default {
         .header-left {
             text-align: left;
             width: 30%;
+
+            // .home-logo{
+            //     background-image: url('../../assets/img/logo.png');
+            // }
         }
 
         .header-right {

@@ -33,6 +33,23 @@
 //主题紫色
 .theme-purple {
 
+    .el-tabs {
+        .el-tabs__active-bar {
+            background-color: @color;
+        }
+
+        .el-tabs__item {
+            &:hover {
+                color: @color;
+            }
+
+            &.is-active {
+                color: @color;
+            }
+        }
+
+    }
+
     .el-button--primary,
     .el-pagination.is-background .el-pager li:not(.disabled).active {
         background: @color;
@@ -116,7 +133,7 @@
     cursor: pointer;
 }
 
-.mr-10{
+.mr-10 {
     margin-right: 10px;
 }
 

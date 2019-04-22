@@ -28,7 +28,10 @@
                      background-color:white;
                      ">
               <div class="visit-bottom-content">
-                <el-button type="success">新增患者</el-button>
+                <el-button
+                  type="primary"
+                  @click="add_patient"
+                >新增患者</el-button>
                 <el-button>复诊预约</el-button>
               </div>
             </div>
@@ -91,7 +94,10 @@
                      "
             >
               <div class="visit-bottom-content">
-                <el-button type="success">新增患者</el-button>
+                <el-button
+                  type="primary"
+                  @click="add_patient"
+                >新增患者</el-button>
                 <el-button>复诊预约</el-button>
               </div>
             </div>
@@ -112,11 +118,20 @@
               ></el-input>
             </div>
             <div class="visit-bottom-content">
-              <el-button type="success">新增患者</el-button>
+              <el-button
+                type="primary"
+                @click="add_patient"
+              >新增患者</el-button>
               <el-button>复诊预约</el-button>
             </div>
           </el-tab-pane>
-
+          <!-- <div class="visit-bottom-content" >
+              <el-button
+               type="primary"
+                @click="add_patient"
+              >新增患者</el-button>
+              <el-button>复诊预约</el-button>
+            </div> -->
         </el-tabs>
       </div>
 
@@ -190,6 +205,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <change-password :show.sync="changepw_show"></change-password>
   </el-container>
 </template>
 
@@ -202,6 +218,7 @@ import MedicalRecordsInfo from "./MedicalRecordsInfo";
 import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
+import ChangePassword from "./ChangePassword";
 
 export default {
   name: "Patient",
@@ -214,7 +231,8 @@ export default {
     MedicalRecordsInfo,
     OutsideProcessing,
     ReturnVisitInfo,
-    ConsultingInfo
+    ConsultingInfo,
+    ChangePassword
   },
 
   props: {},
@@ -225,6 +243,7 @@ export default {
       search: "",
       curTab: "pationInfo",
       activeName: "patient",
+      changepw_show: false,
       //   pationRefresh: false,
       //   disposalRecordsRefresh: false,
 
@@ -316,8 +335,11 @@ export default {
 
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    //新增患者
+    add_patient() {
+      this.changepw_show = true;
     }
-
     // maskMouseHandler(evt) {
     //   let that = this;
 
@@ -345,6 +367,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
+
 .patient {
   height: 100%;
   border: 1px solid #eee;
