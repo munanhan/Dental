@@ -208,7 +208,7 @@
       <el-button class="patient-button">扫一扫</el-button>
       <el-button
         style="width:110px;margin-right: 20px;"
-        type="success"
+        type="primary"
       >修改信息</el-button>
       <el-button class="patient-button">病历首页打印</el-button>
       <i class="fa fa-cog" style="cursor:pointer"></i>
@@ -270,6 +270,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
 .patient-info {
   .el-collapse {
     height: 800px;
@@ -322,7 +325,6 @@ export default {
 .patient-button {
     margin-right: 20px;
   width: 120px;
-  border: 1px solid green;
   margin-left: 10px;
   margin-top: 10px;
 }

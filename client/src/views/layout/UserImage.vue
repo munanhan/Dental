@@ -36,7 +36,7 @@
                 accept="image/*"
                 :auto-upload="false"
             >
-                <el-button type="success">上传新图片</el-button>
+                <el-button type="primary">上传新图片</el-button>
             </el-upload>
 
             <el-button @click="closeDialog">取 消</el-button>
