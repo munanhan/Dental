@@ -6,7 +6,7 @@ sadasdsa
       <div dis-bottom>
         <div style="border:1px solid #e4e4e4;background-color:#e3e3e3;position:absolute;left;0;bottom:0;width:100%;height:59px">
 
-      <el-button style="width:130px;margin-left:10px" type="success">增加处置</el-button>
+      <el-button style="width:130px;margin-left:10px" type="primary">增加处置</el-button>
       <el-button class="dis-button">打印设置</el-button>
     </div>
       </div>
@@ -53,7 +53,6 @@ export default {
 <style lang="less" scoped>
 .dis-button{
    width: 130px;
-  border: 1px solid green;
   margin-left: 10px;
   margin-top: 10px;
 }

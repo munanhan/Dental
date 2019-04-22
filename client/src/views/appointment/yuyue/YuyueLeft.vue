@@ -64,7 +64,7 @@
 </script>
 
 <style lang="less">
-  
+@import '~@/assets/css/var.less';
 .yuyue-left {
     // width: 400px;
     height: 100%;
@@ -84,11 +84,11 @@
             }
             div{
               margin-left:55%;
-              border:1px solid green;
+              border:1px solid @color;
               width: 60px;
               text-align: center;
               border-radius: 12px;
-              color: green;
+              color: @color;
               background-color: #fff;
             }
           

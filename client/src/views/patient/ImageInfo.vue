@@ -8,7 +8,7 @@
     </div>
     <div class="image-bottom">
 
-      <el-button type="success" style="margin-left:10px;width: 90px;">自动导入</el-button>
+      <el-button type="primary" style="margin-left:10px;width: 90px;">自动导入</el-button>
       <el-button class="image-button">手动导入</el-button>
       <el-button class="image-button">其他</el-button>
       <el-button class="image-button">内窥镜</el-button>
@@ -78,7 +78,6 @@ export default {
     width: 100%;
     height: 59px;
     .image-button {
-      border: 1px solid green;
       margin-left: 10px;
       margin-top: 10px;
       width: 90px;

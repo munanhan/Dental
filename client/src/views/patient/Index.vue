@@ -29,7 +29,7 @@
                      ">
               <div class="visit-bottom-content">
                 <el-button
-                  type="success"
+                  type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
                 <el-button>复诊预约</el-button>
@@ -95,7 +95,7 @@
             >
               <div class="visit-bottom-content">
                 <el-button
-                  type="success"
+                  type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
                 <el-button>复诊预约</el-button>
@@ -119,7 +119,7 @@
             </div>
             <div class="visit-bottom-content">
               <el-button
-                type="success"
+                type="primary"
                 @click="add_patient"
               >新增患者</el-button>
               <el-button>复诊预约</el-button>
@@ -127,7 +127,7 @@
           </el-tab-pane>
           <!-- <div class="visit-bottom-content" >
               <el-button
-                type="success"
+               type="primary"
                 @click="add_patient"
               >新增患者</el-button>
               <el-button>复诊预约</el-button>
@@ -367,6 +367,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
+
 .patient {
   height: 100%;
   border: 1px solid #eee;

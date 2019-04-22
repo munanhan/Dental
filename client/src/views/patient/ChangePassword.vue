@@ -6,7 +6,7 @@
     class="custom-dialog"
     v-dialog-drag
     width="700px"
-    top="2vh"
+    top="3vh"
   >
     <el-form
       ref="changePwdForm"
@@ -82,7 +82,7 @@
           <el-radio v-model="radio">未填</el-radio>
         </div>
       </div>
-      <div style="height:100%;overflow: auto;border:1px solid red">
+      <div style="height:300px;overflow: auto">
         <div style="display:flex">
           <el-form-item label="电话1">
             <el-input type="password"></el-input>

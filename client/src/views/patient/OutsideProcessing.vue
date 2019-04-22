@@ -123,7 +123,7 @@
     </div>
     <div class="outside-bottom">
       <el-button
-        type="success"
+        type="primary"
         style="margin-left:10px;width: 90px;"
       >新增</el-button>
       <el-button class="outside-button">修改</el-button>
@@ -215,7 +215,6 @@ export default {
     width: 100%;
     background-color: #e3e3e3;
     .outside-button {
-      border: 1px solid green;
       margin-left: 10px;
       margin-top: 10px;
       width: 90px;
