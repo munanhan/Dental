@@ -29,7 +29,7 @@
             <span>
                 <el-button type="primary" @click="getData">查询</el-button>
 
-                <!-- <el-button type="primary" @click="test">测试</el-button> -->
+                <el-button type="primary" @click="test">测试</el-button>
             </span>
 
         </div>
@@ -259,6 +259,9 @@
 
         <!-- 收费单流水 -->
         <toll-sheet :show.sync='tollSheetDialog'></toll-sheet>
+
+        <!-- 患者费用明细 -->
+        <patient-costs :show.sync='patientCostsDialog'></patient-costs>
     </div>
 </template>
 
@@ -269,10 +272,11 @@ import PayType from './PayType';
 import FirstVisit from './FirstVisit';
 import FurtherVist from './FurtherVist';
 import TollSheet from './TollSheet';
+import PatientCosts from './PatientCosts';
 
 export default {
     name: "ClinicOperation",
-    components: { PayType, FirstVisit, FurtherVist, TollSheet },
+    components: { PayType, FirstVisit, FurtherVist, TollSheet, PatientCosts },
 
     mixins: [Base],
 
@@ -638,7 +642,10 @@ export default {
             furtherVistDialog: false,
 
             //收费单流水
-            tollSheetDialog: false
+            tollSheetDialog: false,
+
+            //患者费用
+            patientCostsDialog: false
         };
     },
 
@@ -661,16 +668,18 @@ export default {
     computed: {},
     methods: {
 
-        // test(){
-        //     let that = this;
-        //     // that.payTypeDialog = true;
+        test(){
+            let that = this;
+            // that.payTypeDialog = true;
 
-        //     // that.firstVisitDialog = true;
+            // that.firstVisitDialog = true;
 
-        //     // that.furtherVistDialog = true;
+            // that.furtherVistDialog = true;
 
-        //     that.tollSheetDialog = true;
-        // },
+            // that.tollSheetDialog = true;
+
+            // that.patientCostsDialog = true;
+        },
 
         resizeContent() {
             let that = this,

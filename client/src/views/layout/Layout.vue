@@ -10,7 +10,7 @@
                 justify="space-between"
             >
                 <el-col class="header-left">
-                    牙医管家
+                    医云智能
                 </el-col>
                 <el-col class="header-right">
                     <i class="head-icon fa fa-user"></i>
