@@ -106,7 +106,7 @@
 
 <script>
 export default {
-  name: "ChargeInfo",
+  name: "ReturnVisitInfo",
   components: {},
   props: {
     refresh: {

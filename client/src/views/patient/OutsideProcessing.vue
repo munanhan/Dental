@@ -99,7 +99,6 @@
     </div>
     <div class="outside-middle">
       <el-table
-        :data="tableData"
         border
         style="width: 100%"
       >
