@@ -24,11 +24,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  */
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::get('users', 'UserController@index');
-    Route::get('users/{user}', 'UserController@show');
-    Route::post('users', 'UserController@store');
-    Route::put('users/{user}', 'UserController@update');
-    Route::delete('users/{user}', 'UserController@delete');
+    Route::get('users', 'Api\UserController@index');
+    Route::get('users/{user}', 'Api\UserController@show');
+    Route::post('users', 'Api\UserController@store');
+    Route::put('users/{user}', 'Api\UserController@update');
+    Route::delete('users/{user}', 'Api\UserController@delete');
 });
 
 Route::post('login','Api\LoginController@login');
