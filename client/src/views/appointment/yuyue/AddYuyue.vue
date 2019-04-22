@@ -85,7 +85,7 @@
       </div>
 
       <div class="center">
-        <el-form-item label prop="chooseDate" label-width="0">
+        <el-form-item prop="apt_date"  label-width="0">
           <el-input
             v-model="formData.apt_date"
             type="text"
@@ -127,8 +127,8 @@
           <el-input type="textarea" v-model="formData.items" resize="none"></el-input>
         </el-form-item>
         <div class="items">
-          <el-checkbox-group v-model="formData.checkedItems" :min="1" >
-            <el-checkbox v-for="item in items" :label="item" :key="item">{{item}}</el-checkbox>
+          <el-checkbox-group v-model="checked_items">
+            <el-checkbox v-for="item in items_o" :label="item" :key="item">{{item}}</el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
@@ -162,16 +162,30 @@ export default {
   name: "ChangePassword",
   mixins: [DialogForm],
   props: ["dayTime", "yuyue_time"],
-  created() {},
+  created() {
+    this.$nextTick(function(){
+     
+      this.formData.apt_date = this.chooseDate;
+    });
+   
+  },
+  computed:{
+    chooseDate(){
+      return this.$store.state.yuyue_date.chooseDate;
+    }
+  },
   data() {
     return {
       formData: {
         sick_id: "190418001",
-        apt_date: this.$store.state.yuyue_date.chooseDate,
-        checkedItems: ["上海"],
-        source:''
+        apt_date: '',   
+        source:'',
+        items:'',
+        // time_frame_begin:this.yuyue_time,
       },
-      items: itemsOptions,
+     
+      items_o: itemsOptions,
+      checked_items: [],
       rules: {
         oldPass: passRules,
         newPass: passRules,
@@ -192,10 +206,14 @@ export default {
     };
   },
   watch: {
+    checked_items(newci,oldci){
+      this.formData.items =this.checked_items.join(',')
+    },
     show(new_show, old_show) {
       this.$nextTick(function() {
         let gray = document.getElementsByClassName("gray");
         let [H, i] = this.yuyue_time.split(":");
+        this.formData.time_frame_begin = this.yuyue_time;
         H = +H + 1;
         if (new_show) {
           if (i != 30) {
@@ -214,8 +232,13 @@ export default {
   },
   methods: {
     search() {
+      this.items_o = itemsOptions;
       let $search = this.$refs.inputSearch;
-      console.log($search.value);
+      let itemArray =this.items_o.filter((item)=>{
+        return item.indexOf($search.value)>-1 ? true:false;
+      })
+      this.items_o = itemArray
+    
     },
     chooseTime() {
       let gray = document.getElementsByClassName("gray");
@@ -233,38 +256,38 @@ export default {
       } else {
         event.target.innerHTML = `${value}-${H}:30 (60m)`;
       }
-      formData.time_frame_begin = value;
+      this.formData.time_frame_begin = value;
     },
     changePassword() {
       let that = this;
+      console.log(that.formData);
+      // that.$refs["addYuyueFrom"].validate(valid => {
+      //   if (valid) {
+      //     that.commitLoading = true;
 
-      that.$refs["addYuyueFrom"].validate(valid => {
-        if (valid) {
-          that.commitLoading = true;
+      //     that.$api.user
+      //       .changePassword(that.formData)
+      //       .then(res => {
+      //         if (res.code == 0) {
+      //           that.$message({
+      //             message: "修改成功.",
+      //             type: "success",
+      //             duration: 800
+      //           });
 
-          that.$api.user
-            .changePassword(that.formData)
-            .then(res => {
-              if (res.code == 0) {
-                that.$message({
-                  message: "修改成功.",
-                  type: "success",
-                  duration: 800
-                });
+      //           that.closeDialog();
+      //         } else {
+      //           that.$message.error(res.message);
+      //         }
 
-                that.closeDialog();
-              } else {
-                that.$message.error(res.message);
-              }
-
-              that.commitLoading = false;
-            })
-            .catch(res => {
-              that.$message.error("修改失败，请重试.");
-              that.commitLoading = false;
-            });
-        }
-      });
+      //         that.commitLoading = false;
+      //       })
+      //       .catch(res => {
+      //         that.$message.error("修改失败，请重试.");
+      //         that.commitLoading = false;
+      //       });
+      //   }
+      // });
     },
     afterClose() {
       this.$refs["addYuyueFrom"].resetFields();
