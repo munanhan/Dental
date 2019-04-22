@@ -58,6 +58,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
 .image-content {
     box-sizing: border-box;
   .image-top {
