@@ -584,8 +584,11 @@ router.beforeEach(async (to, from, next) => {
 
             loadingInstance && loadingInstance.close();
         } else if (toPath == "/login") {
-            //登录后还想跳到登录页面的，直接跳首页
-            router.replace("/home");
+            //TODO：暂时开放登录
+            next();
+
+            // //登录后还想跳到登录页面的，直接跳首页
+            // router.replace("/home");
         } else {
             //menu都有了直接next
             next();
