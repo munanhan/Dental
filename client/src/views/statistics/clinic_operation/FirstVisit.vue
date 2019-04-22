@@ -101,10 +101,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .first-visit {
-
-    .dialog-content{
-        padding: 10px 0;
-    }
     
     .visit-table{
         min-height: 300px;
