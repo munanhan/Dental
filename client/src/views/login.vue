@@ -1,12 +1,42 @@
 <template>
     <div class="login-container">
 
-        <el-form ref="form" :model="form" class="login-form">
-            <div class="login-title">医云智能</div>
-            <el-input :disabled="loading" v-model.trim="form.username" placeholder="请输入用户名" auto-complete="off"></el-input>
-            <el-input :disabled="loading" @keyup.native.enter="submitHandler" v-model.trim="form.password" type="password" placeholder="请输入用户密码" autocomplete="off"></el-input>
-            <el-button type="primary" :loading="loading" @click="submitHandler">登录</el-button>
-        </el-form>
+        <div class="content">
+            <div class="left-bg">
+            </div>
+            <el-form
+                ref="form"
+                :model="form"
+                class="login-form"
+            >
+                <div class="login-title">医云智能</div>
+                <el-input
+                    :disabled="loading"
+                    v-model.trim="form.username"
+                    placeholder="用户名/手机号"
+                    auto-complete="off"
+                ></el-input>
+                <el-input
+                    :disabled="loading"
+                    @keyup.native.enter="submitHandler"
+                    v-model.trim="form.password"
+                    type="password"
+                    placeholder="用户密码"
+                    autocomplete="off"
+                ></el-input>
+
+                <div>
+                    <span class="forget-pass">忘记密码?</span>
+                </div>
+
+                <el-button
+                    type="primary"
+                    :loading="loading"
+                    @click="submitHandler"
+                >登录</el-button>
+            </el-form>
+        </div>
+
     </div>
 </template>
 
@@ -62,11 +92,11 @@ export default {
                                 //你需要接受路由的参数再跳转
                                 path: redirect
                             });
-
                         }, 1200);
-
                     } else {
-                        that.$message.error(res.msg || "用户或密码错误,请重试.");
+                        that.$message.error(
+                            res.msg || "用户或密码错误,请重试."
+                        );
                         that.loading = false;
                     }
                 })
@@ -79,41 +109,74 @@ export default {
 };
 </script>
 <style lang='less'>
-@color: #7266ba;
+//导入全局的颜色
+@import "~@css/var";
+
 .login-container {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: @color;
-    // 暂时取消背景
-    // background-image: url(../image/login_bg.jpg);
-    background-size: 100% 100%;
-    
-    .login-form {
+
+    .el-button--primary,
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background: @color;
+        border-color: @color;
+
+        &:focus,
+        &:hover {
+            background: @hover-color;
+            border-color: @hover-color;
+        }
+    }
+
+    .content {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        padding: 35px 15px;
-        background-color: white;
         border: 1px solid #d2cece;
-        border-radius: 6px;
-        max-width: 350px;
+        display: flex;
+        align-items: center; /*垂直居中*/
 
-        input,
-        div {
-              margin-bottom: 10px;
+        .forget-pass {
+            font-size: 14px;
+            color: @color;
+            cursor: pointer;
+
+            &:hover {
+                color: @hover-color;
+            }
         }
 
-        button {
-            width: 100%;
+        .left-bg {
+            width: 260px;
+            height: 360px;
+            background-image: url("../assets/img/login-left-bg.png");
+            background-size: 100% 100%;
+            flex: 1 auto;
         }
 
-        .login-title {
-            text-align: center;
-            font-size: 1.2em;
+        .login-form {
+            padding: 35px 15px;
+            border-radius: 6px;
+            max-width: 300px;
+            flex: 1 auto;
+
+            input,
+            div {
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .login-title {
+                text-align: center;
+                font-size: 1.2em;
+            }
         }
     }
 }

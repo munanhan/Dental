@@ -51,22 +51,21 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        
 
-          <el-form-item prop="age" label="年龄" required>
-            <el-input v-model="formData.age" type="text" autocomplete="off" placeholder></el-input>
-          </el-form-item>
+        <el-form-item prop="age" label="年龄" required>
+          <el-input v-model="formData.age" type="text" autocomplete="off" placeholder></el-input>
+        </el-form-item>
 
-          <el-form-item prop="source" label="患者来源">
-            <el-select v-model="formData.source" placeholder="请选择">
-              <el-option label value></el-option>
-              <el-option label="网络咨询" value="网络咨询"></el-option>
-              <el-option label="朋友介绍" value="朋友介绍"></el-option>
-              <el-option label="家住附近" value="家住附近"></el-option>
-              <el-option label="诊所网站" value="诊所网站"></el-option>
-            </el-select>
-          </el-form-item>
-    
+        <el-form-item prop="source" label="患者来源">
+          <el-select v-model="formData.source" placeholder="请选择">
+            <el-option label value></el-option>
+            <el-option label="网络咨询" value="网络咨询"></el-option>
+            <el-option label="朋友介绍" value="朋友介绍"></el-option>
+            <el-option label="家住附近" value="家住附近"></el-option>
+            <el-option label="诊所网站" value="诊所网站"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="预约医生" prop="doctor_id">
           <el-input v-model="formData.doctor_id" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
@@ -85,12 +84,8 @@
       </div>
 
       <div class="center">
-        <el-form-item prop="apt_date"  label-width="0">
-          <el-input
-            v-model="formData.apt_date"
-            type="text"
-            suffix-icon="el-icon-caret-bottom"
-          ></el-input>
+        <el-form-item prop="apt_date" label-width="0">
+          <el-input v-model="formData.apt_date" type="text" suffix-icon="el-icon-caret-bottom"></el-input>
         </el-form-item>
         <div class="day-time">
           <div class="other-left">
@@ -105,14 +100,14 @@
             </div>
           </div>
           <div class="other-right" @click="chooseTime">
-            <template v-for="(item) in dayTime">
-              <div
+            <template v-for="(item,index) in dayTime">
+              <div :key="index"
                 :data-time="item + ':00'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +'00'
               }"
               ></div>
-              <div
+              <div :key="index+20"
                 :data-time="item + ':30'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +30
@@ -154,8 +149,26 @@ let passRules = [
     trigger: "blur"
   }
 ];
-const itemsOptions = ["试戴义齿", "换药", "补牙", "戴牙","手术", "拔牙", "拆线", "根管预备","试内冠", "根管治疗", "牙周上药"
-, "试支架","根充", "备牙", "牙周刮治", "洁治","修义齿", "加力"];
+const itemsOptions = [
+  "试戴义齿",
+  "换药",
+  "补牙",
+  "戴牙",
+  "手术",
+  "拔牙",
+  "拆线",
+  "根管预备",
+  "试内冠",
+  "根管治疗",
+  "牙周上药",
+  "试支架",
+  "根充",
+  "备牙",
+  "牙周刮治",
+  "洁治",
+  "修义齿",
+  "加力"
+];
 import { addClass, removeClass } from "@/common/util.js";
 import DialogForm from "@/views/base/DialogForm";
 export default {
@@ -163,14 +176,13 @@ export default {
   mixins: [DialogForm],
   props: ["dayTime", "yuyue_time"],
   created() {
-    this.$nextTick(function(){
-     
+    this.$nextTick(function() {
       this.formData.apt_date = this.chooseDate;
     });
-   
+    
   },
-  computed:{
-    chooseDate(){
+  computed: {
+    chooseDate() {
       return this.$store.state.yuyue_date.chooseDate;
     }
   },
@@ -178,12 +190,12 @@ export default {
     return {
       formData: {
         sick_id: "190418001",
-        apt_date: '',   
-        source:'',
-        items:'',
+        apt_date: "",
+        source: "",
+        items: ""
         // time_frame_begin:this.yuyue_time,
       },
-     
+
       items_o: itemsOptions,
       checked_items: [],
       rules: {
@@ -206,8 +218,8 @@ export default {
     };
   },
   watch: {
-    checked_items(newci,oldci){
-      this.formData.items =this.checked_items.join(',')
+    checked_items(newci, oldci) {
+      this.formData.items = this.checked_items.join(",");
     },
     show(new_show, old_show) {
       this.$nextTick(function() {
@@ -234,13 +246,14 @@ export default {
     search() {
       this.items_o = itemsOptions;
       let $search = this.$refs.inputSearch;
-      let itemArray =this.items_o.filter((item)=>{
-        return item.indexOf($search.value)>-1 ? true:false;
-      })
-      this.items_o = itemArray
-    
+      let itemArray = this.items_o.filter(item => {
+        return item.indexOf($search.value) > -1 ? true : false;
+      });
+      this.items_o = itemArray;
     },
     chooseTime() {
+      let value = event.target.attributes["data-time"].value;
+
       let gray = document.getElementsByClassName("gray");
       [...gray].forEach(i => {
         i.innerHTML = " ";
@@ -248,7 +261,7 @@ export default {
       });
 
       addClass(event.target, "gray");
-      let value = event.target.attributes["data-time"].value;
+
       let [H, i] = value.split(":");
       H = +H + 1;
       if (i != 30) {
@@ -316,10 +329,10 @@ export default {
     display: flex;
     color: #000;
     .search {
-      color: #7266ba;
+      color: @color;
       margin-left: 10px;
       line-height: 25px;
-      border: 1px solid #7266ba;
+      border: 1px solid @color;
       border-radius: 8px;
       font-size: 14px;
       input {
@@ -359,39 +372,39 @@ export default {
       flex: auto;
       display: flex;
       .other-left {
+        color: #fff;
         display: flex;
         flex-direction: column;
-        background-color: #b8abff;
-        >div{
-            flex: auto;
-              > div {
+        background-color: @hover-color;
+        > div {
           flex: auto;
-           box-sizing: border-box;
-          &:first-of-type {
-            display: flex;
-            padding: 0 10px;
-            span {
-              flex: auto;
-              border-top: 1px solid #e6e6e6;
-              &.big-font {
-                font-size: 20px;
+          > div {
+            flex: auto;
+            box-sizing: border-box;
+            &:first-of-type {
+              display: flex;
+              padding: 0 10px;
+              span {
+                flex: auto;
+                border-top: 1px solid #e6e6e6;
+                &.big-font {
+                  font-size: 20px;
+                }
+              }
+            }
+            &:last-of-type {
+              display: flex;
+              padding: 0 10px;
+              span {
+                margin-left: auto;
+                border-top: 1px solid #e6e6e6;
+              }
+              .span-left {
+                margin: 0;
               }
             }
           }
-          &:last-of-type {
-            display: flex;
-            padding: 0 10px;
-            span {
-              margin-left: auto;
-              border-top: 1px solid #e6e6e6;
-            }
-            .span-left {
-              margin: 0;
-            }
-          }
         }
-        }
-      
       }
       .other-right {
         flex: auto;
@@ -425,21 +438,20 @@ export default {
     flex: auto;
     display: flex;
     flex-direction: column;
-    .items{
-        flex: 1 1 auto;
-        border: 1px  solid #e0e0e0;
-        .el-checkbox-group{
-            display: flex;
-            flex-wrap: wrap;
-            width: 256px;
-            .el-checkbox{   
-                width: 30%;
-                box-sizing: border-box;
-                padding-left:10px; 
-                margin-top:10px;
-            
-            }
+    .items {
+      flex: 1 1 auto;
+      border: 1px solid #e0e0e0;
+      .el-checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        width: 256px;
+        .el-checkbox {
+          width: 30%;
+          box-sizing: border-box;
+          padding-left: 10px;
+          margin-top: 10px;
         }
+      }
     }
   }
 }

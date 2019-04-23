@@ -51,6 +51,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
 .dis-button{
    width: 130px;
   margin-left: 10px;

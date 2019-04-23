@@ -62,10 +62,10 @@
               <div><span>30</span></div>
           </div>
            <div class="other-center" @click="addYuyue(item)">
-              <div data-time="00">1</div>
-              <div data-time="00">2</div>
-              <div data-time="30">3</div>
-              <div data-time="30">4</div>
+              <div data-time="00"></div>
+              <div data-time="00"></div>
+              <div data-time="30"></div>
+              <div data-time="30"></div>
            </div>
           <div class="other-left">
               <div><span>00</span><span class="big-font">{{item}}</span></div>
@@ -393,7 +393,7 @@ export default {
               text-align: center;
               &:hover{
                 cursor: pointer;
-                background-color: #c8c2eb;
+                background-color: @hover-color;
               }
               &:nth-of-type(1){
                 border-bottom: 1px solid #e6e6e6;
