@@ -37,6 +37,10 @@ Route::post('registration','Api\RegisterController@register');
 
 Route::post('refreshment','APi\LoginController@refreshToken');
 
+Route::get('message','Api\UserController@getMessage');
+
+Route::get('hashpassword','Api\UserController@getHashPassword');
+
 
 
 
