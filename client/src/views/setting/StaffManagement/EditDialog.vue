@@ -4,7 +4,9 @@
         title="修改员工"
         :visible.sync="show"
         width="450px"
+        :before-close="closeDialog"
         :close-on-click-modal="false"
+        v-dialog-drag
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="员工姓名" prop="name">

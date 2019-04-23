@@ -671,15 +671,15 @@ export default {
 
         // test(){
         //     let that = this;
-        //     // that.payTypeDialog = true;
+            // that.payTypeDialog = true;
 
-        //     // that.firstVisitDialog = true;
+            // that.firstVisitDialog = true;
 
-        //     // that.furtherVistDialog = true;
+            // that.furtherVistDialog = true;
 
-        //     // that.tollSheetDialog = true;
+            // that.tollSheetDialog = true;
 
-        //     // that.patientCostsDialog = true;
+            // that.patientCostsDialog = true;
         // },
 
         resizeContent() {
