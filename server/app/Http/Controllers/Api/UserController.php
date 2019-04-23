@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use APP\User;
 
 class UserController extends Controller
@@ -37,5 +39,21 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function getMessage()
+    {
+        $this->setMessage();
+        return Redis::get('phone');
+    }
+
+    public function setMessage()
+    {
+       return Redis::set('phone','13451728874');
+    }
+
+    public function getHashPassword()
+    {
+        return Hash::make('11111111');
     }
 }

@@ -1,23 +1,25 @@
 <template>
     <el-dialog
-        title="复诊记录明细"
+        title="费用类型"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog further-visit"
+        class="custom-dialog　cost-type"
         :close-on-click-modal="false"
         v-dialog-drag
         width="800px"
         top="2vh"
     >
         <div class="dialog-content">
+
             <el-table
                 border
-                class="width100 visit-table"
+                class="width100 type-table"
                 :data="tableData"
                 :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                show-summary
             >
                 <el-table-column
-                    label="就诊日期"
+                    label="收费时间"
                     width="120"
                     align="center"
                 >
@@ -45,18 +47,11 @@
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="医生"
+                    label="金额"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
-                <!-- <el-table-column
-                prop="address"
-                label="电话2"
-                align="center"
-                show-overflow-tooltip
-            >
-            </el-table-column> -->
             </el-table>
         </div>
         <div
@@ -71,7 +66,7 @@
 <script>
 import DialogForm from "../../base/DialogForm";
 export default {
-    name: "FurtherVist",
+    name: "CostType",
 
     mixins: [DialogForm],
 
@@ -98,13 +93,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.further-visit {
-    .dialog-content {
-        padding: 10px 0;
-    }
-
-    .visit-table {
+.cost-type {  
+    .type-table{
         min-height: 300px;
-    }
+    }    
 }
 </style>

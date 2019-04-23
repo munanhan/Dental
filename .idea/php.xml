@@ -94,6 +94,12 @@
       <path value="$PROJECT_DIR$/server/vendor/zendframework/zend-diactoros" />
       <path value="$PROJECT_DIR$/server/vendor/league/oauth2-server" />
       <path value="$PROJECT_DIR$/server/vendor/league/event" />
+      <path value="$PROJECT_DIR$/server/vendor/adbario/php-dot-notation" />
+      <path value="$PROJECT_DIR$/server/vendor/moontoast/math" />
+      <path value="$PROJECT_DIR$/server/vendor/mtdowling/jmespath.php" />
+      <path value="$PROJECT_DIR$/server/vendor/clagiordano/weblibs-configmanager" />
+      <path value="$PROJECT_DIR$/server/vendor/alibabacloud/client" />
+      <path value="$PROJECT_DIR$/server/vendor/danielstjules/stringy" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

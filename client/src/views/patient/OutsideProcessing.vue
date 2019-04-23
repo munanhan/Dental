@@ -193,6 +193,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
 /deep/ .el-table__body-wrapper {
   height: 550px;
 }

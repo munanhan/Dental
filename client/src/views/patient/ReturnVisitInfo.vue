@@ -141,6 +141,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
 .charge-top {
   width: 100%;
   height: 100%;

@@ -26,7 +26,7 @@
                 ></el-input>
 
                 <div>
-                    <span class="forget-pass">忘记密码</span>
+                    <span class="forget-pass">忘记密码?</span>
                 </div>
 
                 <el-button
@@ -71,7 +71,7 @@ export default {
 
             that.loading = true;
 
-            that.$api.user
+            that.$api.base
                 .login(that.form)
                 .then(res => {
                     if (res.code == 0) {
