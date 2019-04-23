@@ -27,9 +27,15 @@
             </span>
 
             <span>
-                <el-button type="primary" @click="getData">查询</el-button>
+                <el-button
+                    type="primary"
+                    @click="getData"
+                >查询</el-button>
 
-                <el-button type="primary" @click="test">测试</el-button>
+                <!-- <el-button
+                    type="primary"
+                    @click="test"
+                >测试</el-button> -->
             </span>
 
         </div>
@@ -230,8 +236,11 @@
 
             </div>
 
-            <div class="clinic-right" @wheel.stop.prevent="cateScroll">
-                <el-timeline >
+            <div
+                class="clinic-right"
+                @wheel.stop.prevent="cateScroll"
+            >
+                <el-timeline>
                     <el-timeline-item
                         v-for="(activity, index) in activities"
                         :key="index"
@@ -240,7 +249,7 @@
                         <div
                             @click="pointSelect(activity)"
                             class="select-target"
-                            :class="{ 'active': activity.select}"                            
+                            :class="{ 'active': activity.select}"
                         >{{activity.content}}</div>
                     </el-timeline-item>
                 </el-timeline>
@@ -262,21 +271,42 @@
 
         <!-- 患者费用明细 -->
         <patient-costs :show.sync='patientCostsDialog'></patient-costs>
+
+        <!-- 患者来源 -->
+        <patient-source :show.sync='patientSourceDialog'></patient-source>
+
+        <!-- 费用类型 -->
+        <cost-type :show.sync='costTypeDialog'></cost-type>
+
+        <!-- 预约状态 -->
+        <reservation-status :show.sync='ReservationStatusDialog'></reservation-status>
     </div>
 </template>
 
 <script>
 import Base from "../Base";
 import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
-import PayType from './PayType';
-import FirstVisit from './FirstVisit';
-import FurtherVist from './FurtherVist';
-import TollSheet from './TollSheet';
-import PatientCosts from './PatientCosts';
+import PayType from "./PayType";
+import FirstVisit from "./FirstVisit";
+import FurtherVist from "./FurtherVist";
+import TollSheet from "./TollSheet";
+import PatientCosts from "./PatientCosts";
+import PatientSource from "./PatientSource";
+import CostType from "./CostType";
+import ReservationStatus from "./ReservationStatus";
 
 export default {
     name: "ClinicOperation",
-    components: { PayType, FirstVisit, FurtherVist, TollSheet, PatientCosts },
+    components: {
+        PayType,
+        FirstVisit,
+        FurtherVist,
+        TollSheet,
+        PatientCosts,
+        PatientSource,
+        CostType,
+        ReservationStatus
+    },
 
     mixins: [Base],
 
@@ -645,7 +675,16 @@ export default {
             tollSheetDialog: false,
 
             //患者费用
-            patientCostsDialog: false
+            patientCostsDialog: false,
+
+            //患者来源
+            patientSourceDialog: false,
+
+            // 费用类型
+            costTypeDialog: false,
+
+            //预约状态
+            ReservationStatusDialog: false
         };
     },
 
@@ -668,8 +707,7 @@ export default {
     watch: {},
     computed: {},
     methods: {
-
-        // test(){
+        // test() {
         //     let that = this;
         //     // that.payTypeDialog = true;
 
@@ -680,6 +718,12 @@ export default {
         //     // that.tollSheetDialog = true;
 
         //     // that.patientCostsDialog = true;
+
+        //     // that.patientSourceDialog = true;
+
+        //     // that.costTypeDialog = true;
+
+        //     // that.ReservationStatusDialog = true;
         // },
 
         resizeContent() {
@@ -704,11 +748,11 @@ export default {
             for (var i = 0; i < that.activities.length; i++) {
                 var actItem = that.activities[i];
 
-                if(actItem == item){
+                if (actItem == item) {
                     actItem.select = true;
                     //记录当前活动的
                     that.activeIndex = i;
-                }else{
+                } else {
                     actItem.select = false;
                 }
             }
@@ -740,7 +784,6 @@ export default {
                         ele.scrollTo(0, top);
                         cancelAnimationFrame(scroll);
                     } else {
-
                         //设置左边滚动的时候不要监听状态，防止死循环
                         that.notifyScrollStop = false;
                         requestAnimationFrame(scroll);
@@ -775,7 +818,7 @@ export default {
                             hasSet = true;
 
                             //记录当前活动的
-                            that.activeIndex = idx;                            
+                            that.activeIndex = idx;
                         } else {
                             that.activities[idx].select = false && !hasSet;
                         }
@@ -801,7 +844,7 @@ export default {
                 }
 
                 //单次滚动，只滚动一条，不滚动多条，降低触发频率
-                rsIdx += (count > 0? -1: 1);
+                rsIdx += count > 0 ? -1 : 1;
 
                 if (rsIdx < 0) {
                     rsIdx = 0;
