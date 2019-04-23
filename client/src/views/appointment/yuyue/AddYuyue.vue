@@ -100,14 +100,14 @@
             </div>
           </div>
           <div class="other-right" @click="chooseTime">
-            <template v-for="(item) in dayTime">
-              <div
+            <template v-for="(item,index) in dayTime">
+              <div :key="index"
                 :data-time="item + ':00'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +'00'
               }"
               ></div>
-              <div
+              <div :key="index+20"
                 :data-time="item + ':30'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +30
