@@ -34,7 +34,7 @@ class SendMobile implements ShouldQueue
     public function handle()
     {
 
-        AlibabaCloud::accessKeyClient('accessKeyId', 'accessKeySecret')
+        AlibabaCloud::accessKeyClient(config('dysms.access_key_id'), 'accessKeySecret')
             ->regionId('cn-hangzhou')// replace regionId as you need
             ->asDefaultClient();
 

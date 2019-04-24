@@ -2,11 +2,13 @@
 
 return [
 
-    'accessKeyId'=>env('','LTAI3NfY6JVzdFI7'),
+    'access_key_id'=>env('','LTAI3NfY6JVzdFI7'),
 
-    'accessKeySecret'=>env('','uyAiiBCMMBAyDmkjo59TZOXhrhHNHP'),
+    'access_key_secret'=>env('','uyAiiBCMMBAyDmkjo59TZOXhrhHNHP'),
 
-    'signName'=>env('','魔方科技'),
+    'sign_name'=>env('','魔方科技'),
 
-    'templateCode'=>env('','SMS_137865176'),
+    'template_code'=>env('','SMS_137865176'),
+
+    'region_id'=>env('','cn-hangzhou'),
 ];

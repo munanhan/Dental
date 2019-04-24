@@ -23,23 +23,39 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * We’ll have to make changes on the routes file and on the controller:
  */
 
-Route::group(['middleware' => 'auth:api'], function(){
-    Route::get('users', 'Api\UserController@index');
-    Route::get('users/{user}', 'Api\UserController@show');
+Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
+
+    Route::get('users', 'UserController@index');
+
+    Route::get('users/{user}', 'UserController@show');
+
     Route::post('users', 'Api\UserController@store');
-    Route::put('users/{user}', 'Api\UserController@update');
-    Route::delete('users/{user}', 'Api\UserController@delete');
+
+    Route::put('users/{user}', 'UserController@update');
+
+    Route::delete('users/{user}', 'UserController@delete');
+
 });
 
-Route::post('login','Api\LoginController@login');
 
-Route::post('registration','Api\RegisterController@register');
+Route::group(['namespace'=>'Api'],function (){
 
-Route::post('refreshment','APi\LoginController@refreshToken');
+    Route::post('login','LoginController@login');
 
-Route::get('message','Api\UserController@getMessage');
+    Route::post('registration','RegisterController@register');
 
-Route::get('hashpassword','Api\UserController@getHashPassword');
+    Route::post('refreshment','LoginController@refreshToken');
+
+    Route::get('message','UserController@getMessage');
+
+    Route::get('hashpassword','UserController@getHashPassword');
+
+    Route::get('dysms','UserController@sendMessage');
+
+});
+
+
+
 
 
 
