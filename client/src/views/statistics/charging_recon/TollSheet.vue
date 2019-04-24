@@ -1,17 +1,11 @@
 <template>
-    <el-dialog
-        title="收费单流水"
-        :visible.sync="show"
-        :before-close="closeDialog"
-        class="custom-dialog toll-sheet"
-        :close-on-click-modal="false"
-        v-dialog-drag
-        width="1200px"
-        top="2vh"
+    <div
+        class="toll-sheet"
+        ref="content"
     >
-        <div class="action-bar">
+        <div class="action-bar" ref="search">
             <div class="search-item">
-                <span class="mr-10">单据时间</span>
+                <span class="mr-10">收费时间</span>
                 <span class="mr-10">
                     <el-date-picker
                         v-model="search.dateRange"
@@ -38,26 +32,25 @@
             </div>
 
             <div class="action-bar-right">
-                <div>
-                    <el-button
-                        type="primary"
-                        @click="exportExcel"
-                    >导出Excel</el-button>
-                </div>
-
+                <el-button
+                    type="primary"
+                    @click="exportExcel"
+                >导出Excel</el-button>
             </div>
         </div>
+
         <el-row>
 
             <el-table
                 border
-                class="width100 mb-10 pay-table"
+                class="width100 mb-10 sheet-table"
                 :data="tableData"
                 :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                :height="tableHeight"
                 show-summary
             >
                 <el-table-column
-                    label="单据时间"
+                    label="收费时间"
                     width="120"
                     align="center"
                 >
@@ -78,35 +71,49 @@
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="单据状态"
+                    label="上次欠款"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="单据编号"
+                    label="本次费用"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="类型"
+                    label="折扣金额"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="应收"
+                    label="本次实收"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
                     prop="address"
-                    label="实收"
+                    label="收费方式1"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="收费方式2"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="本次欠款"
                     align="center"
                     show-overflow-tooltip
                 >
@@ -114,6 +121,20 @@
                 <el-table-column
                     prop="address"
                     label="收银员"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="咨询师"
+                    align="center"
+                    show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="介绍人"
                     align="center"
                     show-overflow-tooltip
                 >
@@ -144,43 +165,36 @@
                 :current-page="pager.current"
             ></el-pagination>
         </el-row>
-        <div
-            slot="footer"
-            class="dialog-footer"
-        >
-            <el-button @click="closeDialog">关闭</el-button>
-        </div>
-    </el-dialog>
+
+    </div>
 </template>
 
 <script>
-import DialogForm from "../../base/DialogForm";
-import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
 export default {
-    name: "PayType",
+    name: "TollSheet",
+    components: {},
+    props: {
+        update:{
+            type: Boolean,
+            required: true
+        }
 
-    mixins: [DialogForm],
-
+    },
     data() {
         return {
+            tableHeight: 300,
+
+            tableData: [],
+
+            search: {
+                dateRange: [new Date(), new Date()]
+            },
+
             pager: {
                 total: 0,
                 current: 1,
-                size: 200
+                size: 50
             },
-
-            search: {
-                dateRange: [new Date(), new Date()],
-                type: 0
-            },
-
-            payType: [
-                { label: "现金", value: 0 },
-                { label: "银行卡", value: 1 },
-                { label: "社保卡", value: 2 },
-                { label: "微信支付", value: 3 },
-                { label: "支付宝支付", value: 4 }
-            ],
 
             pickerOptions: {
                 shortcuts: [
@@ -218,15 +232,39 @@ export default {
                         }
                     }
                 ]
-            },
-
-            tableData: []
+            }
         };
     },
+    created() {},
     mounted() {
         let that = this;
-        that.getData();
+
+        that.$nextTick(() => {
+            that.resizeTable();
+        });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeTable);
+        } else {
+            window.attachEvent("bodyChange", that.resizeTable);
+        }
     },
+
+    watch: {
+        update(newValue, oldValue){
+            let that = this;
+            if(newValue){
+                that.resizeTable();
+
+                setTimeout(() =>{
+                    that.$emit("update:update", false)
+                });
+            }
+        }
+
+    },
+    computed: {},
     methods: {
         changePage(index) {
             let that = this;
@@ -246,6 +284,13 @@ export default {
             }
         },
 
+        resizeTable() {
+            let that = this,
+                tableHeight = that.$refs.content.clientHeight - that.$refs.search.clientHeight - 70;
+
+            that.tableHeight = tableHeight;
+        },
+
         getData() {
             let that = this;
         },
@@ -256,8 +301,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .toll-sheet {
-    .pay-table {
-        min-height: 300px;
-    }
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
 }
 </style>

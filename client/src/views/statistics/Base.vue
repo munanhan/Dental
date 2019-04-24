@@ -1,6 +1,5 @@
 <script>
 export default {
-
     name: "Base",
 
     props: {
@@ -14,7 +13,7 @@ export default {
         return {
             api: "",
             apiMethods: "",
-            params: {}
+            params: {},
         };
     },
 
@@ -35,18 +34,22 @@ export default {
         getData() {
             let that = this;
 
-            that.$api[that.api]
-                [that.apiMethods](params)
-                .then(res => {
-                    if (res.code == 0) {
-                        that.afterGetData(res);
-                    } else {
-                        that.$message.error(res.msg || "获取数据失败，请重试.");
-                    }
-                })
-                .catch(e => {
-                    that.$message.error("获取数据失败，请重试.");
-                });
+            if (that.api) {
+                that.$api[that.api]
+                    [that.apiMethods](params)
+                    .then(res => {
+                        if (res.code == 0) {
+                            that.afterGetData(res);
+                        } else {
+                            that.$message.error(
+                                res.msg || "获取数据失败，请重试."
+                            );
+                        }
+                    })
+                    .catch(e => {
+                        that.$message.error("获取数据失败，请重试.");
+                    });
+            }
         }
     }
 };
