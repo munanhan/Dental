@@ -116,6 +116,15 @@
     .theme-nav-active-font-color {
         color: @hover-color;
     }
+
+    .el-checkbox__input.is-checked+.el-checkbox__label{
+        color: @color;
+    }
+
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+        color: @color;
+        background-color: @color;
+    }
 }
 
 //修改默认primary的颜色

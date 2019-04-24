@@ -111,15 +111,14 @@ export default {
     },
     data() {
         return {
-
             content: {
-                            tollSheet: true,
-            reconCalendar: false,
-            arrearsPatient: false,
-            advancePayment: false,
-            flowSheet: false,
-            prepaidBalance: false,
-            expenditureDetails: false,
+                tollSheet: true,
+                reconCalendar: false,
+                arrearsPatient: false,
+                advancePayment: false,
+                flowSheet: false,
+                prepaidBalance: false,
+                expenditureDetails: false
             },
 
             tollSheetUpdate: false,
@@ -128,21 +127,19 @@ export default {
             advancePaymentUpdate: false,
             flowSheetUpdate: false,
             prepaidBalanceUpdate: false,
-            expenditureDetailsUpdate: false,
+            expenditureDetailsUpdate: false
         };
     },
     created() {},
-    mounted() {
-        
-    },
+    mounted() {},
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
 
             if (newValue) {
-                for(var key in that.content){
-                    if(that.content[key]){
-                        that[key + 'Update'] = true;
+                for (var key in that.content) {
+                    if (that.content[key]) {
+                        that[key + "Update"] = true;
                     }
                 }
             }
@@ -153,14 +150,26 @@ export default {
     methods: {
         selectHandler(index) {
             let that = this;
+            that.content.tollSheet = "tollSheet" == index;
+            that.tollSheetUpdate = "tollSheet" == index;
 
-            that["tollSheet"] = "tollSheet" == index;
-            that["reconCalendar"] = "reconCalendar" == index;
-            that["arrearsPatient"] = "arrearsPatient" == index;
-            that["advancePayment"] = "advancePayment" == index;
-            that["flowSheet"] = "flowSheet" == index;
-            that["prepaidBalance"] = "prepaidBalance" == index;
-            that["expenditureDetails"] = "expenditureDetails" == index;
+            that.content.reconCalendar = "reconCalendar" == index;
+            that.reconCalendarUpdate = "reconCalendar" == index;
+
+            that.content.arrearsPatient = "arrearsPatient" == index;
+            that.arrearsPatientUpdate = "arrearsPatient" == index;
+
+            that.content.advancePayment = "advancePayment" == index;
+            that.advancePaymentUpdate = "advancePayment" == index;
+
+            that.content.flowSheet = "flowSheet" == index;
+            that.flowSheetUpdate = "flowSheet" == index;
+
+            that.content.prepaidBalance = "prepaidBalance" == index;
+            that.prepaidBalanceUpdate = "prepaidBalance" == index;
+
+            that.content.expenditureDetails = "expenditureDetails" == index;
+            that.expenditureDetailsUpdate = "expenditureDetails" == index;
         },
 
         afterGetData(res) {

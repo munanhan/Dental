@@ -3,32 +3,35 @@
         class="toll-sheet"
         ref="content"
     >
-        <div class="action-bar" ref="search">
+        <div
+            class="action-bar"
+            ref="search"
+        >
             <div class="search-item">
                 <span class="mr-10">收费时间</span>
-                <span class="mr-10">
-                    <el-date-picker
-                        v-model="search.dateRange"
-                        type="daterange"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        :picker-options="pickerOptions"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
-                        :clearable="false"
-                    >
-                    </el-date-picker>
-                </span>
 
-                <span>
-                    <el-button
-                        type="primary"
-                        @click="getData"
-                    >查询</el-button>
-                </span>
+                <el-date-picker
+                    v-model="search.dateRange"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions"
+                    format="yyyy-MM-dd"
+                    value-format="yyyy-MM-dd"
+                    :clearable="false"
+                >
+                </el-date-picker>
+
+            </div>
+
+            <div class="search-item">
+                <el-input
+                    v-model="search.dim"
+                    placeholder="病历号、姓名、电话"
+                ></el-input>
             </div>
 
             <div class="action-bar-right">
@@ -174,11 +177,10 @@ export default {
     name: "TollSheet",
     components: {},
     props: {
-        update:{
+        update: {
             type: Boolean,
             required: true
         }
-
     },
     data() {
         return {
@@ -252,17 +254,16 @@ export default {
     },
 
     watch: {
-        update(newValue, oldValue){
+        update(newValue, oldValue) {
             let that = this;
-            if(newValue){
+            if (newValue) {
                 that.resizeTable();
 
-                setTimeout(() =>{
-                    that.$emit("update:update", false)
+                setTimeout(() => {
+                    that.$emit("update:update", false);
                 });
             }
         }
-
     },
     computed: {},
     methods: {
@@ -286,7 +287,10 @@ export default {
 
         resizeTable() {
             let that = this,
-                tableHeight = that.$refs.content.clientHeight - that.$refs.search.clientHeight - 70;
+                tableHeight =
+                    that.$refs.content.clientHeight -
+                    that.$refs.search.clientHeight -
+                    70;
 
             that.tableHeight = tableHeight;
         },
