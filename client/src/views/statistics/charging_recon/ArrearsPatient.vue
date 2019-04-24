@@ -235,9 +235,7 @@ export default {
             if (newValue) {
                 that.resizeTable();
 
-                setTimeout(() => {
-                    that.$emit("update:update", false);
-                });
+                that.$emit("update:update", false);
             }
         }
     },

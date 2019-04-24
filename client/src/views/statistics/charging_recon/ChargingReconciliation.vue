@@ -40,43 +40,43 @@
             <!-- 预交款 -->
             <advance-payment
                 v-show="content.advancePayment"
-                :update="advancePaymentUpdate"
+                :update.sync="advancePaymentUpdate"
             ></advance-payment>
 
             <!-- 欠费患者 -->
             <arrears-patient
                 v-show="content.arrearsPatient"
-                :update="arrearsPatientUpdate"
+                :update.sync="arrearsPatientUpdate"
             ></arrears-patient>
 
             <!-- 支出明细 -->
             <expenditure-details
                 v-show="content.expenditureDetails"
-                :update="expenditureDetailsUpdate"
+                :update.sync="expenditureDetailsUpdate"
             ></expenditure-details>
 
             <!-- 流水单 -->
             <flow-sheet
                 v-show="content.flowSheet"
-                :update="flowSheetUpdate"
+                :update.sync="flowSheetUpdate"
             ></flow-sheet>
 
             <!-- 预交款余额 -->
             <prepaid-balance
                 v-show="content.prepaidBalance"
-                :update="prepaidBalanceUpdate"
+                :update.sync="prepaidBalanceUpdate"
             ></prepaid-balance>
 
             <!-- 对账日历 -->
             <recon-calendar
                 v-show="content.reconCalendar"
-                :update="reconCalendarUpdate"
+                :update.sync="reconCalendarUpdate"
             ></recon-calendar>
 
             <!-- 收费单 -->
             <toll-sheet
                 v-show="content.tollSheet"
-                :update="tollSheetUpdate"
+                :update.sync="tollSheetUpdate"
             ></toll-sheet>
         </div>
     </div>
@@ -142,6 +142,9 @@ export default {
                         that[key + "Update"] = true;
                     }
                 }
+
+                //更新原来的refresh, 防止下次点击时不通知更新
+                that.$emit("update:refresh", false);
             }
         }
     },

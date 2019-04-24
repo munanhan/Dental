@@ -13,7 +13,7 @@ export default {
         return {
             api: "",
             apiMethods: "",
-            params: {},
+            params: {}
         };
     },
 
@@ -45,9 +45,15 @@ export default {
                                 res.msg || "获取数据失败，请重试."
                             );
                         }
+
+                        //更新原来的refresh, 防止下次点击时不获取新数据
+                        that.$emit("update:refresh", false);
                     })
                     .catch(e => {
                         that.$message.error("获取数据失败，请重试.");
+
+                        //更新原来的refresh, 防止下次点击时不获取新数据
+                        that.$emit("update:refresh", false);
                     });
             }
         }
