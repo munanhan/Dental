@@ -11,7 +11,22 @@
           style="margin-left:10px;width: 90px;"
         >初诊</el-button>
         <el-button class="medical-button">复诊</el-button>
-        <el-button class="medical-button">空腔检查</el-button>
+
+        <el-select
+          v-model="value"
+          class="medical-button"
+          style="width:150px"
+          placeholder="口腔检查"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+
         <el-button class="medical-button">风险评估</el-button>
         <el-button class="medical-button">其它</el-button>
         <el-button class="medical-button">知情同意书</el-button>
@@ -32,7 +47,19 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      options: [{
+          value: '选项1',
+          label: '口腔检查'
+        }, {
+          value: '选项2',
+          label: '治疗计划'
+        }, {
+          value: '选项3',
+          label: '牙周检查'
+        }],
+        value: ''
+    };
   },
   created() {},
   mounted() {},

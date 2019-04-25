@@ -16,7 +16,6 @@
             class="width100 visit-table"
             :data="tableData"
             :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-            show-summary
         >
             <el-table-column
                 label="就诊日期"

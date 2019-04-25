@@ -66,7 +66,7 @@
 <script>
 import AdvancedPatientInquiry from "./AdvancedPatientInquiry";
 import ChainStoreStatistics from "./ChainStoreStatistics";
-import ChargingReconciliation from "./ChargingReconciliation";
+import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
 import EmployeePerformance from "./EmployeePerformance";
 import ExternalProcessing from "./ExternalProcessing";
@@ -103,15 +103,19 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        activeName(newValue, oldValue) {
-            let that = this;
-            that[newValue] = true;
+        activeName: {
+            handler(newValue, oldValue) {
+                let that = this;
+                that[newValue] = true;
+            },
+
+            immediate: true
         }
     },
     computed: {},
     methods: {
         handleClick(tab, event) {
-            console.log(tab, event);
+            // console.log(tab, event);
         }
     }
 };
@@ -120,7 +124,7 @@ export default {
 .statistics {
     height: 100%;
 
-    /deep/ .el-tabs{
+    /deep/ .el-tabs {
         position: relative;
         height: 100%;
     }
@@ -140,9 +144,9 @@ export default {
         bottom: 0;
         left: 0;
         box-sizing: border-box;
-        right: 0;        
+        right: 0;
 
-        .el-tab-pane{
+        .el-tab-pane {
             height: 100%;
         }
     }

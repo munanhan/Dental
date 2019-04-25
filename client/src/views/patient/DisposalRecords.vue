@@ -1,7 +1,6 @@
 <template>
   <div>
       <div style="width:1000px;margin-left:10px;margin-bottom:10px;" >
-sadasdsa
       </div>
       <div dis-bottom>
         <div style="border:1px solid #e4e4e4;background-color:#e3e3e3;position:absolute;left;0;bottom:0;width:100%;height:59px">

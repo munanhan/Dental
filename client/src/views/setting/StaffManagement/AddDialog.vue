@@ -5,6 +5,8 @@
         :visible.sync="show"
         width="450px"
         :close-on-click-modal="false"
+        :before-close="closeDialog"
+        v-dialog-drag
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="员工姓名" prop="name">

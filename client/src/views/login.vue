@@ -71,7 +71,7 @@ export default {
 
             that.loading = true;
 
-            that.$api.user
+            that.$api.base
                 .login(that.form)
                 .then(res => {
                     if (res.code == 0) {

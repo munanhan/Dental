@@ -40,12 +40,12 @@
         </el-col>
         <el-col :span="3">
               <span class="mr10">
-                  <el-input-number v-model="search.start_money" placeholder="最小金额" :precision="2" :step="0.1" :max="10" controls-position="right" class="input_size"></el-input-number>
+                  <el-input-number v-model="search.start_money" placeholder="最小金额" :precision="2" :step="0.1" :min="0" controls-position="right" class="input_size"></el-input-number>
               </span>
         </el-col>
         <el-col :span="3">
               <span class="mr10">
-                  <el-input-number v-model="search.end_money" placeholder="最大金额" :precision="2" :step="0.1" :max="10" controls-position="right" class="input_size"></el-input-number>
+                  <el-input-number v-model="search.end_money" placeholder="最大金额" :precision="2" :step="0.1" :min="0" controls-position="right" class="input_size"></el-input-number>
               </span>
         </el-col>
         <el-col :span="2">
@@ -122,14 +122,24 @@
         </el-col>
       </el-row>
 
+   
+    <!-- 弹出会员升级 -->
+    <set-member-dialog 
+      :show.sync="up_dialog"
+      :editItem="editItem"
+    >
+    </set-member-dialog>
  
     </div>
 </template>
 
 <script>
+import SetMemberDialog from "./SetMemberDialog";
 export default {
     name: 'Index',
-    components: {},
+    components: {
+      SetMemberDialog
+    },
       props: {
         refresh: {
           type: Boolean,
@@ -138,6 +148,8 @@ export default {
       },
       data() {
         return {
+            editItem:{},
+            up_dialog:false,
             search:{
               dateRange :[],
               staff:'',
@@ -199,8 +211,10 @@ export default {
             //     that.$message.error("无此权限.");
             // }
         },
-        showUpDialog(){
-
+        showUpDialog(editItem){
+            let that = this;
+            that.editItem = editItem;
+            that.up_dialog = true;
         },
 
         getDataDone() {

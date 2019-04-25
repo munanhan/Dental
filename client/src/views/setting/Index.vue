@@ -81,7 +81,7 @@ import DisposalCharging from "./DisposalCharging";
 import DisposalCombination from "./DisposalCombination";
 import CaseTemplate from "./CaseTemplate";
 import MemberUpgrade from "./MemberUpgrade/Index";
-import PatientRecyclingBin from "./PatientRecyclingBin";
+import PatientRecyclingBin from "./PatientRecyclingBin/Index";
 import OperationRecord from "./OperationRecord";
 
 

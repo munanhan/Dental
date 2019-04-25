@@ -5,6 +5,8 @@
 	      title="设置密码"
 	      :visible.sync="show"
 	      width="400px"
+	      :before-close="closeDialog"
+	      v-dialog-drag
 	      >
 	      <!-- <div class="title"><span>设置用户{{show_name}}的密码</span></div> -->
 	      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
