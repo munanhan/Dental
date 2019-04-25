@@ -96,6 +96,7 @@
               </div>
               <div>
                 <span>30</span>
+              
               </div>
             </div>
           </div>
@@ -136,16 +137,16 @@
 </template>
 
 <script>
-let passRules = [
+let telRules = [
   {
     required: true,
-    message: "请填写所需要的密码",
+    message: "请填写正确号码",
     trigger: "blur"
   },
   {
-    min: 6,
-    // max: 16,
-    message: "长度在最小在6个字符",
+    min: 11,
+    max: 11,
+    message: "请填写正确号码",
     trigger: "blur"
   }
 ];
@@ -176,6 +177,7 @@ export default {
   mixins: [DialogForm],
   props: ["dayTime", "yuyue_time"],
   created() {
+    
     this.$nextTick(function() {
       this.formData.apt_date = this.chooseDate;
     });
@@ -183,7 +185,7 @@ export default {
   },
   computed: {
     chooseDate() {
-      return this.$store.state.yuyue_date.chooseDate;
+      return this.$store.state.chooseDate;
     }
   },
   data() {
@@ -199,19 +201,15 @@ export default {
       items_o: itemsOptions,
       checked_items: [],
       rules: {
-        oldPass: passRules,
-        newPass: passRules,
-        newPassRe: passRules.concat({
-          validator: (rule, value, callback) => {
-            let that = this;
-
-            if (that.formData.newPass !== value) {
-              callback(new Error("两次的密码不一致，请重新输入."));
-            } else {
+        tel_one: telRules.concat({
+          validator:(rule,value,callback)=>{
+            if(!/^1[34578]\d{9}$/.test(value)){
+              callback(new Error("请输入正确手机号码"))
+            }else{
               callback();
             }
           }
-        })
+        }),
       },
 
       commitLoading: false
@@ -225,11 +223,14 @@ export default {
       this.$nextTick(function() {
         let gray = document.getElementsByClassName("gray");
         let [H, i] = this.yuyue_time.split(":");
+       
         this.formData.time_frame_begin = this.yuyue_time;
         H = +H + 1;
         if (new_show) {
+     
           if (i != 30) {
             gray[0].innerHTML = `${this.yuyue_time}-${H}:00 (60m)`;
+      
           } else {
             gray[0].innerHTML = `${this.yuyue_time}-${H}:30 (60m)`;
           }
@@ -261,6 +262,7 @@ export default {
       });
 
       addClass(event.target, "gray");
+      addClass(event.target.nextSibling, "gray");
 
       let [H, i] = value.split(":");
       H = +H + 1;
@@ -274,33 +276,33 @@ export default {
     changePassword() {
       let that = this;
       console.log(that.formData);
-      // that.$refs["addYuyueFrom"].validate(valid => {
-      //   if (valid) {
-      //     that.commitLoading = true;
+      that.$refs["addYuyueFrom"].validate(valid => {
+        if (valid) {
+          that.commitLoading = true;
 
-      //     that.$api.user
-      //       .changePassword(that.formData)
-      //       .then(res => {
-      //         if (res.code == 0) {
-      //           that.$message({
-      //             message: "修改成功.",
-      //             type: "success",
-      //             duration: 800
-      //           });
+          that.$api.appointment
+            .addAppointment(that.formData)
+            .then(res => {
+              if (res.code == 0) {
+                that.$message({
+                  message: "新增成功.",
+                  type: "success",
+                  duration: 800
+                });
 
-      //           that.closeDialog();
-      //         } else {
-      //           that.$message.error(res.message);
-      //         }
+                that.closeDialog();
+              } else {
+                that.$message.error(res.message);
+              }
 
-      //         that.commitLoading = false;
-      //       })
-      //       .catch(res => {
-      //         that.$message.error("修改失败，请重试.");
-      //         that.commitLoading = false;
-      //       });
-      //   }
-      // });
+              that.commitLoading = false;
+            })
+            .catch(res => {
+              that.$message.error("修改失败，请重试.");
+              that.commitLoading = false;
+            });
+        }
+      });
     },
     afterClose() {
       this.$refs["addYuyueFrom"].resetFields();

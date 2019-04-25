@@ -1,9 +1,11 @@
 import * as home from './home'
 import * as user from './user'
+import * as appointment from './appointment'
 
 const apis = {
     home,
-    user
+    user,
+    appointment
 }
 
 const install = function (Vue) {

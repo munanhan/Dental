@@ -425,3 +425,12 @@ export const base64ToBlob = (data) => {
         type: mimeString
     });
 }
+
+export const inArray =(arrData,serachStr)=>{
+    for(var i in arrData){
+        if(arrData[i] == serachStr){
+            return true
+        }
+    }
+    return false;
+}

@@ -54,10 +54,7 @@
             },
         },
         mounted(){
-             this.$store.commit('updateYuyueDate',{
-                             name:'myCalender',
-                             value:this.$refs.myCalender,
-                        });
+             this.$store.commit('updateMyCalender',this.$refs.myCalender);
             //  console.log(this.$refs.myCalender.chooseToday);
         }
     }
