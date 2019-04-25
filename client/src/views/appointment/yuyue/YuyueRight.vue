@@ -99,63 +99,7 @@
         </el-row>
       </div>
       <div v-show="navBar[1].active" class="week">
-        <el-row class="week-header">
-          <div>
-            <span>24h</span>
-          </div>
-          <div class="week-day" v-for="(i,n) in ['日','一','二','三','四','五','六']" :key="n">
-            <el-badge :value="0" class="item" :hidden="true">
-              <template v-if="weekStart">
-                <span
-                  :class="[curDate.substr(5).replace('-','.') == +weekStart.match(/\d+/g)[1]+'.'+(+weekStart.match(/\d+/g)[2]+n) ? 'red':'']"
-                >{{`周${i}${weekStart.match(/\d+/g)[1]}.${+weekStart.match(/\d+/g)[2]+n}`}}</span>
-              </template>
-            </el-badge>
-          </div>
-          <div>
-            <span>24h</span>
-          </div>
-        </el-row>
-        <el-row class="week-other" v-for="(item,index) in dayTime" :key="index">
-          <div class="other-left">
-            <div>
-              <span class="big-font">{{item}}</span>
-              <span>00</span>
-            </div>
-            <div>
-              <span>30</span>
-            </div>
-          </div>
-          <div class="other-center">
-            <!-- <div data-time="00" :class="{'gray':inArray(time_begin,`${item} : 00`)}"></div>
-            <div data-time="00"></div>
-            <div data-time="30" :class="{'gray':inArray(time_begin,`${item} : 30`)}"></div>
-            <div data-time="30"></div>-->
-            <template v-if="weekStart">
-              <div
-                v-for="(i,n) in ['日','一','二','三','四','五','六']"
-                :key="n"
-                :data-y="item +' : 00'"
-                :data-x="weekStart.match(/\d+/g)[1]+'.'+(+weekStart.match(/\d+/g)[2]+n)"
-              ></div>
-              <div
-                v-for="(i,n) in ['日','一','二','三','四','五','六']"
-                :key="n+' '"
-                :data-y="item +' : 30'"
-                :data-x="weekStart.match(/\d+/g)[1]+'.'+(+weekStart.match(/\d+/g)[2]+n)"
-              ></div>
-            </template>
-          </div>
-          <div class="other-left">
-            <div>
-              <span>00</span>
-              <span class="big-font">{{item}}</span>
-            </div>
-            <div>
-              <span class="span-left">30</span>
-            </div>
-          </div>
-        </el-row>
+        <yuyue-week :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
       </div>
       <div v-show="navBar[2].active" class="month">2</div>
       <div v-show="navBar[3].active" class="list">3</div>
@@ -170,18 +114,26 @@
 <script>
 import { formatDate, addClass, inArray } from "@/common/util.js";
 import AddYuyue from "./AddYuyue.vue";
+import YuyueWeek from "./YuyueWeek.vue";
 import { mapState } from "vuex";
+import { setTimeout } from "timers";
+import { format } from "path";
 export default {
   name: "",
   props: ["chooseDay"],
   components: {
-    AddYuyue
+    AddYuyue,
+    YuyueWeek
   },
-  created() {
-    this.$nextTick(function() {
-      this.getWeekStartEnd(this.chooseDate);
-    });
+  provide: function() {
+    return {
+      navBar: this.navBar,
+      week: this.week,
+      dayTime: this.dayTime,
+      getWeekStartEnd: this.getWeekStartEnd
+    };
   },
+  created() {},
   data() {
     return {
       addYuyueShow: false,
@@ -216,9 +168,8 @@ export default {
         "21",
         "22"
       ],
-      weekStart: null,
-      weekEnd: null,
 
+      weekEnd: null,
       yuyue_time: null,
       yuyue_res: [
         {
@@ -273,7 +224,9 @@ export default {
       let upDate = formatDate(date, "yyyy-MM-dd");
       this.myCalender.choosePrevNextDay(upDate);
     },
-    handlePrevWeek() {},
+    handlePrevWeek() {
+      console.log("prev");
+    },
     handleNextWeek() {},
     chooseToday() {
       this.myCalender.chooseToday();
@@ -282,13 +235,20 @@ export default {
     getWeekStartEnd(date) {
       let start = new Date(date),
         end = new Date(date),
+        now = new Date(date),
         dayOfWeek = start.getDay(),
         oneDayTime = 3600 * 24 * 1000;
 
       start.setTime(start.getTime() - oneDayTime * dayOfWeek);
       end.setTime(end.getTime() + oneDayTime * (6 - dayOfWeek));
-      this.weekStart = formatDate(start, "yyyy年MM月dd日");
+
+      // this.weekStart = formatDate(start, "yyyy年MM月dd日");
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
+
+      return [
+        formatDate(start, "yyyy年MM月dd日"),
+        formatDate(end, "yyyy年MM月dd日")
+      ];
     },
     addYuyue(item) {
       this.addYuyueShow = true;
@@ -304,6 +264,28 @@ export default {
     }
   },
   computed: {
+    weekStart() {
+      let wS;
+      wS = this.getWeekStartEnd(this.chooseDate)[0];
+      return wS;
+    },
+    weekArr() {
+      let Arr = [],
+        startStr = this.weekStart.split(/[年月日]/, 3).join("-"),
+        oneDayTime = 24 * 3600 * 1000,
+        start = new Date(startStr);
+      ["周日", "周一", "周二", "周三", "周四", "周五", "周六"].forEach(
+        (item, i) => {
+          let now = new Date();
+          now.setTime(start.getTime() + i * oneDayTime);
+          let obj = new Object;
+          obj[item] =formatDate(now, "MM.dd")
+          Arr.push(obj);
+        }
+      );
+
+      return Arr;
+    },
     severalDays() {
       //  let nowDate =formatDate(new Date(), 'yyyy-MM-dd');
       let nowTime = new Date(formatDate(new Date(), "yyyy-MM-dd")).getTime();
@@ -613,81 +595,6 @@ export default {
             &:nth-of-type(3) {
               border-right: 1px solid #e6e6e6;
             }
-          }
-        }
-      }
-    }
-    .week {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      .week-header {
-        flex: auto;
-        display: flex;
-        > div {
-          box-sizing: border-box;
-          text-align: center;
-          display: flex;
-          > span,
-          div {
-            margin: auto;
-          }
-          &:first-of-type,
-          &:last-of-type {
-            flex-basis: 80px;
-          }
-        }
-        .week-day {
-          background-color: #fff;
-          border: 1px solid #ccc;
-          border-left: none;
-          flex: auto;
-        }
-      }
-      .week-other {
-        flex: auto;
-        display: flex;
-        .other-left {
-          flex-basis: 80px;
-          display: flex;
-          flex-direction: column;
-          div {
-            flex: auto;
-            &:first-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                flex: auto;
-                border-top: 1px solid #e6e6e6;
-                &.big-font {
-                  font-size: 20px;
-                }
-              }
-            }
-            &:last-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                margin-left: auto;
-                border-top: 1px solid #e6e6e6;
-              }
-              .span-left {
-                margin: 0;
-              }
-            }
-          }
-        }
-        .other-center {
-          flex: auto;
-          display: flex;
-          flex-wrap: wrap;
-          // border: 1px solid black;
-          > div {
-            flex: auto;
-            width: 14.28%;
-            box-sizing: border-box;
-            background-color: #fff;
-            border: 1px solid #ccc;
           }
         }
       }

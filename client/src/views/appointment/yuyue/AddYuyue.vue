@@ -222,6 +222,10 @@ export default {
     show(new_show, old_show) {
       this.$nextTick(function() {
         let gray = document.getElementsByClassName("gray");
+      
+        if(!this.yuyue_time){
+          return;
+        }
         let [H, i] = this.yuyue_time.split(":");
        
         this.formData.time_frame_begin = this.yuyue_time;
