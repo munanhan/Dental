@@ -68,7 +68,7 @@ import AdvancedPatientInquiry from "./AdvancedPatientInquiry";
 import ChainStoreStatistics from "./ChainStoreStatistics";
 import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
-import EmployeePerformance from "./EmployeePerformance";
+import EmployeePerformance from "./employee_perform/EmployeePerformance";
 import ExternalProcessing from "./ExternalProcessing";
 import PassengerFlowAnalysis from "./PassengerFlowAnalysis";
 import WechatOperation from "./WechatOperation";
