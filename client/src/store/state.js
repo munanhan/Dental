@@ -18,4 +18,8 @@ export default {
         'chooseDate':null,
         'myCalender':null,
     },
+    //...
+    curDate:null,
+    chooseDate:null,
+    myCalender:null,
 }

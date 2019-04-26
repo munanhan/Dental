@@ -71,7 +71,7 @@ export default {
   }
   .image-middle {
     border: 1px solid red;
-    height: 350px;
+    height: 759px;
   }
   .image-bottom {
     background-color: #dedede;

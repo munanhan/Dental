@@ -32,7 +32,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button>复诊预约</el-button>
+                <el-button @click="change_pw">复诊预约</el-button>
               </div>
             </div>
           </el-tab-pane>
@@ -76,6 +76,7 @@
               <div>
                 <el-tree
                   style="height:100%;
+                  font-weight:bold;
                        background-color:#efefef"
                   :data="data"
                   :props="defaultProps"
@@ -98,7 +99,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button>复诊预约</el-button>
+                <el-button @click="change_pw">复诊预约</el-button>
               </div>
             </div>
 
@@ -122,7 +123,7 @@
                 type="primary"
                 @click="add_patient"
               >新增患者</el-button>
-              <el-button>复诊预约</el-button>
+              <el-button @click="change_pw">复诊预约</el-button>
             </div>
           </el-tab-pane>
           <!-- <div class="visit-bottom-content" >
@@ -205,7 +206,11 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <change-password :show.sync="changepw_show"></change-password>
+    <!-- 新增患者 -->
+    <add-patient :show.sync="addp_show"></add-patient>
+
+    <!-- 复诊预约 -->
+    <appointment-visit :show.sync="appvisit_show"></appointment-visit>
   </el-container>
 </template>
 
@@ -218,7 +223,8 @@ import MedicalRecordsInfo from "./MedicalRecordsInfo";
 import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
-import ChangePassword from "./ChangePassword";
+import AddPatient from "./AddPatient";
+import AppointmentVisit from "./AppointmentVisit";
 
 export default {
   name: "Patient",
@@ -232,7 +238,8 @@ export default {
     OutsideProcessing,
     ReturnVisitInfo,
     ConsultingInfo,
-    ChangePassword
+    AddPatient,
+    AppointmentVisit
   },
 
   props: {},
@@ -243,7 +250,8 @@ export default {
       search: "",
       curTab: "pationInfo",
       activeName: "patient",
-      changepw_show: false,
+      addp_show: false,
+      appvisit_show:false,
       //   pationRefresh: false,
       //   disposalRecordsRefresh: false,
 
@@ -338,8 +346,13 @@ export default {
     },
     //新增患者
     add_patient() {
-      this.changepw_show = true;
+      this.addp_show = true;
+    },
+    //
+    change_pw(){
+      this.appvisit_show = true;
     }
+
     // maskMouseHandler(evt) {
     //   let that = this;
 
@@ -369,7 +382,6 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
-
 
 .patient {
   height: 100%;
@@ -404,25 +416,15 @@ el-tabs__header is-top .move-line {
     .left_tab {
       position: relative;
       height: 100%;
-
-      //   display: flex;
-      //   flex: 1 auto;
       width: 100%;
 
       /deep/ .el-tabs__content {
         position: absolute;
-        // overflow: auto;
         top: 40px;
         bottom: 0;
         left: 0;
         right: 0;
       }
-
-      //   .left-detail{
-      // 	//   position: absolute;
-      // 	//   top: 60px;
-      // 	//   bottom: 0;
-      //   }
     }
   }
 }

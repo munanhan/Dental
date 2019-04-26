@@ -201,15 +201,15 @@ export default {
 }
 
 .outside-content {
-//   border: 1px solid red;
+  //   border: 1px solid red;
   box-sizing: border-box;
   .outside-tab {
     width: 100%;
   }
-//   .outside-top {
-//   }
-//   .outside-middle {
-//   }
+  //   .outside-top {
+  //   }
+  //   .outside-middle {
+  //   }
   .outside-bottom {
     position: absolute;
     left: 0;

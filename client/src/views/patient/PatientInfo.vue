@@ -99,9 +99,22 @@
             class="patient-right"
             style="{background-image:url(/i/eg_bg_04.gif);}"
           >
-          <div style="position: relative;">313213156151</div>
+            <div style="position: relative;">313213156151</div>
+            <div style="display:flex">
+              <el-radio
+                v-model="sex"
+                label="1"
+              >男</el-radio>
+              <el-radio
+                v-model="sex"
+                label="2"
+              >女</el-radio>
+            </div>
             <div class="block">
-              <span class="demonstration" style="position: absolute;bottom:0;"></span>
+              <span
+                class="demonstration"
+                style="position: absolute;bottom:0;"
+              ></span>
               <el-rate
                 v-model="value2"
                 :colors="['red', 'red', '#FF9900']"
@@ -179,7 +192,7 @@
       </el-collapse-item>
 
       <el-collapse-item
-        title="效率 Efficiency"
+        title="等待确认"
         style="width:1000px;margin-left:10px;margin-bottom:10px"
       >
         <div>简化流程：设计简洁直观的操作流程；</div>
@@ -203,7 +216,11 @@
       </el-collapse-item>
 
     </el-collapse>
-    <div style="border:1px solid #e4e4e4;background-color:#e3e3e3;position:absolute;left;0;bottom:0;width:100%;height:59px">
+    <div style="border:1px solid #e4e4e4;
+                background-color:#e3e3e3;
+                position:absolute;left;0;
+                bottom:0;width:100%;
+                height:59px">
 
       <el-button class="patient-button">扫一扫</el-button>
       <el-button
@@ -211,16 +228,23 @@
         type="primary"
       >修改信息</el-button>
       <el-button class="patient-button">病历首页打印</el-button>
-      <i class="fa fa-cog" style="cursor:pointer"></i>
+      <i
+        class="fa fa-cog"
+        style="cursor:pointer"
+      ></i>
 
     </div>
   </div>
 </template>
 
 <script>
+import EditDialogForm from "@/views/base/DialogForm";
+
 export default {
   name: "PatientInfo",
-  components: {},
+  components: {
+
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -229,6 +253,7 @@ export default {
   },
   data() {
     return {
+      sex:"",
       activeNames: ["1"],
       value2: null
     };
@@ -284,16 +309,10 @@ export default {
       .patient-body {
         display: flex;
         .patient-left {
-          //   flex: 1 auto;
-          //   height: 100%;
-          //   padding: 5px;
           height: 100%;
           width: 850px;
         }
         .patient-right {
-          
-          // height: 100%;
-          // width: 300px;
           border: 1px solid red;
           width: 100px;
           margin-left: 10px;
@@ -302,10 +321,6 @@ export default {
           flex: 1 auto;
           height: 140px;
           padding: 5px;
-          //   float: right;
-          //   border: 1px solid red;
-          //   margin-right: 50px;
-          //   height: 50;
         }
       }
     }
@@ -323,7 +338,7 @@ export default {
 }
 
 .patient-button {
-    margin-right: 20px;
+  margin-right: 20px;
   width: 120px;
   margin-left: 10px;
   margin-top: 10px;

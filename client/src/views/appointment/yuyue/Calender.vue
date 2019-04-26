@@ -9,7 +9,7 @@
                 <div></div>
             </div>
           
-            <div class="show-date">{{$store.state.yuyue_date.chooseDate}}</div>
+            <div class="show-date">{{$store.state.chooseDate}}</div>
         </div>
         <div class="date-content">
                 <div class="week-header">
@@ -27,7 +27,7 @@
                     <div v-if="item - beginDay > 0 && item - beginDay <= curDays"
                          :class="{
                            'now-day': `${year}-${month}-${item - beginDay}` === curDate,
-                           'active-day': `${year}-${month}-${item - beginDay}` === $store.state.yuyue_date.chooseDate
+                           'active-day': `${year}-${month}-${item - beginDay}` === $store.state.chooseDate
                          }"
                          :data-day="item - beginDay"
                          @click="handlechooseDate"
@@ -70,10 +70,7 @@
                 this.month = date.getMonth() + 1;
                 this.day = date.getDate();
                 this.curDate = `${this.year}-${this.month}-${this.day}`;
-                this.$store.commit('updateYuyueDate',{
-                        name:'curDate',
-                        value:this.curDate,
-                    });
+                this.$store.commit('updateCurDate',this.curDate);
             },
             handlePrev() {
                 if (this.month === 1) {
@@ -111,10 +108,7 @@
         watch: {
           
             chooseDate(newDate,oldDate){
-                    this.$store.commit('updateYuyueDate',{
-                             name:'chooseDate',
-                             value:newDate,
-                        });
+                    this.$store.commit('updateChooseDate',newDate);
                 
             },
         },

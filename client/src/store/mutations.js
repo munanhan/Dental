@@ -31,4 +31,14 @@ export default {
     updateYuyueDate(state,options) {
         Vue.set(state.yuyue_date, options.name, options.value);    
     },
+
+    updateChooseDate(state,value){
+        state.chooseDate = value;
+    },
+    updateCurDate(state,value){
+        state.curDate = value;
+    },
+    updateMyCalender(state,value){
+        state.myCalender = value;
+    }
 }
