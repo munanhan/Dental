@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" ref="Content">
       <el-row :gutter="10">
         <!-- <el-col :span="21">
           <el-input placeholder="请输入姓名" v-model="staff" class="">
@@ -62,6 +62,7 @@
           <div>
             <el-table
               :data="tableData"
+              :height="tableHeight"
               style="width: 100%">
               <el-table-column
                 prop="case_no"
@@ -150,6 +151,7 @@ export default {
         return {
             editItem:{},
             up_dialog:false,
+            tableHeight:700,
             search:{
               dateRange :[],
               staff:'',
@@ -174,18 +176,43 @@ export default {
         };
       },
       created() {},
-      mounted() {},
-      watch: {
-        refresh(newValue, oldValue) {
-          let that = this;
+      mounted() {
+        let that = this;
 
-          if (newValue) {
-            that.getPatientInfo();
-          }
+        that.$nextTick(() => {
+            that.resizeTable();
+        });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeTable);
+        } else {
+            window.attachEvent("bodyChange", that.resizeTable);
         }
-      },
+    },
+    watch: {
+        update(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.resizeTable();
+
+                setTimeout(() => {
+                    that.$emit("update:update", false);
+                });
+            }
+        }
+    },
       computed: {},
       methods: {
+        resizeTable() {
+            let that = this;
+            // console.log(that.$refs.ContentData.clientHeight);
+                if (that.$refs.Content.clientHeight != 0) {
+                  let tableHeight = that.$refs.Content.clientHeight - 70;
+                  that.tableHeight = tableHeight;
+                }
+            
+        },
         getPatientInfo() {
           let that = this;
 
@@ -242,7 +269,7 @@ export default {
 }
 .content{
     background: white;
-    height: 800px;
+    height: 100%;
 }
 .input_size{
     width:100%;

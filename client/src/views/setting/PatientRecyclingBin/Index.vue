@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" ref="Content">
       <el-row :gutter="10">
       <div class="search">
         <el-col :span="3">
@@ -34,6 +34,7 @@
               style="width: 100%"
               @selection-change="selectThis"
               ref="multipleTable"
+              :height="tableHeight"
               >
               <el-table-column
                 type="selection"
@@ -152,6 +153,7 @@ export default {
       },
       data() {
         return {
+            tableHeight:700,
             select_group:[],
             current_page:1,
             page_size:5,
@@ -237,18 +239,43 @@ export default {
         that.currentData = that.tableData.slice(0,that.page_size);
         that.total = that.tableData.length;
       },
-      mounted() {},
-      watch: {
-        refresh(newValue, oldValue) {
-          let that = this;
+      mounted() {
+        let that = this;
 
-          if (newValue) {
-            that.getPatientInfo();
-          }
+        that.$nextTick(() => {
+            that.resizeTable();
+        });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeTable);
+        } else {
+            window.attachEvent("bodyChange", that.resizeTable);
         }
-      },
+    },
+    watch: {
+        update(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.resizeTable();
+
+                setTimeout(() => {
+                    that.$emit("update:update", false);
+                });
+            }
+        }
+    },
       computed: {},
       methods: {
+        resizeTable() {
+            let that = this;
+            // console.log(that.$refs.ContentData.clientHeight);
+                if (that.$refs.Content.clientHeight != 0) {
+                  let tableHeight = that.$refs.Content.clientHeight - 140;
+                  that.tableHeight = tableHeight;
+                }
+            
+        },
         currentChange(val){
           //改变当前页
           let that = this;
@@ -337,7 +364,7 @@ export default {
 }
 .content{
     background: white;
-    height: 800px;
+    height: 100%;
 }
 .input_size{
     width:100%;

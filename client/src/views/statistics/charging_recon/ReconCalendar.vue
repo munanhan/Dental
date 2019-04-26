@@ -68,7 +68,8 @@
                             v-for="item in dateItem"
                             :key="item.year + item.mth + item.date"
                             class="calendar-day-cell"
-                            :class="{ 'not-current-mth': item.notCurr, 'active': item == selectItem }"
+                            :class="{ 'not-current-mth': item.notCurr, 'active': item == selectItem, 
+                                'current-day': item.year == curYear && item.mth - 1 == curMonth && item.date == curDate }"
                             @click="selectDate(item)"
                         >
                             {{item.date}}
@@ -127,6 +128,7 @@ export default {
             calendarCellHeight: "70px",
             curYear: null,
             curMonth: null,
+            curDate: null,
             selectItem: null,
             selectYear: null,
             selectMonth: null,
@@ -160,6 +162,7 @@ export default {
 
                 that.curYear = nowDate.getFullYear();
                 that.curMonth = nowDate.getMonth();
+                that.curDate = nowDate.getDate();
 
                 that.setDate(nowDate);
 
@@ -393,6 +396,10 @@ export default {
 
                 .not-current-mth {
                     color: #9c9b9b;
+                }
+
+                .current-day {
+                    background-color: @linght-background-color;
                 }
 
                 .active {
