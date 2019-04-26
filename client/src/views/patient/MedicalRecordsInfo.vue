@@ -9,8 +9,9 @@
         <el-button
           type="primary"
           style="margin-left:10px;width: 90px;"
+          @click="int_diagn"
         >初诊</el-button>
-        <el-button class="medical-button">复诊</el-button>
+        <el-button class="medical-button" @click="sub_visit">复诊</el-button>
 
         <el-select
           v-model="value"
@@ -33,13 +34,20 @@
         <el-button class="medical-button">正畸病历</el-button>
       </div>
     </div>
+    <initial-diagnosis :show.sync="intdiag_show"></initial-diagnosis>
+    <subsequent-visit :show.sync="subvisit_show"></subsequent-visit>
   </div>
 </template>
 
 <script>
+import InitialDiagnosis from "./InitialDiagnosis";
+import SubsequentVisit from "./SubsequentVisit";
 export default {
   name: "MedicalRecordsInfo",
-  components: {},
+  components: {
+    InitialDiagnosis,
+    SubsequentVisit
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -58,7 +66,9 @@ export default {
           value: '选项3',
           label: '牙周检查'
         }],
-        value: ''
+        value: '',
+        intdiag_show:false,
+        subvisit_show:false
     };
   },
   created() {},
@@ -80,6 +90,14 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+    //初诊
+     int_diagn(){
+      this.intdiag_show = true;
+    },
+    //复诊
+    sub_visit(){
+      this.subvisit_show = true;
     }
   }
 };
@@ -92,8 +110,8 @@ export default {
   .medical-top {
     border: 1px solid red;
     position: relative;
-    height: 40px;
-    background-color: #f3f1f1;
+    height: 799px;
+    background-color: #ebe6e6;
   }
 
   .medical-bottom {

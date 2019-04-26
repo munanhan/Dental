@@ -117,9 +117,12 @@
 </template>
 
 <script>
+
 export default {
   name: "ChargeInfo",
-  components: {},
+  components: {
+      
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -130,25 +133,27 @@ export default {
     return {
       options: [{
           value: '选项1',
-          label: '黄金糕'
+          label: '退费'
         }, {
           value: '选项2',
-          label: '双皮奶'
+          label: '作废'
         }, {
           value: '选项3',
-          label: '蚵仔煎'
+          label: '打印'
         }, {
           value: '选项4',
-          label: '龙须面'
+          label: '收费设置'
         }, {
           value: '选项5',
-          label: '北京烤鸭'
+          label: '打印设置'
         }],
         value: ''
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+
+  },
   watch: {
     refresh(newValue, oldValue) {
       let that = this;
@@ -166,10 +171,11 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
-    }
+    },
   }
 };
 </script>
+
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";

@@ -18,7 +18,7 @@
           label="病历号"
           style="width:300px"
           size="small"
-          prop="anamnesis"
+          prop  ="anamnesis"
         >
           <el-input v-model="form.anamnesis"></el-input>
         </el-form-item>
@@ -157,7 +157,7 @@
 
         <div style="display:flex">
           <el-form-item
-            label="生日年月"
+            label="出生年月"
             prop="birthday"
             style="width:300px"
           >

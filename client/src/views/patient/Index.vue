@@ -32,7 +32,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button @click="change_pw">复诊预约</el-button>
+                <el-button @click="app_visit">复诊预约</el-button>
               </div>
             </div>
           </el-tab-pane>
@@ -99,7 +99,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button @click="change_pw">复诊预约</el-button>
+                <el-button @click="app_visit">复诊预约</el-button>
               </div>
             </div>
 
@@ -123,7 +123,7 @@
                 type="primary"
                 @click="add_patient"
               >新增患者</el-button>
-              <el-button @click="change_pw">复诊预约</el-button>
+              <el-button @click="app_visit">复诊预约</el-button>
             </div>
           </el-tab-pane>
           <!-- <div class="visit-bottom-content" >
@@ -223,7 +223,7 @@ import MedicalRecordsInfo from "./MedicalRecordsInfo";
 import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
-import AddPatient from "./AddPatient";
+import AddPatient from "./AddPatient"; 
 import AppointmentVisit from "./AppointmentVisit";
 
 export default {
@@ -349,7 +349,7 @@ export default {
       this.addp_show = true;
     },
     //
-    change_pw(){
+    app_visit(){
       this.appvisit_show = true;
     }
 

@@ -8,23 +8,69 @@
     </div>
     <div class="image-bottom">
 
-      <el-button type="primary" style="margin-left:10px;width: 90px;">自动导入</el-button>
+      <el-button
+        type="primary"
+        style="margin-left:10px;width: 90px;"
+        @click="autom_import"
+      >自动导入</el-button>
       <el-button class="image-button">手动导入</el-button>
-      <el-button class="image-button">其他</el-button>
+      <el-select
+        v-model="value"
+        placeholder="其他"
+        class="image-button"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
       <el-button class="image-button">内窥镜</el-button>
       <el-button class="image-button">牙智宝</el-button>
       <el-button class="image-button">设备对接</el-button>
-      <el-button class="image-button">影响分类</el-button>
-      <el-button class="image-button">专业工具</el-button>
+      <el-select
+        v-model="value"
+        placeholder="影像分类"
+        class="image-button"
+        style="width:110px"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <el-select
+        v-model="value"
+        placeholder="专业工具"
+        class="image-button"
+        style="width:110px"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
 
     </div>
+    <automatic-import :show.sync="autoimp_show"></automatic-import>
   </div>
 </template>
 
 <script>
+import AutomaticImport from "./AutomaticImport";
 export default {
   name: "ImageInfo",
-  components: {},
+  components: {
+    AutomaticImport
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -32,7 +78,24 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      autoimp_show: false,
+      options: [
+        {
+          value: "选项1",
+          label: "导出"
+        },
+        {
+          value: "选项2",
+          label: "删除"
+        },
+        {
+          value: "选项3",
+          label: "打印"
+        }
+      ],
+      value: ""
+    };
   },
   created() {},
   mounted() {},
@@ -53,6 +116,9 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+    autom_import() {
+      this.autoimp_show = true;
     }
   }
 };
@@ -62,7 +128,7 @@ export default {
 @import "~@css/var";
 
 .image-content {
-    box-sizing: border-box;
+  box-sizing: border-box;
   .image-top {
     border: 1px solid red;
     position: relative;
@@ -83,7 +149,7 @@ export default {
     .image-button {
       margin-left: 10px;
       margin-top: 10px;
-      width: 90px;
+      width: 100px;
     }
   }
 }

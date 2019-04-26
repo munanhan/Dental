@@ -194,6 +194,7 @@
       <el-collapse-item
         title="等待确认"
         style="width:1000px;margin-left:10px;margin-bottom:10px"
+
       >
         <div>简化流程：设计简洁直观的操作流程；</div>
         <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
@@ -226,6 +227,8 @@
       <el-button
         style="width:110px;margin-right: 20px;"
         type="primary"
+        porp="modify-inormation"
+        @click="Modify_info"
       >修改信息</el-button>
       <el-button class="patient-button">病历首页打印</el-button>
       <i
@@ -234,16 +237,17 @@
       ></i>
 
     </div>
+    <modify-info :show.sync="modinfo_show"></modify-info>
   </div>
 </template>
 
 <script>
-import EditDialogForm from "@/views/base/DialogForm";
-
+import ModifyInfo from "./ModifyInfo";
 export default {
   name: "PatientInfo",
-  components: {
 
+  components: {
+    ModifyInfo
   },
   props: {
     refresh: {
@@ -253,9 +257,10 @@ export default {
   },
   data() {
     return {
-      sex:"",
+      sex: "",
       activeNames: ["1"],
-      value2: null
+      value2: null,
+      modinfo_show:false
     };
   },
   created() {},
@@ -290,6 +295,9 @@ export default {
     },
     handleChange(val) {
       console.log(val);
+    },
+    Modify_info(){
+      this.modinfo_show = true;
     }
   }
 };

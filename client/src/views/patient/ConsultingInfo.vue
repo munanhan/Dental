@@ -4,20 +4,29 @@
 sadasdsa
       </div>
       <div dis-bottom>
-        <div style="border:1px solid #e4e4e4;background-color:#e3e3e3;position:absolute;left;0;bottom:0;width:100%;height:59px">
+        <div style="border:1px solid #e4e4e4;
+                    background-color:#e3e3e3;
+                    position:absolute;
+                    left;0;bottom:0;
+                    width:100%;
+                    height:59px">
 
-      <el-button style="width:130px;margin-left:10px" type="primary">增加处置</el-button>
-      <el-button class="dis-button">打印设置</el-button>
+      <el-button style="width:130px;margin-left:10px;margin-top:10px" type="primary" @click="add_cons">增加</el-button>
     </div>
       </div>
+      <add-consulting :show.sync="addcons_show"></add-consulting>
   </div>
   
 </template>
 
 <script>
+import AddConsulting from "./AddConsulting";
+
 export default {
   name: "ConsultingInfo",
-  components: {},
+  components: {
+    AddConsulting
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -25,7 +34,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      addcons_show:false,
+    };
   },
   created() {},
   mounted() {},
@@ -46,6 +57,9 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+    add_cons(){
+      this.addcons_show = true;
     }
   }
 };
