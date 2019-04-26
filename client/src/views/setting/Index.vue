@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+
     <div class="setting">
       <!-- tab -->
 
@@ -70,15 +70,14 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-  </el-container>
 </template>
 
 <script>
 import ClinicInformation from "./ClinicInformation";
 import PermissionSettings from "./PermissionSettings";
 import StaffManagement from "./StaffManagement/Index";
-import DisposalCharging from "./DisposalCharging";
-import DisposalCombination from "./DisposalCombination";
+import DisposalCharging from "./DisposalCharging/Index";
+import DisposalCombination from "./DisposalCombination/Index";
 import CaseTemplate from "./CaseTemplate";
 import MemberUpgrade from "./MemberUpgrade/Index";
 import PatientRecyclingBin from "./PatientRecyclingBin/Index";
@@ -164,7 +163,35 @@ export default {
 .setting{
   margin-left: 10px;
   width: 98%;
+  height: 100%;
   /*border: 1px solid #eee;*/
+
+  /deep/ .el-tabs {
+        position: relative;
+        height: 100%;
+    }
+
+    /deep/ .el-tabs__header {
+        margin-bottom: 0;
+        .el-tabs__nav-scroll {
+            padding-left: 20px;
+        }
+    }
+
+    /deep/ .el-tabs__content {
+        background-color: white;
+        // padding: 15px 0;
+        position: absolute;
+        top: 40px;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+        right: 0;
+
+        .el-tab-pane {
+            height: 100%;
+        }
+    }
 }
 
 </style>

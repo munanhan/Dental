@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" ref="Content">
       <el-row>
         <!-- <el-col :span="21">
           <el-input placeholder="请输入姓名" v-model="staff" class="">
@@ -44,7 +44,9 @@
           <div>
             <el-table
               :data="tableData"
-              style="width: 100%">
+              style="width: 100%"
+              :height="clientHeight"
+              >
               <el-table-column
                 prop="id"
                 label="员工编号"
@@ -192,6 +194,7 @@ export default {
       data() {
 
         return {
+          clientHeight:700,
           passwordDialog:false,
           addDialog:false,
           editDialog:false,
@@ -256,18 +259,43 @@ export default {
         };
       },
       created() {},
-      mounted() {},
-      watch: {
-        refresh(newValue, oldValue) {
-          let that = this;
+      mounted() {
+        let that = this;
 
-          if (newValue) {
-            that.getPatientInfo();
-          }
+        that.$nextTick(() => {
+            that.resizeTable();
+        });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeTable);
+        } else {
+            window.attachEvent("bodyChange", that.resizeTable);
         }
-      },
+    },
+    watch: {
+        update(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.resizeTable();
+
+                setTimeout(() => {
+                    that.$emit("update:update", false);
+                });
+            }
+        }
+    },
       computed: {},
       methods: {
+       resizeTable() {
+          let that = this;
+          // console.log(that.$refs.ContentData.clientHeight);
+              if (that.$refs.Content.clientHeight != 0) {
+                let tableHeight = that.$refs.Content.clientHeight - 70;
+                that.tableHeight = tableHeight;
+              }
+            
+        },
         del(id){
            alert(id);
         },
@@ -340,7 +368,7 @@ export default {
 }
 .content{
     background: white;
-    height: 800px;
+    height: 100%;
 }
 
 /*.title{
