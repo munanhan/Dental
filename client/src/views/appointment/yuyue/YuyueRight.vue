@@ -71,30 +71,60 @@
             <span>24h</span>
           </div>
         </el-row>
-        <el-row class="day-other" v-for="(item,index) in dayTime" :key="index">
+        <el-row class="day-other">
           <div class="other-left">
-            <div>
-              <span class="big-font">{{item}}</span>
-              <span>00</span>
-            </div>
-            <div>
-              <span>30</span>
-            </div>
+            <template v-for="(item,index) in dayTime">
+              <div :key="index">
+                <span class="big-font">{{item}}</span>
+                <span>00</span>
+              </div>
+              <div :key="index+ ' '">
+                <span class="span-right">30</span>
+              </div>
+            </template>
           </div>
-          <div class="other-center" @click="addYuyue(item)">
-            <div data-time="00" :class="{'day-blue':inArray(time_begin,`${item} : 00`)}"></div>
-            <div data-time="00"></div>
-            <div data-time="30" :class="{'day-blue':inArray(time_begin,`${item} : 30`)}"></div>
-            <div data-time="30"></div>
+          <div class="other-center-left" >
+            <template v-for="(item,index) in dayTime">
+              <div
+                data-time="00"
+                :key="index +'3'"
+                :class="{'day-blue':inArray(time_begin,`${item} : 00`)}"
+                @click="addYuyue(item)"
+              ></div>
+              <div
+                data-time="30"
+                :key="index+ '4'"
+                :class="{'day-blue':inArray(time_begin,`${item} : 30`)}"
+                @click="addYuyue(item)"
+              ></div>
+            </template>
+          </div>
+          <div class="other-center-right">
+            <template v-for="(item,index) in dayTime">
+              <div
+                data-time="00"
+                :class="{'day-blue':inArray(time_begin,`${item} : 00`)}"
+                :key="index +'1'"
+                 @click="addYuyue(item)"
+              ></div>
+              <div
+                data-time="30"
+                :class="{'day-blue':inArray(time_begin,`${item} : 30`)}"
+                :key="index+ '2'"
+                 @click="addYuyue(item)"
+              ></div>
+            </template>
           </div>
           <div class="other-left">
-            <div>
-              <span>00</span>
-              <span class="big-font">{{item}}</span>
-            </div>
-            <div>
-              <span class="span-left">30</span>
-            </div>
+            <template v-for="(item,index) in dayTime">
+              <div :key="index +'5'">
+                <span>00</span>
+                <span class="big-font">{{item}}</span>
+              </div>
+              <div :key="index +'6'">
+                <span class="span-left">30</span>
+              </div>
+            </template>
           </div>
         </el-row>
       </div>
@@ -133,7 +163,11 @@ export default {
       getWeekStartEnd: this.getWeekStartEnd
     };
   },
-  created() {},
+  created() {
+    this.$nextTick(function() {
+      this.getWeekStartEnd(this.chooseDate);
+    });
+  },
   data() {
     return {
       addYuyueShow: false,
@@ -168,7 +202,7 @@ export default {
         "21",
         "22"
       ],
-
+      weekStart: null,
       weekEnd: null,
       yuyue_time: null,
       yuyue_res: [
@@ -225,9 +259,28 @@ export default {
       this.myCalender.choosePrevNextDay(upDate);
     },
     handlePrevWeek() {
-      console.log("prev");
+      let startStr = this.weekStart.split(/[年月日]/, 3).join("-"),
+        oneDayTime = 24 * 3600 * 1000,
+        start = new Date(startStr),
+        end = new Date(startStr);
+
+      start.setTime(start.getTime() - 7 * oneDayTime);
+      end.setTime(end.getTime() - 1 * oneDayTime);
+
+      this.weekEnd = formatDate(end, "yyyy年MM月dd日");
+      this.weekStart = formatDate(start, "yyyy年MM月dd日");
+      //  console.log(111);
     },
-    handleNextWeek() {},
+    handleNextWeek() {
+      let endStr = this.weekEnd.split(/[年月日]/, 3).join("-"),
+        oneDayTime = 24 * 3600 * 1000,
+        end = new Date(endStr),
+        start = new Date(endStr);
+      end.setTime(end.getTime() + 7 * oneDayTime);
+      start.setTime(start.getTime() + 1 * oneDayTime);
+      this.weekStart = formatDate(start, "yyyy年MM月dd日");
+      this.weekEnd = formatDate(end, "yyyy年MM月dd日");
+    },
     chooseToday() {
       this.myCalender.chooseToday();
     },
@@ -242,7 +295,7 @@ export default {
       start.setTime(start.getTime() - oneDayTime * dayOfWeek);
       end.setTime(end.getTime() + oneDayTime * (6 - dayOfWeek));
 
-      // this.weekStart = formatDate(start, "yyyy年MM月dd日");
+      this.weekStart = formatDate(start, "yyyy年MM月dd日");
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
 
       return [
@@ -264,22 +317,29 @@ export default {
     }
   },
   computed: {
-    weekStart() {
-      let wS;
-      wS = this.getWeekStartEnd(this.chooseDate)[0];
-      return wS;
-    },
+    // weekStart: {
+    //   get:function(){
+    //     this.weekStartCache = this.getWeekStartEnd(this.chooseDate)[0];
+    //     return this.weekStartCache ;
+    //   },
+    //   set:function(value){
+    //      this.weekStartCache = value;
+    //   },
+
+    // },
     weekArr() {
+      let startStr = this.weekStart
+        ? this.weekStart.split(/[年月日]/, 3).join("-")
+        : "";
       let Arr = [],
-        startStr = this.weekStart.split(/[年月日]/, 3).join("-"),
         oneDayTime = 24 * 3600 * 1000,
         start = new Date(startStr);
       ["周日", "周一", "周二", "周三", "周四", "周五", "周六"].forEach(
         (item, i) => {
           let now = new Date();
           now.setTime(start.getTime() + i * oneDayTime);
-          let obj = new Object;
-          obj[item] =formatDate(now, "MM.dd")
+          let obj = new Object();
+          obj[item] = formatDate(now, "MM.dd");
           Arr.push(obj);
         }
       );
@@ -325,7 +385,8 @@ export default {
   mounted() {
     let grays = document.getElementsByClassName("day-blue");
     this.yuyue_res.forEach((item, index) => {
-      grays[index].innerHTML = `<p><span>${item.name}</span><span>${
+    
+      grays[index].innerHTML = `<div><p><span>${item.name}</span><span>${
         item.type_id
       }</span><span>${item.age}</span></p>
                             <p><span>${item.tel_one}</span></p>
@@ -333,8 +394,7 @@ export default {
                             <p><span>${
                               item.time_frame_begin
                             } - ${+item.time_frame_begin.substr(0, 2) +
-        1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p>
-                                `;
+        1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
     });
   }
 };
@@ -342,263 +402,5 @@ export default {
 
 <style lang="less">
 @import "~@/assets/css/var.less";
-.red {
-  color: red;
-}
-
-.yuyue-right {
-  background-color: #fff;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  ul > li {
-    list-style: none;
-  }
-  .navbar {
-    width: 100%;
-    display: flex;
-    ul {
-      display: flex;
-      padding: 0;
-      margin: 0;
-      li {
-        cursor: pointer;
-        width: 50px;
-        line-height: 35px;
-        text-align: center;
-        border: 1px solid @color;
-        margin-right: 2px;
-        &:first-of-type {
-          border-top-left-radius: 7px;
-          border-bottom-left-radius: 7px;
-        }
-        &:last-of-type {
-          border-top-right-radius: 7px;
-          border-bottom-right-radius: 7px;
-        }
-        &.active-li {
-          background-color: @color;
-        }
-        &:hover:not(.active-li) {
-          background-color: @hover-color;
-        }
-      }
-    }
-    .add-yuyue,
-    .net-yuyue {
-      line-height: 35px;
-      border: 1px solid @color;
-      padding: 0 15px;
-      border-radius: 8px;
-      margin-left: 5%;
-      &:hover {
-        background-color: @hover-color;
-        color: @color;
-      }
-    }
-    .add-yuyue {
-      background-color: @color;
-      color: #fff;
-    }
-    .net-yuyue {
-      background-color: #fff;
-      color: @color;
-    }
-    .search {
-      margin-left: auto;
-      line-height: 35px;
-      border: 1px solid @color;
-      border-radius: 8px;
-      font-size: 18px;
-      input {
-        outline: none;
-        border: none;
-        height: 25px;
-        padding: 0 10px;
-      }
-    }
-  }
-  .date-header {
-    margin-top: 7px;
-    width: 100%;
-    line-height: 30px;
-    .header-day {
-      display: flex;
-      .show-date {
-        font-size: 20px;
-        font-weight: 800;
-        span {
-          margin-left: 20px;
-        }
-      }
-    }
-    .header-week {
-      display: flex;
-      .show-date {
-        font-size: 20px;
-        font-weight: 800;
-        margin-left: 20px;
-      }
-    }
-
-    .prev-day,
-    .next-day {
-      border: 1px solid #ccc;
-      border-radius: 50%;
-
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-    }
-
-    .prev-day div {
-      position: relative;
-      left: 15px;
-      top: 8px;
-      width: 15px;
-      height: 15px;
-      border-left: 1px solid #000;
-      border-bottom: 1px solid #000;
-      transform: rotateZ(45deg);
-    }
-    .next-day div {
-      position: relative;
-      /* left: -15px; */
-      top: 8px;
-      width: 15px;
-      height: 15px;
-      border-right: 1px solid #000;
-      border-top: 1px solid #000;
-      transform: rotateZ(45deg);
-    }
-
-    .today {
-      font-size: 16px;
-      color: transparent;
-      padding: 0 10px;
-      cursor: pointer;
-      &.red {
-        color: red;
-      }
-    }
-  }
-  .date-body {
-    flex: auto;
-    background-color: @backgroud-color;
-    display: flex;
-    .day {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      .day-header {
-        display: flex;
-        flex-basis: 50px;
-        line-height: 50px;
-        padding-bottom: 10px;
-        text-align: center;
-        .doctor1 {
-          flex: 1;
-          border: 1px solid rgb(173, 171, 171);
-          background-color: #fff;
-        }
-        .doctor2 {
-          flex: 1;
-          border: 1px solid rgb(173, 171, 171);
-          border-left: none;
-          background-color: #fff;
-        }
-        div:first-of-type,
-        div:last-of-type {
-          flex-basis: 80px;
-        }
-      }
-      .day-other {
-        flex: auto;
-
-        display: flex;
-        .other-left {
-          flex-basis: 80px;
-          display: flex;
-          flex-direction: column;
-          div {
-            flex: auto;
-            &:first-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                flex: auto;
-                border-top: 1px solid #e6e6e6;
-                &.big-font {
-                  font-size: 20px;
-                }
-              }
-            }
-            &:last-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                margin-left: auto;
-                border-top: 1px solid #e6e6e6;
-              }
-              .span-left {
-                margin: 0;
-              }
-            }
-          }
-        }
-        .other-center {
-          flex: auto;
-          display: flex;
-          flex-wrap: wrap;
-          border: 1px solid #d2d2d2;
-          div {
-            width: 50%;
-            box-sizing: border-box;
-            background-color: #fff;
-            text-align: center;
-            &:hover {
-              cursor: pointer;
-              background-color: @hover-color;
-            }
-            &.day-blue {
-              background-color: rgba(151, 189, 214, 0.2);
-              text-align: left;
-              font-size: 12px;
-              height: 40px;
-              p:first-of-type {
-                span {
-                  margin-right: 10px;
-                }
-                span:nth-of-type(1) {
-                  color: red;
-                  font-size: 14px;
-                }
-                span:nth-of-type(2) {
-                  display: inline-block;
-                  width: 12px;
-                  height: 12px;
-                  overflow: hidden;
-                  background-color: aqua;
-                }
-              }
-              p {
-                margin: 0;
-              }
-            }
-            &:nth-of-type(1) {
-              border-bottom: 1px solid #e6e6e6;
-              border-right: 1px solid #e6e6e6;
-            }
-            &:nth-of-type(2) {
-              border-bottom: 1px solid #e6e6e6;
-            }
-            &:nth-of-type(3) {
-              border-right: 1px solid #e6e6e6;
-            }
-          }
-        }
-      }
-    }
-  }
-}
+@import "~@views/appointment/css/YuyueRight.less";
 </style>
