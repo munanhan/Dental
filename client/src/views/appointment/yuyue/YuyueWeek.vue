@@ -94,7 +94,7 @@ export default {
           sex: "男",
           time_frame_begin: "14 : 00",
           type_id: "初诊",
-          items: ""
+          items: "拆线"
         }
       ]
     };
@@ -122,21 +122,20 @@ export default {
       return inArray(arr, str);
     }
   },
-  mounted() {
+  mounted() {},
+  updated() {
     let grays = document.getElementsByClassName("week-blue");
-    console.log(grays);
-    console.log(grays[0]);
-    // this.yuyue_week_res.forEach((item, index) => {
-    //   grays[index].innerHTML = `<div><p><span>${item.name}</span><span>${
-    //     item.type_id
-    //   }</span><span>${item.age}</span></p>
-    //                         <p><span>${item.tel_one}</span></p>
-    //                         <p><span>${item.items}</span></p>
-    //                         <p><span>${
-    //                           item.time_frame_begin
-    //                         } - ${+item.time_frame_begin.substr(0, 2) +
-    //     1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
-    // });
+    this.yuyue_week_res.forEach((item, index) => {
+      grays[index].innerHTML = `<div><p><span>${item.name}</span><span>${
+        item.type_id
+      }</span><span>${item.age}</span></p>
+                            <p><span>${item.tel_one}</span></p>
+                            <p><span>${item.items}</span></p>
+                            <p><span>${
+                              item.time_frame_begin
+                            } - ${+item.time_frame_begin.substr(0, 2) +
+        1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+    });
   }
 };
 </script>
@@ -225,13 +224,14 @@ export default {
         &.week-blue {
           font-size: 12px;
           position: relative;
-          background-color: rgba(151, 189, 214, 1);
           > div {
             position: absolute;
             left: 0;
             right: 0;
+            z-index: 1000;
             height: 52px;
             overflow: hidden;
+            background-color: rgba(151, 189, 214, 1);
             p {
               margin: 0;
             }
