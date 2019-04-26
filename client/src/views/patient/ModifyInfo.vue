@@ -251,9 +251,9 @@
             <el-input></el-input>
           </el-form-item>
         </div>
-        <el-form-item
+        <el-form-item 
           label="过敏使"
-          style="width:680px"
+          style="width:680px" 
         >
           <el-input></el-input>
         </el-form-item>
