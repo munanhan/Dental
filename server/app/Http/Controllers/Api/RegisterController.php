@@ -5,24 +5,45 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Redis;
+use App\Http\Controllers\Traits\SendSmsHelpers;
+use App\Http\Controllers\Traits\SmsPolicy;
 
 
 
 class RegisterController extends Controller
 {
 
+    use SendSmsHelpers ,SmsPolicy;
+
+    public function index()
+    {
+        $phone=request('phone');
+
+        if(isPhone($phone)===false){
+            return message('The cell phone number is incorrect',400);
+        }
+
+        $this->phoneNumbers=$phone;
+        $this->templateParam=$this->makeCode($phone);
+
+        if($this->send()===true){
+            return message('SMS sent successfully',200);
+        }
+
+        return message('Server exception',500);
+    }
+
     public function register(Request $request)
     {
         if($this->validator($request->all())->fails()){
-            return response()->json(returnMessage($this->validator($request->all())->errors(),401), 401);
+            return returnMessage($this->validator($request->all())->errors(),400);
         }
         //创建用户认证的事件，并监听
         event(new Registered($user = $this->create($request->all())));
 
-        return response()->json(returnMessage('registered successfully'), 200);
+        return returnMessage('registered successfully',201);
 
     }
 
@@ -32,6 +53,7 @@ class RegisterController extends Controller
             'phone'=>['required','numeric','unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'name'=>['required','string'],
         ]);
     }
 
@@ -43,4 +65,23 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    protected function makeCode($phone)
+    {
+        $code=sixRandom();
+        Redis::set('user:'.$phone,$code);
+        Redis::setex('user:'.$phone,300,$code);
+        return json_encode(['code'=>$code]);
+    }
+
+    public function verification()
+    {
+        $phone=request('phone');
+        $code=request('code');
+        if(Redis::get('user:'.$phone)==$code) {
+            return message('verify successfully ',200);
+        }
+        return message('Verification failed',400);
+    }
+
 }
