@@ -177,7 +177,6 @@
 export default {
     name: "PrepaidBalance",
     components: {},
-    components: {},
     props: {
         update: {
             type: Boolean,
