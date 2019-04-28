@@ -122,7 +122,7 @@
               placeholder="请输入内容"
               v-model="form.phone_one"
             ></el-input>
-          </el-form-item>
+          </el-form-item> 
           <el-select
             v-model="form.tel_one"
             style="width:110px"
