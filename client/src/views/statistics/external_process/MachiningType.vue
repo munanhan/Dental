@@ -32,7 +32,6 @@
                     placeholder=""
                     collapse-tags
                     class="processing-units"
-                    @change="changeType"
                 >
                     <el-option
                         v-for="item in processingUnitsList"

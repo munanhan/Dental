@@ -38,7 +38,6 @@
                         placeholder=""
                         collapse-tags
                         class="search-second"
-                        @change="changeType"
                     >
                         <el-option
                             v-for="item in processingUnitsList"
@@ -57,7 +56,6 @@
                         placeholder=""
                         collapse-tags
                         class="search-thirds"
-                        @change="changeType"
                     >
                         <el-option
                             v-for="item in doctorList"
