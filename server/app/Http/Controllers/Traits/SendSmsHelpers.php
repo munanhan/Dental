@@ -8,6 +8,9 @@ use AlibabaCloud\Client\Exception\ServerException;
 trait SendSmsHelpers
 {
 
+    /***
+     * @var  number phone
+     */
     protected  $phoneNumbers;
 
     /***
@@ -18,7 +21,12 @@ trait SendSmsHelpers
     public function send()
     {
         $this->client();
-        $this->sendMode();
+
+        if($this->sendMode() =='OK'){
+           return true;
+       }
+
+        return false;
     }
 
     public function client()
@@ -36,9 +44,10 @@ trait SendSmsHelpers
                 ->version('2017-05-25')
                 ->action('SendSms')
                 ->method('POST')
-                ->request($this->getQuery());
+                ->options($this->getQuery())
+                ->request();
 
-            print_r($result->toArray());
+            return $result->toArray()['Code'];
 
         } catch (ClientException $exception) {
             print_r($exception->getErrorMessage());

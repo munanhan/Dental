@@ -3,7 +3,9 @@
     <div class="setting">
       <!-- tab -->
 
-      <el-tabs v-model="curTab">
+      <el-tabs v-model="curTab"
+               @tab-click="handleClick"
+      >
 
         <el-tab-pane
           label="诊所信息"

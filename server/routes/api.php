@@ -29,7 +29,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('users/{user}', 'UserController@show');
 
-    Route::post('users', 'Api\UserController@store');
+    Route::post('users', 'UserController@store');
 
     Route::put('users/{user}', 'UserController@update');
 
@@ -44,6 +44,8 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::post('registration','RegisterController@register');
 
+    Route::post('registration','RegisterController@index');
+
     Route::post('refreshment','LoginController@refreshToken');
 
     Route::get('message','UserController@getMessage');
@@ -51,6 +53,14 @@ Route::group(['namespace'=>'Api'],function (){
     Route::get('hashpassword','UserController@getHashPassword');
 
     Route::get('dysms','UserController@sendMessage');
+
+    Route::get('order','OrderController@store');
+
+    Route::get('publish', function () {
+        // Route logic...
+
+        Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+    });
 
 });
 

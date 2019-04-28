@@ -20,19 +20,19 @@
                             <div class="setting">
                                 <i
                                     class="fa fa-sitemap combo_btn"
-                                    @click="showCostTypeDialog"
+                                    @click="addComboDirDialog = true"
                                 ></i>
                                 <i
                                     class="fa fa-share-alt combo_btn"
-                                    @click="showCostTypeDialog"
+                                    @click="showAddComboDialog"
                                 ></i>
                                 <i
                                     class="fa fa-edit combo_btn"
-                                    @click="showCostTypeDialog"
+                                    @click=""
                                 ></i>
                                 <i
                                     class="fa fa-trash-alt combo_btn"
-                                    @click="showCostTypeDialog"
+                                    @click=""
                                 ></i>
                             </div>
                         </el-col>
@@ -50,6 +50,16 @@
                                     ref="tree"
                                     node-key="id"
                                 >
+                                <span slot-scope="{ node, data }">
+                                    <span>
+                                        <div v-if="node.level == 1">
+                                          <i class="fa fa-folder-open"></i> {{ node.label }}
+                                        </div>
+                                        <div v-if="node.level == 2">
+                                          <i class="fa fa-file-alt"></i> {{ node.label }}
+                                        </div>
+                                    </span>              
+                                </span>
 
                                 </el-tree>
                             </div>
@@ -236,16 +246,17 @@
             </el-main>
         </el-container>
 
-        <!-- 费用大类 -->
-        <!--  <cost-type
-      :show.sync="costTypeDialog"
-    >
-    </cost-type> -->
+        <!-- 添加组合目录 -->
+        <add-combo-dir
+            :show.sync="addComboDirDialog"
+        >
+        </add-combo-dir>
         <!-- 添加处置与收费 -->
-        <!-- <add-disposal-charging
-      :show.sync="addDisposalChargingDialog"
-    >
-    </add-disposal-charging> -->
+        <add-combo
+          :show.sync="addComboDialog"
+          :p_id="parentId"
+        >
+        </add-combo>
         <!-- 修改处置与收费 -->
         <!-- <edit-disposal-charging
       :show.sync="editDisposalChargingDialog"
@@ -257,9 +268,14 @@
 </template>
 
 <script>
+import AddComboDir from './AddComboDirDialog';
+import AddCombo from './AddComboDialog';
 export default {
     name: "Index",
-    components: {},
+    components: {
+      AddComboDir,
+      AddCombo
+    },
     props: {
         refresh: {
             type: Boolean,
@@ -268,58 +284,71 @@ export default {
     },
     data() {
         return {
-            costTypeDialog: false,
-            addDisposalChargingDialog: false,
-            editDisposalChargingDialog: false,
             editItem: {},
             tableHeight: 700,
             menuHeight: 660,
             selectThis: false,
-            treeField: {
-                label: "combo_name",
-                children: "children"
+            currentNode: {},
+            addComboDirDialog:false,
+            addComboDialog:false,
+            parentId:0,
+            treeField:{
+              id:'id',
+              children:'children',
+              label:'label'
             },
             menuData: [
                 {
                     id: 1,
-                    combo_name: "蛀牙用药组合",
+                    label: "蛀牙用药组合",
                     level: 1,
+                    p_id:0,
                     children: [
                         {
                             id: 6,
-                            combo_name: "白+黑",
-                            level: 2
+                            label: "白+黑",
+                            level: 2,
+                            p_id:1
                         },
                         {
                             id: 8,
-                            combo_name: "必兰麻+保丽净",
-                            level: 2
+                            label: "必兰麻+保丽净",
+                            level: 2,
+                            p_id:1
                         }
                     ]
                 },
                 {
                     id: 2,
-                    combo_name: "拔牙用药组合",
+                    label: "拔牙用药组合",
                     level: 1,
+                    p_id:0,
                     children: [
                         {
                             id: 7,
-                            combo_name: "西药+中药",
-                            level: 2
+                            label: "西药+中药",
+                            level: 2,
+                            p_id:2
                         }
                     ]
                 },
                 {
                     id: 3,
-                    combo_name: "服用类组合"
+                    label: "服用类组合",
+                    level: 1,
+                    p_id:0
                 },
                 {
                     id: 4,
-                    combo_name: "外敷类组合"
+                    label: "外敷类组合",
+                    level: 1,
+                    p_id:0
                 },
                 {
                     id: 5,
-                    combo_name: "日常类组合"
+                    label: "日常类组合",
+                    level: 1,
+                    p_id:0
                 }
             ],
             tableData: [
@@ -393,11 +422,30 @@ export default {
         getMenuTableData(data) {
             let that = this;
             that.selectThis = true;
+            that.currentNode = data;
             console.log(data);
         },
-        showCostTypeDialog() {
-            let that = this;
-            that.costTypeDialog = true;
+
+        showAddComboDialog(){
+          //弹出添加组合窗口
+          let that = this;
+          // if (that.currentNode.level == 1) {
+          //    that.parentId = that.currentNode.id;
+          // }
+          // if (that.currentNode.level == 2) {
+          //    that.parentId = that.currentNode.p_id;
+          // }
+          if (Object.keys(that.currentNode).length==0) {
+             alert('请先选择一个目录');
+          }
+          else{
+            that.parentId = that.currentNode.level == 1?that.currentNode.id:that.currentNode.p_id;
+            console.log(that.parentId);
+            that.addComboDialog = true;
+          }
+          
+          // that.currentNode
+
         },
         resizeTable() {
             let that = this;
@@ -483,7 +531,7 @@ export default {
     /deep/.el-tree--highlight-current
         .el-tree-node.is-current
         > .el-tree-node__content {
-        background-color: black;
+        background-color: @linght-background-color;
     }
 }
 .data_content {
@@ -519,6 +567,7 @@ export default {
     }
 
     .menu_content {
+        font-size: 14px;
         /deep/ .el-table--enable-row-hover .el-table__body tr:hover > td {
             background-color: @linght-background-color;
             cursor: pointer;

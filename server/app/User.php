@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
         use HasApiTokens,Notifiable;
 
@@ -27,7 +27,7 @@ class User extends Authenticatable
          * @var array
          */
         protected $hidden = [
-            'password', 'remember_token',
+            'password'
         ];
 
         /**
@@ -39,18 +39,39 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
         ];
 
-        //多字段验证，默认单字段Email
+        /***
+         * @return \Illuminate\Database\Eloquent\Relations\HasOne
+         */
+        public function phone()
+        {
+            return $this->hasOne('App\Phone');
+        }
+
+        public function clinic()
+        {
+            return $this->belongsTo('App\Clinic');
+        }
+
+        /***
+         * Multifield validation
+         * @param $username
+         * @return mixed
+         */
         public function findForPassport($username)
         {
             return $this->orWhere('email',$username)->orWhere('phone',$username)->first();
         }
 
-        //重置密码验证规则
-//        public function validateForPassportPasswordGrant($password)
-//        {
-//            if(Hash::check($password,$this->password)){
-//                return true;
-//            }
-//            return false;
-//        }
+        /***
+         * Reset password validation rules
+         * @param $password
+         * @return bool
+         */
+        public function validateForPassportPasswordGrant($password)
+        {
+            if(Hash::check($password,$this->password)){
+                return true;
+            }
+            return false;
+        }
 }
