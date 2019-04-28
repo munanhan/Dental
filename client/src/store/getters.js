@@ -12,7 +12,11 @@ export default {
 
     //功能权限
     btn_act(state) {
-        let act= state.btn_act;
+        let act = state.btn_act;
         return act || {};
     },
+    chooseDatesub5(state) {
+        let sub = state.chooseDate || '';
+        return sub.substr(5).replace('-','.');
+    }
 }
