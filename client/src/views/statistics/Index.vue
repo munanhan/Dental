@@ -65,7 +65,7 @@
 
 <script>
 import AdvancedPatientInquiry from "./advance_patient/AdvancedPatientInquiry";
-import ChainStoreStatistics from "./ChainStoreStatistics";
+import ChainStoreStatistics from "./chain_store/ChainStoreStatistics";
 import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
 import EmployeePerformance from "./employee_perform/EmployeePerformance";

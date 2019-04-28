@@ -347,7 +347,7 @@ export default {
                 hasWebchat: 0,
                 contactAddress: "",
                 patientRank: 0,
-                doctor: null
+                doctor: []
             },
 
             pager: {
@@ -396,7 +396,20 @@ export default {
         };
     },
     created() {},
-    mounted() {},
+    mounted() {
+        let that = this;
+
+        that.$nextTick(() => {
+            that.resizeTable();
+        });
+
+        //监听事件,由layout那边的resize抛出的
+        if (window.addEventListener) {
+            window.addEventListener("bodyChange", that.resizeTable);
+        } else {
+            window.attachEvent("bodyChange", that.resizeTable);
+        }
+    },
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
@@ -424,6 +437,24 @@ export default {
                 case 3:
                     that.selectInputText = "介绍人";
                     break;
+            }
+        },
+
+        changePage(index) {
+            let that = this;
+
+            if (that.pager) {
+                that.pager.current = index;
+                that.getData();
+            }
+        },
+
+        pageSizeChange(val) {
+            let that = this;
+
+            if (that.pager) {
+                that.pager.size = val;
+                that.getData();
             }
         },
 
