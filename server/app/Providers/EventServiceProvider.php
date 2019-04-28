@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\TestEvent;
+use App\Listeners\TestListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        TestEvent::class=>[
+            TestListener::class,
+        ],
     ];
 
     /**
@@ -29,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        //注册基于事件的闭包
+        Event::listen('event.name',function ($foo,$bar){
+           //
+        });
     }
 }
