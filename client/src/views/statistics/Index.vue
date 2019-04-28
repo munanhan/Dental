@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import AdvancedPatientInquiry from "./AdvancedPatientInquiry";
+import AdvancedPatientInquiry from "./advance_patient/AdvancedPatientInquiry";
 import ChainStoreStatistics from "./ChainStoreStatistics";
 import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
