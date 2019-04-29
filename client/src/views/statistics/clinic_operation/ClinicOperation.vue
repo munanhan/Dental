@@ -4,8 +4,8 @@
             <span class="mr-10">统计日期</span>
             <span class="mr-10">
                 <el-radio-group v-model="search.dateTypes">
-                    <el-radio-button label="天"></el-radio-button>
-                    <el-radio-button label="月"></el-radio-button>
+                    <el-radio-button :label="0">天</el-radio-button>
+                    <el-radio-button :label="1">月</el-radio-button>
                 </el-radio-group>
             </span>
 
@@ -315,7 +315,7 @@ export default {
         return {
             search: {
                 dateRange: [new Date(), new Date()],
-                dateTypes: "天"
+                dateTypes: 0
             },
 
             activities: [

@@ -2,52 +2,91 @@
     <div class="chain-store">
         <div class="left-content">
             <el-menu
-                default-active="chargeDetail"
+                default-active="operationSituation"
                 @select="selectHandler"
             >
-                <el-menu-item index="chargeDetail">
+                <el-menu-item index="operationSituation">
                     <i class="fa fa-file-alt menu-icon"></i>
-                    <span slot="title">收费明细</span>
+                    <span slot="title">运营情况</span>
                 </el-menu-item>
-                <el-menu-item index="projectConsumption">
+                <el-menu-item index="trendAnalysis">
                     <i class="fa fa-file-alt menu-icon"></i>
-                    <span slot="title">项目消费</span>
+                    <span slot="title">趋势分析</span>
                 </el-menu-item>
             </el-menu>
         </div>
         <div class="right-content">
 
-            <!-- 收费明细 -->
-            <charge-detail
-                v-show="content.chargeDetail"
-                :update.sync="chargeDetailUpdate"
-            ></charge-detail>
+            <!-- 运营情况 -->
+            <operation-situation
+                v-show="content.operationSituation"
+                :update.sync="operationSituationUpdate"
+            ></operation-situation>
 
-            <!-- 项目消费 -->
-            <project-consumption
-                v-show="content.projectConsumption"
-                :update.sync="projectConsumptionUpdate"
-            ></project-consumption>
+            <!-- 趋势分析 -->
+            <trend-analysis
+                v-show="content.trendAnalysis"
+                :update.sync="trendAnalysisUpdate"
+            ></trend-analysis>
         </div>
     </div>
 </template>
 
 <script>
+import OperationSituation from "./OperationSituation";
+import TrendAnalysis from "./TrendAnalysis";
+
 export default {
     name: "ChainStoreStatistics",
-    components: {},
+    components: {
+        OperationSituation,
+        TrendAnalysis
+    },
 
-    props: {},
+    props: {
+        refresh: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
-        return {};
+        return {
+            content: {
+                operationSituation: true,
+                trendAnalysis: false
+            },
+
+            operationSituationUpdate: false,
+            trendAnalysisUpdate: false
+        };
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        refresh(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                for (var key in that.content) {
+                    if (that.content[key]) {
+                        that[key + "Update"] = true;
+                    }
+                }
+
+                //更新原来的refresh, 防止下次点击时不通知更新
+                that.$emit("update:refresh", false);
+            }
+        }
+    },
     computed: {},
     methods: {
-        afterGetData(res) {
+        selectHandler(index) {
             let that = this;
+            that.content.operationSituation = "operationSituation" == index;
+            that.operationSituationUpdate = "operationSituation" == index;
+
+            that.content.trendAnalysis = "trendAnalysis" == index;
+            that.trendAnalysisUpdate = "trendAnalysis" == index;
         }
     }
 };
@@ -67,10 +106,14 @@ export default {
         .menu-icon {
             margin-right: 10px;
         }
+
+        /deep/ .el-menu {
+            border-right: 0;
+        }
     }
 
     .right-content {
-        flex: 1 auto;
+        flex: 1;
         overflow: auto;
     }
 }
