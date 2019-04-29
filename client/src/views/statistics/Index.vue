@@ -64,12 +64,12 @@
 </template>
 
 <script>
-import AdvancedPatientInquiry from "./AdvancedPatientInquiry";
-import ChainStoreStatistics from "./ChainStoreStatistics";
+import AdvancedPatientInquiry from "./advance_patient/AdvancedPatientInquiry";
+import ChainStoreStatistics from "./chain_store/ChainStoreStatistics";
 import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
 import EmployeePerformance from "./employee_perform/EmployeePerformance";
-import ExternalProcessing from "./ExternalProcessing";
+import ExternalProcessing from "./external_process/ExternalProcessing";
 import PassengerFlowAnalysis from "./PassengerFlowAnalysis";
 import WechatOperation from "./WechatOperation";
 

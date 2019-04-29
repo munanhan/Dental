@@ -68,6 +68,8 @@
                 const date = new Date();
                 this.year = date.getFullYear();
                 this.month = date.getMonth() + 1;
+                this.month.toString().length == 1 ? this.month = '0'+this.month: '';
+               
                 this.day = date.getDate();
                 this.curDate = `${this.year}-${this.month}-${this.day}`;
                 this.$store.commit('updateCurDate',this.curDate);
@@ -106,9 +108,10 @@
             }
         },
         watch: {
-          
             chooseDate(newDate,oldDate){
-                    this.$store.commit('updateChooseDate',newDate);
+                let arr = newDate.split('-');
+                arr.splice(1,1,arr[1].length == 1? '0'+arr[1]:arr[1]); 
+                this.$store.commit('updateChooseDate',arr.join('-'));
                 
             },
         },

@@ -79,37 +79,6 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- <div class="calendar" border="1" cellspacing="0"> -->
-        <!--  <div class="calendar-day">
-                <div class="calendar-item">
-                    <div class="calendar-day-cell">日</div>
-                    <div class="calendar-day-cell">一</div>
-                    <div class="calendar-day-cell">二</div>
-                    <div class="calendar-day-cell">三</div>
-                    <div class="calendar-day-cell">四</div>
-                    <div class="calendar-day-cell">五</div>
-                    <div class="calendar-day-cell">六</div>
-                </div>
-
-                <div
-                    class="calendar-item"
-                    v-for="(dateItem, dateIndex) in dateList"
-                    :key="dateIndex"
-                    :style="{
-                            height: calendarCellHeight
-                        }"
-                >
-                    <div
-                        v-for="item in dateItem"
-                        :key="item.year + item.mth + item.date"
-                        class="calendar-day-cell"
-                    >
-                        {{item.date}}
-                    </div>
-                </div>
-            </div> -->
-        <!-- </div> -->
     </div>
 </template>
 

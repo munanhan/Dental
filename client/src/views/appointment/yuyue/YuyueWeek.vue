@@ -34,18 +34,18 @@
             v-for="(i,n) in weekArr"
             :key="n"
             :data-y="item +' : 00'"
-            :data-x="+i[Object.keys(i)[0]]"
+            :data-x="i[Object.keys(i)[0]]"
             :class="[targetArr[1].indexOf(`${item} : 00`) != -1 && 
-            targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == +i[Object.keys(i)[0]]
+            targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == i[Object.keys(i)[0]]
             ?'week-blue':'']"
           ></div>
           <div
             v-for="(i,n) in weekArr"
             :key="n+' '"
             :data-y="item +' : 30'"
-            :data-x="+i[Object.keys(i)[0]]"
+            :data-x="i[Object.keys(i)[0]]"
             :class="[targetArr[1].indexOf(`${item} : 30`) != -1 && 
-            targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == +i[Object.keys(i)[0]]
+            targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == i[Object.keys(i)[0]]
             ?'week-blue':'']"
           ></div>
         </template>
@@ -76,7 +76,7 @@ export default {
       yuyue_week_res: [
         {
           age: "18",
-          apt_data: "2019-4-24",
+          apt_data: "2019-04-29",
           tel_one: "13538048392",
           doctor_id: "王医生",
           name: "韩楠",
@@ -87,7 +87,7 @@ export default {
         },
         {
           age: "18",
-          apt_data: "2019-4-23",
+          apt_data: "2019-04-10",
           doctor_id: "王医生",
           tel_one: "13538048392",
           name: "韩楠",
@@ -125,17 +125,21 @@ export default {
   mounted() {},
   updated() {
     let grays = document.getElementsByClassName("week-blue");
-    this.yuyue_week_res.forEach((item, index) => {
-      grays[index].innerHTML = `<div><p><span>${item.name}</span><span>${
-        item.type_id
-      }</span><span>${item.age}</span></p>
+    if (grays.length != 0) {
+      this.yuyue_week_res.forEach((item, index) => {
+        if (grays[index]) {
+          grays[index].innerHTML = `<div class="add-week"><p><span>${
+            item.name
+          }</span><span>${item.type_id}</span><span>${item.age}</span></p>
                             <p><span>${item.tel_one}</span></p>
                             <p><span>${item.items}</span></p>
                             <p><span>${
                               item.time_frame_begin
                             } - ${+item.time_frame_begin.substr(0, 2) +
-        1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
-    });
+            1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+        }
+      });
+    }
   }
 };
 </script>
@@ -221,10 +225,17 @@ export default {
         box-sizing: border-box;
         background-color: #fff;
         border: 1px solid #ccc;
+        &:not(.week-blue) {
+          .add-week {
+            display: none;
+          }
+        }
+
         &.week-blue {
           font-size: 12px;
           position: relative;
-          > div {
+
+          > div.add-week {
             position: absolute;
             left: 0;
             right: 0;

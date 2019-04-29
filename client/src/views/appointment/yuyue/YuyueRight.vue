@@ -83,36 +83,30 @@
               </div>
             </template>
           </div>
-          <div class="other-center-left" >
+          <div class="other-center-left">
             <template v-for="(item,index) in dayTime">
               <div
                 data-time="00"
                 :key="index +'3'"
-                :class="{'day-blue':inArray(time_begin,`${item} : 00`)}"
+                :class="[targetArr[1].indexOf(`${item} : 00`) != -1 &&
+                targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
+            ?'day-blue':'']"
                 @click="addYuyue(item)"
               ></div>
               <div
                 data-time="30"
                 :key="index+ '4'"
-                :class="{'day-blue':inArray(time_begin,`${item} : 30`)}"
+                :class="[targetArr[1].indexOf(`${item} : 30`) != -1 &&
+                targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == chooseDatesub5   
+            ?'day-blue':'']"
                 @click="addYuyue(item)"
               ></div>
             </template>
           </div>
           <div class="other-center-right">
             <template v-for="(item,index) in dayTime">
-              <div
-                data-time="00"
-                :class="{'day-blue':inArray(time_begin,`${item} : 00`)}"
-                :key="index +'1'"
-                 @click="addYuyue(item)"
-              ></div>
-              <div
-                data-time="30"
-                :class="{'day-blue':inArray(time_begin,`${item} : 30`)}"
-                :key="index+ '2'"
-                 @click="addYuyue(item)"
-              ></div>
+              <div data-time="00" :key="index +'1'" @click="addYuyue(item)"></div>
+              <div data-time="30" :key="index+ '2'" @click="addYuyue(item)"></div>
             </template>
           </div>
           <div class="other-left">
@@ -145,7 +139,7 @@
 import { formatDate, addClass, inArray } from "@/common/util.js";
 import AddYuyue from "./AddYuyue.vue";
 import YuyueWeek from "./YuyueWeek.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { setTimeout } from "timers";
 import { format } from "path";
 export default {
@@ -208,18 +202,18 @@ export default {
       yuyue_res: [
         {
           age: "18",
-          apt_data: "2019-4-23",
+          apt_data: "2019-04-23",
           tel_one: "13538048392",
           doctor_id: "王医生",
           name: "韩楠",
           sex: "男",
-          time_frame_begin: "11 : 30",
+          time_frame_begin: "11 : 00",
           type_id: "初诊",
           items: "拆线"
         },
         {
           age: "18",
-          apt_data: "2019-4-23",
+          apt_data: "2019-04-28",
           doctor_id: "王医生",
           tel_one: "13538048392",
           name: "韩楠",
@@ -317,16 +311,6 @@ export default {
     }
   },
   computed: {
-    // weekStart: {
-    //   get:function(){
-    //     this.weekStartCache = this.getWeekStartEnd(this.chooseDate)[0];
-    //     return this.weekStartCache ;
-    //   },
-    //   set:function(value){
-    //      this.weekStartCache = value;
-    //   },
-
-    // },
     weekArr() {
       let startStr = this.weekStart
         ? this.weekStart.split(/[年月日]/, 3).join("-")
@@ -373,29 +357,45 @@ export default {
       });
       return arr;
     },
-    chooseDate() {
-      return formatDate(this.chooseDate, "yyyy年MM月dd日");
+    targetArr() {
+      let xArr = [],
+        yArr = [];
+      this.yuyue_res.forEach((item, index) => {
+        let str = item.apt_data.substr(5).replace("-", ".");
+        xArr.push(str);
+        yArr.push(item.time_frame_begin);
+        // arr.push([{ x: str, y: item.time_frame_begin }, item]);
+      });
+      return [xArr, yArr];
     },
+
     ...mapState({
       myCalender: state => state.myCalender,
       chooseDate: state => state.chooseDate,
       curDate: state => state.curDate
+    }),
+    ...mapGetters({
+      chooseDatesub5: "chooseDatesub5"
     })
   },
-  mounted() {
+  updated() {
     let grays = document.getElementsByClassName("day-blue");
-    this.yuyue_res.forEach((item, index) => {
-    
-      grays[index].innerHTML = `<div><p><span>${item.name}</span><span>${
-        item.type_id
-      }</span><span>${item.age}</span></p>
+
+    if (grays.length != 0) {
+      this.yuyue_res.forEach((item, index) => {
+        if (grays[index]) {
+          grays[index].innerHTML = `<div class="add-day"><p><span>${
+            item.name
+          }</span><span>${item.type_id}</span><span>${item.age}</span></p>
                             <p><span>${item.tel_one}</span></p>
                             <p><span>${item.items}</span></p>
                             <p><span>${
                               item.time_frame_begin
                             } - ${+item.time_frame_begin.substr(0, 2) +
-        1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
-    });
+            1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+        }
+      });
+    }
   }
 };
 </script>

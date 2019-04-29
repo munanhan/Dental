@@ -279,7 +279,6 @@ export default {
     },
     changePassword() {
       let that = this;
-      console.log(that.formData);
       that.$refs["addYuyueFrom"].validate(valid => {
         if (valid) {
           that.commitLoading = true;

@@ -13,11 +13,11 @@ export default {
     btn_act: null,
 
     //预约时间
-    yuyue_date:{
-        'curDate':null,
-        'chooseDate':null,
-        'myCalender':null,
-    },
+    // yuyue_date:{
+    //     'curDate':null,
+    //     'chooseDate':null,
+    //     'myCalender':null,
+    // },
     //...
     curDate:null,
     chooseDate:null,
