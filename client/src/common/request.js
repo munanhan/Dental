@@ -32,9 +32,9 @@ instance.interceptors.request.use(
             config.params = config.params || {};
             config.params["_d"] = Date.now();
         }
-
+      
         config.url = rejectParams(config.url, config.params || config.data);
-
+        
         //set 默认值
         return config;
     },

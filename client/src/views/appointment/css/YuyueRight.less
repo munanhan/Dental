@@ -220,9 +220,15 @@
                     cursor: pointer;
                     background-color: @hover-color;
                   }
+                  &:not(.day-blue) {
+                    .add-day {
+                      display: none;
+                    }
+                  }
                   &.day-blue {
                       font-size: 12px;
                       position: relative;
+                     
                       >div{
                         background-color: rgba(151, 189, 214, 1);
                         position: absolute;
