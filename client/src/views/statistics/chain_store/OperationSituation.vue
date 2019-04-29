@@ -149,7 +149,12 @@
 export default {
     name: "OperationSituation",
 
-    props: {},
+    props: {
+        update: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             search: {
@@ -268,16 +273,18 @@ export default {
             window.attachEvent("bodyChange", that.resizeContent);
         }
     },
+
     watch: {
         update(newValue, oldValue) {
             let that = this;
+
             if (newValue) {
-                that.getData();                
+                that.getData();
                 that.$emit("update:update", false);
             }
         }
-
     },
+
     computed: {},
     methods: {
         resizeContent() {
@@ -413,8 +420,6 @@ export default {
         getData() {
             let that = this;
 
-            that.resizeContent();
-
             // 暂时关闭
             //     that.$api[that.api]
             //         [that.apiMethods](params)
@@ -455,7 +460,6 @@ export default {
         padding: 10px;
         border-bottom: 1px solid #e3e3e3;
         height: 40px;
-        width: 100%;
     }
 
     .operation-content {

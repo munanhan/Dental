@@ -108,7 +108,12 @@
 export default {
     name: "TrendAnalysis",
     components: {},
-    props: {},
+    props: {
+        update: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             search: {
@@ -215,8 +220,6 @@ export default {
         getData() {
             let that = this;
 
-            that.resizeContent();
-
             // 暂时关闭
             //     that.$api[that.api]
             //         [that.apiMethods](params)
@@ -269,8 +272,7 @@ export default {
     }
 
     .trend-content {
-
-        .line-title{
+        .line-title {
             margin: 10px 0;
             text-align: center;
             font-size: 22px;

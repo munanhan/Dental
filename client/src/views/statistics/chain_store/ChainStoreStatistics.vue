@@ -19,13 +19,13 @@
 
             <!-- 运营情况 -->
             <operation-situation
-                v-show="content.operationSituation"
+                v-if="content.operationSituation"
                 :update.sync="operationSituationUpdate"
             ></operation-situation>
 
             <!-- 趋势分析 -->
             <trend-analysis
-                v-show="content.trendAnalysis"
+                v-if="content.trendAnalysis"
                 :update.sync="trendAnalysisUpdate"
             ></trend-analysis>
         </div>
@@ -52,7 +52,8 @@ export default {
     data() {
         return {
             content: {
-                operationSituation: true,
+                //这里改成了flase用于处理tab点进去没有刷新图表
+                operationSituation: false,
                 trendAnalysis: false
             },
 
@@ -61,16 +62,26 @@ export default {
         };
     },
     created() {},
-    mounted() {},
+    mounted() {
+    },
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
 
             if (newValue) {
+                let hasSet = false;
+
                 for (var key in that.content) {
                     if (that.content[key]) {
                         that[key + "Update"] = true;
+                        hasSet = true;
                     }
+                }
+
+                //用于处理图表没有显示, 上面的模块显示情况改成了v-if,不然图片点击进去没有渲染
+                if(!hasSet){
+                    that.content.operationSituation = true;
+                    that.operationSituationUpdate = true;
                 }
 
                 //更新原来的refresh, 防止下次点击时不通知更新
