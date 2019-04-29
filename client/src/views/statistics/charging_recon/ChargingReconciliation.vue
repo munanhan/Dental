@@ -193,13 +193,17 @@ export default {
 
         border-right: 1px solid #e3e3e3;
 
+        /deep/ .el-menu {
+            border-right: 0;
+        }
+
         .menu-icon {
             margin-right: 10px;
         }
     }
 
     .right-content {
-        flex: 1 auto;
+        flex: 1;
         overflow: auto;
     }
 }

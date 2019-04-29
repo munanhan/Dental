@@ -111,10 +111,14 @@ export default {
         .menu-icon {
             margin-right: 10px;
         }
+
+        /deep/ .el-menu {
+            border-right: 0;
+        }
     }
 
     .right-content {
-        flex: 1 auto;
+        flex: 1;
         overflow: auto;
     }
 }
