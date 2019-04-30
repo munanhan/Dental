@@ -465,6 +465,7 @@ export default {
 }
 
 
+
 .content{
     background: white;
     height: 100%;
@@ -473,9 +474,14 @@ export default {
     margin-bottom: 10px;
     /*height: 700px;*/
     /*padding: 10px 0 0 10px;*/
+    .data_content {
+        /*border: 1px solid #dbdbdb;*/
+        margin-bottom: 10px;
+        height: 700px;
+        /*padding: 10px 0 0 10px;*/
 
-    /deep/ .el-tabs__header .el-tabs__nav-scroll {
-      padding-left: 0 ;
+
+        
     }
   }
 }
