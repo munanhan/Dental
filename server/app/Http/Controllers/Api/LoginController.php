@@ -21,12 +21,10 @@ class LoginController extends Controller
         $user=$this->getFirst($this->getUsername());
 
         if($user &&($user->status===0)){
-            //throw new UnauthorizedHttpException('','Account disabled');
-            return response()->json(returnMessage('Account disabled',403),$this->failureStatus);
+            return message('Account disabled',403);
         }
 
         return $this->authenticate();
-
     }
 
     public function refreshToken()

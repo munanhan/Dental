@@ -30,12 +30,12 @@ trait ProxyHelpers
             $response = $client->post($url, ['form_params' => $params]);
 
             if($response->getStatusCode() ===200){
-                return returnMessage('Login successful','200', json_decode($response->getBody()->getContents(), true));
+                return message('Login successful','200', json_decode($response->getBody()->getContents(), true));
             }
 
         } catch (RequestException $exception) {
-            return response()->json(returnMessage('Incorrect user name or password',401),$this->failureStatus);
-            //throw new UnauthorizedHttpException('','Incorrect user name or password');
+            return message('Incorrect user name or password',401);
+
         }
     }
 
@@ -58,11 +58,11 @@ trait ProxyHelpers
             $respond = $client->post($url, ['form_params' => $params]);
 
             if ($respond->getStatusCode() ===200 ) {
-                return returnMessage('Login successful','200', json_decode($respond->getBody()->getContents(), true));
+                return message('Login successful','200', json_decode($respond->getBody()->getContents(), true));
             }
 
         } catch (RequestException $exception) {
-            return response()->json(returnMessage('Request failure server error',401),$this->failureStatus);
+            return message('Request failure server error',401);
         }
 
     }
