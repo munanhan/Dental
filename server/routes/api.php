@@ -44,8 +44,6 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::post('registration','RegisterController@register');
 
-    Route::post('registration','RegisterController@index');
-
     Route::post('refreshment','LoginController@refreshToken');
 
     Route::get('message','UserController@getMessage');

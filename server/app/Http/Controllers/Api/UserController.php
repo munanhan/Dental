@@ -56,10 +56,6 @@ class UserController extends Controller
        return Redis::set('phone','13451728874');
     }
 
-    public function getHashPassword()
-    {
-        return Hash::make('11111111');
-    }
 
     public function getConfig()
     {
