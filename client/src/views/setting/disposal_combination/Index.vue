@@ -28,11 +28,11 @@
                                 ></i>
                                 <i
                                     class="fa fa-edit combo_btn"
-                                    @click=""
+                                    @click="showEditComboDialog"
                                 ></i>
                                 <i
                                     class="fa fa-trash-alt combo_btn"
-                                    @click=""
+                                    @click="delCombo"
                                 ></i>
                             </div>
                         </el-col>
@@ -50,7 +50,7 @@
                                     ref="tree"
                                     node-key="id"
                                 >
-                                <span slot-scope="{ node, data }">
+                                <span slot-scope="{ node }">
                                     <span>
                                         <div v-if="node.level == 1">
                                           <i class="fa fa-folder-open"></i> {{ node.label }}
@@ -80,9 +80,10 @@
                                 highlight-current-row
                                 style="width: 100%"
                             >
+                                
                                 <el-table-column
-                                    label="处置代码"
-                                    prop="disposal_code"
+                                    label="费用类型"
+                                    prop="cost_type"
                                 >
                                 </el-table-column>
                                 <el-table-column
@@ -91,94 +92,32 @@
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                    label="价格"
+                                    label="处置说明"
+                                    prop="remarks"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="单价"
                                     prop="price"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                    label="单位"
-                                    prop="unit"
+                                    label="数量"
+                                    prop="qty"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                    label="按会员折扣"
-                                    prop="mem_discount"
+                                    label="费用"
+                                    prop="cost"
                                 >
-                                    <template slot-scope="scope">
-                                        <div v-if="scope.row.mem_discount == 1">
-                                            是
-                                        </div>
-                                        <div v-if="scope.row.mem_discount == 0">
-                                            否
-                                        </div>
-                                    </template>
                                 </el-table-column>
-                                <el-table-column
-                                    label="费用类型"
-                                    prop="cost_type"
-                                >
 
-                                </el-table-column>
-                                <el-table-column
-                                    label="计费方式"
-                                    prop="billing_mode"
-                                >
-                                    <template slot-scope="scope">
-                                        <div v-if="scope.row.billing_mode == 1">
-                                            按牙齿数计费
-                                        </div>
-                                        <div v-if="scope.row.billing_mode == 2">
-                                            按其他计费
-                                        </div>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    label="备注"
-                                    prop="remarks"
-                                >
-                                </el-table-column>
                                 <el-table-column
                                     label="操作"
                                     prop="operation"
                                     width="200"
                                 >
                                     <template slot-scope="scope">
-                                        <div
-                                            v-if="scope.row.status == 0"
-                                            style="display: inline-block;margin-right: 10px;"
-                                        >
-                                            <el-tooltip
-                                                effect="dark"
-                                                content="停用"
-                                                placement="bottom"
-                                            >
-                                                <el-button
-                                                    type="warning"
-                                                    size="mini"
-                                                    icon="el-icon-minus"
-                                                    circle
-                                                    @click.stop="stop(scope.row.id)"
-                                                ></el-button>
-                                            </el-tooltip>
-                                        </div>
-                                        <div
-                                            v-if="scope.row.status == 1"
-                                            style="display: inline-block;padding-right: 10px"
-                                        >
-                                            <el-tooltip
-                                                effect="dark"
-                                                content="启用"
-                                                placement="bottom"
-                                            >
-                                                <el-button
-                                                    type="success"
-                                                    size="mini"
-                                                    icon="el-icon-check"
-                                                    circle
-                                                    @click.stop="start(scope.row.id)"
-                                                ></el-button>
-                                            </el-tooltip>
-                                        </div>
                                         <el-tooltip
                                             effect="dark"
                                             content="修改"
@@ -223,22 +162,6 @@
                                         @click="showAddDialog"
                                     >添加</el-button>
                                 </span>
-
-                                <span class="">
-                                    <el-button
-                                        type="primary"
-                                        style="margin-right: 10px;"
-                                        @click="importData"
-                                    >导入Excel</el-button>
-                                </span>
-
-                                <span class="">
-                                    <el-button
-                                        type="primary"
-                                        style="margin-right: 10px;"
-                                        @click="exportData"
-                                    >导出Excel</el-button>
-                                </span>
                             </el-col>
                         </div>
                     </el-row>
@@ -257,24 +180,40 @@
           :p_id="parentId"
         >
         </add-combo>
-        <!-- 修改处置与收费 -->
-        <!-- <edit-disposal-charging
-      :show.sync="editDisposalChargingDialog"
-      :editItem="editItem"
-    >
-    </edit-disposal-charging> -->
-
+        <!-- 修改组合 -->
+        <edit-combo
+          :show.sync="editComboDialog"
+          :editItem="editItem"
+        >
+        </edit-combo>
+        <!-- 修改数量 -->
+        <edit-qty
+          :show.sync="editQtyDialog"
+          :editItem="editItem"
+        >
+        </edit-qty>
+        <!-- 添加 -->
+        <add
+          :show.sync="addDialog"
+        >
+        </add>
     </div>
 </template>
 
 <script>
 import AddComboDir from './AddComboDirDialog';
 import AddCombo from './AddComboDialog';
+import EditCombo from './EditComboDialog';
+import EditQty from './EditQtyDialog';
+import Add from './AddDialog';
 export default {
-    name: "Index",
+    name: "DisposalCombination",
     components: {
       AddComboDir,
-      AddCombo
+      AddCombo,
+      EditCombo,
+      EditQty,
+      Add
     },
     props: {
         refresh: {
@@ -284,35 +223,51 @@ export default {
     },
     data() {
         return {
+            //修改列表
             editItem: {},
-            tableHeight: 700,
-            menuHeight: 660,
+            //表格高度
+            tableHeight: 708,
+            //菜单高度
+            menuHeight: 667,
+            //记录选中这列的数据
             selectThis: false,
+            //记录当前节点的数据
             currentNode: {},
+            //添加组合目录的窗口
             addComboDirDialog:false,
+            //添加组合的窗口
             addComboDialog:false,
+            //修改组合的窗口
+            editComboDialog:false,
+            //修改数量的窗口
+            editQtyDialog:false,
+            //添加的窗口
+            addDialog:false,
+            //记录父id
             parentId:0,
+            //对应tree的字段
             treeField:{
               id:'id',
               children:'children',
-              label:'label'
+              label:'combo_name'
             },
+            //左菜单的数据
             menuData: [
                 {
                     id: 1,
-                    label: "蛀牙用药组合",
+                    combo_name: "蛀牙用药组合",
                     level: 1,
                     p_id:0,
                     children: [
                         {
                             id: 6,
-                            label: "白+黑",
+                            combo_name: "白+黑",
                             level: 2,
                             p_id:1
                         },
                         {
                             id: 8,
-                            label: "必兰麻+保丽净",
+                            combo_name: "必兰麻+保丽净",
                             level: 2,
                             p_id:1
                         }
@@ -320,13 +275,13 @@ export default {
                 },
                 {
                     id: 2,
-                    label: "拔牙用药组合",
+                    combo_name: "拔牙用药组合",
                     level: 1,
                     p_id:0,
                     children: [
                         {
                             id: 7,
-                            label: "西药+中药",
+                            combo_name: "西药+中药",
                             level: 2,
                             p_id:2
                         }
@@ -334,56 +289,48 @@ export default {
                 },
                 {
                     id: 3,
-                    label: "服用类组合",
+                    combo_name: "服用类组合",
                     level: 1,
                     p_id:0
                 },
                 {
                     id: 4,
-                    label: "外敷类组合",
+                    combo_name: "外敷类组合",
                     level: 1,
                     p_id:0
                 },
                 {
                     id: 5,
-                    label: "日常类组合",
+                    combo_name: "日常类组合",
                     level: 1,
                     p_id:0
                 }
             ],
+            //表单数据
             tableData: [
                 {
                     id: 1,
-                    disposal_code: "001",
                     disposal_name: "必兰麻",
-                    price: 50.0,
-                    unit: "项",
-                    mem_discount: 1,
+                    price: 50.00,
                     cost_type: "西药费",
-                    billing_mode: 1,
                     remarks: "无",
-                    operation: "",
-                    status: 1
+                    qty:2,
+                    cost:100.00
                 },
                 {
                     id: 2,
-                    disposal_code: "002",
                     disposal_name: "保丽净",
-                    price: 999.99,
-                    unit: "项",
-                    mem_discount: 0,
+                    price: 99.99,
                     cost_type: "西药费",
-                    billing_mode: 2,
                     remarks: "无",
-                    operation: "",
-                    status: 0
-                }
+                    qty:1,
+                    cost:99.99
+                },
             ]
         };
     },
     created() {
-        let that = this;
-        that.resizeTable();
+
     },
     mounted() {
         let that = this;
@@ -414,12 +361,38 @@ export default {
 
     computed: {},
     methods: {
+      delCombo(){
+          //显示修改组合窗口
+          let that = this;
+          if (Object.keys(that.currentNode).length == 0) {
+            alert('请选择一项');
+          }
+          else{
+            alert(that.currentNode.id);
+          }
+
+
+        },
+        showEditComboDialog(){
+          //显示修改组合窗口
+          let that = this;
+          if (Object.keys(that.currentNode).length == 0) {
+            alert('请选择一项');
+          }
+          else{
+            that.editItem = that.currentNode;
+            that.editComboDialog = true;
+          }
+
+
+        },
         clickNode() {
             //点击该节点
             // let that = this;
             // that.selectThis = true;
         },
         getMenuTableData(data) {
+            //获取点击菜单数据
             let that = this;
             that.selectThis = true;
             that.currentNode = data;
@@ -429,12 +402,6 @@ export default {
         showAddComboDialog(){
           //弹出添加组合窗口
           let that = this;
-          // if (that.currentNode.level == 1) {
-          //    that.parentId = that.currentNode.id;
-          // }
-          // if (that.currentNode.level == 2) {
-          //    that.parentId = that.currentNode.p_id;
-          // }
           if (Object.keys(that.currentNode).length==0) {
              alert('请先选择一个目录');
           }
@@ -449,11 +416,12 @@ export default {
         },
         resizeTable() {
             let that = this;
-            if (that.$refs.menuContent.clientHeight != 0) {
+            console.log(that.$refs.menuContent.clientHeight);
+            // if (that.$refs.menuContent.clientHeight != 0) {
                 let tableHeight = that.$refs.menuContent.clientHeight - 70;
                 that.tableHeight = tableHeight;
                 that.menuHeight = tableHeight - 40;
-            }
+            // }
 
             // that.$refs.search.clientHeight -
             // 70;
@@ -471,7 +439,7 @@ export default {
             //修改
             let that = this;
             that.editItem = editItem;
-            that.editDisposalChargingDialog = true;
+            that.editQtyDialog = true;
         },
         del(id) {
             //删除
@@ -479,10 +447,14 @@ export default {
         },
         showAddDialog() {
             let that = this;
-            that.addDisposalChargingDialog = true;
+            that.addDialog = true;
         },
-        importData() {},
-        exportData() {},
+        importData() {
+            //导入
+        },
+        exportData() {
+            //导出
+        },
 
         getPatientInfo() {
             let that = this;

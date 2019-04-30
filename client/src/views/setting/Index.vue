@@ -2,8 +2,7 @@
 
     <div class="setting">
       <!-- tab -->
-
-      <el-tabs v-model="curTab"
+        <el-tabs v-model="curTab"
                @tab-click="handleClick"
       >
 
@@ -71,18 +70,19 @@
           <operation-record :refresh.sync="OperationRecord"></operation-record>
         </el-tab-pane>
       </el-tabs>
+      
     </div>
 </template>
 
 <script>
 import ClinicInformation from "./ClinicInformation";
-import PermissionSettings from "./PermissionSettings";
-import StaffManagement from "./StaffManagement/Index";
-import DisposalCharging from "./DisposalCharging/Index";
-import DisposalCombination from "./DisposalCombination/Index";
+import PermissionSettings from "./permission_settings/Index";
+import StaffManagement from "./staff_management/Index";
+import DisposalCharging from "./disposal_charging/Index";
+import DisposalCombination from "./disposal_combination/Index";
 import CaseTemplate from "./CaseTemplate";
-import MemberUpgrade from "./MemberUpgrade/Index";
-import PatientRecyclingBin from "./PatientRecyclingBin/Index";
+import MemberUpgrade from "./member_upgrade/Index";
+import PatientRecyclingBin from "./patient_recyclingBin/Index";
 import OperationRecord from "./OperationRecord";
 
 

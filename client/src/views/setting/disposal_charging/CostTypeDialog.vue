@@ -6,12 +6,13 @@
         width="500px"
         :before-close="closeDialog"
         v-dialog-drag
+        append-to-body
         >
       <el-row>
       <div class="search">
         <el-col :span="2">
               <span>
-                  <el-button type="primary" @click="addDialog = true">新增</el-button>
+                  <el-button type="primary" @click="addDialog = true" style="background-color:#2f6386;border:1px solid #2f6386;">新增</el-button>
               </span>
         </el-col>
       </div>
@@ -43,6 +44,7 @@
                                 size="mini"
                                 icon="el-icon-edit"
                                 circle
+                                style="background-color:#2f6386;border:1px solid #2f6386;"
                                 @click.stop="showEditDialog(scope.row)"
                             ></el-button>
                         </el-tooltip>
@@ -205,6 +207,7 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
+
 .staff_name{
   padding: 10px;
 }

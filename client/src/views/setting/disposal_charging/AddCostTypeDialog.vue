@@ -1,32 +1,33 @@
 <template>
-	<div>
+  <div>
     <el-dialog
-        title="修改费用类型"
+        title="添加费用类型"
         :visible.sync="show"
         width="350px"
         :before-close="closeDialog"
         :close-on-click-modal="false"
         v-dialog-drag
+        append-to-body
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="费用类型" prop="cost_type">
             <el-input v-model="form.cost_type"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">修改</el-button>
+            <el-button type="primary" @click="submitForm('form')" style="background-color:#2f6386;border:1px solid #2f6386;">添加</el-button>
             <el-button @click="closethisDialog">关闭</el-button>
           </el-form-item>
 
         </el-form>
     </el-dialog>
 
-	</div>
-</template>	
+  </div>
+</template> 
 <script>
-import EditDialogForm from "@views/base/EditDialogForm";
+import AddDialogForm from "@views/base/AddDialogForm";
 export default {
-    name: 'EditCostType',
-    mixins: [EditDialogForm],
+    name: 'AddCostType',
+    mixins: [AddDialogForm],
     components: {},
       props: {
         // refresh: {

@@ -1,5 +1,14 @@
 <template>
-    <div class="content" ref="menuContent">
+  <div>
+        <!--修改密码-->
+      <el-dialog
+        title="处置与收费设置"
+        :visible.sync="show"
+        width="1246px"
+        :before-close="closeDialog"
+        v-dialog-drag
+        >
+      <div class="content" ref="menuContent">
       <el-container>
         <el-aside class="left" :style="{'width':200+'px'}">
             <div class="menu_title">
@@ -226,24 +235,30 @@
 
 
     </div>
-</template>
+      </el-dialog>
 
+      
+  </div>
+</template> 
 <script>
-import CostType from './CostTypeDialog';
-import AddDisposalCharging from './AddDisposalChargingDialog';
-import EditDisposalCharging from './EditDisposalChargingDialog';
+
+import DialogForm from "@views/base/DialogForm";
+import CostType from '../disposal_charging/CostTypeDialog';
+import AddDisposalCharging from '../disposal_charging/AddDisposalChargingDialog';
+import EditDisposalCharging from '../disposal_charging/EditDisposalChargingDialog';
 export default {
-    name: 'Index',
+    name: 'DisposalCharging',
+    mixins: [DialogForm],
     components: {
       CostType,
       AddDisposalCharging,
       EditDisposalCharging
     },
       props: {
-        refresh: {
-          type: Boolean,
-          required: true
-        }
+        // refresh: {
+        //   type: Boolean,
+        //   required: true
+        // }
       },
       data() {
         return {
@@ -327,18 +342,18 @@ export default {
       },
       created() {},
       mounted() {
-        let that = this;
+        // let that = this;
 
-        that.$nextTick(() => {
-            that.resizeTable();
-        });
+        // that.$nextTick(() => {
+        //     that.resizeTable();
+        // });
 
-        //监听事件,由layout那边的resize抛出的
-        if (window.addEventListener) {
-            window.addEventListener("bodyChange", that.resizeTable);
-        } else {
-            window.attachEvent("bodyChange", that.resizeTable);
-        }
+        // //监听事件,由layout那边的resize抛出的
+        // if (window.addEventListener) {
+        //     window.addEventListener("bodyChange", that.resizeTable);
+        // } else {
+        //     window.attachEvent("bodyChange", that.resizeTable);
+        // }
     },
     watch: {
         update(newValue, oldValue) {
@@ -471,6 +486,10 @@ export default {
       background-color: @linght-background-color;
       cursor:pointer;
     }
+    /deep/ .el-table__body td{
+      padding: 3px 0;
+    }
+
   }
 }
 .right{
