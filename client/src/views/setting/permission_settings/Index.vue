@@ -281,18 +281,18 @@ export default {
     height: 100%;
 }
 
-.content{
-.data_content {
-    /*border: 1px solid #dbdbdb;*/
-    margin-bottom: 10px;
-    height: 700px;
-    /*padding: 10px 0 0 10px;*/
+.content {
+    .data_content {
+        /*border: 1px solid #dbdbdb;*/
+        margin-bottom: 10px;
+        height: 700px;
+        /*padding: 10px 0 0 10px;*/
 
-    /deep/ .el-tabs__header .el-tabs__nav-scroll {
-      padding-left: 0 ;
+        /deep/ .el-tabs__header .el-tabs__nav-scroll {
+            padding-left: 0;
+        }
     }
 }
-} 
 .left {
     border: 1px solid #dbdbdb;
     height: 100%;
