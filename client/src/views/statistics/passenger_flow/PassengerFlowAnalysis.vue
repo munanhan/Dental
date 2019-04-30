@@ -314,17 +314,5 @@ export default {
             }
         }
     }
-
-    //     <div class="detail-content">
-    //     <div class="detail-row">
-    //         <div class="detail-left"></div>
-    //         <div class="detail-right"></div>
-    //     </div>
-
-    //     <div class="detail-row">
-    //         <div class="detail-left"></div>
-    //         <div class="detail-right"></div>
-    //     </div>
-    // </div>
 }
 </style>
