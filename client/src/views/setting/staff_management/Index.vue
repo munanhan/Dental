@@ -179,7 +179,7 @@ import SetPassword from "./SetPassword";
 import AddDialog from "./AddDialog";
 import EditDialog from "./EditDialog";
 export default {
-    name: 'Index',
+    name: 'StaffManagement',
     components: {
        SetPassword,
        AddDialog,

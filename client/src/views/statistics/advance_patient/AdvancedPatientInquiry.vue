@@ -416,6 +416,9 @@ export default {
 
             if (newValue) {
                 that.resizeTable();
+
+                //更新原来的refresh, 防止下次点击时不通知更新
+                that.$emit("update:refresh", false);
             }
         }
     },

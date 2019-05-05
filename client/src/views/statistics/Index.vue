@@ -70,8 +70,8 @@ import ChargingReconciliation from "./charging_recon/ChargingReconciliation";
 import ClinicOperation from "./clinic_operation/ClinicOperation";
 import EmployeePerformance from "./employee_perform/EmployeePerformance";
 import ExternalProcessing from "./external_process/ExternalProcessing";
-import PassengerFlowAnalysis from "./PassengerFlowAnalysis";
-import WechatOperation from "./WechatOperation";
+import PassengerFlowAnalysis from "./passenger_flow/PassengerFlowAnalysis";
+import WechatOperation from "./wechat_operation/WechatOperation";
 
 export default {
     name: "Statistics",

@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-dialog
-        title="修改处置收费项"
+        title="添加处置收费项"
         :visible.sync="show"
         width="400px"
         :before-close="closeDialog"
         :close-on-click-modal="false"
         v-dialog-drag
+        append-to-body
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="100px">
           <el-form-item label="处置代码" prop="disposal_code">
@@ -22,10 +23,8 @@
             <el-input v-model="form.unit"></el-input>
           </el-form-item>
           <el-form-item label="按会员折扣" prop="mem_discount">
-            <el-radio-group v-model="form.mem_discount">
-              <el-radio :label="1">是</el-radio>
-              <el-radio :label="0">否</el-radio>
-            </el-radio-group>
+            <el-radio v-model="form.mem_discount" label="1">是</el-radio>
+            <el-radio v-model="form.mem_discount" label="0">否</el-radio>
           </el-form-item>
           <el-form-item label="费用类型" prop="cost_type">
             <el-select
@@ -67,7 +66,7 @@
             <el-input v-model="form.remarks"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">修改</el-button>
+            <el-button type="primary" @click="submitForm('form')" style="background-color:#2f6386;border:1px solid #2f6386;">添加</el-button>
             <el-button @click="closethisDialog">关闭</el-button>
           </el-form-item>
 
@@ -77,10 +76,10 @@
   </div>
 </template> 
 <script>
-import EditDialogForm from "@views/base/EditDialogForm";
+import AddDialogForm from "@views/base/AddDialogForm";
 export default {
-    name: 'EditDisposalCharging',
-    mixins: [EditDialogForm],
+    name: 'AddDisposalCharging',
+    mixins: [AddDialogForm],
     components: {},
       props: {
         // refresh: {
@@ -148,7 +147,7 @@ export default {
               disposal_name:'',
               price:undefined,
               unit:'',
-              mem_discount:undefined,
+              mem_discount:'',
               cost_type:'',
               billing_mode:'',
               remarks:'',

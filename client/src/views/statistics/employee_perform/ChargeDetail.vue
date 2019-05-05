@@ -483,6 +483,7 @@ export default {
             if (newValue) {
                 that.resizeTable();
 
+                //通知外部，内部数据刷新完毕
                 that.$emit("update:update", false);
             }
         }

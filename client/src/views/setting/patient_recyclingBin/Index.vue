@@ -141,7 +141,7 @@
 <script>
 
 export default {
-    name: 'Index',
+    name: 'PatientRecyclingBin',
     components: {
       
     },

@@ -480,7 +480,10 @@ const genRoute = async (router, store) => {
 
 //初始化路由
 const router = new VueRouter({
-    routes
+    routes,
+
+    //增加html5的history的模式
+    mode: 'history'
 });
 
 //用于处理刷新后是否重新获取重新渲染页面

@@ -137,7 +137,7 @@
 <script>
 import SetMemberDialog from "./SetMemberDialog";
 export default {
-    name: 'Index',
+    name: 'MemberUpgrade',
     components: {
       SetMemberDialog
     },

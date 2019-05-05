@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Traits\SendSmsHelpers;
 use App\Http\Controllers\Traits\SmsPolicy;
+use Illuminate\Support\Facades\Validator;
 
 
 
