@@ -291,13 +291,9 @@
 </template>
 
 <script>
-import Base from "../Base";
-
 export default {
     name: "AdvancedPatientInquiry",
     components: {},
-
-    mixins: [Base],
 
     props: {
         refresh: {
@@ -409,6 +405,7 @@ export default {
         } else {
             window.attachEvent("bodyChange", that.resizeTable);
         }
+
     },
     watch: {
         refresh(newValue, oldValue) {
@@ -419,6 +416,8 @@ export default {
 
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
+
+                // that.getData();
             }
         }
     },
@@ -471,10 +470,27 @@ export default {
             that.tableHeight = tableHeight;
         },
 
-        afterGetData(res) {
+        getData() {
             let that = this;
 
-            that.tableData = res.data;
+            that.$api.aaaa
+                .bbbb(that.search)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.tableData = res.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
         }
     }
 };
