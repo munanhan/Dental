@@ -284,7 +284,6 @@
 </template>
 
 <script>
-import Base from "../Base";
 import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
 import PayType from "./PayType";
 import FirstVisit from "./FirstVisit";
@@ -308,9 +307,12 @@ export default {
         ReservationStatus
     },
 
-    mixins: [Base],
-
-    props: {},
+    props: {
+        refresh: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             search: {
@@ -861,8 +863,27 @@ export default {
             }, 300);
         },
 
-        afterGetData(res) {
+        getData() {
             let that = this;
+
+            that.$api.aaaa
+                .bbbb(that.search)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.tableData = res.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
         }
     }
 };
