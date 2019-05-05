@@ -4,8 +4,8 @@ const prefix = '/';
 
 export function login(data) {
     return request({
-        url: `${prefix}/login`,
+        url: `${prefix}login`,
         method: 'post',
-        params: data
+        data
     })
 }
