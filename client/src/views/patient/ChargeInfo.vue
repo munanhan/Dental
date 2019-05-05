@@ -100,13 +100,14 @@
         v-model="value"
         placeholder="其他"
         class="button"
+        @change="dialogshow(value)"
       >
         <el-option
           v-for="item in options"
           :key="item.value"
           :label="item.label"
           :value="item.value"
-          @click="dialog(item.dialog)"
+           
         >
 
         </el-option>
@@ -115,7 +116,7 @@
       <el-button class="button">流水单</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
-    <tuifei-vue :tuifeishow.sync="tuifei"></tuifei-vue>
+    <tuifei-vue :show.sync="tuifei"></tuifei-vue>
   </div>
 </template>
 
@@ -139,14 +140,14 @@ export default {
       zuofei: false,
       options: [
         {
-          value: "选项1",
+          value: "tuifei",
           label: "退费",
-          dialog: "tuifei"
+         
         },
         {
-          value: "选项2",
+          value: "zuofei",
           label: "作废",
-          dialog: "zuofei"
+         
         },
         {
           value: "选项3",
@@ -177,9 +178,9 @@ export default {
   },
   computed: {},
   methods: {
-    dialog(value) {
+    dialogshow(value) {
       this[value] = true;
-      console.log(this[value]);
+   
     },
     getChargeInfo() {},
 
