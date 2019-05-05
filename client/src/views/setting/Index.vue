@@ -83,7 +83,7 @@ import DisposalCombination from "./disposal_combination/Index";
 import CaseTemplate from "./CaseTemplate";
 import MemberUpgrade from "./member_upgrade/Index";
 import PatientRecyclingBin from "./patient_recyclingBin/Index";
-import OperationRecord from "./OperationRecord";
+import OperationRecord from "./operation_record/Index";
 
 
 export default {

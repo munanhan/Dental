@@ -24,6 +24,7 @@
                                      font-size:20px;
                                      cursor:pointer;
                                      margin-left:10px"
+                                     @click="addRole = true"
                                     
                                 ></i>
                             </div>
@@ -64,7 +65,6 @@
                                           show-checkbox
                                           node-key="id"
                                           :props="treeField"
-                                          style="overflow:auto;"
                                           ref="permissionPcTree"
                                           >
                                         
@@ -82,11 +82,10 @@
                                     </el-tab-pane>
                                     <el-tab-pane label="移动端">
                                           <el-tree
-                                            :data="permissionList"
+                                            :data="permissionPhoneList"
                                             show-checkbox
                                             node-key="id"
                                             :props="treeField"
-                                            style="overflow:auto;"
                                             ref="permissionPhoneTree"
 
                                             >
@@ -108,8 +107,16 @@
                     </el-row>
                     <el-row>
                         <div class="btn_content">
-                            <el-col :span="24">
+                            <el-col :span="20">
                                 <el-checkbox :checked="openPermission" @change="openAllPermission">展开权限树</el-checkbox>
+                            </el-col>
+                            <el-col :span="1">
+                                <el-button
+                                type="primary"
+                                @click.stop="savePermission"
+                                >
+                                  保存
+                                </el-button>
                             </el-col>
                         </div>
                     </el-row>
@@ -117,19 +124,22 @@
             </el-main>
         </el-container>
 
-        <!-- 添加组合目录 -->
-        <!--         <add-combo-dir
-            :show.sync="addComboDirDialog"
+        <!-- 添加角色 -->
+        <add-role
+            :show.sync="addRole"
         >
-        </add-combo-dir> -->
+        </add-role>
 
     </div>
 </template>
 
 <script>
+import AddRole from './AddRoleDialog';
 export default {
     name: "PermissionSettings",
-    components: {},
+    components: {
+      AddRole
+    },
     props: {
         refresh: {
             type: Boolean,
@@ -138,6 +148,8 @@ export default {
     },
     data() {
         return {
+            addRole:false,
+            //添加角色
             editItem: {},
             //高度设定
             treeHight: 700,
@@ -177,6 +189,182 @@ export default {
                     id: 7,
                     role: "医生"
                 }
+            ],
+            permissionPhoneList: [
+                {
+                    id:1,
+                    p_name:'手机首页',
+                    p_id:0,
+                    level:1
+                },
+                {
+                    id:2,
+                    p_name:'手机患者',
+                    p_id:0,
+                    level:1,
+                    children:[
+                    {
+                        id:3,
+                        p_name:'手机添加患者',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:4,
+                        p_name:'手机查看患者信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:5,
+                        p_name:'手机查看处置记录',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:6,
+                        p_name:'手机查看收费信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:7,
+                        p_name:'手机查看影像信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:8,
+                        p_name:'手机查看病例信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:9,
+                        p_name:'手机查看外加工信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:10,
+                        p_name:'手机查看回访信息',
+                        p_id:2,
+                        level:2
+                    },
+                    {
+                        id:11,
+                        p_name:'手机查看质询信息',
+                        p_id:2,
+                        level:2
+                    }
+                    ]
+                },
+                    {
+                        id:12,
+                        p_name:'手机预约',
+                        p_id:0,
+                        level:1
+                    },
+                    {
+                        id:13,
+                        p_name:'手机沟通',
+                        p_id:0,
+                        level:1
+                    },
+                    {
+                        id:14,
+                        p_name:'手机统计',
+                        p_id:0,
+                        level:1
+                    },
+                    {
+                        id:15,
+                        p_name:'手机营销',
+                        p_id:0,
+                        level:1
+
+                    },
+                    {
+                      id:19,
+                      p_name:'手机管理',
+                      p_id:0,
+                      level:1,
+                      children:[
+                        {
+                          id:16,
+                          p_name:'手机客服',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:17,
+                          p_name:'手机库房',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:18,
+                          p_name:'手机回访',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:20,
+                          p_name:'手机诊所信息',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:21,
+                          p_name:'手机权限设置',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:22,
+                          p_name:'手机员工管理',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:23,
+                          p_name:'手机处置与收费',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:24,
+                          p_name:'手机处置组合',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:25,
+                          p_name:'手机病历模板',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:26,
+                          p_name:'手机会员升级',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:27,
+                          p_name:'手机患者回收站',
+                          p_id:19,
+                          level:2
+                        },
+                        {
+                          id:28,
+                          p_name:'手机操作记录',
+                          p_id:19,
+                          level:2
+                        },
+                      ],
+
+                    }
             ],
             permissionList: [
                 {
@@ -350,9 +538,10 @@ export default {
                           p_id:19,
                           level:2
                         },
-                      ]
+                      ],
+
                     }
-            ]
+            ],
         };
     },
     created() {},
@@ -385,7 +574,15 @@ export default {
 
     computed: {},
     methods: {
+        savePermission(){
+          //保存权限
+          let permissionPc = this.$refs.permissionPcTree.getCheckedNodes();
+          let permissionPhone = this.$refs.permissionPhoneTree.getCheckedNodes();
+          console.log(permissionPc);
+          console.log(permissionPhone);
+        },
         openAllPermission(){
+          //展开所有的权限
            let that = this;
            console.log(that.openPermission);
            that.openPermission = that.openPermission == true?false:true;
@@ -399,6 +596,7 @@ export default {
            }
         },
         selectTab(tab, event) {
+          //选择该角色
             console.log(tab, event);
         },
         getMenuTableData(row) {
@@ -465,7 +663,6 @@ export default {
 }
 
 
-
 .content{
     background: white;
     height: 100%;
@@ -474,14 +671,13 @@ export default {
     margin-bottom: 10px;
     /*height: 700px;*/
     /*padding: 10px 0 0 10px;*/
-    .data_content {
-        /*border: 1px solid #dbdbdb;*/
-        margin-bottom: 10px;
-        height: 700px;
-        /*padding: 10px 0 0 10px;*/
 
+    /deep/ .el-tabs__header .el-tabs__nav-scroll {
+      padding-left: 0 ;
+    }
 
-        
+    /deep/ .el-tabs__content{
+      overflow: auto;
     }
   }
 }
