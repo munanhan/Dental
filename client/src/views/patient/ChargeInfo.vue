@@ -106,22 +106,26 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
+          @click="dialog(item.dialog)"
         >
+
         </el-option>
       </el-select>
       <el-button class="button">预交款</el-button>
       <el-button class="button">流水单</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
+    <tuifei-vue :tuifeishow.sync="tuifei"></tuifei-vue>
   </div>
 </template>
 
 <script>
-
+import tuifeiVue from "./tuifei.vue";
+tuifeiVue;
 export default {
   name: "ChargeInfo",
   components: {
-      
+    tuifeiVue
   },
   props: {
     refresh: {
@@ -131,29 +135,37 @@ export default {
   },
   data() {
     return {
-      options: [{
-          value: '选项1',
-          label: '退费'
-        }, {
-          value: '选项2',
-          label: '作废'
-        }, {
-          value: '选项3',
-          label: '打印'
-        }, {
-          value: '选项4',
-          label: '收费设置'
-        }, {
-          value: '选项5',
-          label: '打印设置'
-        }],
-        value: ''
+      tuifei: false,
+      zuofei: false,
+      options: [
+        {
+          value: "选项1",
+          label: "退费",
+          dialog: "tuifei"
+        },
+        {
+          value: "选项2",
+          label: "作废",
+          dialog: "zuofei"
+        },
+        {
+          value: "选项3",
+          label: "打印"
+        },
+        {
+          value: "选项4",
+          label: "收费设置"
+        },
+        {
+          value: "选项5",
+          label: "打印设置"
+        }
+      ],
+      value: ""
     };
   },
   created() {},
-  mounted() {
-
-  },
+  mounted() {},
   watch: {
     refresh(newValue, oldValue) {
       let that = this;
@@ -165,13 +177,17 @@ export default {
   },
   computed: {},
   methods: {
+    dialog(value) {
+      this[value] = true;
+      console.log(this[value]);
+    },
     getChargeInfo() {},
 
     getDataDone() {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
-    },
+    }
   }
 };
 </script>
@@ -206,7 +222,8 @@ export default {
   margin-left: 10px;
 }
 
-/deep/ .el-table th, .el-table tr{
+/deep/ .el-table th,
+.el-table tr {
   background-color: #e5e5e5;
 }
 </style>
