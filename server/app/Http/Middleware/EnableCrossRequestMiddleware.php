@@ -18,6 +18,7 @@ class EnableCrossRequestMiddleware
         $response = $next($request);
         $origin = $request->server('HTTP_ORIGIN') ? $request->server('HTTP_ORIGIN') : '';
         $allow_origin = config('config.allow_origin');//获取允许跨域的列表
+        
         if (in_array($origin, $allow_origin)) {
             //设置跨域
             $response->header('Access-Control-Allow-Origin', $origin);
