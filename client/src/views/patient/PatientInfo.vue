@@ -1,8 +1,11 @@
 <template>
   <div class="patient-info">
 
-    <el-collapse style="overflow:auto">
-      <el-collapse-item style="width:1000px;margin-left:10px;margin-bottom:10px;">
+    <el-collapse
+      class="patien-content"
+      style="overflow:auto"
+    >
+      <el-collapse-item class="sliding-one">
         <template slot="title">
           <span class="base-fz">基本信息</span>
         </template>
@@ -125,6 +128,7 @@
         </div>
 
         <div class="patient-footer">
+
         </div>
 
         <div class="patient-bottom">
@@ -191,7 +195,7 @@
 
       </el-collapse-item>
 
-      <el-collapse-item
+      <!-- <el-collapse-item
         title="等待确认"
         style="width:1000px;margin-left:10px;margin-bottom:10px"
 
@@ -204,15 +208,26 @@
         <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
         <div>简化流程：设计简洁直观的操作流程；</div>
 
-      </el-collapse-item>
-
-      <el-collapse-item style="width:1000px;margin-left:10px;margin-bottom:10px">
+      </el-collapse-item> -->
+      <el-collapse-item
+        class="sliding-two"
+        style=""
+      >
         <template slot="title">
 
+          <span class="base-fz">初诊信息</span>
+
+        </template>
+        <div>水水水水</div>
+
+      </el-collapse-item>
+
+      <el-collapse-item
+        class="sliding-three"
+      >
+        <template slot="title">
           <span class="base-fz">亲友关系</span>
         </template>
-
-        <div></div>
 
       </el-collapse-item>
 
@@ -260,7 +275,7 @@ export default {
       sex: "",
       activeNames: ["1"],
       value2: null,
-      modinfo_show:false
+      modinfo_show: false
     };
   },
   created() {},
@@ -296,7 +311,7 @@ export default {
     handleChange(val) {
       console.log(val);
     },
-    Modify_info(){
+    Modify_info() {
       this.modinfo_show = true;
     }
   }
@@ -350,5 +365,21 @@ export default {
   width: 120px;
   margin-left: 10px;
   margin-top: 10px;
+}
+
+.sliding-one {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.sliding-two {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.sliding-three {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 </style>

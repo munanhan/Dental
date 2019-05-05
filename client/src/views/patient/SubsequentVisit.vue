@@ -11,7 +11,6 @@
       <div class="left">
         <el-tabs
           v-model="activeName"
-          @tab-click="handleClick"
         >
           <el-tab-pane
             label="病历模板"
@@ -74,7 +73,6 @@
       <el-button
         :loading="commitLoading"
         type="primary"
-        @click="changePassword"
       >确 定</el-button>
     </div>
   </el-dialog>
@@ -90,8 +88,11 @@ export default {
   data() {
     return {
       activeName: "SubsequentVisit",
+      medicalTemplates:"",
 
-      rules: {}
+      rules: {
+
+      }
     };
   },
 

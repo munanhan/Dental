@@ -324,6 +324,26 @@ export default {
   created() {},
   mounted() {},
   watch: {
+    // refresh(newValue, oldValue) {
+    //         let that = this;
+
+    //         if (newValue) {
+    //             for (var key in that.content) {
+    //                 if (that.content[key]) {
+    //                     that[key + "Update"] = true;
+    //                 }
+    //             }
+
+    //             //更新原来的refresh, 防止下次点击时不通知更新
+    //             that.$emit("update:refresh", false);
+    //         }
+    //     },
+    //     selectHandler(index) {
+    //         let that = this;
+    //         that.content.chargeDetail = "ChargeInfo" == index;
+    //         that.chargeDetailUpdate = "ChargeInfo" == index;
+
+    //     },
     curTab(newValue, oldValue) {
       let that = this;
       // target = that.quickFind[newValue];

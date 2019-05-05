@@ -1,7 +1,6 @@
 <template>
   <div class="medical-content">
     <div class="medical-top">
-      adasd
     </div>
     <div class="medical-bottom">
       <div class="image-bottom">
@@ -11,16 +10,19 @@
           style="margin-left:10px;width: 90px;"
           @click="int_diagn"
         >初诊</el-button>
-        <el-button class="medical-button" @click="sub_visit">复诊</el-button>
+        <el-button
+          class="medical-button"
+          @click="sub_visit"
+        >复诊</el-button>
 
         <el-select
-          v-model="value"
+          v-model="vaOral_cavitylue"
           class="medical-button"
-          style="width:150px"
+          style="width:120px"
           placeholder="口腔检查"
         >
           <el-option
-            v-for="item in options"
+            v-for="item in oral"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -28,8 +30,34 @@
           </el-option>
         </el-select>
 
-        <el-button class="medical-button">风险评估</el-button>
-        <el-button class="medical-button">其它</el-button>
+        <el-select
+          v-model="risk_assessment"
+          class="medical-button"
+          style="width:120px"
+          placeholder="风险评估"
+        >
+          <el-option
+            v-for="item in risk"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="other"
+          class="medical-button"
+          style="width:90px"
+          placeholder="其他"
+        >
+          <el-option
+            v-for="item in others"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
         <el-button class="medical-button">知情同意书</el-button>
         <el-button class="medical-button">正畸病历</el-button>
       </div>
@@ -56,19 +84,51 @@ export default {
   },
   data() {
     return {
-      options: [{
-          value: '选项1',
-          label: '口腔检查'
-        }, {
-          value: '选项2',
-          label: '治疗计划'
-        }, {
-          value: '选项3',
-          label: '牙周检查'
-        }],
-        value: '',
-        intdiag_show:false,
-        subvisit_show:false
+      others: [
+        {
+          value: "选项1",
+          label: "全部打印"
+        },
+        {
+          value: "选项2",
+          label: "打印设置"
+        }
+      ],
+      other:"",
+
+      risk: [
+        {
+          value: "选项1",
+          label: "SAC外科病例评估"
+        },
+        {
+          value: "选项2",
+          label: "SAC修复病例评估"
+        },
+        {
+          value: "选项3",
+          label: "牙周病危险评估"
+        }
+      ],
+      risk_assessment:"",
+      oral: [
+        {
+          value: "选项1",
+          label: "口腔检查"
+        },
+        {
+          value: "选项2",
+          label: "治疗计划"
+        },
+        {
+          value: "选项3",
+          label: "牙周检查"
+        }
+      ],
+      vaOral_cavitylue: "",
+      value: "",
+      intdiag_show: false,
+      subvisit_show: false
     };
   },
   created() {},
@@ -85,18 +145,18 @@ export default {
   computed: {},
   methods: {
     getMedicalRecordsInfo() {},
-
+    
     getDataDone() {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
     },
     //初诊
-     int_diagn(){
+    int_diagn() {
       this.intdiag_show = true;
     },
     //复诊
-    sub_visit(){
+    sub_visit() {
       this.subvisit_show = true;
     }
   }
@@ -108,10 +168,10 @@ export default {
 
 .medical-content {
   .medical-top {
-    border: 1px solid red;
+    border: 1px solid #dadada;
     position: relative;
     height: 799px;
-    background-color: #ebe6e6;
+    background-color: #f3f1f1;
   }
 
   .medical-bottom {

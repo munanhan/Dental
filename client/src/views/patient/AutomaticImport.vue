@@ -60,7 +60,6 @@
       <el-button
         :loading="commitLoading"
         type="primary"
-        @click="changePassword"
       >确 定</el-button>
     </div>
   </el-dialog>
@@ -116,41 +115,7 @@ export default {
   },
 
   methods: {
-    changePassword() {
-      let that = this;
-
-      that.$refs["changePwdForm"].validate(valid => {
-        if (valid) {
-          that.commitLoading = true;
-
-          that.$api.user
-            .changePassword(that.changePwd)
-            .then(res => {
-              if (res.code == 0) {
-                that.$message({
-                  message: "修改成功.",
-                  type: "success",
-                  duration: 800
-                });
-
-                that.closeDialog();
-              } else {
-                that.$message.error(res.message);
-              }
-
-              that.commitLoading = false;
-            })
-            .catch(res => {
-              that.$message.error("修改失败，请重试.");
-              that.commitLoading = false;
-            });
-        }
-      });
-    },
-
-    afterClose() {
-      this.$refs["changePwdForm"].resetFields();
-    }
+    
   }
 };
 </script>

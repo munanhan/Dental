@@ -31,7 +31,7 @@
                     right:0;    
                     margin-right: 244px;
                     width: 300px;
-                    height: 275px;">
+                    height: 286px;">
           asdasd
         </div>
         <el-form-item
@@ -101,12 +101,12 @@
             ></el-input>
           </el-form-item>
           <el-select
-            v-model="form.tel_one"
+            v-model="form.one"
             style="width:110px"
           >
 
             <el-option
-              v-for="item in options"
+              v-for="item in form.tel_one"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -122,27 +122,19 @@
               placeholder="请输入内容"
               v-model="form.phone_one"
             ></el-input>
-          </el-form-item> 
+          </el-form-item>
           <el-select
             v-model="form.tel_one"
             style="width:110px"
           >
-            <el-option
-              label="   "
-              value="zhuhai"
-            ></el-option>
-            <el-option
-              label="爸爸"
-              value="shanghai"
-            ></el-option>
-            <el-option
-              label="妈妈"
-              value="beijing"
-            ></el-option>
-            <el-option
-              label="妈妈妈"
-              value="beijing"
-            ></el-option>
+
+           <el-option
+              v-for="item in form.phone"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
           </el-select>
         </div>
         <div style="display:flex">
@@ -251,9 +243,9 @@
             <el-input></el-input>
           </el-form-item>
         </div>
-        <el-form-item 
+        <el-form-item
           label="过敏使"
-          style="width:680px" 
+          style="width:680px"
         >
           <el-input></el-input>
         </el-form-item>
@@ -425,7 +417,10 @@
         :loading="commitLoading"
         type="primary"
       >确 定</el-button>
-      <el-button @click="closeDialog" type="primary">新增关系</el-button>
+      <el-button
+        @click="closeDialog"
+        type="primary"
+      >新增关系</el-button>
       <el-button @click="closeDialog">取 消</el-button>
 
     </div>
@@ -443,10 +438,46 @@ export default {
   data() {
     return {
       form: {
+        tel_one:[{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+
+        phone: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        tel_one:'',
+        one:"",
         radio: "1",
         name: "",
         medical_record: "",
         participant_name: ""
+        // options:"",
       },
       rules: {
         name: [

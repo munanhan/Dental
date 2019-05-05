@@ -1,7 +1,34 @@
 <template>
   <div class="image-content">
     <div class="image-top">
-      asd
+      <div
+        class="block"
+        style="float:right;margin-right:10px"
+      >
+        <div  class="mr-10">
+          <span style="margin-top:10px;color:#acacac;margin-right:5px">日期</span>
+            <el-date-picker
+            style="margin-right:40px"
+              v-model="search.dateRange"
+              type="daterange"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              :clearable="false"
+            >
+            </el-date-picker>
+          <el-slider
+            v-model="value3"
+            :show-tooltip="false"
+            style="width:100px;margin-right:20px"
+          ></el-slider>
+          <el-button>刷新</el-button>
+        </div>
+      </div>
     </div>
     <div class="image-middle">
       asd
@@ -10,12 +37,12 @@
 
       <el-button
         type="primary"
-        style="margin-left:10px;width: 90px;"
+        style="margin-left:10px;width:90px"
         @click="autom_import"
       >自动导入</el-button>
       <el-button class="image-button">手动导入</el-button>
       <el-select
-        v-model="value"
+        v-model="other"
         placeholder="其他"
         class="image-button"
       >
@@ -31,13 +58,13 @@
       <el-button class="image-button">牙智宝</el-button>
       <el-button class="image-button">设备对接</el-button>
       <el-select
-        v-model="value"
+        v-model="image_class"
         placeholder="影像分类"
         class="image-button"
         style="width:110px"
       >
         <el-option
-          v-for="item in options"
+          v-for="item in image"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -45,13 +72,13 @@
         </el-option>
       </el-select>
       <el-select
-        v-model="value"
+        v-model="profess_tools"
         placeholder="专业工具"
         class="image-button"
         style="width:110px"
       >
         <el-option
-          v-for="item in options"
+          v-for="item in professional"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -79,6 +106,37 @@ export default {
   },
   data() {
     return {
+       value3: '',
+      search: {
+        dateRange: [new Date(), new Date()]
+      },
+      image: [
+        {
+          value: "选项1",
+          label: "正畸分类"
+        },
+        {
+          value: "选项2",
+          label: "美学分类"
+        }
+      ],
+      image_class: "",
+      professional: [
+        {
+          value: "选项1",
+          label: "微笑设计"
+        },
+        {
+          value: "选项2",
+          label: "美牙秀"
+        },
+        {
+          value: "选项3",
+          label: "投影测量"
+        }
+      ],
+      profess_tools: "",
+      other: "",
       autoimp_show: false,
       options: [
         {
@@ -94,7 +152,8 @@ export default {
           label: "打印"
         }
       ],
-      value: ""
+      value: "",
+      value1: [new Date(), new Date()]
     };
   },
   created() {},
@@ -130,14 +189,13 @@ export default {
 .image-content {
   box-sizing: border-box;
   .image-top {
-    border: 1px solid red;
     position: relative;
-    height: 40px;
+    height: 42px;
     background-color: #f3f1f1;
   }
   .image-middle {
-    border: 1px solid red;
-    height: 759px;
+    border: 1px solid rgb(185, 182, 182);
+    height: 761px;
   }
   .image-bottom {
     background-color: #dedede;
@@ -152,5 +210,8 @@ export default {
       width: 100px;
     }
   }
+}
+.mr-10 {
+  display: flex;
 }
 </style>

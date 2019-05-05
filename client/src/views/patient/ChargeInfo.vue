@@ -205,4 +205,8 @@ export default {
   margin-top: 10px;
   margin-left: 10px;
 }
+
+/deep/ .el-table th, .el-table tr{
+  background-color: #e5e5e5;
+}
 </style>
