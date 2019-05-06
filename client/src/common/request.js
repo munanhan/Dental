@@ -67,9 +67,6 @@ instance.interceptors.response.use(
     response => {
         const resData = response.data;
 
-        console.log('*******************************');
-        console.log(response);
-
         //登录断开了
         if (resData.code == 403) {
             //与服务器连接已经断开，6秒后自动刷新页面重连

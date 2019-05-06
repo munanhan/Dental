@@ -8,55 +8,55 @@
                 label="诊所运营"
                 name="clinicOperation"
             >
-                <clinic-operation :refresh.sync="clinicOperation"></clinic-operation>
+                <clinic-operation v-if="clinicOperation" :refresh.sync="clinicOperation"></clinic-operation>
             </el-tab-pane>
 
             <el-tab-pane
                 label="收费对账"
                 name="chargingReconciliation"
             >
-                <charging-reconciliation :refresh.sync="chargingReconciliation"></charging-reconciliation>
+                <charging-reconciliation v-if="chargingReconciliation" :refresh.sync="chargingReconciliation"></charging-reconciliation>
             </el-tab-pane>
 
             <el-tab-pane
                 label="员工绩效"
                 name="employeePerformance"
             >
-                <employee-performance :refresh.sync="employeePerformance"></employee-performance>
+                <employee-performance v-if="employeePerformance" :refresh.sync="employeePerformance"></employee-performance>
             </el-tab-pane>
 
             <el-tab-pane
                 label="外加工"
                 name="externalProcessing"
             >
-                <external-processing :refresh.sync="externalProcessing"></external-processing>
+                <external-processing v-if="externalProcessing" :refresh.sync="externalProcessing"></external-processing>
             </el-tab-pane>
 
             <el-tab-pane
                 label="患者高级查询"
                 name="advancedPatientInquiry"
             >
-                <advanced-patient-inquiry :refresh.sync="advancedPatientInquiry"></advanced-patient-inquiry>
+                <advanced-patient-inquiry v-if="advancedPatientInquiry" :refresh.sync="advancedPatientInquiry"></advanced-patient-inquiry>
             </el-tab-pane>
 
             <el-tab-pane
                 label="连锁店统计"
                 name="chainStoreStatistics"
             >
-                <chain-storeStatistics :refresh.sync="chainStoreStatistics"></chain-storeStatistics>
+                <chain-storeStatistics v-if="chainStoreStatistics" :refresh.sync="chainStoreStatistics"></chain-storeStatistics>
             </el-tab-pane>
             <el-tab-pane
                 label="微信运营"
                 name="wechatOperation"
             >
-                <wechat-operation :refresh.sync="wechatOperation"></wechat-operation>
+                <wechat-operation v-if="wechatOperation" :refresh.sync="wechatOperation"></wechat-operation>
 
             </el-tab-pane>
             <el-tab-pane
                 label="客流分析"
                 name="passengerFlowAnalysis"
             >
-                <passenger-flowAnalysis :refresh.sync="passengerFlowAnalysis"></passenger-flowAnalysis>
+                <passenger-flowAnalysis v-if="passengerFlowAnalysis" :refresh.sync="passengerFlowAnalysis"></passenger-flowAnalysis>
             </el-tab-pane>
 
         </el-tabs>
