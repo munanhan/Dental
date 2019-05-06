@@ -10,6 +10,7 @@ class Clinic extends Model
     protected  $fillable=[
         'name','contact','phone'
     ];
+
     public function users()
     {
         return $this->hasMany('App\User');

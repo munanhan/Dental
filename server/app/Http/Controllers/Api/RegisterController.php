@@ -41,20 +41,21 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        $data=$request->all();
         //$flag=request('flag');
         $flag=1; //默认为诊所
-        if($this->validator($request->all())->fails()){
-            return message($this->validator($request->all())->errors(),400);
+        if($this->validator($data)->fails()){
+            return message($this->validator($data)->errors(),400);
         }
         //创建用户认证的事件，并监听
         event(new Registered($user = $this->createUser($request->all())));
 
         if($flag==0){
-            $this->createCompany($request->all());
+            $company=$this->createCompany($data);
         }else{
-            $clinic=$this->createClinic($request->all());
-            $clinic->id;
+            $clinic=$this->createClinic($data);
         }
+        $data['clinic_id']=$clinic->id;
 
         return  message('registered successfully',201);
 

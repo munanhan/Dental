@@ -25,6 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
+    Route::get('user','UserController@getCurrentUser');
+
     Route::get('users', 'UserController@index');
 
     Route::get('users/{user}', 'UserController@show');
