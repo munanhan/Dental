@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Clinic;
+use App\Company;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -38,13 +40,22 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        //$flag=request('flag');
+        $flag=1; //默认为诊所
         if($this->validator($request->all())->fails()){
             return returnMessage($this->validator($request->all())->errors(),400);
         }
         //创建用户认证的事件，并监听
-        event(new Registered($user = $this->create($request->all())));
+        event(new Registered($user = $this->createUser($request->all())));
 
-        return returnMessage('registered successfully',201);
+        if($flag==0){
+            $this->createCompany($request->all());
+        }else{
+            $clinic=$this->createClinic($request->all());
+            $clinic->id;
+        }
+
+        return message('registered successfully',201);
 
     }
 
@@ -58,12 +69,30 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function create(array $data)
+    protected function createUser(array $data)
     {
         return User::create([
             'phone'=>$data['phone'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    protected function createCompany(array $data)
+    {
+        return Company::create([
+            'contact'=>$data['contact'],
+            'name'=>$data['name'],
+            'phone'=>$data['phone'],
+        ]);
+    }
+
+    protected function createClinic(array $data)
+    {
+        return Clinic::create([
+            'contact'=>$data['contact'],
+            'name'=>$data['name'],
+            'phone'=>$data['phone'],
         ]);
     }
 
