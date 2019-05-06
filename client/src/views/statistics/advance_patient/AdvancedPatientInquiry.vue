@@ -476,7 +476,7 @@ export default {
             that.$api.aaaa
                 .bbbb(that.search)
                 .then(res => {
-                    if (res.code == 0) {
+                    if (res.code == 200) {
                         that.tableData = res.data;
                     } else {
                         that.$message.error(res.msg || "获取数据失败，请重试.");

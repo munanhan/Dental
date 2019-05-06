@@ -4,6 +4,7 @@ import store from "../store";
 //组件模块登记
 import components from "./components";
 import { Loading } from "element-ui";
+import { setCookie, getCookie } from "../common/util";
 
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
 import { getUserInfo, getUserPermission } from "../api/user";
@@ -198,7 +199,7 @@ const genRoute = async (router, store) => {
         //     pdata = resp.data;
         //-----------------------------
 
-        let resp = { code: 0 },
+        let resp = { code: 200 },
             pdata = [
                 {
                     id: 1,
@@ -381,7 +382,7 @@ const genRoute = async (router, store) => {
                 }
             ];
 
-        if (resp.code == 0) {
+        if (resp.code == 200) {
             let mdata = getMenuData(pdata, menu, action),
                 { menu, action, routerArr } = mdata;
 
@@ -543,7 +544,7 @@ router.beforeEach(async (to, from, next) => {
             let resp = await getUserInfo(),
                 udata = resp.data;
 
-            if (resp.code == 0) {
+            if (resp.code == 200) {
                 user = udata;
                 store.commit("setUserInfo", udata);
             } else {
@@ -553,7 +554,7 @@ router.beforeEach(async (to, from, next) => {
             checkError = true;
         } finally {
             //关闭loading
-            loadingInstance && loadingInstance.close();
+            loadingInstance && loadingInstance.close();            
 
             if (checkError) {
                 router.push("/error");

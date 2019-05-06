@@ -62,31 +62,34 @@ export default {
         };
     },
     created() {},
-    mounted() {
-    },
+    mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
+        refresh: {
+            handler(newValue, oldValue) {
+                let that = this;
 
-            if (newValue) {
-                let hasSet = false;
+                if (newValue) {
+                    let hasSet = false;
 
-                for (var key in that.content) {
-                    if (that.content[key]) {
-                        that[key + "Update"] = true;
-                        hasSet = true;
+                    for (var key in that.content) {
+                        if (that.content[key]) {
+                            that[key + "Update"] = true;
+                            hasSet = true;
+                        }
                     }
-                }
 
-                //用于处理图表没有显示, 上面的模块显示情况改成了v-if,不然图片点击进去没有渲染
-                if(!hasSet){
-                    that.content.operationSituation = true;
-                    that.operationSituationUpdate = true;
-                }
+                    //用于处理图表没有显示, 上面的模块显示情况改成了v-if,不然图片点击进去没有渲染
+                    if (!hasSet) {
+                        that.content.operationSituation = true;
+                        that.operationSituationUpdate = true;
+                    }
 
-                //更新原来的refresh, 防止下次点击时不通知更新
-                that.$emit("update:refresh", false);
-            }
+                    //更新原来的refresh, 防止下次点击时不通知更新
+                    that.$emit("update:refresh", false);
+                }
+            },
+
+            immediate: true
         }
     },
     computed: {},

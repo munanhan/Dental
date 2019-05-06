@@ -70,7 +70,7 @@ export default {
             that.$api[that.apiType]
                 .get(params)
                 .then(res => {
-                    if (res.code == 0) {
+                    if (res.code == 200) {
                         that.reportData = res.data;
 
                         if (that.pager) {

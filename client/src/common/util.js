@@ -82,7 +82,7 @@ export const buildTree = (data, parentField, idField, parentID, callBack) => {
  */
 export const setCookie = (name, value, exp) => {
 
-    let now = Date.now;
+    let now = new Date();
 
     if (typeof exp == 'number') {
         exp = now.setTime(now + exp);

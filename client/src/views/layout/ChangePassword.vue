@@ -123,7 +123,7 @@ export default {
                     that.$api.user
                         .changePassword(that.changePwd)
                         .then(res => {
-                            if (res.code == 0) {
+                            if (res.code == 200) {
                                 that.$message({
                                     message: "修改成功.",
                                     type: "success",
