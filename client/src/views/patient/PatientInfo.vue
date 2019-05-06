@@ -1,8 +1,11 @@
 <template>
   <div class="patient-info">
 
-    <el-collapse style="overflow:auto">
-      <el-collapse-item style="width:1000px;margin-left:10px;margin-bottom:10px;">
+    <el-collapse
+      class="patien-content"
+      style="overflow:auto"
+    >
+      <el-collapse-item class="sliding-one">
         <template slot="title">
           <span class="base-fz">基本信息</span>
         </template>
@@ -95,12 +98,12 @@
             </el-row>
           </div>
 
-          <div
-            class="patient-right"
-            style="{background-image:url(/i/eg_bg_04.gif);}"
-          >
-            <div style="position: relative;">313213156151</div>
-            <div style="display:flex">
+          <div class="patient-right">
+            <div
+              class="image"
+            >
+            </div>
+            <div style="display:flex;margin-bottom:5px">
               <el-radio
                 v-model="sex"
                 label="1"
@@ -117,7 +120,7 @@
               ></span>
               <el-rate
                 v-model="value2"
-                :colors="['red', 'red', '#FF9900']"
+                :colors="['#FF9900', '#FF9900', '#FF9900']"
               >
               </el-rate>
             </div>
@@ -125,6 +128,7 @@
         </div>
 
         <div class="patient-footer">
+
         </div>
 
         <div class="patient-bottom">
@@ -191,9 +195,10 @@
 
       </el-collapse-item>
 
-      <el-collapse-item
+      <!-- <el-collapse-item
         title="等待确认"
         style="width:1000px;margin-left:10px;margin-bottom:10px"
+
       >
         <div>简化流程：设计简洁直观的操作流程；</div>
         <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
@@ -203,15 +208,24 @@
         <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
         <div>简化流程：设计简洁直观的操作流程；</div>
 
-      </el-collapse-item>
-
-      <el-collapse-item style="width:1000px;margin-left:10px;margin-bottom:10px">
+      </el-collapse-item> -->
+      <el-collapse-item
+        class="sliding-two"
+        style=""
+      >
         <template slot="title">
 
+          <span class="base-fz">初诊信息</span>
+
+        </template>
+        <div>水水水水</div>
+
+      </el-collapse-item>
+
+      <el-collapse-item class="sliding-three">
+        <template slot="title">
           <span class="base-fz">亲友关系</span>
         </template>
-
-        <div></div>
 
       </el-collapse-item>
 
@@ -226,6 +240,8 @@
       <el-button
         style="width:110px;margin-right: 20px;"
         type="primary"
+        porp="modify-inormation"
+        @click="Modify_info"
       >修改信息</el-button>
       <el-button class="patient-button">病历首页打印</el-button>
       <i
@@ -234,16 +250,17 @@
       ></i>
 
     </div>
+    <modify-info :show.sync="modinfo_show"></modify-info>
   </div>
 </template>
 
 <script>
-import EditDialogForm from "@/views/base/DialogForm";
-
+import ModifyInfo from "./ModifyInfo";
 export default {
   name: "PatientInfo",
-  components: {
 
+  components: {
+    ModifyInfo
   },
   props: {
     refresh: {
@@ -253,9 +270,10 @@ export default {
   },
   data() {
     return {
-      sex:"",
+      sex: "",
       activeNames: ["1"],
-      value2: null
+      value2: null,
+      modinfo_show: false
     };
   },
   created() {},
@@ -290,6 +308,9 @@ export default {
     },
     handleChange(val) {
       console.log(val);
+    },
+    Modify_info() {
+      this.modinfo_show = true;
     }
   }
 };
@@ -313,7 +334,6 @@ export default {
           width: 850px;
         }
         .patient-right {
-          border: 1px solid red;
           width: 100px;
           margin-left: 10px;
           margin-right: 30px;
@@ -321,6 +341,17 @@ export default {
           flex: 1 auto;
           height: 140px;
           padding: 5px;
+          .image {
+            position: relative;
+            border: 1px solid red;
+            width: 170px;
+            margin-bottom: 10px;
+            margin-left: -30px;
+            height: 180px;
+          }
+          .block{
+            margin-left:-4px;
+          }
         }
       }
     }
@@ -342,5 +373,21 @@ export default {
   width: 120px;
   margin-left: 10px;
   margin-top: 10px;
+}
+
+.sliding-one {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.sliding-two {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.sliding-three {
+  width: 1000px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 </style>

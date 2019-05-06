@@ -1,4 +1,4 @@
-import * as base from './home'
+import * as base from './base'
 import * as home from './home'
 import * as user from './user'
 import * as appointment from './appointment'

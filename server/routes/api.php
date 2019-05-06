@@ -54,11 +54,11 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('order','OrderController@store');
 
-    Route::get('publish', function () {
-        // Route logic...
+    // Route::get('publish', function () {
+    //     // Route logic...
 
-        Redis::publish('test-channel', json_encode(['foo' => 'bar']));
-    });
+    //     Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+    // });
 
 });
 

@@ -56,7 +56,7 @@
           <span>{{weekStart +'-'+ weekEnd}}</span>
         </div>
       </div>
-      <div v-show="navBar[2].active" class="header-month">2</div>
+      <div v-show="navBar[2].active" class="header-month" style="color:#fff;">2</div>
       <div v-show="navBar[3].active" class="header-list">3</div>
     </div>
     <div class="date-body">
@@ -125,8 +125,12 @@
       <div v-show="navBar[1].active" class="week">
         <yuyue-week :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
       </div>
-      <div v-show="navBar[2].active" class="month">2</div>
-      <div v-show="navBar[3].active" class="list">3</div>
+      <div v-show="navBar[2].active" class="month">
+        <yuyue-month :update.sync="navBar[2].active"></yuyue-month>
+      </div>
+      <div v-show="navBar[3].active" class="list">
+        <yuyue-list></yuyue-list>
+      </div>
     </div>
 
     <!-- 新增预约 start -->
@@ -139,6 +143,8 @@
 import { formatDate, addClass, inArray } from "@/common/util.js";
 import AddYuyue from "./AddYuyue.vue";
 import YuyueWeek from "./YuyueWeek.vue";
+import YuyueMonth from "./YuyueMonth.vue";
+import YuyueList from "./YuyueList.vue";
 import { mapState, mapGetters } from "vuex";
 import { setTimeout } from "timers";
 import { format } from "path";
@@ -147,7 +153,9 @@ export default {
   props: ["chooseDay"],
   components: {
     AddYuyue,
-    YuyueWeek
+    YuyueWeek,
+    YuyueMonth,
+    YuyueList
   },
   provide: function() {
     return {
@@ -403,4 +411,8 @@ export default {
 <style lang="less">
 @import "~@/assets/css/var.less";
 @import "~@views/appointment/css/YuyueRight.less";
+.month{
+    
+    width: 100% !important;
+}
 </style>

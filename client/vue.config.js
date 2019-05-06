@@ -1,7 +1,19 @@
 const path = require("path");
 const srcPath = path.resolve(__dirname, "./src");
+const config = require('./config');
+const webpack = require('webpack');
 
-console.log(srcPath);
+let plugins = [];
+
+//如果当前是测试的，就开启
+if (process.env.NODE_ENV === "development") {
+    plugins.push(
+        new webpack.DefinePlugin({
+            //设置全局的变量
+            apiBaseURL: JSON.stringify(config.apiBaseURL)
+        })
+    );
+}
 
 module.exports = {
     chainWebpack: config => {
@@ -21,6 +33,10 @@ module.exports = {
             maskIcon: "favicon-32x32",
             msTileImage: "favicon-32x32"
         }
+    },
+
+    configureWebpack: {
+        plugins: plugins
     }
 };
 

@@ -106,19 +106,19 @@
           >
             <el-option
               label="   "
-              value="zhuhai"
+              value="1"
             ></el-option>
             <el-option
               label="爸爸"
-              value="shanghai"
+              value="2"
             ></el-option>
             <el-option
               label="妈妈"
-              value="beijing"
+              value="3"
             ></el-option>
             <el-option
               label="妈妈妈"
-              value="beijing"
+              value="4"
             ></el-option>
           </el-select>
           <i
@@ -141,7 +141,7 @@
             ></el-input>
           </el-form-item>
           <el-select
-            v-model="form.tel_two"
+            v-model="form.two"
             placeholder="选择"
             style="width:90px"
           >
@@ -157,7 +157,7 @@
 
         <div style="display:flex">
           <el-form-item
-            label="生日年月"
+            label="出生年月"
             prop="birthday"
             style="width:300px"
           >
@@ -551,6 +551,29 @@ export default {
   data() {
     return {
       form: {
+        tel_two: [
+          {
+            value: "选项1",
+            label: "爸爸"
+          },
+          {
+            value: "选项2",
+            label: "双皮奶"
+          },
+          {
+            value: "选项3",
+            label: "蚵仔煎"
+          },
+          {
+            value: "选项4",
+            label: "龙须面"
+          },
+          {
+            value: "选项5",
+            label: "北京烤鸭"
+          }
+        ],
+        two: "",
         options: [
           {
             value: "选项1",
@@ -575,7 +598,7 @@ export default {
         ],
         patients_source: "guiling",
         birthday: "",
-        tel_one: "zhuhai",
+        tel_one: "",
         phone_one: "",
         value: "",
         value1: null,

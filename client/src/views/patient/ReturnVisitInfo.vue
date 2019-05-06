@@ -3,6 +3,7 @@
     <el-table
       border
       class="charge-top"
+      :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
     >
       <div>
         <el-table-column

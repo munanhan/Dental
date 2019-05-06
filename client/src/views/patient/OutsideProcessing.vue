@@ -3,6 +3,7 @@
     <el-table
       border
       class="outside-tab"
+      :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
     >
       <el-table-column
         prop="date"
@@ -101,22 +102,26 @@
       <el-table
         border
         style="width: 100%"
+        :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
       >
         <el-table-column
           prop="date"
-          label="日期"
-          width="180"
+          label="牙位"
+          align="center"
+          width="300"
         >
         </el-table-column>
         <el-table-column
           prop="name"
-          label="姓名"
-          width="180"
+          label="加工类型"
+          align="center"
+          width="600"
         >
         </el-table-column>
         <el-table-column
           prop="address"
-          label="地址"
+          align="center"
+          label="色号"
         >
         </el-table-column>
       </el-table>
@@ -183,7 +188,7 @@ export default {
   computed: {},
   methods: {
     getOutsideProcessing() {},
-
+    
     getDataDone() {
       setTimeout(() => {
         that.$emit("update:refresh", false);
@@ -199,7 +204,6 @@ export default {
 /deep/ .el-table__body-wrapper {
   height: 550px;
 }
-
 .outside-content {
   //   border: 1px solid red;
   box-sizing: border-box;
@@ -223,5 +227,9 @@ export default {
       width: 90px;
     }
   }
+//   /deep/ .el-table th,
+// .el-table tr {
+//   background-color: #e5e5e5;
+// }
 }
 </style>

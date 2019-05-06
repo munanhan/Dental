@@ -32,7 +32,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button @click="change_pw">复诊预约</el-button>
+                <el-button @click="app_visit">复诊预约</el-button>
               </div>
             </div>
           </el-tab-pane>
@@ -99,7 +99,7 @@
                   type="primary"
                   @click="add_patient"
                 >新增患者</el-button>
-                <el-button @click="change_pw">复诊预约</el-button>
+                <el-button @click="app_visit">复诊预约</el-button>
               </div>
             </div>
 
@@ -123,7 +123,7 @@
                 type="primary"
                 @click="add_patient"
               >新增患者</el-button>
-              <el-button @click="change_pw">复诊预约</el-button>
+              <el-button @click="app_visit">复诊预约</el-button>
             </div>
           </el-tab-pane>
           <!-- <div class="visit-bottom-content" >
@@ -223,7 +223,7 @@ import MedicalRecordsInfo from "./MedicalRecordsInfo";
 import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
-import AddPatient from "./AddPatient";
+import AddPatient from "./AddPatient"; 
 import AppointmentVisit from "./AppointmentVisit";
 
 export default {
@@ -324,6 +324,26 @@ export default {
   created() {},
   mounted() {},
   watch: {
+    // refresh(newValue, oldValue) {
+    //         let that = this;
+
+    //         if (newValue) {
+    //             for (var key in that.content) {
+    //                 if (that.content[key]) {
+    //                     that[key + "Update"] = true;
+    //                 }
+    //             }
+
+    //             //更新原来的refresh, 防止下次点击时不通知更新
+    //             that.$emit("update:refresh", false);
+    //         }
+    //     },
+    //     selectHandler(index) {
+    //         let that = this;
+    //         that.content.chargeDetail = "ChargeInfo" == index;
+    //         that.chargeDetailUpdate = "ChargeInfo" == index;
+
+    //     },
     curTab(newValue, oldValue) {
       let that = this;
       // target = that.quickFind[newValue];
@@ -349,7 +369,7 @@ export default {
       this.addp_show = true;
     },
     //
-    change_pw(){
+    app_visit(){
       this.appvisit_show = true;
     }
 

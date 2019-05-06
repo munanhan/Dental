@@ -107,7 +107,7 @@ export default {
         let str = item.apt_data.substr(5).replace("-", ".");
         xArr.push(str);
         yArr.push(item.time_frame_begin);
-        // arr.push([{ x: str, y: item.time_frame_begin }, item]);
+       
       });
       return [xArr, yArr];
     },

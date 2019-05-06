@@ -11,8 +11,8 @@
     <div class="header">
       <div class="base-info">预约日期</div>
       <div class="time-interval">时段*</div>
-        <div >事项*</div>
       <div class="right">
+        <div>事项*</div>
         <div class="search">
           <input
             type="text"
@@ -333,7 +333,6 @@ export default {
     margin-left: 9%;
     flex: 0 1 auto;
     display: flex;
-    color: rgb(255, 145, 0);
     .search {
       color: @color;
       margin-left: 10px;

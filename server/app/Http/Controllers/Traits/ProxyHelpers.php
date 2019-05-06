@@ -26,7 +26,6 @@ trait ProxyHelpers
                 'password' => request('password'),
                 'provider' => $guard,
             ]);
-
             $response = $client->post($url, ['form_params' => $params]);
 
             if($response->getStatusCode() ===200){
@@ -37,6 +36,7 @@ trait ProxyHelpers
             return message('Incorrect user name or password',401);
 
         }
+
     }
 
 

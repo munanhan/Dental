@@ -19,12 +19,12 @@ class LoginController extends Controller
     public function login()
     {
         $user=$this->getFirst($this->getUsername());
-
         if($user &&($user->status===0)){
             return message('Account disabled',403);
         }
 
         return $this->authenticate();
+
     }
 
     public function refreshToken()
