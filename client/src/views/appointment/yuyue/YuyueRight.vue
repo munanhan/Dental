@@ -128,7 +128,9 @@
       <div v-show="navBar[2].active" class="month">
         <yuyue-month :update.sync="navBar[2].active"></yuyue-month>
       </div>
-      <div v-show="navBar[3].active" class="list">3</div>
+      <div v-show="navBar[3].active" class="list">
+        <yuyue-list></yuyue-list>
+      </div>
     </div>
 
     <!-- 新增预约 start -->
@@ -142,6 +144,7 @@ import { formatDate, addClass, inArray } from "@/common/util.js";
 import AddYuyue from "./AddYuyue.vue";
 import YuyueWeek from "./YuyueWeek.vue";
 import YuyueMonth from "./YuyueMonth.vue";
+import YuyueList from "./YuyueList.vue";
 import { mapState, mapGetters } from "vuex";
 import { setTimeout } from "timers";
 import { format } from "path";
@@ -151,7 +154,8 @@ export default {
   components: {
     AddYuyue,
     YuyueWeek,
-    YuyueMonth
+    YuyueMonth,
+    YuyueList
   },
   provide: function() {
     return {
