@@ -1,22 +1,21 @@
 <template>
-  <div>
-      <div style="width:1000px;margin-left:10px;margin-bottom:10px;" >
-sadasdsa
-      </div>
-      <div dis-bottom>
-        <div style="border:1px solid #e4e4e4;
-                    background-color:#e3e3e3;
-                    position:absolute;
-                    left;0;bottom:0;
-                    width:100%;
-                    height:59px">
-
-      <el-button style="width:130px;margin-left:10px;margin-top:10px" type="primary" @click="add_cons">增加</el-button>
+  <div class="con-content">
+    <div class="con-top">
+      sadasdsa
     </div>
+    <div dis-bottom>
+      <div class="con-bottom">
+
+        <el-button
+          class="con-button"
+          type="primary"
+          @click="add_cons"
+        >新增</el-button>
       </div>
-      <add-consulting :show.sync="addcons_show"></add-consulting>
+    </div>
+    <add-consulting :show.sync="addcons_show"></add-consulting>
   </div>
-  
+
 </template>
 
 <script>
@@ -35,7 +34,7 @@ export default {
   },
   data() {
     return {
-      addcons_show:false,
+      addcons_show: false
     };
   },
   created() {},
@@ -58,7 +57,7 @@ export default {
         that.$emit("update:refresh", false);
       }, 6e3);
     },
-    add_cons(){
+    add_cons() {
       this.addcons_show = true;
     }
   }
@@ -67,10 +66,25 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
-
-.dis-button{
-   width: 130px;
-  margin-left: 10px;
-  margin-top: 10px;
+.con-content {
+  .con-top {
+    width: 1000px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+  .con-bottom {
+    border: 1px solid #e4e4e4;
+    background-color: #e3e3e3;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 59px;
+    .con-button {
+      width: 130px;
+      margin-left: 10px;
+      margin-top: 10px;
+    }
+  }
 }
 </style>
