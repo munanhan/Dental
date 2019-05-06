@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Traits\SendSmsHelpers;
 use App\Http\Controllers\Traits\SmsPolicy;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -43,7 +44,7 @@ class RegisterController extends Controller
         //$flag=request('flag');
         $flag=1; //默认为诊所
         if($this->validator($request->all())->fails()){
-            return returnMessage($this->validator($request->all())->errors(),400);
+            return message($this->validator($request->all())->errors(),400);
         }
         //创建用户认证的事件，并监听
         event(new Registered($user = $this->createUser($request->all())));
@@ -55,7 +56,7 @@ class RegisterController extends Controller
             $clinic->id;
         }
 
-        return message('registered successfully',201);
+        return  message('registered successfully',201);
 
     }
 
