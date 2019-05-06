@@ -1,11 +1,28 @@
 import axios from "axios";
 import { Notification } from "element-ui";
 
-const instance = axios.create({
-    baseURL: "/api", // api的base_url
-    timeout: 6000 // 请求超时时间
-    // withCredentials: true, //允许携带cookie
-});
+let instance = null;
+
+//development模式下使用
+if(apiBaseURL){
+    instance = axios.create({
+        baseURL: apiBaseURL, // api的base_url
+        timeout: 6000, // 请求超时时间
+        withCredentials: true, //允许携带cookie
+    });    
+}else{
+    instance = axios.create({
+        baseURL: "/api", // api的base_url
+        timeout: 6000, // 请求超时时间
+        // withCredentials: true, //允许携带cookie
+    });
+}
+
+// const instance = axios.create({
+//     baseURL: "/api", // api的base_url
+//     timeout: 6000, // 请求超时时间
+//     // withCredentials: true, //允许携带cookie
+// });
 
 const rejectParams = (url, data) => {
     let complieUrl = url;
@@ -25,6 +42,8 @@ const rejectParams = (url, data) => {
 // request拦截器
 instance.interceptors.request.use(
     config => {
+        // console.log(proxy);
+
         if (
             config.method.toLocaleUpperCase() == "GET" ||
             config.method.toLocaleUpperCase() == "DELETE"
@@ -47,6 +66,9 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         const resData = response.data;
+
+        console.log('*******************************');
+        console.log(response);
 
         //登录断开了
         if (resData.code == 403) {

@@ -136,14 +136,16 @@
 </template>
 
 <script>
-import Base from "../Base";
 export default {
     name: "PassengerFlowAnalysis",
     components: {},
 
-    mixins: [Base],
-
-    props: {},
+    props: {
+        refresh: {
+            type: Boolean,
+            required: true
+        }
+    },
 
     data() {
         return {
@@ -179,6 +181,8 @@ export default {
 
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
+
+                // that.getData();
             }
         }
     },
@@ -195,10 +199,33 @@ export default {
                         that.$refs.search.clientHeight -
                         that.$refs.count.clientHeight) /
                     2;
-            
+
             detailHeight = parseInt(detailHeight);
 
             that.detailHeight = `${detailHeight}px`;
+        },
+
+        getData() {
+            let that = this;
+
+            that.$api.aaaa
+                .bbbb(that.search)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.tableData = res.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
         }
     }
 };
@@ -301,7 +328,7 @@ export default {
             .detail-right {
                 padding: 10px;
                 display: flex;
-                flex-direction: column;                
+                flex-direction: column;
             }
 
             .detail-left {

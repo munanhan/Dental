@@ -284,7 +284,6 @@
 </template>
 
 <script>
-import Base from "../Base";
 import { getYesterday, getCurWeek, getCurMonth } from "@common/util";
 import PayType from "./PayType";
 import FirstVisit from "./FirstVisit";
@@ -308,9 +307,12 @@ export default {
         ReservationStatus
     },
 
-    mixins: [Base],
-
-    props: {},
+    props: {
+        refresh: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             search: {
@@ -653,9 +655,10 @@ export default {
 
             //记录元素的偏移高度
             contentHeight: 0,
-            eleHeight: {},
+            eleTop: {},
             //记录当前活动的
             activeIndex: 0,
+            eleHeight: {}, //元素的高度
 
             //停止监听滚动，用于右边点击和右边鼠标滚动的时候使用
             notifyScrollStop: false,
@@ -737,7 +740,8 @@ export default {
 
             for (var i = 1; i <= 10; i++) {
                 //因为１０是外边距
-                that.eleHeight["_" + i] = that.$refs["_" + i].offsetTop - 10;
+                that.eleTop["_" + i] = that.$refs["_" + i].offsetTop - 10;
+                that.eleHeight["_" + i] = that.$refs["_" + i].clientHeight;
             }
         },
 
@@ -758,11 +762,11 @@ export default {
                 }
             }
 
-            that.scrollAmin(contentEle, that.eleHeight[item.target], 300);
+            that.scrollAmin(contentEle, that.eleTop[item.target], 300);
 
             //　苹果电脑浏览器兼容性不好，无法兼容
             // contentEle.scrollTo({
-            //     top: that.eleHeight[item.target],
+            //     top: that.eleTop[item.target],
             //     behavior: "smooth"
             // })
         },
@@ -810,11 +814,13 @@ export default {
                         curTop = contentEle.scrollTop,
                         hasSet = false;
 
-                    for (var key in that.eleHeight) {
-                        var item = that.eleHeight[key],
+                    for (var key in that.eleTop) {
+                        var elTop = that.eleTop[key],
+                            //因为这个页面是图表多，采用超过图表图的二分一为准，
+                            elHeight = parseInt(that.eleHeight[key] / 2),
                             idx = +key.replace("_", "") - 1;
 
-                        if (item >= curTop && !hasSet) {
+                        if (elTop + elHeight >= curTop && !hasSet) {
                             that.activities[idx].select = true;
                             hasSet = true;
 
@@ -857,8 +863,27 @@ export default {
             }, 300);
         },
 
-        afterGetData(res) {
+        getData() {
             let that = this;
+
+            that.$api.aaaa
+                .bbbb(that.search)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.tableData = res.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
         }
     }
 };
