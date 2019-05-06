@@ -3,6 +3,7 @@
     <el-table
       border
       class="charge-top"
+      :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
     >
       <div>
         <el-table-column
@@ -96,7 +97,7 @@
         class="button"
         type="primary"
       >收费</el-button>
-      <el-select
+      <!-- <el-select
         v-model="value"
         placeholder="其他"
         class="button"
@@ -111,22 +112,36 @@
         >
 
         </el-option>
-      </el-select>
+      </el-select> -->
+      <el-button class="button">其他 <i
+          class="fa fa-chevron-up"
+          style="margin-left:30px"
+        ></i>
+        <ul style="list-style:none;margin-left:-40px">
+          <li>退费</li>
+          <li>作废</li>
+          <li>打印</li>
+          <li>收费设置</li>
+          <li>打印设置</li>
+        </ul>
+      </el-button>
       <el-button class="button">预交款</el-button>
       <el-button class="button">流水单</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
-    <tuifei-vue :show.sync="tuifei"></tuifei-vue>
+    <!-- <refund :show.sync="Refund"></refund>
+    <charging-set :show.sync="chargingset"></charging-set> -->
   </div>
 </template>
 
 <script>
-import tuifeiVue from "./tuifei.vue";
-tuifeiVue;
+// import Refund from "./Refund.vue";
+// import ChargingSet from "./ChargingSet.vue";
 export default {
   name: "ChargeInfo",
   components: {
-    tuifeiVue
+    // Refund,
+    // ChargingSet,
   },
   props: {
     refresh: {
@@ -136,33 +151,32 @@ export default {
   },
   data() {
     return {
-      tuifei: false,
-      zuofei: false,
-      options: [
-        {
-          value: "tuifei",
-          label: "退费",
-         
-        },
-        {
-          value: "zuofei",
-          label: "作废",
-         
-        },
-        {
-          value: "选项3",
-          label: "打印"
-        },
-        {
-          value: "选项4",
-          label: "收费设置"
-        },
-        {
-          value: "选项5",
-          label: "打印设置"
-        }
-      ],
-      value: ""
+      // Refund: false,
+      // zuofei: false,
+      // chargingset:false,
+      // options: [
+      //   {
+      //     value: "Refund",
+      //     label: "退费",
+      //   },
+      //   {
+      //     value: "zuofei",
+      //     label: "作废",
+      //   },
+      //   {
+      //     value: "选项3",
+      //     label: "打印"
+      //   },
+      //   {
+      //     value: "ChargingSet",
+      //     label: "收费设置"
+      //   },
+      //   {
+      //     value: "选项5",
+      //     label: "打印设置"
+      //   }
+      // ],
+      // value: ""
     };
   },
   created() {},
@@ -180,7 +194,6 @@ export default {
   methods: {
     dialogshow(value) {
       this[value] = true;
-   
     },
     getChargeInfo() {},
 
@@ -221,10 +234,5 @@ export default {
   width: 130px;
   margin-top: 10px;
   margin-left: 10px;
-}
-
-/deep/ .el-table th,
-.el-table tr {
-  background-color: #e5e5e5;
 }
 </style>

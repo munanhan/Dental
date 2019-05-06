@@ -98,12 +98,12 @@
             </el-row>
           </div>
 
-          <div
-            class="patient-right"
-            style="{background-image:url(/i/eg_bg_04.gif);}"
-          >
-            <div style="position: relative;">313213156151</div>
-            <div style="display:flex">
+          <div class="patient-right">
+            <div
+              class="image"
+            >
+            </div>
+            <div style="display:flex;margin-bottom:5px">
               <el-radio
                 v-model="sex"
                 label="1"
@@ -120,7 +120,7 @@
               ></span>
               <el-rate
                 v-model="value2"
-                :colors="['red', 'red', '#FF9900']"
+                :colors="['#FF9900', '#FF9900', '#FF9900']"
               >
               </el-rate>
             </div>
@@ -222,9 +222,7 @@
 
       </el-collapse-item>
 
-      <el-collapse-item
-        class="sliding-three"
-      >
+      <el-collapse-item class="sliding-three">
         <template slot="title">
           <span class="base-fz">亲友关系</span>
         </template>
@@ -336,7 +334,6 @@ export default {
           width: 850px;
         }
         .patient-right {
-          border: 1px solid red;
           width: 100px;
           margin-left: 10px;
           margin-right: 30px;
@@ -344,6 +341,17 @@ export default {
           flex: 1 auto;
           height: 140px;
           padding: 5px;
+          .image {
+            position: relative;
+            border: 1px solid red;
+            width: 170px;
+            margin-bottom: 10px;
+            margin-left: -30px;
+            height: 180px;
+          }
+          .block{
+            margin-left:-4px;
+          }
         }
       }
     }

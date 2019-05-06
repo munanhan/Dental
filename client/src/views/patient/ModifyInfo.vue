@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增患者"
+    title="修改信息"
     :visible.sync="show"
     :before-close="closeDialog"
     class="custom-dialog"
