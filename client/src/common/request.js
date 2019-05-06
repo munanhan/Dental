@@ -4,7 +4,7 @@ import { Notification } from "element-ui";
 let instance = null;
 
 //development模式下使用
-if(apiBaseURL){
+if(apiBaseURL == undefined){
     instance = axios.create({
         baseURL: apiBaseURL, // api的base_url
         timeout: 6000, // 请求超时时间
