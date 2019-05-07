@@ -12,15 +12,11 @@ class LoginController extends Controller
 {
     use ProxyHelpers;
 
-    protected $successStatus=200;
-    protected $failureStatus=401;
-
-
     public function login()
     {
         $user=$this->getFirst($this->getUsername());
         if($user &&($user->status===0)){
-            return message('Account disabled',403);
+            return response()->json('Account disabled',401);
         }
 
         return $this->authenticate();
@@ -38,7 +34,7 @@ class LoginController extends Controller
             Auth::guard('api')->user()->token()->delete();
         }
 
-        return response()->json(returnMessage('Log out successfully'),$this->successStatus);
+        return response()->json('Log out successfully',200);
     }
 
     protected function getUsername()

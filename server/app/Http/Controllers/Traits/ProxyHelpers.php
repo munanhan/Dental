@@ -29,11 +29,11 @@ trait ProxyHelpers
             $response = $client->post($url, ['form_params' => $params]);
 
             if($response->getStatusCode() ===200){
-                return message('Login successful','200', json_decode($response->getBody()->getContents(), true));
+                return response()->json(json_decode($response->getBody()->getContents(), true),'200');
             }
 
         } catch (RequestException $exception) {
-            return message('Incorrect user name or password',401);
+            return response()->json('Incorrect user name or password',401);
 
         }
 
