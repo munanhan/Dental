@@ -27,7 +27,7 @@ class RegisterController extends Controller
         $phone=request('phone');
 
         if(isPhone($phone)===false){
-            return message('The cell phone number is incorrect',400);
+            return message('The cell phone number is incorrect','',400);
         }
 
         $this->phoneNumbers=$phone;
@@ -35,10 +35,10 @@ class RegisterController extends Controller
 
         if($this->send()===true){
             $this->createPhone($phone);
-            return message('SMS sent successfully',200);
+            return message('','',200);
         }
 
-        return message('Server exception',500);
+        return message('Server exception','',500);
     }
 
     public function register(Request $request)
@@ -47,7 +47,7 @@ class RegisterController extends Controller
         //$flag=request('flag');
         $flag=1; //默认为诊所
         if($this->validator($data)->fails()){
-            return message($this->validator($data)->errors(),400);
+            return message($this->validator($data)->errors(),'',400);
         }
         //创建用户认证的事件，并监听
 
@@ -63,7 +63,7 @@ class RegisterController extends Controller
 
         $user->roles()->attach(1);
 
-        return  message('registered successfully',201);
+        return  message('','',200);
 
     }
 
@@ -127,9 +127,9 @@ class RegisterController extends Controller
         $phone=request('phone');
         $code=request('code');
         if(Redis::get('user:'.$phone)==$code) {
-            return message('verify successfully ',200);
+            return response()->json('',200);
         }
-        return message('Verification failed',400);
+        return message('Verification failed','',400);
     }
 
 }

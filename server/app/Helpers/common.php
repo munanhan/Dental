@@ -2,14 +2,13 @@
 
 /***
  * @param string $msg
- * @param int $code
  * @param array $data
- * @param string $statusCode
+ * @param int $statusCode=200
  * @return \Illuminate\Http\JsonResponse
  */
-    function message($msg='',$code=200,$data=[],$statusCode)
+    function message($msg='',$data=[],$statusCode=200)
     {
-        return response()->json(['msg'=>$msg,'code'=>$code,'data'=>$data],$statusCode);
+        return response()->json(['msg'=>$msg,'data'=>$data],$statusCode);
     }
 
 /***
