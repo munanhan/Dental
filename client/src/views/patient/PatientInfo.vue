@@ -18,7 +18,7 @@
               style="margin:10px"
             >
               <el-col :span="6">
-                <div>患者姓名：</div>
+                <div> 患者姓名：</div>
               </el-col>
               <el-col :span="6">
                 <div>患者分组：</div>
@@ -101,6 +101,7 @@
           <div class="patient-right">
             <div
               class="image"
+              style="background-image: url(404.jpg);"
             >
             </div>
             <div style="display:flex;margin-bottom:5px">
@@ -334,12 +335,10 @@ export default {
           width: 850px;
         }
         .patient-right {
-          width: 100px;
           margin-left: 10px;
           margin-right: 30px;
           margin-left: -40px;
           flex: 1 auto;
-          height: 140px;
           padding: 5px;
           .image {
             position: relative;
@@ -349,8 +348,8 @@ export default {
             margin-left: -30px;
             height: 180px;
           }
-          .block{
-            margin-left:-4px;
+          .block {
+            margin-left: -4px;
           }
         }
       }

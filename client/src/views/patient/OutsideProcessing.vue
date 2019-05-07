@@ -90,7 +90,7 @@
       >
       </el-table-column>
     </el-table>
-    <div class="outside-top">
+    <div class="outside-top" style="font-size:20px">
 
       <el-alert
         title="外加工明细"
@@ -130,26 +130,32 @@
       <el-button
         type="primary"
         style="margin-left:10px;width: 90px;"
+        @click="Change_psw"
       >新增</el-button>
       <el-button class="outside-button">修改</el-button>
       <el-button type="danger">添加矫正</el-button>
       <el-button class="outside-button">删除</el-button>
     </div>
+    <add-outside-processing :show.sync="changepw_show"></add-outside-processing>
   </div>
 </template>
 
 <script>
+import AddOutsideProcessing from "./AddOutsideProcessing";
 export default {
   name: "OutsideProcessing",
-  components: {},
+  components: {
+    AddOutsideProcessing
+  },
   props: {
     refresh: {
       type: Boolean,
-      required: true
+      required: true,
     }
   },
   data() {
     return {
+      changepw_show:false,
       //   tableData: [
       //     {
       //       date: "2016-05-02",
@@ -193,7 +199,11 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+    Change_psw() {
+      this.changepw_show = true;
     }
+
   }
 };
 </script>
@@ -231,5 +241,8 @@ export default {
 // .el-table tr {
 //   background-color: #e5e5e5;
 // }
+}
+/deep/ .el-alert__title{
+  font-size: 15px
 }
 </style>

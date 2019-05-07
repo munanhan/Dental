@@ -160,49 +160,49 @@
           label="处置记录"
           name="disposalRecords"
         >
-          <disposal-records :refresh.sync="disposalRecords"></disposal-records>
+          <disposal-records v-if="disposalRecords" :refresh.sync="disposalRecords"></disposal-records>
         </el-tab-pane>
 
         <el-tab-pane
           label="收费信息"
           name="chargeInfo"
         >
-          <charge-info :refresh.sync="chargeInfo"></charge-info>
+          <charge-info v-if="chargeInfo" :refresh.sync="chargeInfo"></charge-info>
         </el-tab-pane>
 
         <el-tab-pane
           label="影像信息"
           name="imageInfo"
         >
-          <image-info :refresh.sync="imageInfo"></image-info>
+          <image-info v-if="imageInfo" :refresh.sync="imageInfo"></image-info>
         </el-tab-pane>
 
         <el-tab-pane
           label="病历信息"
           name="medicalRecordsInfo"
         >
-          <medical-records-info :refresh.sync="medicalRecordsInfo"></medical-records-info>
+          <medical-records-info v-if="medicalRecordsInfo" :refresh.sync="medicalRecordsInfo"></medical-records-info>
         </el-tab-pane>
 
         <el-tab-pane
           label="外加工"
           name="outsideProcessing"
         >
-          <outside-processing :refresh.sync="outsideProcessing"></outside-processing>
+          <outside-processing v-if="outsideProcessing" :refresh.sync="outsideProcessing"></outside-processing>
         </el-tab-pane>
 
         <el-tab-pane
           label="回访信息"
           name="returnVisitInfo"
         >
-          <return-visit-info :refresh.sync="returnVisitInfo"></return-visit-info>
+          <return-visit-info v-if="returnVisitInfo" :refresh.sync="returnVisitInfo"></return-visit-info>
         </el-tab-pane>
 
         <el-tab-pane
           label="咨询信息"
           name="consultingInfo"
         >
-          <consulting-info :refresh.sync="consultingInfo"></consulting-info>
+          <consulting-info v-if="consultingInfo" :refresh.sync="consultingInfo"></consulting-info>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -346,6 +346,7 @@ export default {
     //     },
     curTab(newValue, oldValue) {
       let that = this;
+      
       // target = that.quickFind[newValue];
       // that[target] = true;
 

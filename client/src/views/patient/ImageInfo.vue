@@ -5,22 +5,22 @@
         class="block"
         style="float:right;margin-right:10px"
       >
-        <div  class="mr-10">
+        <div class="mr-10">
           <span style="margin-top:10px;color:#acacac;margin-right:5px">日期</span>
-            <el-date-picker
+          <el-date-picker
             style="margin-right:40px"
-              v-model="search.dateRange"
-              type="daterange"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              :clearable="false"
-            >
-            </el-date-picker>
+            v-model="search.dateRange"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            :clearable="false"
+          >
+          </el-date-picker>
           <el-slider
             v-model="value3"
             :show-tooltip="false"
@@ -41,7 +41,7 @@
         @click="autom_import"
       >自动导入</el-button>
       <el-button class="image-button">手动导入</el-button>
-      <el-select
+      <!-- <el-select
         v-model="other"
         placeholder="其他"
         class="image-button"
@@ -53,11 +53,26 @@
           :value="item.value"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
+      <el-button class="image-button">其他
+        <i
+          class="fa fa-chevron-up"
+          style="margin-left:20px"
+        ></i>
+        <ul class="other">
+          <li
+            v-for="item in options"
+            :key="item.value"
+            @click="dialogshow(item.value)"
+          >{{item.label}}</li>
+
+        </ul>
+      </el-button>
+
       <el-button class="image-button">内窥镜</el-button>
       <el-button class="image-button">牙智宝</el-button>
       <el-button class="image-button">设备对接</el-button>
-      <el-select
+      <!-- <el-select
         v-model="image_class"
         placeholder="影像分类"
         class="image-button"
@@ -70,7 +85,35 @@
           :value="item.value"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
+      <el-button class="image-button" style="width:115px">影像分类
+        <i
+          class="fa fa-chevron-up"
+          style="margin-left:10px"
+        ></i>
+        <ul class="image_class">
+          <li
+            v-for="item in image"
+            :key="item.value"
+            @click="dialogshow(item.value)"
+          >{{item.label}}</li>
+
+        </ul>
+      </el-button>
+      <el-button class="image-button" style="width:115px">专业工具
+        <i
+          class="fa fa-chevron-up"
+          style="margin-left:10px"
+        ></i>
+        <ul class="profess_tools">
+          <li
+            v-for="item in professional"
+            :key="item.value"
+            @click="dialogshow(item.value)"
+          >{{item.label}}</li>
+
+        </ul>
+      </el-button>
       <el-select
         v-model="profess_tools"
         placeholder="专业工具"
@@ -106,7 +149,7 @@ export default {
   },
   data() {
     return {
-       value3: '',
+      value3: "",
       search: {
         dateRange: [new Date(), new Date()]
       },
@@ -208,6 +251,54 @@ export default {
       margin-left: 10px;
       margin-top: 10px;
       width: 100px;
+      .other {
+        list-style: none;
+        margin-left: -40px;
+        position: absolute;
+        top: -120px;
+        width: 88px;
+        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+        li {
+          width: 128px;
+          padding: 10px 0px;
+          margin-left: -40px;
+          &:hover {
+            background-color: rgb(240, 240, 240);
+          }
+        }
+      }
+      .image_class {
+        list-style: none;
+        margin-left: -30px;
+        position: absolute;
+        top: -86px;
+        width: 88px;
+        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+        li {
+          width: 128px;
+          padding: 10px 0px;
+          margin-left: -40px;
+          &:hover {
+            background-color: rgb(240, 240, 240);
+          }
+        }
+      }
+      .profess_tools {
+        list-style: none;
+        margin-left: -30px;
+        position: absolute;
+        top: -120px;
+        width: 88px;
+        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+        li {
+          width: 128px;
+          padding: 10px 0px;
+          margin-left: -40px;
+          &:hover {
+            background-color: rgb(240, 240, 240);
+          }
+        }
+      }
     }
   }
 }

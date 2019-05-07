@@ -21,7 +21,7 @@
           <div style="display:flex">
             <div
               class="number"
-              style="background-color:red"
+              style="background-color:red;margin-right:3px"
             >1</div>
             <div class="number">基本资料</div>
           </div>
@@ -225,7 +225,7 @@
         <div style="display:flex">
           <div
             class="number"
-            style="background-color:red"
+            style="background-color:red;margin-right:3px"
           >2</div>
           <div class="number">就诊信息</div>
         </div>
@@ -342,7 +342,7 @@
         <div style="display:flex">
           <div
             class="number"
-            style="background-color:red"
+            style="background-color:red;margin-right:3px"
           >3</div>
           <div class="number">亲友关系</div>
         </div>
@@ -502,6 +502,7 @@ export default {
 .mod-1 {
   .number {
     font-size: 18px;
+    
 
     font-weight: bold;
     // rgb(110, 240, 149)
