@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4942e3a4-376c-4cd9-8c63-bbe7953973d0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Helpers/common.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Helpers/common.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/RegisterController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="64" column="61" lean-forward="true" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="61" />
+            <state relative-caret-position="345">
+              <caret line="64" column="64" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="64" />
               <folding>
                 <element signature="e#47#69#0#PHP" expanded="true" />
               </folding>
@@ -82,11 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-270">
-              <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+            <state relative-caret-position="405">
+              <caret line="89" column="5" lean-forward="true" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
               <folding>
                 <element signature="e#44#72#0#PHP" expanded="true" />
               </folding>
@@ -194,11 +191,11 @@
         <option value="$PROJECT_DIR$/server/app/Clinic.php" />
         <option value="$PROJECT_DIR$/server/app/Company.php" />
         <option value="$PROJECT_DIR$/server/routes/api.php" />
-        <option value="$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php" />
         <option value="$PROJECT_DIR$/server/app/Helpers/common.php" />
         <option value="$PROJECT_DIR$/server/app/Http/Controllers/Api/RegisterController.php" />
         <option value="$PROJECT_DIR$/server/app/Http/Controllers/Api/LoginController.php" />
         <option value="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" />
+        <option value="$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php" />
       </list>
     </option>
   </component>
@@ -477,7 +474,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="275179000" />
+    <option name="totallyTimeSpent" value="275839000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -845,16 +842,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-270">
-          <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
-          <folding>
-            <element signature="e#44#72#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/app/Helpers/common.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -881,10 +868,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="64" column="61" lean-forward="true" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="61" />
+        <state relative-caret-position="345">
+          <caret line="64" column="64" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="64" />
           <folding>
             <element signature="e#47#69#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Api/UserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="89" column="5" lean-forward="true" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
+          <folding>
+            <element signature="e#44#72#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
