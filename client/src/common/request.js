@@ -132,33 +132,37 @@ let refreshPage = () => {
 instance.interceptors.response.use(
     response => {
         const resData = response.data;
+        return resData;
+    },
+    error => {
+        let res = error.response;
 
         //检测token,同时检测是否要跳过
-        if (!!response.config.skipAuth && resData.code == 401) {
+        if (res.status == 401) {
             //token已经过期了
             let refreshToken = getCookie("refresh_token");
 
             if (refreshToken) {
                 //尝试重发请求
-                let result = repeatRequest(refreshToken, response.config);
+                let result = repeatRequest(refreshToken, res.config);
 
                 if (result.error) {
                     //刷新页面
                     refreshPage();
                 } else {
                     resData = result.data;
+                    
+                    return resData;
                 }
             } else {
-                //刷新页面
-                refreshPage();
-                return;
+                return {
+                    code: 401,
+                    data: {}
+                };
             }
+        } else {
+            return Promise.reject(error);
         }
-
-        return resData;
-    },
-    error => {
-        return Promise.reject(error);
     }
 );
 

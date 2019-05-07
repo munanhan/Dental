@@ -177,7 +177,7 @@ export default {
     }
 
     .right-content {
-        height: 100%;
+        // height: 100%;
         flex: 1 auto;
         padding: 5px;
 

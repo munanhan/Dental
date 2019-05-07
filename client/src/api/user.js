@@ -25,7 +25,6 @@ export function login(data) {
         url: `${prefix}/login`,
         method: 'post',
         data: data,
-        skipAuth: true
     })
 }
 
@@ -45,7 +44,6 @@ export function logout(data) {
         url: `${prefix}/logout`,
         method: 'post',
         data: data,
-        skipAuth: true
     })
 }
 

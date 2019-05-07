@@ -511,28 +511,28 @@ router.beforeEach(async (to, from, next) => {
     let loadingInstance = null;
 
     //获取当前登录的用户
-    // let user = store.getters.userInfo;
+    let user = store.getters.userInfo;
 
-    // //TODO 测试使用 --------------------
-    let user = {
-        id: 1,
-        uname: "admin",
-        avatar: "",
-        personal_name: "",
-        phone: "",
-        status: 0,
-        ct_user: "",
-        ct_time: "2018-12-29 15:02:09",
-        mfy_user: "admin",
-        mfy_time: "2019-01-15 13:41:08",
-        token:
-            "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
-    };
-    store.commit("setUserInfo", user);
+    // // //TODO 测试使用 --------------------
+    // let user = {
+    //     id: 1,
+    //     uname: "admin",
+    //     avatar: "",
+    //     personal_name: "",
+    //     phone: "",
+    //     status: 0,
+    //     ct_user: "",
+    //     ct_time: "2018-12-29 15:02:09",
+    //     mfy_user: "admin",
+    //     mfy_time: "2019-01-15 13:41:08",
+    //     token:
+    //         "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
+    // };
+    // store.commit("setUserInfo", user);
 
-    // //---------------------------------------
+    // // //---------------------------------------
 
-    if (!user.uname) {
+    if (!user.name) {
         let checkError = false;
 
         //加载loading
@@ -550,7 +550,7 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 store.commit("clearUserInfo");
             }
-        } catch (error) {
+        } catch (e) {
             checkError = true;
         } finally {
             //关闭loading
