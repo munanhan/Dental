@@ -93,7 +93,11 @@ export default {
                             "refresh_token",
                             res.data.refresh_token,
                             res.data.expires_in * 1000
-                        );                        
+                        );
+                        
+                        setTimeout(() =>{
+                            window.location.href = '/home';
+                        }, 1000);
 
                         // that.$store.commit("setUserInfo", res.data);
 

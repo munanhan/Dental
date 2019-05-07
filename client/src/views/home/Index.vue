@@ -499,6 +499,8 @@
             </div>
 
         </div>
+
+        <!-- <button @click="test">test</button> -->
     </div>
 </template>
 
@@ -535,7 +537,13 @@ export default {
 
         getData() {
             let that = this;
-        }
+        },
+
+        // test(){
+        //     let that = this;
+
+        //     that.$api.user.getUserInfo();
+        // }
     }
 };
 </script>

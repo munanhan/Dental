@@ -25,6 +25,8 @@ export function login(data) {
         url: `${prefix}/login`,
         method: 'post',
         data: data,
+        //跳过自动刷新token
+        skipAuth: true
     })
 }
 
@@ -44,6 +46,8 @@ export function logout(data) {
         url: `${prefix}/logout`,
         method: 'post',
         data: data,
+        //跳过自动刷新token
+        skipAuth: true
     })
 }
 
@@ -62,11 +66,13 @@ export function logout(data) {
  *          }
  * }
  */
-export function getUserInfo(data){
+export function getUserInfo(routerUse){
     return request({
         url: `${prefix}`,
         method: 'get',
-        params: data
+        // params: data,
+        //这个是router使用的，刷新页面的时候要忽略这个接口，不然会一直重复刷新页面
+        routerUse: !!routerUse
     })
 }
 
