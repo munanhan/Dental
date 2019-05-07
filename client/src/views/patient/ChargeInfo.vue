@@ -196,14 +196,14 @@ export default {
   },
   computed: {},
   methods: {
-    otherIsShow(){
-     this.otherShow=false;
-      console.log(1111);
-    },
-    otherIsNoShow(){
-       this.otherShow=true;
-      console.log(2222);
-    },
+    // otherIsShow(){
+    //  this.otherShow=false;
+    //   console.log(1111);
+    // },
+    // otherIsNoShow(){
+    //    this.otherShow=true;
+    //   console.log(2222);
+    // },
     dialogshow(value) {
       this[value] = true;
       this.value = ''
