@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function getCurrentUser()
     {
-        return Auth::user();
+        return message('',200,Auth::user());
     }
 
     public function show(User $user)

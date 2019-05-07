@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Clinic;
 use App\Company;
+use App\Phone;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -33,6 +34,7 @@ class RegisterController extends Controller
         $this->templateParam=$this->makeCode($phone);
 
         if($this->send()===true){
+            $this->createPhone($phone);
             return message('SMS sent successfully',200);
         }
 
@@ -48,14 +50,18 @@ class RegisterController extends Controller
             return message($this->validator($data)->errors(),400);
         }
         //创建用户认证的事件，并监听
-        event(new Registered($user = $this->createUser($request->all())));
 
         if($flag==0){
             $company=$this->createCompany($data);
+            $data['company_id']=$company->id;
         }else{
             $clinic=$this->createClinic($data);
+            $data['clinic_id']=$clinic->id;
         }
-        $data['clinic_id']=$clinic->id;
+
+        event(new Registered($user = $this->createUser($data)));
+
+        $user->roles()->attach(1);
 
         return  message('registered successfully',201);
 
@@ -76,7 +82,10 @@ class RegisterController extends Controller
         return User::create([
             'phone'=>$data['phone'],
             'email' => $data['email'],
+            'name'=>$data['name'],
             'password' => Hash::make($data['password']),
+            'clinic_id'=>$data['clinic_id'],
+            'company_id'=>$data['company_id'],
         ]);
     }
 
@@ -95,6 +104,13 @@ class RegisterController extends Controller
             'contact'=>$data['contact'],
             'name'=>$data['name'],
             'phone'=>$data['phone'],
+        ]);
+    }
+
+    protected function createPhone($phone)
+    {
+        return Phone::create([
+            'phone'=>$phone,
         ]);
     }
 
