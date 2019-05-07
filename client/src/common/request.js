@@ -137,6 +137,8 @@ instance.interceptors.response.use(
     error => {
         let res = error.response;
 
+        // debugger
+
         //检测token,同时检测是否要跳过
         if (res.status == 401) {
             //token已经过期了

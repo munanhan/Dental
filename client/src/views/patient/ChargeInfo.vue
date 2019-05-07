@@ -97,7 +97,7 @@
         class="button"
         type="primary"
       >收费</el-button>
-      <!-- <el-select
+      <el-select
         v-model="value"
         placeholder="其他"
         class="button"
@@ -111,7 +111,7 @@
         >
 
         </el-option>
-      </el-select> -->
+      </el-select>
 
       <el-button class="button" @mouseover.native="otherIsShow">其他
         <i
@@ -206,6 +206,7 @@ export default {
     },
     dialogshow(value) {
       this[value] = true;
+      this.value = ''
     },
     getChargeInfo() {},
 

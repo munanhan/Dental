@@ -76,7 +76,7 @@ export default {
             that.$api.base
                 .login(that.form)
                 .then(res => {
-                    if (res.code == 200) {
+                    if (res.code == 200) {                        
                         this.$message({
                             message: "登录成功",
                             type: "success",
