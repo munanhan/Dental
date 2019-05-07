@@ -108,40 +108,43 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
-           
         >
 
         </el-option>
       </el-select> -->
-      <el-button class="button">其他 <i
+
+      <el-button class="button" @mouseover.native="otherIsShow">其他
+        <i
           class="fa fa-chevron-up"
           style="margin-left:30px"
         ></i>
-        <ul style="list-style:none;margin-left:-40px">
-          <li>退费</li>
-          <li>作废</li>
-          <li>打印</li>
-          <li>收费设置</li>
-          <li>打印设置</li>
+        <ul class="other" :class="{'no-show':otherShow}">
+          <li
+            v-for="item in options"
+            :key="item.value"
+            @click.stop="dialogshow(item.value)"
+          >{{item.label}}</li>
+
         </ul>
       </el-button>
+
       <el-button class="button">预交款</el-button>
       <el-button class="button">流水单</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
-    <!-- <refund :show.sync="Refund"></refund>
-    <charging-set :show.sync="chargingset"></charging-set> -->
+    <refund :show.sync="Refund"></refund>
+    <charging-set :show.sync="ChargingSet"></charging-set>
   </div>
 </template>
 
 <script>
-// import Refund from "./Refund.vue";
-// import ChargingSet from "./ChargingSet.vue";
+import Refund from "./Refund.vue";
+import ChargingSet from "./ChargingSet.vue";
 export default {
   name: "ChargeInfo",
   components: {
-    // Refund,
-    // ChargingSet,
+    Refund,
+    ChargingSet
   },
   props: {
     refresh: {
@@ -151,32 +154,33 @@ export default {
   },
   data() {
     return {
-      // Refund: false,
-      // zuofei: false,
-      // chargingset:false,
-      // options: [
-      //   {
-      //     value: "Refund",
-      //     label: "退费",
-      //   },
-      //   {
-      //     value: "zuofei",
-      //     label: "作废",
-      //   },
-      //   {
-      //     value: "选项3",
-      //     label: "打印"
-      //   },
-      //   {
-      //     value: "ChargingSet",
-      //     label: "收费设置"
-      //   },
-      //   {
-      //     value: "选项5",
-      //     label: "打印设置"
-      //   }
-      // ],
-      // value: ""
+      Refund: false,
+      zuofei: false,
+      ChargingSet: false,
+      otherShow:true,
+      options: [
+        {
+          value: "Refund",
+          label: "退费"
+        },
+        {
+          value: "zuofei",
+          label: "作废"
+        },
+        {
+          value: "选项3",
+          label: "打印"
+        },
+        {
+          value: "ChargingSet",
+          label: "收费设置"
+        },
+        {
+          value: "选项5",
+          label: "打印设置"
+        }
+      ],
+      value: ""
     };
   },
   created() {},
@@ -192,6 +196,14 @@ export default {
   },
   computed: {},
   methods: {
+    otherIsShow(){
+     this.otherShow=false;
+      console.log(1111);
+    },
+    otherIsNoShow(){
+       this.otherShow=true;
+      console.log(2222);
+    },
     dialogshow(value) {
       this[value] = true;
     },
@@ -206,7 +218,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 //导入全局的颜色
 @import "~@css/var";
 
@@ -224,6 +236,27 @@ export default {
   bottom: 0;
   background-color: #e3e3e3;
   width: 100%;
+  .other {
+    
+    &.no-show{
+       display: none;
+    }
+   
+    list-style: none;
+    margin-left: -21px;
+    position: absolute;
+    top: -190px;
+    width: 88px;
+    -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+    li {
+      width: 128px;
+      padding: 10px 0px;
+      margin-left: -40px;
+      &:hover {
+        background-color: rgb(240, 240, 240);
+      }
+    }
+  }
 }
 
 /deep/ .el-table__body-wrapper {
