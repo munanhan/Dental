@@ -1,7 +1,10 @@
 export default {
 
-    //token
-    token: null,
+    // //token
+    // token: null,
+
+    // //刷新用的token
+    // refreshToke: null,
 
     //用户信息
     user: null,
@@ -10,7 +13,7 @@ export default {
     menu: null,
 
     //按钮功能
-    btn_act: null,
+    btn_act: null,    
 
     //预约时间
     // yuyue_date:{

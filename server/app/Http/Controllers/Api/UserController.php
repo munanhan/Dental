@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use APP\User;
@@ -17,6 +18,11 @@ class UserController extends Controller
     public function index()
     {
         return User::all();
+    }
+
+    public function getCurrentUser()
+    {
+        return response()->json(Auth::user(),200);
     }
 
     public function show(User $user)

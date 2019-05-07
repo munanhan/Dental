@@ -111,7 +111,7 @@ export default {
             that.$api.user
                 .updateUserAvatar(data)
                 .then(res => {
-                    if (res.code == 0) {
+                    if (res.code == 200) {
                         that.$message({
                             message: "更新头像成功.",
                             type: "success",

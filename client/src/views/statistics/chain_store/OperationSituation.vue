@@ -428,7 +428,7 @@ export default {
             //     that.$api[that.api]
             //         [that.apiMethods](params)
             //         .then(res => {
-            //             if (res.code == 0) {
+            //             if (res.code == 200) {
             //                 that.afterGetData(res);
             //             } else {
             //                 that.$message.error(

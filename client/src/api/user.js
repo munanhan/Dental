@@ -24,7 +24,8 @@ export function login(data) {
     return request({
         url: `${prefix}/login`,
         method: 'post',
-        data: data
+        data: data,
+        skipAuth: true
     })
 }
 
@@ -43,7 +44,8 @@ export function logout(data) {
     return request({
         url: `${prefix}/logout`,
         method: 'post',
-        data: data
+        data: data,
+        skipAuth: true
     })
 }
 
@@ -57,14 +59,14 @@ export function logout(data) {
  *      msg: '提示信息',
  *      data: {
  *              id: 1,
- *              uname: 'aaaa',
+ *              username: 'aaaa',
  *              status: 1, //禁止   
  *          }
  * }
  */
 export function getUserInfo(data){
     return request({
-        url: `${prefix}/get_user_info`,
+        url: `${prefix}`,
         method: 'get',
         params: data
     })

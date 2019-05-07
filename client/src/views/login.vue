@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { setCookie, getCookie } from "@common/util";
+
 export default {
     name: "login",
 
@@ -74,25 +76,37 @@ export default {
             that.$api.base
                 .login(that.form)
                 .then(res => {
-                    if (res.code == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: "登录成功",
                             type: "success",
                             duration: 800
                         });
 
-                        that.$store.commit("setUserInfo", res.data);
+                        setCookie(
+                            "token",
+                            res.data.token_type + " " + res.data.access_token,
+                            res.data.expires_in * 1000
+                        );
+                        
+                        setCookie(
+                            "refresh_token",
+                            res.data.refresh_token,
+                            res.data.expires_in * 1000
+                        );                        
 
-                        setTimeout(() => {
-                            let redirect = decodeURIComponent(
-                                that.$route.query.redirect || "/home"
-                            );
+                        // that.$store.commit("setUserInfo", res.data);
 
-                            that.$router.push({
-                                //你需要接受路由的参数再跳转
-                                path: redirect
-                            });
-                        }, 1200);
+                        // setTimeout(() => {
+                        //     let redirect = decodeURIComponent(
+                        //         that.$route.query.redirect || "/home"
+                        //     );
+
+                        //     that.$router.push({
+                        //         //你需要接受路由的参数再跳转
+                        //         path: redirect
+                        //     });
+                        // }, 1200);
                     } else {
                         that.$message.error(
                             res.msg || "用户或密码错误,请重试."

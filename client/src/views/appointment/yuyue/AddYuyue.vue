@@ -286,7 +286,7 @@ export default {
           that.$api.appointment
             .addAppointment(that.formData)
             .then(res => {
-              if (res.code == 0) {
+              if (res.code == 200) {
                 that.$message({
                   message: "新增成功.",
                   type: "success",

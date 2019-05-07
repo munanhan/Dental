@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Clinic;
+use App\Company;
+use App\Phone;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -10,6 +13,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Traits\SendSmsHelpers;
 use App\Http\Controllers\Traits\SmsPolicy;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -30,6 +34,7 @@ class RegisterController extends Controller
         $this->templateParam=$this->makeCode($phone);
 
         if($this->send()===true){
+            $this->createPhone($phone);
             return message('SMS sent successfully',200);
         }
 
@@ -38,13 +43,27 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        if($this->validator($request->all())->fails()){
-            return returnMessage($this->validator($request->all())->errors(),400);
+        $data=$request->all();
+        //$flag=request('flag');
+        $flag=1; //默认为诊所
+        if($this->validator($data)->fails()){
+            return message($this->validator($data)->errors(),400);
         }
         //创建用户认证的事件，并监听
-        event(new Registered($user = $this->create($request->all())));
 
-        return returnMessage('registered successfully',201);
+        if($flag==0){
+            $company=$this->createCompany($data);
+            $data['company_id']=$company->id;
+        }else{
+            $clinic=$this->createClinic($data);
+            $data['clinic_id']=$clinic->id;
+        }
+
+        event(new Registered($user = $this->createUser($data)));
+
+        $user->roles()->attach(1);
+
+        return  message('registered successfully',201);
 
     }
 
@@ -58,12 +77,40 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function create(array $data)
+    protected function createUser(array $data)
     {
         return User::create([
             'phone'=>$data['phone'],
             'email' => $data['email'],
+            'name'=>$data['name'],
             'password' => Hash::make($data['password']),
+            'clinic_id'=>$data['clinic_id'],
+            'company_id'=>$data['company_id'],
+        ]);
+    }
+
+    protected function createCompany(array $data)
+    {
+        return Company::create([
+            'contact'=>$data['contact'],
+            'name'=>$data['name'],
+            'phone'=>$data['phone'],
+        ]);
+    }
+
+    protected function createClinic(array $data)
+    {
+        return Clinic::create([
+            'contact'=>$data['contact'],
+            'name'=>$data['name'],
+            'phone'=>$data['phone'],
+        ]);
+    }
+
+    protected function createPhone($phone)
+    {
+        return Phone::create([
+            'phone'=>$phone,
         ]);
     }
 
