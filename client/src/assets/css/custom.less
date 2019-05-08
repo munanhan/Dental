@@ -75,6 +75,20 @@
         }
     }
 
+    .el-radio__input.is-checked+.el-radio__label {
+        color: @color;
+    }
+
+    .el-radio__input.is-checked .el-radio__inner {
+        color: @color;
+        background-color: @color;
+    }
+
+    .el-radio__inner:hover{
+        border-color: @color;
+    }
+
+
     .el-radio-button {
         color: @color;
 
@@ -117,11 +131,12 @@
         color: @hover-color;
     }
 
-    .el-checkbox__input.is-checked+.el-checkbox__label{
+    .el-checkbox__input.is-checked+.el-checkbox__label {
         color: @color;
     }
 
-    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
         color: @color;
         background-color: @color;
     }
@@ -147,7 +162,7 @@
     cursor: pointer;
 }
 
-.ml-10{
+.ml-10 {
     margin-left: 10px;
 }
 
@@ -155,7 +170,7 @@
     margin-right: 10px;
 }
 
-.mr-20{
+.mr-20 {
     margin-right: 20px;
 }
 
@@ -283,6 +298,6 @@
     }
 }
 
-.pager{
+.pager {
     margin-right: 5px;
 }
