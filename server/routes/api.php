@@ -25,6 +25,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
+    /*
+     * Route User APi
+     */
     Route::get('user','UserController@getCurrentUser');
 
     Route::get('users', 'UserController@index');
@@ -36,6 +39,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::put('users/{user}', 'UserController@update');
 
     Route::delete('users/{user}', 'UserController@delete');
+
+    /*
+     * Route Patient Api
+     */
+    Route::get('patients', 'PatientController@index');
+
+    Route::get('patients/{patient}', 'PatientController@show');
+
+    Route::post('patients', 'PatientController@store');
+
+    Route::put('patients/{patient}', 'PatientController@update');
+
+    Route::delete('patients/{patient}', 'PatientController@delete');
 
 });
 
