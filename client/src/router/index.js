@@ -511,28 +511,28 @@ router.beforeEach(async (to, from, next) => {
     let loadingInstance = null;
 
     //获取当前登录的用户
-    // let user = store.getters.userInfo;
+    let user = store.getters.userInfo;
 
     // // //TODO 测试使用 --------------------
-    let user = {
-        id: 1,
-        uname: "admin",
-        avatar: "",
-        personal_name: "",
-        phone: "",
-        status: 0,
-        ct_user: "",
-        ct_time: "2018-12-29 15:02:09",
-        mfy_user: "admin",
-        mfy_time: "2019-01-15 13:41:08",
-        token:
-            "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
-    };
-    store.commit("setUserInfo", user);
+    // let user = {
+    //     id: 1,
+    //     uname: "admin",
+    //     avatar: "",
+    //     personal_name: "",
+    //     phone: "",
+    //     status: 0,
+    //     ct_user: "",
+    //     ct_time: "2018-12-29 15:02:09",
+    //     mfy_user: "admin",
+    //     mfy_time: "2019-01-15 13:41:08",
+    //     token:
+    //         "232be93a32c229a03ed312e05c9c3feef8157e07f426c10abcdc258a31b2eff0"
+    // };
+    // store.commit("setUserInfo", user);
 
-    // // //---------------------------------------
+    // //---------------------------------------
 
-    if (!user.uname) {
+    if (!user.name) {
         let checkError = false;
 
         //加载loading
@@ -541,7 +541,8 @@ router.beforeEach(async (to, from, next) => {
         });
 
         try {
-            let resp = await getUserInfo(),
+            //忽略这个接口的自动刷新页面，由当前的js接管
+            let resp = await getUserInfo(true),
                 udata = resp.data;
 
             if (resp.code == 200) {
@@ -564,7 +565,7 @@ router.beforeEach(async (to, from, next) => {
     }
 
     //初始化路由成功后,如果当前用户没有登录的话，跳到登录
-    if (user.uname) {
+    if (user.name) {
         //初始化菜单------------------------
 
         if (!initRouter) {
@@ -588,11 +589,11 @@ router.beforeEach(async (to, from, next) => {
 
             loadingInstance && loadingInstance.close();
         } else if (toPath == "/login") {
-            //TODO：暂时开放登录
-            next();
+            // //TODO：暂时开放登录
+            // next();
 
-            // //登录后还想跳到登录页面的，直接跳首页
-            // router.replace("/home");
+            //登录后还想跳到登录页面的，直接跳首页
+            router.replace("/home");
         } else {
             //menu都有了直接next
             next();

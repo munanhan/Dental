@@ -16,7 +16,7 @@ class LoginController extends Controller
     {
         $user=$this->getFirst($this->getUsername());
         if($user &&($user->status===0)){
-            return response()->json('Account disabled',401);
+            return message('Account disabled','',401);
         }
 
         return $this->authenticate();
@@ -34,7 +34,7 @@ class LoginController extends Controller
             Auth::guard('api')->user()->token()->delete();
         }
 
-        return response()->json('Log out successfully',200);
+        return message('','',200);
     }
 
     protected function getUsername()

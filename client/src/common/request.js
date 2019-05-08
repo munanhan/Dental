@@ -2,12 +2,16 @@ import axios from "axios";
 import { Notification } from "element-ui";
 import { setCookie, getCookie } from "./util";
 
-let instance = null;
+let instance = null,
+    refreshTokenUrl = "/api/refreshment",
+    oauthToken = getCookie("token");
 
 //development模式下使用
 try {
+    refreshTokenUrl = apiBaseURL + refreshTokenUrl;
+
     instance = axios.create({
-        baseURL: apiBaseURL, // api的base_url
+        baseURL: `${apiBaseURL}/api`, // api的base_url
         timeout: 6000, // 请求超时时间
         withCredentials: true //允许携带cookie
     });
@@ -25,11 +29,6 @@ try {
 //     // withCredentials: true, //允许携带cookie
 // });
 
-let oauthToken = getCookie("token");
-
-// state.token = value.token;
-// state.refreshToke = value.refreshToke;
-
 //检查token是否过期
 const repeatRequest = async (refresh_token, config) => {
     let result = {
@@ -38,12 +37,12 @@ const repeatRequest = async (refresh_token, config) => {
     };
 
     try {
-        let rdata = (await axios.post(`/api/refreshment`, { refresh_token }))
-                .data,
+        let res = await axios.post(refreshTokenUrl, { refresh_token }),
+            rdata = res.data,
             ntoken = "",
             nRefToken = "";
 
-        if (rdata.code == 200) {
+        if (res.status == 200) {
             ntoken = rdata.data.token_type + " " + rdata.data.access_token;
             nRefToken = rdata.data.refresh_token;
 
@@ -87,7 +86,8 @@ const rejectParams = (url, data) => {
 // 默认是json格式的
 instance.interceptors.request.use(
     config => {
-        // console.log(proxy);
+
+        oauthToken = getCookie("token");
 
         if (
             config.method.toLocaleUpperCase() == "GET" ||
@@ -115,6 +115,11 @@ instance.interceptors.request.use(
 
 //刷新页面
 let refreshPage = () => {
+    // //如果当前的页面已经是登录页面，就不操作了
+    // if (window.location.pathname == "/login") {
+    //     return;
+    // }else
+
     //与服务器连接已经断开，6秒后自动刷新页面重连
     Notification.error({
         title: "错误",
@@ -132,39 +137,45 @@ let refreshPage = () => {
 instance.interceptors.response.use(
     response => {
         const resData = response.data;
+
+        //织入成功状态码
+        resData.code = response.status;
         return resData;
     },
-    error => {
-        let res = error.response;
-
-        // debugger
+    async error => {
+        let res = error.response,
+            result = {
+                code: res.status,
+                data: res.data.data,
+                msg: res.data.msg
+            },
+            skipAuth = !!res.config.skipAuth,
+            routerUse = !!res.config.routerUse;
 
         //检测token,同时检测是否要跳过
-        if (res.status == 401) {
+        //同时检查是不是要忽略刷新token的环节
+        if (res.status == 401 && !skipAuth) {
             //token已经过期了
             let refreshToken = getCookie("refresh_token");
 
             if (refreshToken) {
                 //尝试重发请求
-                let result = repeatRequest(refreshToken, res.config);
+                let reRes = await repeatRequest(refreshToken, res.config);
 
-                if (result.error) {
-                    //刷新页面
-                    refreshPage();
+                if (reRes.error) {
+                    //刷新页面，如果该接口是路由控制的，则不要继续刷新页面，避免一直刷新页面，路由会控制跳转
+                    !routerUse && refreshPage();
                 } else {
-                    resData = result.data;
-                    
-                    return resData;
+                    result.data = reRes.data.data;
+                    result.msg = reRes.data.msg;
                 }
             } else {
-                return {
-                    code: 401,
-                    data: {}
-                };
+                //刷新页面，如果该接口是路由控制的，则不要继续刷新页面，避免一直刷新页面，路由会控制跳转
+                !routerUse && refreshPage();
             }
-        } else {
-            return Promise.reject(error);
         }
+
+        return result;
     }
 );
 
