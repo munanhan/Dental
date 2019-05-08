@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Patient;
+use App\Model\Patient;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PatientController extends Controller
 {
+    const SERIAL_NUMBER="serial.number:";
 
     public function index()
     {
@@ -21,12 +22,9 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
-        $year=now()->year;
-        $moth=now()->month;
-        $day=now()->day;
 
-        dd($year,$moth,$day);
-
+        $date=$this->getToday();
+        dd($date);
         $patient=Patient::create($request->all());
 
         return message('',$patient);
@@ -44,5 +42,16 @@ class PatientController extends Controller
         $patient->delete();
 
         return message('',null, 200);
+    }
+
+    protected  function getToday()
+    {
+        return now()->format('Ymd');
+    }
+
+    protected  function generate()
+    {
+        $key=constant('SERIAL_NUMBER').$this->getToday();
+
     }
 }

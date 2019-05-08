@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Clinic;
-use App\Company;
-use App\Phone;
+use App\Model\Clinic;
+use App\Model\Company;
+use App\Model\Phone;
 use Illuminate\Http\Request;
-use App\User;
+use App\Model\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Redis;
