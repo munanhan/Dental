@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use App\Notifications\InvoicePaid;
 use Laravel\Passport\HasApiTokens;
