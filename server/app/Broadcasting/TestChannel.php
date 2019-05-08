@@ -2,7 +2,7 @@
 
 namespace App\Broadcasting;
 
-use App\User;
+use App\Model\User;
 
 class TestChannel
 {

@@ -53,5 +53,11 @@ class PatientController extends Controller
     {
         $key=constant('SERIAL_NUMBER').$this->getToday();
 
+        $string='123';
+
+        for($i=0;$i<mb_strlen($string);$i++){
+
+        }
+
     }
 }
