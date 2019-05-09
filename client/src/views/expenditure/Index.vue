@@ -8,19 +8,30 @@
                     <span class="ml-20 mr-10">发生日期</span>
                     <i
                         class="fa fa-arrow-circle-left mr-10 pre-mth"
-                        @click.stop="switchDate('pre')"
+                        @click.prevent.stop="switchDate('pre')"
                     ></i>
                     <!-- <span
                     v-if="curYear != selectYear || curMonth != selectMonth"
                     class="current mr-10"
                     @click.stop="switchDate"
                 >今</span> -->
-                    <span class="current mr-10">今</span>
+                    <span
+                        v-if="!isCurrentDate"
+                        class="current mr-10"
+                        @click.prevent.stop="switchDate('current')"
+                    >今</span>
+
+                    <span
+                        v-if="isCurrentDate"
+                        class="mr-10"
+                    >
+                        &nbsp;&nbsp;
+                    </span>
 
                     <!-- <span v-else>&nbsp;&nbsp;&nbsp;</span> -->
                     <i
                         class="fa fa-arrow-circle-right mr-10 next-mth"
-                        @click.stop="switchDate('next')"
+                        @click.prevent.stop="switchDate('next')"
                     ></i>
 
                 </span>
@@ -29,6 +40,7 @@
                     <el-radio-group
                         v-model="dateType"
                         size="medium"
+                        @change="dateTypeChange"
                     >
                         <el-radio :label="0">天</el-radio>
                         <el-radio :label="1">周</el-radio>
@@ -49,6 +61,7 @@
                             value-format="yyyy-MM-dd"
                             :clearable="false"
                             class="search-input"
+                            @change="changeData('fm')"
                         >
                         </el-date-picker>
                     </label>
@@ -57,12 +70,13 @@
                     <label class="search-item">
                         <span class="label-text mr-10">到</span>
                         <el-date-picker
-                            v-model="search.dtFm"
+                            v-model="search.dtTo"
                             type="date"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
                             :clearable="false"
                             class="search-input"
+                            @change="changeData('to')"
                         >
                         </el-date-picker>
                     </label>
@@ -112,23 +126,23 @@
                 ref="head"
             >
                 <span>
-                    2019年05年05日
+                    {{dateFmText}}
                 </span>
                 <span class="ml-10 mr-10">
                     -
                 </span>
                 <span class="mr-10">
-                    2019年05月11日
+                    {{dateToText}}
                 </span>
                 <span class="mr-10">
-                    (共7天)
+                    (共{{dateCount}}天)
                 </span>
 
                 <span class="ml-10">
                     <el-button
                         type="primary"
                         class="btns"
-                        @click="addPay"
+                        @click="addPayDialog = true"
                     >新增支出</el-button>
                 </span>
             </div>
@@ -136,7 +150,7 @@
             <div class="pay-table">
                 <el-table
                     border
-                    class="width100 mb-10 details-table"
+                    class="width100 mb-10"
                     :data="tableData"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
@@ -215,13 +229,17 @@
                 </el-table>
             </div>
         </div>
+
+        <pay-dialog :show.sync="addPayDialog"></pay-dialog>
     </div>
 </template>
 
 <script>
+import { formatDate } from "@common/util";
+import PayDialog from './Pay';
 export default {
     name: "Expenditure",
-    components: {},
+    components: {PayDialog},
     props: {},
     data() {
         return {
@@ -239,12 +257,31 @@ export default {
             ],
 
             tableData: [],
-            tableHeight: "300px"
+            tableHeight: "300px",
+
+            dateFmText: "",
+            dateToText: "",
+            dateCount: 0,
+
+            //当前的日期
+            currentDate: null,
+
+            isCurrentDate: false,
+
+            addPayDialog: false
         };
     },
     created() {},
     mounted() {
         let that = this;
+
+        //设置当前的日期
+        that.currentDate = formatDate(new Date(), "yyyy-MM-dd");
+        that.dateFmText = formatDate(that.search.dtFm, "yyyy年MM月dd日");
+        that.dateToText = formatDate(that.search.dtTo, "yyyy年MM月dd日");
+
+        that.checkCurrentData();
+        that.calcDateCount();
 
         that.$nextTick(() => {
             that.resizeTable();
@@ -257,12 +294,144 @@ export default {
             window.attachEvent("bodyChange", that.resizeTable);
         }
     },
-    watch: {},
-    computed: {},
-    methods: {
-        switchDate() {},
+    watch: {
+        "search.dtFm": {
+            handler(newValue, oldValue) {
+                let that = this;
+                that.dateFmText = formatDate(newValue, "yyyy年MM月dd日");
 
-        addPay() {},
+                that.calcDateCount();
+                that.checkCurrentData();
+            }
+        },
+
+        "search.dtTo": {
+            handler(newValue, oldValue) {
+                let that = this;
+                that.dateToText = formatDate(newValue, "yyyy年MM月dd日");
+
+                that.calcDateCount();
+                that.checkCurrentData();
+            }
+        }
+    },
+    computed: {},
+
+    methods: {
+        dateTypeChange(value) {
+            let that = this,
+                type = value == 0 ? "day" : value == 1 ? "week" : "month";
+            that.switchDate(type);
+        },
+
+        checkCurrentData() {
+            let that = this;
+
+            that.isCurrentDate =
+                formatDate(that.search.dtFm, "yyyy-MM-dd") ==
+                    that.currentDate &&
+                formatDate(that.search.dtTo, "yyyy-MM-dd") == that.currentDate;
+        },
+
+        calcDateCount() {
+            let that = this,
+                startTime = new Date(that.search.dtFm).getTime(),
+                endTime = new Date(that.search.dtTo).getTime(),
+                count = Math.round((endTime - startTime) / 86400000) + 1;
+
+            that.dateCount = count;
+        },
+
+        //如果开始和结束的时间相减是负责则同步两边的值
+        changeData(type) {
+            let that = this,
+                startTime = new Date(that.search.dtFm).getTime(),
+                endTime = new Date(that.search.dtTo).getTime(),
+                minus = endTime - startTime;
+
+            if (minus < 0) {
+                if (type == "fm") {
+                    that.search.dtTo = that.search.dtFm;
+                } else if (type == "to") {
+                    that.search.dtFm = that.search.dtTo;
+                }
+            }
+        },
+
+        switchDate(type) {
+            let that = this,
+                year = that.search.dtFm.getFullYear(),
+                mth = that.search.dtFm.getMonth(),
+                weekday = that.search.dtFm.getDay(),
+                day = that.search.dtFm.getDate();
+
+            switch (type) {
+                case "current":
+                    that.search.dtFm = that.search.dtTo = new Date();
+                case "day":
+                    that.search.dtTo = that.search.dtFm;
+                    break;
+                case "week":
+                    that.search.dtFm = new Date(year, mth, day - weekday);
+                    that.search.dtTo = new Date(year, mth, day + (6 - weekday));
+                    break;
+                case "month":
+                    that.search.dtFm = new Date(year, mth, 1);
+                    that.search.dtTo = new Date(year, mth + 1, 0);
+                    break;
+                case "pre":
+                    if (that.dateType == 0) {
+                        that.search.dtFm = that.search.dtTo = new Date(
+                            year,
+                            mth,
+                            day - 1
+                        );
+                    } else if (that.dateType == 1) {
+                        that.search.dtFm = new Date(
+                            year,
+                            mth,
+                            day - weekday - 7
+                        );
+                        that.search.dtTo = new Date(
+                            year,
+                            mth,
+                            day + (6 - weekday) - 7
+                        );
+                    } else {
+                        that.search.dtFm = new Date(year, mth - 1, 1);
+                        that.search.dtTo = new Date(year, mth - 2, 0);
+                    }
+
+                    break;
+                case "next":
+                    if (that.dateType == 0) {
+                        that.search.dtFm = that.search.dtTo = new Date(
+                            year,
+                            mth,
+                            day + 1
+                        );
+                    } else if (that.dateType == 1) {
+                        that.search.dtFm = new Date(
+                            year,
+                            mth,
+                            day - weekday + 7
+                        );
+                        that.search.dtTo = new Date(
+                            year,
+                            mth,
+                            day + (6 - weekday) + 7
+                        );
+                    } else {
+                        that.search.dtFm = new Date(year, mth + 1, 1);
+                        that.search.dtTo = new Date(year, mth + 2, 0);
+                    }
+                    break;
+            }
+        },
+
+        addPay() {
+
+        },
 
         getData() {},
 
@@ -314,6 +483,20 @@ export default {
                         color: @hover-color;
                     }
                 }
+
+                .current {
+                    .transition-2;
+
+                    &:hover {
+                        color: @color;
+                    }
+                }
+
+                .current,
+                .pre-mth,
+                .next-mth {
+                    cursor: pointer;
+                }
             }
 
             /deep/ .el-radio-group {
@@ -335,15 +518,9 @@ export default {
                 }
             }
 
-            .current,
-            .pre-mth,
-            .next-mth {
-                cursor: pointer;
-            }
-
-            .date-type {
-                // vertical-align: middle;
-            }
+            // .date-type {
+            //     // vertical-align: middle;
+            // }
         }
 
         .search {
