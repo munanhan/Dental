@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Model\Patient;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redis;
 
 class PatientController extends Controller
 {
     const SERIAL_NUMBER="serial.number:";
+
+    const DEFAULT_LENGTH=3;
 
     public function index()
     {
@@ -23,8 +26,6 @@ class PatientController extends Controller
     public function store(Request $request)
     {
 
-        $date=$this->getToday();
-        dd($date);
         $patient=Patient::create($request->all());
 
         return message('',$patient);
@@ -51,13 +52,35 @@ class PatientController extends Controller
 
     protected  function generate()
     {
-        $key=constant('SERIAL_NUMBER').$this->getToday();
 
-        $string='123';
+        $date=$this->getToday();
 
-        for($i=0;$i<mb_strlen($string);$i++){
+        $key=self::SERIAL_NUMBER.$date;
 
+        $sequence=Redis::incr($key);
+
+        $seq=$this->getSequence($sequence);
+
+        $serial=$date.$seq;
+
+        return message('',$serial);
+
+    }
+
+    protected function getSequence($seq)
+    {
+        $len=mb_strlen($seq);
+
+        if($len>=self::DEFAULT_LENGTH){
+            return $seq;
         }
 
+        $rest=self::DEFAULT_LENGTH-$len;
+
+        for($i=0;$i<$rest;$i++){
+            $seq='0'.$seq;
+        }
+
+        return $seq;
     }
 }
