@@ -2,7 +2,7 @@
 
 namespace App\Broadcasting;
 
-use App\User;
+use App\Model\User;
 
 class TestChannel
 {
@@ -19,7 +19,7 @@ class TestChannel
     /**
      * Authenticate the user's access to the channel.
      *
-     * @param  \App\User  $user
+     * @param  \App\Model\User  $user
      * @return array|bool
      */
     public function join(User $user)

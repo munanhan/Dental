@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,6 @@ class Company extends Model
 
      public function clinics()
      {
-         return $this->hasMany('App\Clinic');
+         return $this->hasMany('App\Model\Clinic');
      }
 }

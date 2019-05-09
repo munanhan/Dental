@@ -588,7 +588,7 @@ router.beforeEach(async (to, from, next) => {
             }
 
             loadingInstance && loadingInstance.close();
-        } else if (toPath == "/login") {
+        } else if (/^\/login\/*/.test(toPath)){
             // //TODO：暂时开放登录
             // next();
 

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Observers\UserObserver;
-use App\Order;
-use App\User;
+use App\Model\Order;
+use App\Model\User;
 use App\Observers\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 
