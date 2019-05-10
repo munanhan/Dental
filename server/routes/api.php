@@ -43,6 +43,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route Patient Api
      */
+    Route::get('generate','PatientController@generate');
+
     Route::get('patients', 'PatientController@index');
 
     Route::get('patients/{patient}', 'PatientController@show');
@@ -63,7 +65,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     
     Route::get('operation_log/get_module_list','operationLogController@getModuleList');//下拉模块选项
 
-    Route::get('generate','PatientController@generate');
+
 
     /*
      * Route PatientAddress Api
