@@ -274,14 +274,16 @@ export default {
         }
     },
     watch: {
-        update(newValue, oldValue) {
+        refresh(newValue, oldValue) {
             let that = this;
+
             if (newValue) {
                 that.resizeTable();
 
-                setTimeout(() => {
-                    that.$emit("update:update", false);
-                });
+                //更新原来的refresh, 防止下次点击时不通知更新
+                that.$emit("update:refresh", false);
+
+                // that.getData();
             }
         }
     },

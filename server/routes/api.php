@@ -53,6 +53,13 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{patient}', 'PatientController@delete');
 
+    /*
+     * Route OperationLog Api
+     */
+    Route::get('operation_log', 'operationLogController@operationLogList');//日志列表
+    Route::get('operation_log/get_user_list','operationLogController@getUserList');//下拉用户列表
+    Route::get('operation_log/get_module_list','operationLogController@getModuleList');//下拉模块选项
+
 });
 
 
