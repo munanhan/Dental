@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Order;
+use App\Model\Order;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,10 +16,11 @@ class TestEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
+
     /**
      * Create a new event instance.
-     *
-     * @return void
+     * TestEvent constructor.
+     * @param Order $order
      */
     public function __construct(Order $order)
     {

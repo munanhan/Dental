@@ -4,6 +4,7 @@ import * as user from './user'
 import * as appointment from './appointment'
 import * as operation_log from './operation_log'
 import * as patient_recycling_bin from './patient_recycling_bin'                                                   
+import * as patient from './patient'
 
 const apis = {
     base,
@@ -11,7 +12,8 @@ const apis = {
     user,
     appointment,
     operation_log,
-    patient_recycling_bin
+    patient_recycling_bin,
+    patient
 }
 
 const install = function (Vue) {

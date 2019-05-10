@@ -220,6 +220,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     //     Redis::publish('test-channel', json_encode(['foo' => 'bar']));
     // });
+   
 
 });
 
