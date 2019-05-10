@@ -161,7 +161,7 @@ export default {
 
             console.log(item);
 
-            that.closeDialog();
+            // that.closeDialog();
         }
     }
 };

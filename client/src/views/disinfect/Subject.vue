@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="付款方式选择"
+            title="主题"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog pay-dialog"
@@ -19,7 +19,7 @@
                 >
                     <el-table-column
                         prop="aaaa"
-                        label="支出类型"
+                        label="主题"
                         align="center"
                         show-overflow-tooltip
                     >
@@ -82,7 +82,7 @@
                 <div class="pull-left">
                     <el-button
                         type="primary"
-                        @click="addPayTypeDialog = true"
+                        @click="addSubjectDialog = true"
                         :disabled="commitLoading"
                     >新增</el-button>
                 </div>
@@ -104,18 +104,18 @@
             </div>
         </el-dialog>
 
-        <add-pay-type :show.sync="addPayTypeDialog" @add-item="addItem"></add-pay-type>
+        <add-subject :show.sync="addSubjectDialog" @add-item="addItem"></add-subject>
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddPayType from "./AddPayType";
+import AddSubject from "./AddSubject";
 export default {
-    name: "PayType",
+    name: "Subject",
     mixins: [DialogForm],
 
-    components: {AddPayType},
+    components: {AddSubject},
     props: {},
     data() {
         return {
@@ -123,7 +123,7 @@ export default {
             tableHeight: "340px",
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
 
-            addPayTypeDialog: false
+            addSubjectDialog: false
         };
     },
     created() {},
