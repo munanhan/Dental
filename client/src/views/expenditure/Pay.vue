@@ -11,7 +11,7 @@
             <el-form
                 :model="form"
                 :rules="formRules"
-                label-width="80px"
+                label-width="100px"
                 ref="form"
             >
                 <el-row>
@@ -175,8 +175,14 @@
             </div>
         </el-dialog>
 
-        <expenditure-category :show.sync="expenditureCategoryDialog" @update-category="updateCategroy"></expenditure-category>
-        <pay-type :show.sync="payTypeDialog" @update-pay-type="updatePayType"></pay-type>
+        <expenditure-category
+            :show.sync="expenditureCategoryDialog"
+            @update-category="updateCategroy"
+        ></expenditure-category>
+        <pay-type
+            :show.sync="payTypeDialog"
+            @update-pay-type="updatePayType"
+        ></pay-type>
     </div>
 </template>
 
@@ -189,7 +195,7 @@ export default {
     name: "PayDailog",
     mixins: [DialogForm],
 
-    components: {ExpenditureCategory, PayType},
+    components: { ExpenditureCategory, PayType },
 
     props: {},
     data() {
@@ -204,7 +210,33 @@ export default {
                 expenditure_category: "",
                 expenditure_details: ""
             },
-            formRules: {},
+            formRules: {
+                date: [
+                    {
+                        required: true
+                    }
+                ],
+                handling: [
+                    {
+                        required: true
+                    }
+                ],
+                pay_type: [
+                    {
+                        required: true
+                    }
+                ],
+                amount: [
+                    {
+                        required: true
+                    }
+                ],
+                expenditure_category: [
+                    {
+                        required: true
+                    }
+                ]
+            },
 
             handlingList: [{ id: 0, label: "小李" }, { id: 1, label: "小张" }],
 
@@ -219,7 +251,6 @@ export default {
 
             expenditureCategoryDialog: false,
             payTypeDialog: false
-
         };
     },
     created() {},
@@ -229,15 +260,9 @@ export default {
     methods: {
         addCommit() {},
 
-        updateCategroy(list){
+        updateCategroy(list) {},
 
-        },
-
-        updatePayType(list){
-
-        }
-
-
+        updatePayType(list) {}
     }
 };
 </script>
