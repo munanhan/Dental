@@ -152,6 +152,7 @@ instance.interceptors.response.use(
             skipAuth = !!res.config.skipAuth,
             routerUse = !!res.config.routerUse;
 
+
         //检测token,同时检测是否要跳过
         //同时检查是不是要忽略刷新token的环节
         if (res.status == 401 && !skipAuth) {
@@ -164,14 +165,14 @@ instance.interceptors.response.use(
 
                 if (reRes.error) {
                     //刷新页面，如果该接口是路由控制的，则不要继续刷新页面，避免一直刷新页面，路由会控制跳转
-                    !routerUse && refreshPage();
+                    routerUse || refreshPage();
                 } else {
                     result.data = reRes.data.data;
                     result.msg = reRes.data.msg;
                 }
             } else {
                 //刷新页面，如果该接口是路由控制的，则不要继续刷新页面，避免一直刷新页面，路由会控制跳转
-                !routerUse && refreshPage();
+                routerUse || refreshPage();
             }
         }
 
