@@ -124,9 +124,9 @@
             <el-pagination
               @size-change="sizeChange"
               @current-change="currentChange"
-              :current-page="current_page"
+              :current-page="search.current_page"
               :page-sizes="[2, 4, 6, 20]"
-              :page-size="page_size"
+              :page-size="search.page_size"
               layout="total, sizes, prev, pager, next, jumper"
               class="pager"
               background
@@ -157,7 +157,7 @@ export default {
             select_group:[],
             // current_page:1,
             // page_size:5,
-            total:'',
+            total:0,
             search:{
               name:'',
               phone:'',
