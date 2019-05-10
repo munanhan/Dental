@@ -103,7 +103,6 @@
                 </div>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
-
         </el-dialog>
 
         <add-expenditure-category :show.sync="addExpendDialog" @add-item="addItem"></add-expenditure-category>

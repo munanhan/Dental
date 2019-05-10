@@ -463,6 +463,7 @@ export default {
 
     .left-content {
         width: 320px;
+        min-width: 320px;
         border-right: 1px solid #e3e3e3;
         padding: 10px;
         font-size: 18px;

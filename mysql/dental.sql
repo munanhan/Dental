@@ -437,3 +437,20 @@ CREATE TABLE `dental_visit_plan` (
   `visit_sound` varchar(255) DEFAULT NULL COMMENT '回访录音',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for dental_log
+-- 日志表,记录日常操作记录
+-- ----------------------------
+DROP TABLE IF EXISTS `operation_logs`;
+CREATE TABLE `operation_logs` (
+  `id` int(11) NOT NULL,
+  `ct_user` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '操作人',
+  `ct_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间',
+  `patient` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '相关患者',
+  `module` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '功能模块',
+  `platform` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '操作平台',
+  `operation_type` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '操作类型',
+  `operation_content` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '操作内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
