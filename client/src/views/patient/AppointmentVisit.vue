@@ -39,7 +39,8 @@
       <div style="border:1px solid #e0e0e0;width:500px;height:550px">
 
         <div style="border:1px solid red;height:400px">
-
+          <!-- <el-calendar v-model="formData.value">
+          </el-calendar> -->
         </div>
         <div>
           <el-form-item
@@ -131,7 +132,7 @@
       <div class="right">
         <el-form-item label-width="0">
           <el-input
-          placeholder="填写或下方选择预约事项！"
+            placeholder="填写或下方选择预约事项！"
             type="textarea"
             v-model="formData.items"
             resize="none"
@@ -218,6 +219,7 @@ export default {
         apt_date: "",
         source: "",
         items: ""
+        // value: new Date()
         // time_frame_begin:this.yuyue_time,
       },
 
@@ -228,9 +230,9 @@ export default {
           { required: true, message: "请输入姓名", trigger: "blur" },
           { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
-        abc:[
-         { required: true, message: "请输入姓名", trigger: "blur" },
-            { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        abc: [
+          { required: true, message: "请输入姓名", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ]
         // oldPass: passRules,
         // newPass: passRules,
@@ -327,7 +329,7 @@ export default {
   }
   .time-interval {
     flex: 1 1 auto;
-    color: rgb(255, 145, 0)
+    color: rgb(255, 145, 0);
   }
   .right {
     margin-left: 9%;

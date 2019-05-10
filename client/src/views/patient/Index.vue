@@ -170,12 +170,12 @@
           <charge-info v-if="chargeInfo" :refresh.sync="chargeInfo"></charge-info>
         </el-tab-pane>
 
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="影像信息"
           name="imageInfo"
         >
           <image-info v-if="imageInfo" :refresh.sync="imageInfo"></image-info>
-        </el-tab-pane>
+        </el-tab-pane> -->
 
         <el-tab-pane
           label="病历信息"
@@ -184,12 +184,12 @@
           <medical-records-info v-if="medicalRecordsInfo" :refresh.sync="medicalRecordsInfo"></medical-records-info>
         </el-tab-pane>
 
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="外加工"
           name="outsideProcessing"
         >
           <outside-processing v-if="outsideProcessing" :refresh.sync="outsideProcessing"></outside-processing>
-        </el-tab-pane>
+        </el-tab-pane> -->
 
         <el-tab-pane
           label="回访信息"
@@ -218,9 +218,9 @@
 import PatientInfo from "./PatientInfo";
 import DisposalRecords from "./DisposalRecords";
 import ChargeInfo from "./ChargeInfo";
-import ImageInfo from "./ImageInfo";
+// import ImageInfo from "./ImageInfo";
 import MedicalRecordsInfo from "./MedicalRecordsInfo";
-import OutsideProcessing from "./OutsideProcessing";
+// import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
 import AddPatient from "./AddPatient"; 
@@ -233,9 +233,9 @@ export default {
     PatientInfo,
     DisposalRecords,
     ChargeInfo,
-    ImageInfo,
+    // ImageInfo,
     MedicalRecordsInfo,
-    OutsideProcessing,
+    // OutsideProcessing,
     ReturnVisitInfo,
     ConsultingInfo,
     AddPatient,
@@ -287,9 +287,9 @@ export default {
       pationInfo: false,
       disposalRecords: false,
       chargeInfo: false,
-      imageInfo: false,
+      // imageInfo: false,
       medicalRecordsInfo: false,
-      outsideProcessing: false,
+      // outsideProcessing: false,
       returnVisitInfo: false,
       consultingInfo: false,
 
@@ -346,7 +346,7 @@ export default {
     //     },
     curTab(newValue, oldValue) {
       let that = this;
-      
+
       // target = that.quickFind[newValue];
       // that[target] = true;
 

@@ -18,9 +18,9 @@
           label="病历号"
           style="width:300px"
           size="small"
-          prop="anamnesis"
+          prop="case_id"
         >
-          <el-input v-model="form.anamnesis"></el-input>
+          <el-input v-model="form.case_id"></el-input>
         </el-form-item>
 
         <i
@@ -87,40 +87,34 @@
             label="3"
           >未填</el-radio>
         </div>
+
       </div>
+      <!-- <div style="display:flex">
+        <el-form-item
+          label="医保余额"
+          prop="society_no"
+          style="width:300px"
+        >
+          <el-input v-model="form.society_no"></el-input>
+        </el-form-item>
+        <el-form-item
+          style="margin-left:30px;width:300px"
+          label="医保卡号"
+          prop="age"
+        >
+          <el-input v-model="form.age"></el-input>
+        </el-form-item>
+      </div> -->
       <div style="height:300px;overflow: auto">
+
         <div style="display:flex">
           <el-form-item
-            label="电话1"
-            prop="phone_one"
-            style="width:210px"
+            label="电话"
+            prop="phone"
+            style="width:300px"
           >
-            <el-input
-              placeholder="请输入内容"
-              v-model="form.phone_one"
-            ></el-input>
+            <el-input v-model="form.phone"></el-input>
           </el-form-item>
-          <el-select
-            v-model="form.tel_one"
-            style="width:90px"
-          >
-            <el-option
-              label="   "
-              value="1"
-            ></el-option>
-            <el-option
-              label="爸爸"
-              value="2"
-            ></el-option>
-            <el-option
-              label="妈妈"
-              value="3"
-            ></el-option>
-            <el-option
-              label="妈妈妈"
-              value="4"
-            ></el-option>
-          </el-select>
           <i
             class="fa fa-cog"
             style="margin-top:10px;
@@ -129,30 +123,6 @@
                    margin-left:10px
                     "
           ></i>
-
-          <el-form-item
-            label="电话2"
-            prop="phone_two"
-            style="width:210px"
-          >
-            <el-input
-              placeholder="请输入内容"
-              v-model="form.phone_two"
-            ></el-input>
-          </el-form-item>
-          <el-select
-            v-model="form.two"
-            placeholder="选择"
-            style="width:90px"
-          >
-            <el-option
-              v-for="item in form.tel_two"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
         </div>
 
         <div style="display:flex">
@@ -178,11 +148,10 @@
         <div style="display:flex">
           <el-form-item
             label="患者来源"
-            prop="patients_source"
+            prop="source_id"
           >
             <el-select
-              v-model="form.patients_source"
-              placeholder="请选择活动区域"
+              v-model="form.source_id"
               style="width:220px"
             >
               <el-option
@@ -261,10 +230,10 @@
         <div style="display:flex">
           <el-form-item
             label="患者分类"
-            prop="classification_patients"
+            prop="group"
           >
             <el-select
-              v-model="form.classification_patients"
+              v-model="form.group"
               style="width:220px"
               placeholder="请选择"
             >
@@ -287,20 +256,20 @@
           ></i>
           <el-form-item
             style="margin-left:20px;width:300px"
-            prop="patient_note"
+            prop="content"
             label="患者备注"
           >
-            <el-input v-model="form.patient_note"></el-input>
+            <el-input v-model="form.content"></el-input>
           </el-form-item>
 
         </div>
         <div style="display:flex">
           <el-form-item
             label="会员等级"
-            prop="membership_grade"
+            prop="member_level"
           >
             <el-select
-              v-model="form.membership_grade"
+              v-model="form.member_level"
               style="width:220px"
               placeholder="请选择"
             >
@@ -325,27 +294,19 @@
           <el-form-item
             style="margin-left:20px;width:300px"
             label="会员卡号"
-            prop="mem_card_number"
+            prop="mem_card"
           >
-            <el-input v-model="form.mem_card_number"></el-input>
+            <el-input v-model="form.mem_card"></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item
             autocomplete="off"
+            prop="member_address"
             label="联系地址"
           >
-            <!-- <el-select style="width:530px">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select> -->
             <el-select
-              v-model="form.value"
+              v-model="form.member_address"
               placeholder="请选择"
               style="width:570px"
             >
@@ -396,11 +357,11 @@
         <div style="display:flex">
           <el-form-item
             label="社保号"
-            prop="social_security"
+            prop="society_no"
           >
             <el-input
               style="width:220px"
-              v-model="form.social_security"
+              v-model="form.society_no"
             ></el-input>
 
           </el-form-item>
@@ -415,11 +376,11 @@
         <div style="display:flex">
           <el-form-item
             label="患者印象"
-            prop="patients_impression"
+            prop="impression_id"
           >
             <el-input
               style="width:220px"
-              v-model="form.patients_impression"
+              v-model="form.impression_id"
             ></el-input>
           </el-form-item>
           <i
@@ -532,6 +493,7 @@
       <el-button
         :loading="commitLoading"
         type="primary"
+        @click="submitFrom"
       >确 定</el-button>
       <el-button @click="closeDialog">取 消</el-button>
 
@@ -596,29 +558,43 @@ export default {
             label: "北京烤鸭"
           }
         ],
-        patients_source: "guiling",
-        birthday: "",
-        tel_one: "",
-        phone_one: "",
-        value: "",
-        value1: null,
-        sex: "1",
-        category: "1",
-        mem_card_number: "",
-        social_security: "",
-        email: "",
-        smoking: "",
-        patients_impression: "",
-        patient_note: "",
-        grid_consulting: "",
-        brush_teeth_Timeday: "",
-        brush_teeth_minutestime: "",
-        teeth_cleaning_habits: "",
+        // patients_source: "guiling",
+        // birthday: "",
+        // tel_one: "",
+        // phone_one: "",
+        // value: "",
+        // value1: null,
+        // sex: "1",
+        // category: "1",
+        // mem_card_number: "",
+        // social_security: "",
+        // email: "",
+        // smoking: "",
+        // patients_impression: "",
+        // patient_note: "",
+        // grid_consulting: "",
+        // brush_teeth_Timeday: "",
+        // brush_teeth_minutestime: "",
+        // teeth_cleaning_habits: "",
+        // name: "",
+        // attendingphysician: "",
+        // anamnesis: "",
 
+        case_id: "",
         name: "",
-        attendingphysician: "",
-        anamnesis: "",
-
+        sex: "",
+        phone: "",
+        birthday: "",
+        age: "",
+        source_id: "",
+        group: "",
+        member_level: "",
+        mem_card: "",
+        member_address: "",
+        society_no: "",
+        email: "",
+        impression_id: "",
+        grid_consulting: "",
         rules: {
           attendingphysician: [
             { required: true, message: "请输入主治医生", trigger: "blur" }
@@ -627,7 +603,7 @@ export default {
             { required: true, message: "请输入姓名", trigger: "blur" },
             { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
           ],
-          anamnesis: [
+          case_id: [
             { required: true, message: "请输入病历号", trigger: "blur" },
             { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
           ]
@@ -636,7 +612,19 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+    submitFrom() {
+      this.$api.patient
+        .addPatient(this.form)
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      // console.log();
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

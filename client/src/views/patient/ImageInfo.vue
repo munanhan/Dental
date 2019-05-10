@@ -41,10 +41,11 @@
         @click="autom_import"
       >自动导入</el-button>
       <el-button class="image-button">手动导入</el-button>
-      <!-- <el-select
-        v-model="other"
+     <el-select
+        v-model="value"
         placeholder="其他"
         class="image-button"
+        @change="dialogshow(value)"
       >
         <el-option
           v-for="item in options"
@@ -52,9 +53,10 @@
           :label="item.label"
           :value="item.value"
         >
+
         </el-option>
-      </el-select> -->
-      <el-button class="image-button">其他
+      </el-select>
+      <!-- <el-button class="image-button">其他
         <i
           class="fa fa-chevron-up"
           style="margin-left:20px"
@@ -67,16 +69,17 @@
           >{{item.label}}</li>
 
         </ul>
-      </el-button>
+      </el-button> -->
 
       <el-button class="image-button">内窥镜</el-button>
       <el-button class="image-button">牙智宝</el-button>
       <el-button class="image-button">设备对接</el-button>
-      <!-- <el-select
-        v-model="image_class"
+      <el-select
+        v-model="value"
         placeholder="影像分类"
-        class="image-button"
         style="width:110px"
+        class="image-button"
+         @change="dialogshow(value)"
       >
         <el-option
           v-for="item in image"
@@ -85,8 +88,8 @@
           :value="item.value"
         >
         </el-option>
-      </el-select> -->
-      <el-button class="image-button" style="width:115px">影像分类
+      </el-select>
+      <!-- <el-button class="image-button" style="width:115px">影像分类
         <i
           class="fa fa-chevron-up"
           style="margin-left:10px"
@@ -99,8 +102,8 @@
           >{{item.label}}</li>
 
         </ul>
-      </el-button>
-      <el-button class="image-button" style="width:115px">专业工具
+      </el-button> -->
+      <!-- <el-button class="image-button" style="width:115px">专业工具
         <i
           class="fa fa-chevron-up"
           style="margin-left:10px"
@@ -113,7 +116,7 @@
           >{{item.label}}</li>
 
         </ul>
-      </el-button>
+      </el-button> -->
       <el-select
         v-model="profess_tools"
         placeholder="专业工具"
@@ -212,6 +215,10 @@ export default {
   },
   computed: {},
   methods: {
+     dialogshow(value) {
+      this[value] = true;
+      this.value = ''
+    },
     getImageInfo() {},
 
     getDataDone() {
@@ -251,54 +258,54 @@ export default {
       margin-left: 10px;
       margin-top: 10px;
       width: 100px;
-      .other {
-        list-style: none;
-        margin-left: -40px;
-        position: absolute;
-        top: -120px;
-        width: 88px;
-        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
-        li {
-          width: 128px;
-          padding: 10px 0px;
-          margin-left: -40px;
-          &:hover {
-            background-color: rgb(240, 240, 240);
-          }
-        }
-      }
-      .image_class {
-        list-style: none;
-        margin-left: -30px;
-        position: absolute;
-        top: -86px;
-        width: 88px;
-        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
-        li {
-          width: 128px;
-          padding: 10px 0px;
-          margin-left: -40px;
-          &:hover {
-            background-color: rgb(240, 240, 240);
-          }
-        }
-      }
-      .profess_tools {
-        list-style: none;
-        margin-left: -30px;
-        position: absolute;
-        top: -120px;
-        width: 88px;
-        -webkit-box-shadow: 1px 1px 5px #b3b3b3;
-        li {
-          width: 128px;
-          padding: 10px 0px;
-          margin-left: -40px;
-          &:hover {
-            background-color: rgb(240, 240, 240);
-          }
-        }
-      }
+      // .other {
+      //   list-style: none;
+      //   margin-left: -40px;
+      //   position: absolute;
+      //   top: -120px;
+      //   width: 88px;
+      //   -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+      //   li {
+      //     width: 128px;
+      //     padding: 10px 0px;
+      //     margin-left: -40px;
+      //     &:hover {
+      //       background-color: rgb(240, 240, 240);
+      //     }
+      //   }
+      // }
+      // .image_class {
+      //   list-style: none;
+      //   margin-left: -30px;
+      //   position: absolute;
+      //   top: -86px;
+      //   width: 88px;
+      //   -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+      //   li {
+      //     width: 128px;
+      //     padding: 10px 0px;
+      //     margin-left: -40px;
+      //     &:hover {
+      //       background-color: rgb(240, 240, 240);
+      //     }
+      //   }
+      // }
+      // .profess_tools {
+      //   list-style: none;
+      //   margin-left: -30px;
+      //   position: absolute;
+      //   top: -120px;
+      //   width: 88px;
+      //   -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+      //   li {
+      //     width: 128px;
+      //     padding: 10px 0px;
+      //     margin-left: -40px;
+      //     &:hover {
+      //       background-color: rgb(240, 240, 240);
+      //     }
+      //   }
+      // }
     }
   }
 }

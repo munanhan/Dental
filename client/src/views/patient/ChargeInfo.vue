@@ -96,6 +96,7 @@
       <el-button
         class="button"
         type="primary"
+        @click="Charge"
       >收费</el-button>
       <el-select
         v-model="value"
@@ -112,8 +113,7 @@
 
         </el-option>
       </el-select>
-
-      <el-button class="button" @mouseover.native="otherIsShow">其他
+      <!-- <el-button class="button" @mouseover.native="otherIsShow">其他
         <i
           class="fa fa-chevron-up"
           style="margin-left:30px"
@@ -126,25 +126,49 @@
           >{{item.label}}</li>
 
         </ul>
-      </el-button>
+      </el-button> -->
 
-      <el-button class="button">预交款</el-button>
-      <el-button class="button">流水单</el-button>
+      <el-button
+        class="button"
+        @click="Advan_pay"
+      >预交款</el-button>
+      <el-button
+        class="button"
+        @click="Water_sin"
+      >流水单</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
+    <charge :show.sync="charge_show"></charge>
     <refund :show.sync="Refund"></refund>
     <charging-set :show.sync="ChargingSet"></charging-set>
+    <invalid :show.sync="Invalid"></invalid>
+    <print :show.sync="Print"></print>
+    <print-set :show.sync="PrintSet"></print-set>
+    <advance-payment :show.sync="advancepay_show"></advance-payment>
+    <water-single :show.sync="watersin_show"></water-single>
   </div>
 </template>
 
 <script>
 import Refund from "./Refund.vue";
 import ChargingSet from "./ChargingSet.vue";
+import Invalid from "./Invalid.vue";
+import Print from "./Print.vue";
+import PrintSet from "./PrintSet.vue";
+import AdvancePayment from "./AdvancePayment.vue";
+import WaterSingle from "./WaterSingle.vue";
+import Charge from "./Charge.vue";
 export default {
   name: "ChargeInfo",
   components: {
+    Charge,
     Refund,
-    ChargingSet
+    ChargingSet,
+    Invalid,
+    Print,
+    PrintSet,
+    AdvancePayment,
+    WaterSingle
   },
   props: {
     refresh: {
@@ -157,18 +181,25 @@ export default {
       Refund: false,
       zuofei: false,
       ChargingSet: false,
-      otherShow:true,
+      Invalid: false,
+      Print: false,
+      PrintSet: false,
+      advancepay_show: false,
+      watersin_show: false,
+      charge_show: false,
+      otherShow: true,
+
       options: [
         {
           value: "Refund",
           label: "退费"
         },
         {
-          value: "zuofei",
+          value: "Invalid",
           label: "作废"
         },
         {
-          value: "选项3",
+          value: "Print",
           label: "打印"
         },
         {
@@ -176,7 +207,7 @@ export default {
           label: "收费设置"
         },
         {
-          value: "选项5",
+          value: "PrintSet",
           label: "打印设置"
         }
       ],
@@ -206,7 +237,7 @@ export default {
     // },
     dialogshow(value) {
       this[value] = true;
-      this.value = ''
+      this.value = "";
     },
     getChargeInfo() {},
 
@@ -214,6 +245,15 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+    Advan_pay() {
+      this.advancepay_show = true;
+    },
+    Water_sin() {
+      this.watersin_show = true;
+    },
+    Charge() {
+      this.charge_show = true;
     }
   }
 };
@@ -237,27 +277,26 @@ export default {
   bottom: 0;
   background-color: #e3e3e3;
   width: 100%;
-  .other {
-    
-    &.no-show{
-       display: none;
-    }
-   
-    list-style: none;
-    margin-left: -21px;
-    position: absolute;
-    top: -190px;
-    width: 88px;
-    -webkit-box-shadow: 1px 1px 5px #b3b3b3;
-    li {
-      width: 128px;
-      padding: 10px 0px;
-      margin-left: -40px;
-      &:hover {
-        background-color: rgb(240, 240, 240);
-      }
-    }
-  }
+  // .other {
+  //   &.no-show {
+  //     display: none;
+  //   }
+
+  //   list-style: none;
+  //   margin-left: -21px;
+  //   position: absolute;
+  //   top: -190px;
+  //   width: 88px;
+  //   -webkit-box-shadow: 1px 1px 5px #b3b3b3;
+  //   li {
+  //     width: 128px;
+  //     padding: 10px 0px;
+  //     margin-left: -40px;
+  //     &:hover {
+  //       background-color: rgb(240, 240, 240);
+  //     }
+  //   }
+  // }
 }
 
 /deep/ .el-table__body-wrapper {
