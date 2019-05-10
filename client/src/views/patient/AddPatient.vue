@@ -6,6 +6,7 @@
     class="custom-dialog"
     v-dialog-drag
     width="750px"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="changePwdForm"
@@ -223,8 +224,21 @@
             label="主治医生"
             prop="attendingphysician"
           >
-            <el-input v-model="form.attendingphysician"></el-input>
+            <el-select
+              v-model="form.attendingphysician"
+              style="width:220px"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in form.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
+
         </div>
 
         <div style="display:flex">
@@ -599,13 +613,9 @@ export default {
           attendingphysician: [
             { required: true, message: "请输入主治医生", trigger: "blur" }
           ],
-          name: [
-            { required: true, message: "请输入姓名", trigger: "blur" },
-            { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-          ],
+          name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
           case_id: [
-            { required: true, message: "请输入病历号", trigger: "blur" },
-            { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+            { required: true, message: "请输入病历号", trigger: "blur" }
           ]
         }
       }

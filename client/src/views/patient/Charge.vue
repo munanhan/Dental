@@ -3,6 +3,7 @@
     title="收费"
     :visible.sync="show"
     :before-close="closeDialog"
+    :close-on-click-modal="false"
     class="custom-dialog"
     v-dialog-drag
     width="1010px"
@@ -130,22 +131,46 @@
             </div>
           </div>
           <div class="charge-right">
-            <div style="margin-left:80px;display:flex;margin-top:40px">
-              <div style="margin-top:5px;font-size:15px">上次欠款</div>
-              <div style="font-weight:bold;color:#000;margin-left:115px;font-size:25px">0.00</div>
+            <div style="margin-left:80px;
+                        display:flex;
+                        margin-top:20px">
+              <div style="margin-top:5px;
+                          font-size:15px">上次欠款</div>
+              <div style="font-weight:bold;
+                          color:#000;
+                          margin-left:115px;
+                          font-size:25px">0.00</div>
             </div>
-            <div style="margin-left:80px;display:flex;margin-top:10px">
-              <div style="margin-top:5px;font-size:15px">本次费用</div>
-              <div style="font-weight:bold;color:#000;margin-left:115px;font-size:25px">0.00</div>
+            <div style="margin-left:80px;
+                        display:flex;
+                        margin-top:10px">
+              <div style="margin-top:5px;
+                          font-size:15px">本次费用</div>
+              <div style="font-weight:bold;
+                          color:#000;
+                          margin-left:115px;
+                          font-size:25px">0.00</div>
             </div>
-            <div style="margin-left:60px;display:flex;margin-top:20px">
-              <div style="margin-top:5px;font-size:20px;font-weight:bold;color:#000">合计应收</div>
-              <div style="font-weight:bold;color:#000;margin-left:115px;font-size:25px">0.00</div>
+            <div style="margin-left:60px;
+                        display:flex;
+                        margin-top:20px">
+              <div style="margin-top:5px;
+                          font-size:20px;
+                          font-weight:bold;
+                          color:#000">合计应收</div>
+              <div style="font-weight:bold;
+                          color:#000;margin-left:115px;
+                          font-size:25px">0.00</div>
             </div>
-            <div style="margin-left:40px;display:flex;margin-top:30px">
-              <div style="margin-top:10px;font-size:20px;font-weight:bold;color:#000">优惠后金额</div>
+            <div style="margin-left:40px;
+                        display:flex;
+                        margin-top:30px">
+              <div style="margin-top:10px;
+                          font-size:20px;
+                          font-weight:bold;
+                          color:#000">优惠后金额</div>
               <el-form-item>
-                <el-input style="width:160px;margin-left:-75px"></el-input>
+                <el-input style="width:170px;margin-left:-75px"></el-input>
               </el-form-item>
             </div>
             <div style="display:flex">
@@ -165,7 +190,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-input style="width:160px;margin-left:-75px"></el-input>
+                <el-input style="width:170px;margin-left:-75px"></el-input>
               </el-form-item>
             </div>
             <div style="display:flex">
@@ -193,11 +218,11 @@
             </div>
             <div style="margin-left:80px;display:flex;">
               <div style="margin-top:5px;font-size:20px;font-weight:bold;color:#000">欠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款</div>
-              <div style="font-weight:bold;color:#000;margin-left:105px;font-size:25px">0.00</div>
+              <div style="font-weight:bold;color:#000;margin-left:100px;font-size:25px">0.00</div>
             </div>
             <div style="margin-left:80px;display:flex;margin-top:40px">
               <div style="margin-top:5px;font-size:20px;font-weight:bold;color:#000">找&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;零</div>
-              <div style="font-weight:bold;color:#000;margin-left:105px;font-size:25px">0.00</div>
+              <div style="font-weight:bold;color:#000;margin-left:100px;font-size:25px">0.00</div>
             </div>
           </div>
         </div>
