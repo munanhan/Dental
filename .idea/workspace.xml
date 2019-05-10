@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4942e3a4-376c-4cd9-8c63-bbe7953973d0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Events/TestEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Events/TestEvent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Observers/OrderObserver.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Observers/OrderObserver.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,8 +78,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="51" column="75" lean-forward="true" selection-start-line="51" selection-start-column="75" selection-end-line="51" selection-end-column="75" />
+            <state relative-caret-position="356">
+              <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
               <folding>
                 <element signature="e#47#69#0#PHP" expanded="true" />
               </folding>
@@ -570,12 +567,12 @@
       <workItem from="1556517247247" duration="22118000" />
       <workItem from="1557451522939" duration="5663000" />
       <workItem from="1557472744818" duration="259000" />
-      <workItem from="1557477149856" duration="210000" />
+      <workItem from="1557477149856" duration="343000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="328805000" />
+    <option name="totallyTimeSpent" value="328938000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -995,8 +992,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="51" column="75" lean-forward="true" selection-start-line="51" selection-start-column="75" selection-end-line="51" selection-end-column="75" />
+        <state relative-caret-position="356">
+          <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
           <folding>
             <element signature="e#47#69#0#PHP" expanded="true" />
           </folding>
