@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="付款方式选择"
+            title="消毒方式"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog pay-dialog"
@@ -19,7 +19,7 @@
                 >
                     <el-table-column
                         prop="aaaa"
-                        label="支出类型"
+                        label="消毒方式"
                         align="center"
                         show-overflow-tooltip
                     >
@@ -82,7 +82,7 @@
                 <div class="pull-left">
                     <el-button
                         type="primary"
-                        @click="addPayTypeDialog = true"
+                        @click="addDisinfectTypeDialog = true"
                         :disabled="commitLoading"
                     >新增</el-button>
                 </div>
@@ -104,18 +104,18 @@
             </div>
         </el-dialog>
 
-        <add-pay-type :show.sync="addPayTypeDialog" @add-item="addItem"></add-pay-type>
+        <addDisinfect-type :show.sync="addDisinfectTypeDialog" @add-item="addItem"></addDisinfect-type>
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddPayType from "./AddPayType";
+import AddDisinfectType from "./AddDisinfectType";
 export default {
-    name: "PayType",
+    name: "DisinfectType",
     mixins: [DialogForm],
 
-    components: {AddPayType},
+    components: {AddDisinfectType},
     props: {},
     data() {
         return {
@@ -123,7 +123,7 @@ export default {
             tableHeight: "340px",
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
 
-            addPayTypeDialog: false
+            addDisinfectTypeDialog: false
         };
     },
     created() {},

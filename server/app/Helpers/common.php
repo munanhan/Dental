@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\DB;
 /***
  * @param string $msg
  * @param array $data
@@ -159,3 +159,16 @@
                 return ['parms' => $unset_keys($parms),'date' => $date];//得到最终参数集合
 
            } 
+/***
+ *处理sql
+ *          
+ */         function getData($sql,$parms,$pager = 0){
+                //获取查询数据
+                try{
+                    return $pager == 1?
+                    ['data' => [ 'row' => DB::select($sql,$parms)],'msg' => '成功','code' => 200]:
+                    [ 'data' => DB::select($sql,$parms),'msg' => '成功','code' => 200 ];
+                }catch(\Exception $e){
+                    return [ 'data' => [],'msg' => '异常','code' => 500 ];
+                }
+            }

@@ -3,9 +3,10 @@
     title="修改信息"
     :visible.sync="show"
     :before-close="closeDialog"
+    :close-on-click-modal="false"
     class="custom-dialog"
     v-dialog-drag
-    width="940px"
+    width="950px"
     top="1vh"
   >
     <el-form
@@ -31,7 +32,7 @@
                     right:0;    
                     margin-right: 244px;
                     width: 300px;
-                    height: 286px;">
+                    height: 350px;">
           asdasd
         </div>
         <el-form-item
@@ -91,16 +92,13 @@
 
         <div style="display:flex">
           <el-form-item
-            label="电话1"
+            label="电话"
             prop="phone_one"
-            style="width:230px"
+            style="width:340px"
           >
-            <el-input
-              placeholder="请输入内容"
-              v-model="form.phone_one"
-            ></el-input>
+            <el-input v-model="form.phone_one"></el-input>
           </el-form-item>
-          <el-select
+          <!-- <el-select
             v-model="form.one"
             style="width:110px"
           >
@@ -112,8 +110,8 @@
               :value="item.value"
             >
             </el-option>
-          </el-select>
-          <el-form-item
+          </el-select> -->
+          <!-- <el-form-item
             label="电话1"
             prop="phone_one"
             style="width:230px"
@@ -122,8 +120,8 @@
               placeholder="请输入内容"
               v-model="form.phone_one"
             ></el-input>
-          </el-form-item>
-          <el-select
+          </el-form-item> -->
+          <!-- <el-select
             v-model="form.tel_one"
             style="width:110px"
           >
@@ -135,7 +133,7 @@
               :value="item.value"
             >
             </el-option>
-          </el-select>
+          </el-select> -->
         </div>
         <div style="display:flex">
           <el-form-item
@@ -144,6 +142,13 @@
           >
             <el-input></el-input>
           </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
           <el-form-item
             label="会员卡号"
             class="right-width"
@@ -158,6 +163,13 @@
           >
             <el-input></el-input>
           </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
           <el-form-item
             label="社保号"
             class="right-width"
@@ -175,13 +187,14 @@
           <el-form-item
             label="患者分组"
             class="right-width"
+            style="margin-left:30px"
           >
             <el-input></el-input>
           </el-form-item>
         </div>
         <el-form-item
           label="患者备注"
-          style="width:680px"
+          style="width:700px"
         >
           <el-input></el-input>
         </el-form-item>
@@ -195,16 +208,27 @@
           <el-form-item
             label="咨询师"
             class="right-width"
+            style="margin-left:30px"
           >
             <el-input></el-input>
           </el-form-item>
         </div>
-        <el-form-item
-          label="联系地址"
-          style="width:680px"
-        >
-          <el-input></el-input>
-        </el-form-item>
+        <div style="display:flex">
+          <el-form-item
+            label="联系地址"
+            style="width:700px"
+          >
+            <el-input></el-input>
+          </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="
+                 margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
+        </div>
         <div style="display:flex">
           <el-form-item
             label="患者印象"
@@ -212,6 +236,13 @@
           >
             <el-input></el-input>
           </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
           <el-form-item
             label="电网咨询"
             class="right-width"
@@ -236,26 +267,58 @@
           >
             <el-input></el-input>
           </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
           <el-form-item
-            label="患者信息"
+            label="患者分类"
             class="right-width"
           >
             <el-input></el-input>
           </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
         </div>
-        <el-form-item
-          label="过敏使"
-          style="width:680px"
-        >
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item
-          label="既往使"
-          style="width:680px"
-        >
-          <el-input></el-input>
-        </el-form-item>
         <div style="display:flex">
+          <el-form-item
+            label="过敏使"
+            style="width:700px"
+          >
+            <el-input></el-input>
+          </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
+        </div>
+        <div style="display:flex">
+          <el-form-item
+            label="既往使"
+            style="width:700px"
+          >
+            <el-input></el-input>
+          </el-form-item>
+          <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
+        </div>
+        <!-- <div style="display:flex">
           <el-form-item
             label="患者来源"
             class="left-width"
@@ -268,7 +331,7 @@
           >
             <el-input></el-input>
           </el-form-item>
-        </div>
+        </div> -->
         <div style="display:flex">
           <el-form-item
             label="刷牙"
@@ -304,12 +367,21 @@
             </div>
           </el-form-item>
         </div>
+        <div style="display:flex">
         <el-form-item
           label="洁牙习惯"
-          style="width:680px"
+          style="width:700px"
         >
           <el-input></el-input>
         </el-form-item>
+        <i
+            class="fa fa-cog"
+            style="margin-top:10px;
+                 padding-left:10px;
+                 font-size:20px;
+                 cursor:pointer"
+          ></i>
+          </div>
         <div style="display:flex">
           <el-form-item
             label="初诊医生"
@@ -320,6 +392,7 @@
           <el-form-item
             label="初诊日期"
             class="right-width"
+            style="margin-left:30px"
           >
             <el-input></el-input>
           </el-form-item>
@@ -334,6 +407,7 @@
           <el-form-item
             label="复诊日期"
             class="right-width"
+            style="margin-left:30px"
           >
             <el-input></el-input>
           </el-form-item>
@@ -438,41 +512,30 @@ export default {
   data() {
     return {
       form: {
-        tel_one:[{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-
-        phone: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        tel_one:'',
-        one:"",
+        phone: [
+          {
+            value: "选项1",
+            label: "黄金糕"
+          },
+          {
+            value: "选项2",
+            label: "双皮奶"
+          },
+          {
+            value: "选项3",
+            label: "蚵仔煎"
+          },
+          {
+            value: "选项4",
+            label: "龙须面"
+          },
+          {
+            value: "选项5",
+            label: "北京烤鸭"
+          }
+        ],
+        // tel_one:'',
+        one: "",
         radio: "1",
         name: "",
         medical_record: "",
@@ -502,7 +565,6 @@ export default {
 .mod-1 {
   .number {
     font-size: 18px;
-    
 
     font-weight: bold;
     // rgb(110, 240, 149)
@@ -512,7 +574,7 @@ export default {
     width: 340px;
   }
   .right-width {
-    width: 340px;
+    width: 330px;
   }
 }
 </style>

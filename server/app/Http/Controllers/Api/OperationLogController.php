@@ -12,7 +12,7 @@ use App\Model\User;
 class OperationLogController extends Controller
 {	
 	public function __construct(){
-		DB::connection()->enableQueryLog();//开启查询日志
+		// DB::connection()->enableQueryLog();//开启查询日志
 		// DB::getQueryLog();//调用查询日志
 	}
     //
