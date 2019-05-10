@@ -19,7 +19,7 @@ trait ProxyHelpers
 
             $client = new Client();
 
-            $url = request()->root() . '/oauth/token';
+            $url = request()->root() .request()->getPort(). '/oauth/token';
 
             $params = array_merge(config('passport.proxy'), [
                 'username' => request('username'),
@@ -49,7 +49,7 @@ trait ProxyHelpers
         $client = new Client();
 
         try {
-            $url = request()->root() . '/oauth/token';
+            $url = request()->root() .request()->getPort(). '/oauth/token';
 
             $params = array_merge(config('passport.refresh'), [
                 'refresh_token' => request('refresh_token'),
