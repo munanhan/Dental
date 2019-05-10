@@ -4,6 +4,7 @@
     :visible.sync="show"
     width="550px"
     :before-close="handleClose"
+    :close-on-click-modal="false"
     class="custom-dialog"
     center
     v-dialog-drag

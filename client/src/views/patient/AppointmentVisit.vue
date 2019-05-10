@@ -3,6 +3,7 @@
     title="复诊预约"
     :visible.sync="show"
     :before-close="closeDialog"
+    :close-on-click-modal="false"
     class="custom-dialog"
     v-dialog-drag
     top="4vh"
