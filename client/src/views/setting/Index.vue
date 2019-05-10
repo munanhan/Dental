@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import ClinicInformation from "./ClinicInformation";
+import ClinicInformation from "./clinic_information/Index";
 import PermissionSettings from "./permission_settings/Index";
 import StaffManagement from "./staff_management/Index";
 import DisposalCharging from "./disposal_charging/Index";

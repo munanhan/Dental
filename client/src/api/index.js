@@ -2,12 +2,14 @@ import * as base from './base'
 import * as home from './home'
 import * as user from './user'
 import * as appointment from './appointment'
+import * as operation_log from './operation_log'
 
 const apis = {
     base,
     home,
     user,
-    appointment
+    appointment,
+    operation_log
 }
 
 const install = function (Vue) {

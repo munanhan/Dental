@@ -83,4 +83,5 @@ class PatientController extends Controller
 
         return $seq;
     }
+
 }
