@@ -155,14 +155,19 @@ export default {
             that.tableData.splice(index, 1);
         },
 
-        commit() {},
+        commit() {
+            let that = this;
+
+            that.$emit('update-category', '');
+
+            that.closeDialog();
+
+        },
 
         addItem(item) {
             let that = this;
 
             console.log(item);
-
-            that.closeDialog();
         }
     }
 };

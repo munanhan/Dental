@@ -263,7 +263,9 @@ export default {
             search: {
                 dtFm: new Date(),
                 dtTo: new Date()
-            },
+			},
+			
+			tdata: [{}],
 
             pager: false,
 
