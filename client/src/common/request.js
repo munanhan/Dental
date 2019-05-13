@@ -81,7 +81,7 @@ const rejectParams = (url, data) => {
 
     for (var key in data) {
         if (RegExp(":" + key).test(complieUrl)) {
-            url.replace(":" + key, data[key]);
+            complieUrl = complieUrl.replace(":" + key, data[key]);
 
             delete data[key];
         }

@@ -265,7 +265,7 @@ export default {
                 dtTo: new Date()
 			},
 			
-			tdata: [{}],
+			// tdata: [{}],
 
             pager: false,
 
