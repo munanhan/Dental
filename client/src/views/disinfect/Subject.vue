@@ -154,7 +154,7 @@ export default {
         commit() {
             let that = this;
 
-            that.$emit('update-category', '');
+            that.$emit('update-type', '');
 
             that.closeDialog();
 

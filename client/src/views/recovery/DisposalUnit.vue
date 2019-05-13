@@ -159,6 +159,8 @@ export default {
         commit() {
             let that = this;
 
+            that.$emit('update-unit', '');
+
             that.closeDialog();
 
         },
@@ -167,8 +169,6 @@ export default {
             let that = this;
 
             console.log(item);
-
-            
         }
     }
 };
