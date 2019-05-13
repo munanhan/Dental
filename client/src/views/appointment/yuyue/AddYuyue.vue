@@ -40,7 +40,7 @@
           <el-input v-model="formData.name" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="phone" required>
-          <el-input v-model="formData.tel_one" type="text" autocomplete="off" placeholder></el-input>
+          <el-input v-model="formData.phone" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
       
         <el-form-item label="性别" prop="sex" required>
@@ -129,7 +129,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button :loading="commitLoading" type="primary" @click="changePassword">确 定</el-button>
+      <el-button :loading="commitLoading" type="primary" @click="submitFrom">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -179,6 +179,11 @@ export default {
     this.$nextTick(function() {
       this.formData.apt_date = this.chooseDate;
     });
+     this.$api.appointment.getCaseNumber().then(res=>{
+       if (res.code == 200) {
+         this.formData.sick_id = res.data
+       }
+     })
     
   },
   computed: {
@@ -199,7 +204,7 @@ export default {
       items_o: itemsOptions,
       checked_items: [],
       rules: {
-        tel_one: telRules.concat({
+        phone: telRules.concat({
           validator:(rule,value,callback)=>{
             if(!/^1[34578]\d{9}$/.test(value)){
               callback(new Error("请输入正确手机号码"))
@@ -275,7 +280,7 @@ export default {
       }
       this.formData.time_frame_begin = value;
     },
-    changePassword() {
+    submitFrom() {
       let that = this;
       that.$refs["addYuyueFrom"].validate(valid => {
         if (valid) {
