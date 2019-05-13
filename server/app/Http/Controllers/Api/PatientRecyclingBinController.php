@@ -10,52 +10,75 @@ use Illuminate\Support\Facades\DB;
 class PatientRecyclingBinController extends Controller
 {
     //
-    protected $input = '';//参数
+    // protected $input = '';//参数
     public function __construct(Request $request){
-    	$input = $request->input();
-    	$pager = [];//分页参数
-    	$unset_field = ['current_page','page_size','_d'];//删除字段
-    	$unset_parms = function() use ($input,$unset_field,$pager){
-    		foreach ($input as $k => $v) {
-    			if (in_array($k,$unset_field)) {
-    				$pager[$k] = $v;
-    				unset($input[$k]);
-    			}
-    		}
-    		return ['parms' => $input,'pager' => $pager];
-    	};
-    	$this->input = $unset_parms();
+    	// $input = $request->input();
+    	// $pager = [];//分页参数
+    	// $unset_field = ['current_page','page_size','_d'];//删除字段
+    	// $unset_parms = function() use ($input,$unset_field,$pager){
+    	// 	foreach ($input as $k => $v) {
+    	// 		if (in_array($k,$unset_field)) {
+    	// 			$pager[$k] = $v;
+    	// 			unset($input[$k]);
+    	// 		}
+    	// 	}
+    	// 	return ['parms' => $input,'pager' => $pager];
+    	// };
+    	// $this->input = $unset_parms();
+    	// $this->input = getParms($request->input());
     }
 
     public function index(Request $request){
     	//获取患者回收站数据
-    	$parms = array_filter($this->input['parms']);
-    	$parms['status'] = 0;
-    	$where = empty($parms)?'':' where';//去空
+    	$input = $request->input();
+    	$input['status'] = 0;
+    	$input = getParms($input);//参数获取
+    	$parms = $input['parms'];
+    	$pager = $input['pager'];
 
-    	$length = count($parms)-1;//长度
-    	$n = 0;//计数
+    	//顺序，获取case->select->case->join(后面补充)->where->limit;
+    	$patient_group = config('config.patient_group');//类型转换,设置case
+    	$caseGroup = ['data' => $patient_group,'table' => 'patients','field' => 'group'];
+    	$case = caseThen($caseGroup);//case
 
-    	$patient_group = config('config.patient_group');//类型转换
+    	$select = [ 
+    				'field' => ['id','name','sex','age','phone','content','source',$case],
+    				'table' => 'patients',
+    			  ];//设置字段
 
-    	$case = '(case patients.group';//case
-    	foreach ($patient_group as $k => $v) {
-    		$case.=" when '$k' then '$v'";
-    	}
-    	$case.= " end )'group'";
-    	$sql = "select id,name,sex,age,phone,content,source,$case from patients ".$where;
-    	foreach ($parms as $k => $v) {
-    		$sql.= " `$k` = :$k";
-    		$n < $length?$sql.=' and':'';
-    		$n++;
-    	}
+    	$limit = [  
+    				'current_page' => $pager['current_page'],//设置分页
+    				'page_size' => $pager['page_size']
+    			 ];
 
-    	$sql.= ' limit '.($this->input['pager']['current_page']-1)*($this->input['pager']['page_size']).','.$this->input['pager']['page_size'];
+    	$sql = select($select).where($parms).limit($limit);
+
     	$total = Patient::where('status',0)->count();
+
     	$res = getData($sql,$parms,1);//处理
     	$res['data']['total'] = $total;
     	return message($res['msg'],$res['data'],$res['code']);
 
+    }
+
+    public function reduction(Request $request){
+    	//还原被删除的患者
+    	$id = empty($request->input('id'))?0:$request->input('id');
+    	if ($id == 0) {
+    		return message('缺少id',[],404);
+    	}
+    	$res = Patient::where('id',$id)->update(['status' => 1 ]);
+    	if ($res) {
+    		return message('成功',[],200);
+    	}
+    	else{
+    		return message('失败',[],500);
+    	}
+
+    }
+
+    public function delete(Request $request){
+    	dd(1);
     }
 
 }
