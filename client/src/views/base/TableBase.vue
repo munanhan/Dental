@@ -26,7 +26,7 @@ export default {
             editDialog: false,
             currentEditItem: {},
             search: {},
-            tabelHeight: 300,
+            tableHeight: 300,
 
             //是不是要重新绘制表格的高度，弹出窗使用
             useResizeTable: true,

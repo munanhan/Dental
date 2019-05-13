@@ -19,7 +19,7 @@ export default {
                 size: 10
             },
             search: {},
-            tabelHeight: 300,
+            tableHeight: 300,
 
             tableLoading: false
         };

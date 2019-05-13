@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-dialog
-            title="新增消毒"
+            title="修改消毒"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog add-disinfect-dialog"
+            class="custom-dialog edit-disinfect-dialog"
             :close-on-click-modal="false"
             v-dialog-drag
         >
@@ -148,16 +148,12 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <el-button
-                    @click="closeDialog"
-                    :disabled="commitLoading"
-                >取 消</el-button>
+                <el-button @click="closeDialog">关闭</el-button>
                 <el-button
                     type="primary"
-                    @click="addCommit"
+                    @click="editCommit"
                     :loading="commitLoading"
                 >确 定</el-button>
-                <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
@@ -179,14 +175,14 @@
 </template>
 
 <script>
-import AddDialogForm from "../base/AddDialogForm";
+import EditDialogForm from "../base/EditDialogForm";
 import Type from "./Type";
 import DisinfectType from "./DisinfectType";
 import Subject from "./Subject";
 
 export default {
-    name: "AddDisinfect",
-    mixins: [AddDialogForm],
+    name: "EditDisinfect",
+    mixins: [EditDialogForm],
     components: { Type, DisinfectType, Subject },
     props: {},
     data() {
@@ -199,6 +195,7 @@ export default {
                 date: new Date(),
                 disinfectPerson: ""
             },
+
             formRules: {
                 type: [
                     {
@@ -255,7 +252,7 @@ export default {
 //导入全局的颜色
 @import "~@css/var";
 
-.add-disinfect-dialog {
+.edit-disinfect-dialog {
     .disinfect-tip {
         font-size: 16px;
         font-weight: bold;
