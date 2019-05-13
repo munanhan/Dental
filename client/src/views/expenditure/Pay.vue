@@ -57,10 +57,10 @@
                     <el-col :span="12">
                         <el-form-item
                             label="负责人"
-                            prop="phone"
+                            prop="leading"
                         >
                             <el-input
-                                v-model.trim="form.phone"
+                                v-model.trim="form.leading"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -205,6 +205,7 @@ export default {
             form: {
                 date: new Date(),
                 pay_type: "",
+                leading: "",
                 remark: "",
                 amount: 0,
                 expenditure_category: "",
@@ -213,27 +214,37 @@ export default {
             formRules: {
                 date: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入发生日期",
+                        trigger: "blur"
                     }
                 ],
                 handling: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入负责人",
+                        trigger: "blur"
                     }
                 ],
                 pay_type: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入付款方式",
+                        trigger: "blur"
                     }
                 ],
                 amount: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入支出金额",
+                        trigger: "blur"
                     }
                 ],
                 expenditure_category: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入支出类别",
+                        trigger: "blur"
                     }
                 ]
             },

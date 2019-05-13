@@ -381,7 +381,7 @@ export default {
 }
 .sliding-two {
   width: 1000px;
-  margin-left: 10px;
+  margin-left: 10px; 
   margin-bottom: 10px;
 }
 .sliding-three {

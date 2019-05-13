@@ -19,7 +19,8 @@ trait ProxyHelpers
 
             $client = new Client();
 
-            $url = request()->root().':' .request()->getPort(). '/oauth/token';
+            // $url = request()->root().':' .$_SERVER['SERVER_PORT']. '/oauth/token';
+            $url = $_SERVER['SERVER_NAME'].'/oauth/token';
 
             $params = array_merge(config('passport.proxy'), [
                 'username' => request('username'),

@@ -88,12 +88,12 @@
                     >新增</el-button>
                 </div>
 
-                <div>
+                <!-- <div>
                     <el-button
                         @click="closeDialog"
                         :disabled="commitLoading"
                     >取 消</el-button>
-                </div>
+                </div> -->
                 <div>
                     <el-button
                         type="primary"
@@ -167,6 +167,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.expenditure-category {
-}
+
 </style>

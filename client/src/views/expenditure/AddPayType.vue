@@ -52,12 +52,14 @@ export default {
             commitLoading: false,
 
             form: {
-                type: ""
+                expenditure: ""
             },
             formRules: {
-                type: [
+                expenditure: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入类型",
+                        trigger: "blur"
                     }
                 ]
             }

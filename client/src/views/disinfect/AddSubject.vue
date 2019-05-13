@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="新增支出类型"
+        title="新增主题"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -10,15 +10,15 @@
         <el-form
             :model="form"
             :rules="formRules"
-            label-width="60px"
+            label-width="80px"
             ref="form"
         >
             <el-form-item
-                label="类型"
-                prop="expenditure"
+                label="主题"
+                prop="subject"
             >
                 <el-input
-                    v-model.trim="form.expenditure"
+                    v-model.trim="form.subject"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -42,8 +42,9 @@
 
 <script>
 import DialogForm from "../base/DialogForm";
+
 export default {
-    name: "AddExpenditureCategory",
+    name: "AddSubject",
     mixins: [DialogForm],
     components: {},
     props: {},
@@ -52,13 +53,13 @@ export default {
             commitLoading: false,
 
             form: {
-                expenditure: ""
+                subject: ""
             },
             formRules: {
-                expenditure: [
+                subject: [
                     {
                         required: true,
-                        message: "请输入类型",
+                        message: "请输入主题",
                         trigger: "blur"
                     }
                 ]
@@ -73,7 +74,7 @@ export default {
         addCommit() {
             let that = this;
 
-            that.$emit("add-item", that.form.expenditure);
+            that.$emit('add-item', that.form.type);
 
             that.closeDialog();
         }

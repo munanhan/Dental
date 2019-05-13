@@ -24,24 +24,93 @@
                             label="类型"
                             prop="type"
                         >
-                            <el-select
-                                v-model="form.type"
-                                collapse-tags
-                                class="width100"
-                            >
-                                <el-option
-                                    v-for="item in typeList"
-                                    :key="item.id"
-                                    :label="item.label"
-                                    :value="item.id"
+                            <div class="sub-form-item">
+                                <el-select
+                                    v-model="form.type"
+                                    collapse-tags
+                                    class="width100"
                                 >
-                                </el-option>
-                            </el-select>
+                                    <el-option
+                                        v-for="item in typeList"
+                                        :key="item.id"
+                                        :label="item.label"
+                                        :value="item.id"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <i
+                                    class="el-icon-setting form-setting"
+                                    @click.stop="typeDialog = true"
+                                ></i>
+                            </div>
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :span="12">
+                        <el-form-item
+                            label="消毒方式"
+                            prop="disinfect"
+                        >
+                            <div class="sub-form-item">
+                                <el-select
+                                    v-model="form.disinfect"
+                                    collapse-tags
+                                    class="width100"
+                                >
+                                    <el-option
+                                        v-for="item in disinfectList"
+                                        :key="item.id"
+                                        :label="item.label"
+                                        :value="item.id"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <i
+                                    class="el-icon-setting form-setting"
+                                    @click.stop="disinfectTypeDialog = true"
+                                ></i>
+                            </div>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
-                <!-- <el-date-picker
+                <el-form-item
+                    label="主题"
+                    prop="subject"
+                >
+                    <div class="sub-form-item">
+                        <el-input
+                            v-model.trim="form.subject"
+                            autocomplete="off"
+                        ></el-input>
+
+                        <i
+                            class="el-icon-setting form-setting"
+                            @click.stop="subjectDialog = true"
+                        ></i>
+                    </div>
+                </el-form-item>
+
+                <div>
+                    <el-form-item
+                        label="描述"
+                        prop="remark"
+                    >
+                        <el-input
+                            type="textarea"
+                            v-model.trim="form.remark"
+                            autocomplete="off"
+                        ></el-input>
+                    </el-form-item>
+                </div>
+
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item
+                            label="消毒日期"
+                            prop="date"
+                        >
+                            <el-date-picker
                                 v-model="form.date"
                                 type="date"
                                 format="yyyy-MM-dd"
@@ -49,21 +118,22 @@
                                 :clearable="false"
                                 class="width100"
                             >
-                            </el-date-picker> -->
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
 
-                <el-row>
                     <el-col :span="12">
                         <el-form-item
-                            label="经手人"
-                            prop="handling"
+                            label="消毒人员"
+                            prop="disinfectPerson"
                         >
                             <el-select
-                                v-model="form.handling"
+                                v-model="form.disinfectPerson"
                                 collapse-tags
                                 class="width100"
                             >
                                 <el-option
-                                    v-for="item in handlingList"
+                                    v-for="item in userList"
                                     :key="item.id"
                                     :label="item.label"
                                     :value="item.id"
@@ -72,109 +142,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item
-                            label="负责人"
-                            prop="phone"
-                        >
-                            <el-input
-                                v-model.trim="form.phone"
-                                autocomplete="off"
-                            ></el-input>
-                        </el-form-item>
-                    </el-col>
                 </el-row>
-                <el-row>
-                    <el-col :span="12">
-                        <el-form-item
-                            label="支出类别"
-                            prop="expenditure_category"
-                        >
-                            <div class="sub-form-item">
-                                <el-select
-                                    v-model="form.expenditure_category"
-                                    collapse-tags
-                                    class="width100"
-                                >
-                                    <el-option
-                                        v-for="item in expenditureCategory"
-                                        :key="item.id"
-                                        :label="item.label"
-                                        :value="item.id"
-                                    >
-                                    </el-option>
-                                </el-select>
-                                <i
-                                    class="el-icon-setting form-setting"
-                                    @click.stop="expenditureCategoryDialog = true"
-                                ></i>
-                            </div>
-
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item
-                            label="支出明细"
-                            prop="expenditure_details"
-                        >
-                            <el-input
-                                v-model="form.expenditure_details"
-                                autocomplete="off"
-                            ></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12">
-                        <el-form-item
-                            label="支出金额"
-                            prop="amount"
-                        >
-                            <el-input-number
-                                v-model="form.amount"
-                                controls-position="right"
-                                class="width100"
-                            ></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item
-                            label="付款方式"
-                            prop="pay_type"
-                        >
-                            <div class="sub-form-item">
-                                <el-select
-                                    v-model="form.pay_type"
-                                    collapse-tags
-                                    class="width100"
-                                >
-                                    <el-option
-                                        v-for="item in payType"
-                                        :key="item.id"
-                                        :label="item.label"
-                                        :value="item.id"
-                                    >
-                                    </el-option>
-                                </el-select>
-                                <i
-                                    class="el-icon-setting form-setting"
-                                    @click.stop="payTypeDialog = true"
-                                ></i>
-                            </div>
-
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-form-item
-                    label="备注"
-                    prop="remark"
-                >
-                    <el-input
-                        v-model="form.remark"
-                        autocomplete="off"
-                    ></el-input>
-                </el-form-item>
             </el-form>
             <div
                 slot="footer"
@@ -193,68 +161,96 @@
             </div>
         </el-dialog>
 
+        <type
+            :show.sync="typeDialog"
+            @update-type="updateType"
+        ></type>
+
+        <disinfect-type
+            :show.sync="disinfectTypeDialog"
+            @update-type="updateDisinfectType"
+        ></disinfect-type>
+
+        <subject
+            :show.sync="subjectDialog"
+            @update-type="updateSubject"
+        ></subject>
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
+import Type from "./Type";
+import DisinfectType from "./DisinfectType";
+import Subject from "./Subject";
+
 export default {
     name: "AddDisinfect",
     mixins: [DialogForm],
-    components: {},
+    components: { Type, DisinfectType, Subject },
     props: {},
     data() {
         return {
             commitLoading: false,
 
             form: {
-                type: ''
-                // date: new Date(),
-                // pay_type: "",
-                // remark: "",
-                // amount: 0,
-                // expenditure_category: "",
-                // expenditure_details: ""
+                type: "",
+                disinfect: "",
+                subject: "",
+                date: new Date(),
+                disinfectPerson: ""
             },
             formRules: {
                 type: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入支出类别",
+                        trigger: "blur"
                     }
                 ],
-                handling: [
+                disinfect: [
                     {
-                        required: true
+                        required: true,
+                        message: "请输入消毒方式",
+                        trigger: "blur"
                     }
                 ],
-                pay_type: [
+
+                disinfectPerson: [
                     {
-                        required: true
-                    }
-                ],
-                amount: [
-                    {
-                        required: true
-                    }
-                ],
-                expenditure_category: [
-                    {
-                        required: true
+                        required: true,
+                        message: "请输入支出类别",
+                        trigger: "blur"
                     }
                 ]
             },
 
-            typeList: [
-                { id: 0, label: '状态1' },
-                { id: 1, label: '状态2' }
-            ]
+            typeList: [{ id: 0, label: "状态1" }, { id: 1, label: "状态2" }],
+
+            disinfectList: [
+                { id: 0, label: "状态1" },
+                { id: 1, label: "状态2" }
+            ],
+
+            userList: [],
+
+            typeDialog: false,
+            disinfectTypeDialog: false,
+            subjectDialog: false
         };
     },
     created() {},
     mounted() {},
     watch: {},
     computed: {},
-    methods: {}
+    methods: {
+        addCommit() {},
+
+        updateType() {},
+        updateDisinfectType() {},
+
+        updateSubject() {}
+    }
 };
 </script>
 <style lang="less" scoped>
