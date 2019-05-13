@@ -1,5 +1,5 @@
 <template>
-   <div class="disinfect">
+    <div class="disinfect">
         <div class="left-content">
             <div class="calendar-action">
 
@@ -170,7 +170,7 @@
                         show-overflow-tooltip
                     >
                     </el-table-column>
-                                        <el-table-column
+                    <el-table-column
                         prop="address"
                         label="类型"
                         align="center"
@@ -219,21 +219,21 @@
                         show-overflow-tooltip
                     >
                     </el-table-column>
-                    
+
                 </el-table>
             </div>
         </div>
-      <add-disinfect :show.sync="addDisinfectDialog"></add-disinfect>
+        <add-disinfect :show.sync="addDisinfectDialog"></add-disinfect>
     </div>
 </template>
 
 <script>
 import { formatDate } from "@common/util";
-import AddDisinfect from './AddDisinfect';
+import AddDisinfect from "./AddDisinfect";
 
 export default {
-    name: 'Disinfect',
-    components:{AddDisinfect},
+    name: "Disinfect",
+    components: { AddDisinfect },
     props: {},
     data() {
         return {
@@ -353,8 +353,11 @@ export default {
         },
 
         switchDate(type) {
-            let that = this,
-                year = that.search.dtFm.getFullYear(),
+            let that = this;
+
+            that.search.dtFm = new Date(that.search.dtFm);
+
+            let year = that.search.dtFm.getFullYear(),
                 mth = that.search.dtFm.getMonth(),
                 weekday = that.search.dtFm.getDay(),
                 day = that.search.dtFm.getDate();
@@ -423,9 +426,7 @@ export default {
             }
         },
 
-        addDisinfect() {
-
-        },
+        addDisinfect() {},
 
         getData() {},
 
@@ -441,7 +442,7 @@ export default {
             that.tableHeight = tableHeight;
         }
     }
-}
+};
 </script>
 <style lang="less" scoped>
 //导入全局的颜色
@@ -570,5 +571,4 @@ export default {
         }
     }
 }
-    
 </style>

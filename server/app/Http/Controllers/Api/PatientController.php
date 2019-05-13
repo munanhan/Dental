@@ -29,11 +29,7 @@ class PatientController extends Controller
     {
         $patient=$this->createPatient($request->all());
 
-        $patientInfo=$this->createPatientInfo($request->all());
-
-        $patientInfo->patient_id=$patient->id;
-
-        $patientInfo->save();
+        PatientInfoController::createPatientInfo($patient,$request->all());
 
         return message('',$request->all());
     }
@@ -57,7 +53,7 @@ class PatientController extends Controller
         return now()->format('Ymd');
     }
 
-    protected  function generate()
+    protected  function getCaseNumber()
     {
 
         $date=$this->getToday();
@@ -102,18 +98,6 @@ class PatientController extends Controller
         }
 
         return Patient::create($data);
-    }
-
-    protected  function createPatientInfo(array $data)
-    {
-        $patient=Schema::getColumnListing('patients');
-
-        foreach ($patient as $key){
-            array_key_exists($key,$data);
-            unset($data[$key]);
-        }
-
-        return PatientInfo::create($data);
     }
 
 }
