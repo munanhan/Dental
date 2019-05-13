@@ -6,14 +6,14 @@ const webpack = require('webpack');
 let plugins = [];
 
 //如果当前是测试的，就开启
-if (process.env.NODE_ENV === "development") {
-    plugins.push(
-        new webpack.DefinePlugin({
-            //设置全局的变量
-            apiBaseURL: JSON.stringify(config.apiBaseURL)
-        })
-    );
-}
+// if (process.env.NODE_ENV === "development") {
+plugins.push(
+    new webpack.DefinePlugin({
+        //设置全局的变量
+        apiBaseURL: process.env.NODE_ENV === "development"? JSON.stringify(config.apiBaseURL) : ''
+    })
+);
+// }
 
 module.exports = {
     chainWebpack: config => {

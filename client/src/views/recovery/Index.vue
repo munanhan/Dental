@@ -124,7 +124,7 @@
                     <el-button
                         type="primary"
                         class="btns"
-                        @click="addRecoveryDialog = true"
+                        @click="addDialog = true"
                     >新增回收</el-button>
                 </span>
             </div>
@@ -239,7 +239,7 @@
                 </el-table>
             </div>
         </div>
-		
+
         <add-recovery :show.sync="addDialog"></add-recovery>
         <edit-recovery :show.sync="editDialog"></edit-recovery>
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="消毒方式"
+            title="医疗废物处置单位设置"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog pay-dialog"
@@ -19,7 +19,7 @@
                 >
                     <el-table-column
                         prop="aaaa"
-                        label="消毒方式"
+                        label="医疗废物处置单位"
                         align="center"
                         show-overflow-tooltip
                     >
@@ -82,7 +82,7 @@
                 <div class="pull-left">
                     <el-button
                         type="primary"
-                        @click="addDisinfectTypeDialog = true"
+                        @click="addDisposalUnitDialog = true"
                         :disabled="commitLoading"
                     >新增</el-button>
                 </div>
@@ -93,30 +93,35 @@
                         :disabled="commitLoading"
                     >取 消</el-button>
                 </div> -->
+
                 <el-button
                     type="primary"
                     @click="commit"
                     :loading="commitLoading"
                 >确 定</el-button>
+
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
-        <addDisinfect-type
-            :show.sync="addDisinfectTypeDialog"
+        <add-disposal-unit
+            :show.sync="addDisposalUnitDialog"
             @add-item="addItem"
-        ></addDisinfect-type>
+        ></add-disposal-unit>
+
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddDisinfectType from "./AddDisinfectType";
+import AddDisposalUnit from "./AddDisposalUnit";
+
 export default {
-    name: "DisinfectType",
+    name: "DisposalUnit",
+
     mixins: [DialogForm],
 
-    components: { AddDisinfectType },
+    components: { AddDisposalUnit },
     props: {},
     data() {
         return {
@@ -124,7 +129,7 @@ export default {
             tableHeight: 340,
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
 
-            addDisinfectTypeDialog: false
+            addDisposalUnitDialog: false
         };
     },
     created() {},
@@ -151,14 +156,19 @@ export default {
             that.tableData.splice(index, 1);
         },
 
-        commit() {},
+        commit() {
+            let that = this;
+
+            that.closeDialog();
+
+        },
 
         addItem(item) {
             let that = this;
 
             console.log(item);
 
-            that.closeDialog();
+            
         }
     }
 };

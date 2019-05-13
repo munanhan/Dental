@@ -93,18 +93,19 @@
                         :disabled="commitLoading"
                     >取 消</el-button>
                 </div> -->
-                <div>
-                    <el-button
-                        type="primary"
-                        @click="commit"
-                        :loading="commitLoading"
-                    >确 定</el-button>
-                </div>
+                <el-button
+                    type="primary"
+                    @click="commit"
+                    :loading="commitLoading"
+                >确 定</el-button>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
-        <add-type :show.sync="addTypeDialog" @add-item="addItem"></add-type>
+        <add-type
+            :show.sync="addTypeDialog"
+            @add-item="addItem"
+        ></add-type>
     </div>
 </template>
 
@@ -115,12 +116,12 @@ export default {
     name: "Type",
     mixins: [DialogForm],
 
-    components: {AddType},
+    components: { AddType },
     props: {},
     data() {
         return {
             commitLoading: false,
-            tableHeight: "340px",
+            tableHeight: 340,
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
 
             addTypeDialog: false
