@@ -6,30 +6,22 @@ let instance = null,
     refreshTokenUrl = "/api/refreshment",
     oauthToken = getCookie("token");
 
-refreshTokenUrl = apiBaseURL + refreshTokenUrl;
+//development模式下使用
+try {
+    refreshTokenUrl = apiBaseURL + refreshTokenUrl;
 
-instance = axios.create({
-    baseURL: `${apiBaseURL}/api`, // api的base_url
-    timeout: 6000, // 请求超时时间
-    withCredentials: true //允许携带cookie
-});
-
-// //development模式下使用
-// try {
-//     refreshTokenUrl = apiBaseURL + refreshTokenUrl;
-
-//     instance = axios.create({
-//         baseURL: `${apiBaseURL}/api`, // api的base_url
-//         timeout: 6000, // 请求超时时间
-//         withCredentials: true //允许携带cookie
-//     });
-// } catch (e) {
-//     instance = axios.create({
-//         baseURL: "/api", // api的base_url
-//         timeout: 6000 // 请求超时时间
-//         // withCredentials: true, //允许携带cookie
-//     });
-// }
+    instance = axios.create({
+        baseURL: `${apiBaseURL}/api`, // api的base_url
+        timeout: 6000, // 请求超时时间
+        withCredentials: true //允许携带cookie
+    });
+} catch (e) {
+    instance = axios.create({
+        baseURL: "/api", // api的base_url
+        timeout: 6000 // 请求超时时间
+        // withCredentials: true, //允许携带cookie
+    });
+}
 
 // const instance = axios.create({
 //     baseURL: "/api", // api的base_url

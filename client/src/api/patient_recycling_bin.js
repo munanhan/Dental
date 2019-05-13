@@ -10,11 +10,11 @@ export function get(data) {
     })
 }
 
-export function reduction(id) {
+export function reduction(data) {
     return request({
         url: `${prefix}/:id`,
         method: 'put',
-        
+        params: data
     })
 }
 
