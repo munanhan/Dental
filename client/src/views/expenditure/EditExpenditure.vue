@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="新增费用支出"
+            title="修改费用支出"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog pay-dialog"
@@ -162,16 +162,12 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <el-button
-                    @click="closeDialog"
-                    :disabled="commitLoading"
-                >取 消</el-button>
+                <el-button @click="closeDialog">关闭</el-button>
                 <el-button
                     type="primary"
-                    @click="addCommit"
+                    @click="editCommit"
                     :loading="commitLoading"
                 >确 定</el-button>
-                <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
@@ -187,20 +183,20 @@
 </template>
 
 <script>
-import DialogForm from "../base/DialogForm";
+import EditDialogForm from "../base/EditDialogForm";
 import ExpenditureCategory from "./ExpenditureCategory";
 import PayType from "./PayType";
 
 export default {
-    name: "PayDailog",
-    mixins: [DialogForm],
+    name: "EditExpenditure",
+    mixins: [EditDialogForm],
 
     components: { ExpenditureCategory, PayType },
 
     props: {},
     data() {
         return {
-            commitLoading: false,
+            // commitLoading: false,
 
             form: {
                 date: new Date(),
@@ -269,7 +265,6 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        addCommit() {},
 
         updateCategroy(list) {},
 

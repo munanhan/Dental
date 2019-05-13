@@ -142,7 +142,7 @@
                     <el-button
                         type="primary"
                         class="btns"
-                        @click="addPayDialog = true"
+                        @click="addDialog = true"
                     >新增支出</el-button>
                 </span>
             </div>
@@ -150,13 +150,12 @@
             <div class="pay-table">
                 <el-table
                     border
-                    class="width100 mb-10"
-                    :data="tableData"
+                    class="width100"
+                    :data="tdata"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
-                    show-summary
                 >
-                    <el-table-column
+                    <!-- <el-table-column
                         prop="address"
                         label="删除"
                         align="center"
@@ -169,7 +168,7 @@
                         align="center"
                         show-overflow-tooltip
                     >
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                         prop="address"
                         label="发生日期"
@@ -226,20 +225,60 @@
                         show-overflow-tooltip
                     >
                     </el-table-column>
+                                        <el-table-column
+                        label="操作"
+                        align="center"
+                        width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="修改"
+                                placement="top"
+                            >
+                                <el-button
+                                    type="primary"
+                                    size="mini"
+                                    icon="el-icon-edit"
+                                    circle
+                                    @click.stop="showEditDialog(scope.row)"
+                                ></el-button>
+                            </el-tooltip>
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    circle
+                                    @click.stop="del(scope.row, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
 
-        <pay-dialog :show.sync="addPayDialog"></pay-dialog>
+        <add-expenditure :show.sync="addDialog"></add-expenditure>
+        <edit-expenditure :show.sync="editDialog"></edit-expenditure>
     </div>
 </template>
 
 <script>
 import { formatDate } from "@common/util";
-import PayDialog from './Pay';
+import AddExpenditure from './AddExpenditure';
+import EditExpenditure from './EditExpenditure';
+import Base from "../base/TableBase";
+
 export default {
     name: "Expenditure",
-    components: {PayDialog},
+    mixins: [Base],
+
+    components: {AddExpenditure, EditExpenditure},
     props: {},
     data() {
         return {
@@ -250,14 +289,16 @@ export default {
                 payType: 0
             },
 
+            pager: false,
+
             payType: [
                 { id: 0, label: "全部" },
                 { id: 1, label: "现金" },
                 { id: 2, label: "转账" }
             ],
 
-            tableData: [],
-            tableHeight: "300px",
+            // tableData: [],
+            // tableHeight: "300px",
 
             dateFmText: "",
             dateToText: "",
@@ -268,7 +309,7 @@ export default {
 
             isCurrentDate: false,
 
-            addPayDialog: false
+            // addPayDialog: false
         };
     },
     created() {},
@@ -283,16 +324,16 @@ export default {
         that.checkCurrentData();
         that.calcDateCount();
 
-        that.$nextTick(() => {
-            that.resizeTable();
-        });
+        // that.$nextTick(() => {
+        //     that.resizeTable();
+        // });
 
-        //监听事件,由layout那边的resize抛出的
-        if (window.addEventListener) {
-            window.addEventListener("bodyChange", that.resizeTable);
-        } else {
-            window.attachEvent("bodyChange", that.resizeTable);
-        }
+        // //监听事件,由layout那边的resize抛出的
+        // if (window.addEventListener) {
+        //     window.addEventListener("bodyChange", that.resizeTable);
+        // } else {
+        //     window.attachEvent("bodyChange", that.resizeTable);
+        // }
     },
     watch: {
         "search.dtFm": {
@@ -359,8 +400,11 @@ export default {
         },
 
         switchDate(type) {
-            let that = this,
-                year = that.search.dtFm.getFullYear(),
+            let that = this;
+
+            that.search.dtFm = new Date(that.search.dtFm);
+
+            let year = that.search.dtFm.getFullYear(),
                 mth = that.search.dtFm.getMonth(),
                 weekday = that.search.dtFm.getDay(),
                 day = that.search.dtFm.getDate();
@@ -429,12 +473,6 @@ export default {
             }
         },
 
-        addPay() {
-
-        },
-
-        getData() {},
-
         exportExcel() {},
 
         resizeTable() {
@@ -442,7 +480,7 @@ export default {
                 tableHeight =
                     that.$refs.content.clientHeight -
                     that.$refs.head.clientHeight -
-                    34;
+                    24;
 
             that.tableHeight = tableHeight;
         }

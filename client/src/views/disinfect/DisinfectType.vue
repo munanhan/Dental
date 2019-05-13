@@ -93,18 +93,19 @@
                         :disabled="commitLoading"
                     >取 消</el-button>
                 </div> -->
-                <div>
-                    <el-button
-                        type="primary"
-                        @click="commit"
-                        :loading="commitLoading"
-                    >确 定</el-button>
-                </div>
+                <el-button
+                    type="primary"
+                    @click="commit"
+                    :loading="commitLoading"
+                >确 定</el-button>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
-        <addDisinfect-type :show.sync="addDisinfectTypeDialog" @add-item="addItem"></addDisinfect-type>
+        <addDisinfect-type
+            :show.sync="addDisinfectTypeDialog"
+            @add-item="addItem"
+        ></addDisinfect-type>
     </div>
 </template>
 
@@ -115,12 +116,12 @@ export default {
     name: "DisinfectType",
     mixins: [DialogForm],
 
-    components: {AddDisinfectType},
+    components: { AddDisinfectType },
     props: {},
     data() {
         return {
             commitLoading: false,
-            tableHeight: "340px",
+            tableHeight: 340,
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
 
             addDisinfectTypeDialog: false
@@ -150,14 +151,19 @@ export default {
             that.tableData.splice(index, 1);
         },
 
-        commit() {},
+        commit() {
+            let that = this;
+
+            that.$emit('update-type', '');
+
+            that.closeDialog();
+
+        },
 
         addItem(item) {
             let that = this;
 
             console.log(item);
-
-            that.closeDialog();
         }
     }
 };

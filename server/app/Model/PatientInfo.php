@@ -4,12 +4,12 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Patient extends Model
+class PatientInfo extends Model
 {
     protected $guarded=['id',];
 
-    public function patientInfo()
+    public function patient()
     {
-        return $this->hasOne(PatientInfo::class);
+        $this->belongsTo(Patient::class);
     }
 }

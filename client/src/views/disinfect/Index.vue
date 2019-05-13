@@ -1,5 +1,5 @@
 <template>
-   <div class="disinfect">
+    <div class="disinfect">
         <div class="left-content">
             <div class="calendar-action">
 
@@ -81,24 +81,6 @@
                         </el-date-picker>
                     </label>
                 </div>
-                <div>
-                    <label class="search-item">
-                        <span class="label-text mr-10">支出类型</span>
-                        <el-select
-                            v-model="search.payType"
-                            collapse-tags
-                            class="search-input"
-                        >
-                            <el-option
-                                v-for="item in payType"
-                                :key="item.id"
-                                :label="item.label"
-                                :value="item.id"
-                            >
-                            </el-option>
-                        </el-select>
-                    </label>
-                </div>
                 <div class="btn-container">
                     <div class="btn-item mr-10">
                         <el-button
@@ -142,7 +124,7 @@
                     <el-button
                         type="primary"
                         class="btns"
-                        @click="addDisinfectDialog = true"
+                        @click="addDialog = true"
                     >新增消毒</el-button>
                 </span>
             </div>
@@ -150,13 +132,12 @@
             <div class="pay-table">
                 <el-table
                     border
-                    class="width100 mb-10"
-                    :data="tableData"
+                    class="width100"
+                    :data="tdata"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
-                    show-summary
                 >
-                    <el-table-column
+                    <!-- <el-table-column
                         prop="address"
                         label="删除"
                         align="center"
@@ -169,8 +150,8 @@
                         align="center"
                         show-overflow-tooltip
                     >
-                    </el-table-column>
-                                        <el-table-column
+                    </el-table-column> -->
+                    <el-table-column
                         prop="address"
                         label="类型"
                         align="center"
@@ -219,21 +200,60 @@
                         show-overflow-tooltip
                     >
                     </el-table-column>
-                    
+                    <el-table-column
+                        label="操作"
+                        align="center"
+                        width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="修改"
+                                placement="top"
+                            >
+                                <el-button
+                                    type="primary"
+                                    size="mini"
+                                    icon="el-icon-edit"
+                                    circle
+                                    @click.stop="showEditDialog(scope.row)"
+                                ></el-button>
+                            </el-tooltip>
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    circle
+                                    @click.stop="del(scope.row, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
-      <add-disinfect :show.sync="addDisinfectDialog"></add-disinfect>
+        <add-disinfect :show.sync="addDialog"></add-disinfect>
+        <edit-disinfect :show.sync="editDialog"></edit-disinfect>
     </div>
 </template>
 
 <script>
 import { formatDate } from "@common/util";
-import AddDisinfect from './AddDisinfect';
+import AddDisinfect from "./AddDisinfect";
+import EditDisinfect from "./EditDisinfect";
+import Base from "../base/TableBase";
 
 export default {
-    name: 'Disinfect',
-    components:{AddDisinfect},
+    name: "Disinfect",
+    components: { AddDisinfect, EditDisinfect },
+
+    mixins: [Base],
+
     props: {},
     data() {
         return {
@@ -241,17 +261,9 @@ export default {
             search: {
                 dtFm: new Date(),
                 dtTo: new Date(),
-                payType: 0
             },
 
-            payType: [
-                { id: 0, label: "全部" },
-                { id: 1, label: "现金" },
-                { id: 2, label: "转账" }
-            ],
-
-            tableData: [],
-            tableHeight: "300px",
+            pager: false,
 
             dateFmText: "",
             dateToText: "",
@@ -262,7 +274,6 @@ export default {
 
             isCurrentDate: false,
 
-            addDisinfectDialog: false
         };
     },
     created() {},
@@ -276,17 +287,6 @@ export default {
 
         that.checkCurrentData();
         that.calcDateCount();
-
-        that.$nextTick(() => {
-            that.resizeTable();
-        });
-
-        //监听事件,由layout那边的resize抛出的
-        if (window.addEventListener) {
-            window.addEventListener("bodyChange", that.resizeTable);
-        } else {
-            window.attachEvent("bodyChange", that.resizeTable);
-        }
     },
     watch: {
         "search.dtFm": {
@@ -353,8 +353,11 @@ export default {
         },
 
         switchDate(type) {
-            let that = this,
-                year = that.search.dtFm.getFullYear(),
+            let that = this;
+
+            that.search.dtFm = new Date(that.search.dtFm);
+
+            let year = that.search.dtFm.getFullYear(),
                 mth = that.search.dtFm.getMonth(),
                 weekday = that.search.dtFm.getDay(),
                 day = that.search.dtFm.getDate();
@@ -423,11 +426,9 @@ export default {
             }
         },
 
-        addDisinfect() {
+        // addDisinfect() {},
 
-        },
-
-        getData() {},
+        // getData() {},
 
         exportExcel() {},
 
@@ -436,12 +437,12 @@ export default {
                 tableHeight =
                     that.$refs.content.clientHeight -
                     that.$refs.head.clientHeight -
-                    34;
+                    24;
 
             that.tableHeight = tableHeight;
         }
     }
-}
+};
 </script>
 <style lang="less" scoped>
 //导入全局的颜色
@@ -570,5 +571,4 @@ export default {
         }
     }
 }
-    
 </style>
