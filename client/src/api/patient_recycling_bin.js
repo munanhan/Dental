@@ -9,3 +9,19 @@ export function get(data) {
         params: data
     })
 }
+
+export function reduction(id) {
+    return request({
+        url: `${prefix}/:id`,
+        method: 'put',
+        
+    })
+}
+
+export function del(data) {
+    return request({
+        url: `${prefix}`,
+        method: 'delete',
+        params: data
+    })
+}

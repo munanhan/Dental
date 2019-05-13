@@ -136,15 +136,20 @@ use Illuminate\Support\Facades\DB;
 
 /***
  * 处理参数
+ * 获取类型(数组) 即为前端传过来的参数集合
+ * 返回类型(数组)'parms' => 参数,'date' => 日期时间,'pager' => 分页参数
  */ 
            function getParms($parms){
             //处理参数
-                $parms = array_filter($parms);//去除空
-
-                $field = ['_d','dtfm','dtto'];//清除的字段
+            // dd($parms);
+                $parms = array_filter($parms,function($v){return $v !== null;});//去除空
+                $field = ['_d','dtfm','dtto','current_page','page_size'];//清除的字段(不需要进入数据库搜索的字段单独处理)
 
                 $date['dtfm'] = isset($parms['dtfm'])?$parms['dtfm']:0;
-                $date['dtto'] = isset($parms['dtto'])?$parms['dtto'].' 23:59:59':date('Y-m-d').' 23:59:59';
+                $date['dtto'] = isset($parms['dtto'])?$parms['dtto'].' 23:59:59':date('Y-m-d').' 23:59:59';//日期
+
+                $pager['current_page'] = isset($parms['current_page'])?$parms['current_page']:'';
+                $pager['page_size'] = isset($parms['page_size'])?$parms['page_size']:'';//分页参数
 
                 $unset_keys = function($parms = []) use ($field){
                     //清除不需要的字段
@@ -156,19 +161,98 @@ use Illuminate\Support\Facades\DB;
                     return empty($parms)?[]:$parms;
                 };
 
-                return ['parms' => $unset_keys($parms),'date' => $date];//得到最终参数集合
+                return ['parms' => $unset_keys($parms),'date' => $date,'pager' => $pager];//得到最终参数集合
 
            } 
 /***
- *处理sql
- *          
+ * 处理sql
+ * 输入类型 字符串，(sql，参数，分页选项)
+ * 返回类型 数组，(数据，说明，状态码)         
  */         function getData($sql,$parms,$pager = 0){
                 //获取查询数据
                 try{
+                    //$pager决定分页与否
                     return $pager == 1?
                     ['data' => [ 'row' => DB::select($sql,$parms)],'msg' => '成功','code' => 200]:
                     [ 'data' => DB::select($sql,$parms),'msg' => '成功','code' => 200 ];
                 }catch(\Exception $e){
+                    // dd($e->getMessage());
                     return [ 'data' => [],'msg' => '异常','code' => 500 ];
                 }
+            }
+
+/***
+ * 类型转换，sql case then
+ * 输入类型，数组 $parms => (表名，字段名，别名，数据源)
+ * 返回类型，字符串 $case => 完整的case then 语句
+ */
+
+            function caseThen($parms){
+                //case then
+                $return_error = function($parms){
+                    return '缺少'.$parms;//缺少数据
+                };
+                $data = isset($parms['data'])?$parms['data']:$return_error('data');
+                $table = isset($parms['table'])?$parms['table']:$return_error('table');
+                $field = isset($parms['field'])?$parms['field']:$return_error('field');
+                $as = isset($parms['as'])?$parms['as']:$field;
+
+                $case = "(case $table.$field";//case
+                foreach ($data as $k => $v) {
+                    $case.=" when '$k' then '$v'";
+                }
+                $case.= " end )'$as'";
+                return $case;
+            }
+
+/***
+ * sql for limit
+ * 输入类型，数组 $parms => (current_page分页当前页，page_size总页数)
+ * 返回类型，字符串 $sql 完整的limit语句
+ */         
+            function limit($parms){
+                //limit
+                $return_error = function($parms){
+                    return '缺少'.$parms;//缺少数据
+                };
+                $current_page = isset($parms['current_page'])?$parms['current_page']:1;
+                $page_size = isset($parms['page_size'])?$parms['page_size']:$return_error('page_size');
+
+                return ' limit '.($current_page-1)*($page_size).','.$page_size;
+            }
+
+/***
+ * sql for where
+ * 输入类型，数组 $parms => where参数集合
+ * 返回类型，字符串 $where 完整的where语句
+ */
+            function where($parms){
+                //where
+                if (empty($parms)) {
+                    return ' ';//无参数
+                }
+                $length = count($parms)-1;//长度
+                $n = 0;//计数
+                $where = ' where';
+                foreach ($parms as $k => $v) {
+                    $where.= " `$k` = :$k";
+                    $n < $length?$where.=' and':'';
+                    $n++;
+                }
+                return $where;
+            }
+
+/***
+ * sql for select 
+ * 输入类型，数组集合 $parm => 字段集合,表
+ * 返回类型，字符串 $select 完整的select语句
+ */
+            function select($parms = []){
+                //select
+                $select = 'select '.(empty($parms['field'])?'* ':'');
+                $field = implode('`,`',$parms['field']);
+                $select.= '`'.$field.'`'.' from '.$parms['table'];
+                $select = str_replace('`(','(',$select);//case then 处理`
+                $select = str_replace("'`","'",$select);
+                return $select;
             }

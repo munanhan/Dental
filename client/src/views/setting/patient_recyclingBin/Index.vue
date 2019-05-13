@@ -59,7 +59,7 @@
                 label="电话">
               </el-table-column>
               <el-table-column
-                prop="patient_source"
+                prop="source"
                 label="患者来源">
               </el-table-column>
               <el-table-column
@@ -69,7 +69,7 @@
               <el-table-column
                 prop="group"
                 label="分组">
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                   <div v-if="scope.row.group == 0">
                     最近患者
                   </div>
@@ -79,7 +79,7 @@
                   <div v-if="scope.row.group == 2">
                     治疗完成
                   </div>
-                </template>
+                </template> -->
               </el-table-column>
               <el-table-column
                 prop="operation"
@@ -94,7 +94,7 @@
                             <el-button
                                 type="primary"
                                 size="mini"
-                                icon="el-icon-edit"
+                                icon="el-icon-upload2"
                                 circle
                                 @click.stop="update(scope.row.id)"
                             ></el-button>
@@ -322,14 +322,41 @@ export default {
            }
         },
         del(id){
-          alert(id);
+          let that = this;
+
+          that.$api.patient_recycling_bin.del({'id':id})
+          .then(res => {
+              for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                 if (that.tableData[i].id == id) {
+
+                     that.tableData.splice(i,1);
+                 }
+              }
+          })
+          .catch(res => {
+            // console.log(res);
+          });
+
         },
         delAll(){
           let that = this;
           console.log(that.select_group);
         },
         update(id){
-          alert(id);
+          let that = this;
+
+          that.$api.patient_recycling_bin.reduction({id})
+          .then(res => {
+              for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                 if (that.tableData[i].id == id) {
+
+                     that.tableData.splice(i,1);
+                 }
+              }
+          })
+          .catch(res => {
+            // console.log(res);
+          });
         },
         getData() {
             let that = this;

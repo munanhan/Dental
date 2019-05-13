@@ -58,7 +58,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
 
     /*
-     * Route OperationLog Api
+     * Route OperationLog Api y
      */
     Route::get('operation_log', 'operationLogController@operationLogList');//日志列表
 
@@ -186,17 +186,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
 
     /*
-     * Route PatientRecyclingBin Api
+     * Route PatientRecyclingBin Api y
      */
     Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');
 
-    Route::get('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@show');
+    // Route::get('patient_recycling_bin/reduction', 'PatientRecyclingBinController@reduction');
+    
+    // Route::get('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@show');
 
-    Route::post('patient_recycling_bin', 'PatientRecyclingBinController@store');
+    // Route::post('patient_recycling_bin', 'PatientRecyclingBinController@store');
 
-    Route::put('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@update');
+    Route::put('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@reduction');
 
-    Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
+    Route::delete('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@delete');
 
 
 });
