@@ -359,8 +359,11 @@ export default {
         },
 
         switchDate(type) {
-            let that = this,
-                year = that.search.dtFm.getFullYear(),
+            let that = this;
+
+            that.search.dtFm = new Date(that.search.dtFm);
+
+            let year = that.search.dtFm.getFullYear(),
                 mth = that.search.dtFm.getMonth(),
                 weekday = that.search.dtFm.getDay(),
                 day = that.search.dtFm.getDate();
