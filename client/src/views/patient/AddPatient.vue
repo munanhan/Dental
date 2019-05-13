@@ -3,10 +3,10 @@
     title="新增患者"
     :visible.sync="show"
     :before-close="closeDialog"
+    :close-on-click-modal="false"
     class="custom-dialog"
     v-dialog-drag
     width="750px"
-    :close-on-click-modal="false"
   >
     <el-form
       ref="changePwdForm"

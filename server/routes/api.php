@@ -43,7 +43,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route Patient Api
      */
-    Route::get('generate','PatientController@generate');
+    Route::get('generate', 'PatientController@generate');
 
     Route::get('patients', 'PatientController@index');
 
