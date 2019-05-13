@@ -39,12 +39,10 @@
         <el-form-item label="姓名" prop="name" required>
           <el-input v-model="formData.name" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="电话1" prop="tel_one" required>
+        <el-form-item label="电话" prop="phone" required>
           <el-input v-model="formData.tel_one" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="电话2" prop="tel_two">
-          <el-input v-model="formData.tel_two" type="text" autocomplete="off" placeholder></el-input>
-        </el-form-item>
+      
         <el-form-item label="性别" prop="sex" required>
           <el-radio-group v-model="formData.sex">
             <el-radio label="男"></el-radio>
