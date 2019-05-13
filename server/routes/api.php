@@ -43,6 +43,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route Patient Api
      */
+    Route::get('generate','PatientController@generate');
+
     Route::get('patients', 'PatientController@index');
 
     Route::get('patients/{patient}', 'PatientController@show');
@@ -53,7 +55,17 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{patient}', 'PatientController@delete');
 
-    Route::get('generate','PatientController@generate');
+
+    /*
+     * Route OperationLog Api
+     */
+    Route::get('operation_log', 'operationLogController@operationLogList');//日志列表
+
+    Route::get('operation_log/get_user_list','operationLogController@getUserList');//下拉用户列表
+
+    Route::get('operation_log/get_module_list','operationLogController@getModuleList');//下拉模块选项
+
+
 
     /*
      * Route PatientAddress Api
@@ -172,6 +184,20 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
 
+    /*
+     * Route PatientRecyclingBin Api
+     */
+    Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');
+
+    Route::get('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@show');
+
+    Route::post('patient_recycling_bin', 'PatientRecyclingBinController@store');
+
+    Route::put('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@update');
+
+    Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
+
+
 });
 
 
@@ -196,6 +222,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     //     Redis::publish('test-channel', json_encode(['foo' => 'bar']));
     // });
+   
 
 });
 

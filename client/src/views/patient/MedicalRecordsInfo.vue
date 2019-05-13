@@ -30,7 +30,7 @@
           </el-option>
         </el-select>
 
-        <el-select
+        <!-- <el-select
           v-model="risk_assessment"
           class="medical-button"
           style="width:120px"
@@ -43,8 +43,8 @@
             :value="item.value"
           >
           </el-option>
-        </el-select>
-        <el-select
+        </el-select> -->
+        <!-- <el-select
           v-model="other"
           class="medical-button"
           style="width:90px"
@@ -57,8 +57,8 @@
             :value="item.value"
           >
           </el-option>
-        </el-select>
-        <el-button class="medical-button">知情同意书</el-button>
+        </el-select> -->
+        <!-- <el-button class="medical-button">知情同意书</el-button> -->
         <el-button class="medical-button">正畸病历</el-button>
       </div>
     </div>
@@ -84,33 +84,33 @@ export default {
   },
   data() {
     return {
-      others: [
-        {
-          value: "选项1",
-          label: "全部打印"
-        },
-        {
-          value: "选项2",
-          label: "打印设置"
-        }
-      ],
-      other:"",
+      // others: [
+      //   {
+      //     value: "选项1",
+      //     label: "全部打印"
+      //   },
+      //   {
+      //     value: "选项2",
+      //     label: "打印设置"
+      //   }
+      // ],
+      // other:"",
 
-      risk: [
-        {
-          value: "选项1",
-          label: "SAC外科病例评估"
-        },
-        {
-          value: "选项2",
-          label: "SAC修复病例评估"
-        },
-        {
-          value: "选项3",
-          label: "牙周病危险评估"
-        }
-      ],
-      risk_assessment:"",
+      // risk: [
+      //   {
+      //     value: "选项1",
+      //     label: "SAC外科病例评估"
+      //   },
+      //   {
+      //     value: "选项2",
+      //     label: "SAC修复病例评估"
+      //   },
+      //   {
+      //     value: "选项3",
+      //     label: "牙周病危险评估"
+      //   }
+      // ],
+      // risk_assessment:"",
       oral: [
         {
           value: "选项1",
