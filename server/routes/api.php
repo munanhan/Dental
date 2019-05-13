@@ -218,6 +218,9 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('order','OrderController@store');
 
+    Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
+
+    Route::get('appointment/add_appointment','AppointmentItemController@addAppointment');
     // Route::get('publish', function () {
     //     // Route logic...
 

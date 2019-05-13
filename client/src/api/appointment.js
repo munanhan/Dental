@@ -9,3 +9,10 @@ export function addAppointment(data) {
         data: data
     })
 }
+export function getCaseNumber(data) {
+    return request({
+        url: `${prefix}/getCaseNumber`,
+        method: 'get',
+        data: data
+    })
+}
