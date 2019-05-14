@@ -61,22 +61,30 @@
       </div>
     </el-table>
     <div class="charge-bottom">
+      <el-button class="button" @click="Add_Plan">新增计划</el-button>
       <el-button
         class="button"
         type="primary"
-      >收费</el-button>
-      <el-button class="button">其他</el-button>
-      <el-button class="button">预交款</el-button>
-      <el-button class="button">流水单</el-button>
+        @click="Add_Revisit"
+      >新增回访</el-button>
+      <el-button class="button">修改</el-button>
+      <el-button class="button">删除</el-button>
     </div>
     <!-- <div style="flex:">asd</div> -->
+    <add-plan :show.sync="addplan_show"></add-plan>
+    <add-returnVisit :show.sync="addrevisit_show"></add-returnVisit>
   </div>
 </template>
 
 <script>
+import AddPlan from "./AddPlan";
+import AddReturnVisit from "./AddReturnVisit";
 export default {
   name: "ReturnVisitInfo",
-  components: {},
+  components: {
+    AddPlan,
+    AddReturnVisit,
+  },
   props: {
     refresh: {
       type: Boolean,
@@ -84,7 +92,10 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      addplan_show:false,
+      addrevisit_show:false,
+    };
   },
   created() {},
   mounted() {},
@@ -105,6 +116,12 @@ export default {
       setTimeout(() => {
         that.$emit("update:refresh", false);
       }, 6e3);
+    },
+     Add_Plan() {
+      this.addplan_show = true;
+    },
+     Add_Revisit() {
+      this.addrevisit_show = true;
     }
   }
 };

@@ -205,7 +205,7 @@ export default {
         {
           value: "ChargingSet",
           label: "收费设置"
-        },
+        }, 
         {
           value: "PrintSet",
           label: "打印设置"

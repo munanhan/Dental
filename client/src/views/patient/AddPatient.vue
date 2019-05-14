@@ -23,14 +23,22 @@
         >
           <el-input v-model="form.case_id"></el-input>
         </el-form-item>
-
-        <i
+        <!-- <i
+          class="el-icon-setting form-setting"
+         
+        ></i> -->
+        <!-- <i
           class="fa fa-cog"
           style="margin-top:10px;
                  padding-left:10px;
                  font-size:20px;
                  cursor:pointer"
-        ></i>
+        ></i> -->
+        <!-- 
+        <i
+                        class="fa fa-arrow-circle-left mr-10 pre-mth"
+                        @click.prevent.stop="switchDate('pre')"
+                    ></i> -->
 
         <div
           class="block"
@@ -47,19 +55,16 @@
             style="margin-right:10px"
           >新增头像</el-button>
         </div>
-        <i
-          class="fa fa-cog"
-          style="margin-top:10px;
-                 font-size:20px;
-                 margin-right:10px;
-                 cursor:pointer"
+        <!-- <i
+          class="el-icon-setting form-setting"
+         
         ></i>
         <i
-          class="el el-icon-question"
+          class="el el-icon-question form-setting"
           style="margin-top:10px;
                  font-size:20px;
                  cursor:pointer"
-        ></i>
+        ></i> -->
       </div>
 
       <div style="display:flex">
@@ -116,14 +121,10 @@
           >
             <el-input v-model="form.phone"></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                    "
-          ></i>
+          <!-- <i
+          class="el-icon-setting form-setting"
+         
+        ></i> -->
         </div>
 
         <div style="display:flex">
@@ -178,13 +179,8 @@
             </el-select>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   margin-right:10px;
-                   cursor:pointer;
-                   margin-left:10px
-                   "
+            class="el-icon-setting form-setting"
+            @click="Patient_sour"
           ></i>
           <div style="margin-top:10px;margin-left:10px">
             类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -260,14 +256,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                   "
-          ></i>
+          <i class="el-icon-setting form-setting" @click="class_pat"></i>
           <el-form-item
             style="margin-left:20px;width:300px"
             prop="content"
@@ -296,14 +285,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                   "
-          ></i>
+          <i class="el-icon-setting form-setting"></i>
 
           <el-form-item
             style="margin-left:20px;width:300px"
@@ -332,40 +314,19 @@
               >
               </el-option>
             </el-select>
-            <i
-              class="fa fa-cog"
-              style="margin-top:10px;
-                     font-size:20px;
-                     cursor:pointer;
-                     margin-left:10px
-                     "
-            ></i>
+            <i class="el-icon-setting form-setting"></i>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="过 敏 使">
             <el-input style="width:570px"></el-input>
-            <i
-              class="fa fa-cog"
-              style="margin-top:10px;
-                     font-size:20px;
-                     margin-left:10px;
-                     cursor:pointer;
-                  "
-            ></i>
+            <i class="el-icon-setting form-setting"></i>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="既 往 史">
             <el-input style="width:570px"></el-input>
-            <i
-              class="fa fa-cog"
-              style="margin-top:10px;
-                     font-size:20px;
-                     margin-left:10px;
-                     cursor:pointer;
-                     "
-            ></i>
+            <i class="el-icon-setting form-setting"></i>
           </el-form-item>
         </div>
         <div style="display:flex">
@@ -397,14 +358,7 @@
               v-model="form.impression_id"
             ></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                  "
-          ></i>
+          <i class="el-icon-setting form-setting"></i>
           <el-form-item
             style="margin-left:30px;width:300px"
             label="电网咨询"
@@ -414,7 +368,7 @@
           </el-form-item>
         </div>
         <div style="display:flex">
-          <el-form-item
+          <!-- <el-form-item
             label="民族"
             porp="national"
           >
@@ -431,15 +385,7 @@
               >
               </el-option>
             </el-select>
-          </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                  "
-          ></i>
+          </el-form-item> -->
           <el-form-item
             label="吸烟"
             style="margin-left:30px"
@@ -485,14 +431,7 @@
           >
             <el-input v-model="form.teeth_cleaning_habits"></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                  "
-          ></i>
+          <i class="el-icon-setting form-setting"></i>
 
         </div>
       </div>
@@ -512,20 +451,31 @@
       <el-button @click="closeDialog">取 消</el-button>
 
     </div>
-
+    <patients-source :show.sync="patsour_show"></patients-source>
+    <classification-patients :show.sync="classpat_show"></classification-patients>
   </el-dialog>
 </template>
 
 
 <script>
 import AddDialogForm from "../base/AddDialogForm";
+import PatientsSource from "./PatientsSource";
+import ClassificationPatients from "./ClassificationPatients";
+
 export default {
   name: "AddPatient",
 
   mixins: [AddDialogForm],
 
+  components: {
+    PatientsSource,
+    ClassificationPatients
+  },
+
   data() {
     return {
+      patsour_show: false,
+      classpat_show: false,
       form: {
         tel_two: [
           {
@@ -632,7 +582,14 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+
       // console.log();
+    },
+    Patient_sour() {
+      this.patsour_show = true;
+    },
+    class_pat() {
+      this.classpat_show = true;
     }
   }
 };
@@ -640,4 +597,15 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
+.form-setting {
+  text-align: right;
+  width: 30px;
+  font-size: 22px;
+  margin-top: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: @color;
+  }
+}
 </style>

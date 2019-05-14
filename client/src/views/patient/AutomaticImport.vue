@@ -114,13 +114,11 @@ export default {
     };
   },
 
-  methods: {
-    
-  }
+  methods: {}
 };
 </script>
 <style lang="less" scoped>
-/deep/ .el-table__empty-block{
-    min-height: 300px;
+/deep/ .el-table__empty-block {
+  min-height: 300px;
 }
 </style>
