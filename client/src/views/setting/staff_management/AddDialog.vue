@@ -30,9 +30,9 @@
                       >
                           <el-option
                               v-for="item in role_list"
-                              :key="item"
-                              :label="item"
-                              :value="item"
+                              :key="item.id"
+                              :label="item.name"
+                              :value="item.id"
                           ></el-option>
                       </el-select>
           </el-form-item>
@@ -69,13 +69,13 @@ export default {
             role:''
           },
           role_list:[
-            '主任',
-            '医生',
-            '前台',
-            '护士',
-            '收银员',
-            '技师',
-            '咨询师'
+            // '主任',
+            // '医生',
+            // '前台',
+            // '护士',
+            // '收银员',
+            // '技师',
+            // '咨询师'
           ],
 
           rules:{
@@ -130,16 +130,13 @@ export default {
           // tableData:[]
         };
       },
-      created() {},
+      created() {
+        let that = this;
+        that.getData();
+      },
       mounted() {},
       watch: {
-        // refresh(newValue, oldValue) {
-        //   let that = this;
-
-        //   if (newValue) {
-        //     that.getPatientInfo();
-        //   }
-        // }
+        
         
       },
       computed: {},
@@ -152,11 +149,27 @@ export default {
         //         that.hasShowErrorMessage = false;
         //     }, 3e3);
         // },
-        
+        getData(){
+          let that = this;
+          that.$api.user.get_role()
+            .then(res => {
+               that.role_list = res.data;
+            })
+            .catch(res => {
+               console.log(res);
+            });
+        },
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log('submit!');
+              that.$api.user.add(that.form)
+                .then(res => {
+                   that.role_list = res.data;
+                })
+                .catch(res => {
+                   console.log(res);
+                });
             } else {
               console.log('error submit!!');
               return false;

@@ -125,7 +125,7 @@
               @size-change="sizeChange"
               @current-change="currentChange"
               :current-page="search.current_page"
-              :page-sizes="[2, 4, 6, 20]"
+              :page-sizes="[10, 15, 20, 25]"
               :page-size="search.page_size"
               layout="total, sizes, prev, pager, next, jumper"
               class="pager"
@@ -162,7 +162,7 @@ export default {
               name:'',
               phone:'',
               current_page:1,
-              page_size:2
+              page_size:10
             },
             // currentData:[{}],
             tableData:[
@@ -323,24 +323,60 @@ export default {
         },
         del(id){
           let that = this;
-
-          that.$api.patient_recycling_bin.del({'id':id})
+          that.$api.patient_recycling_bin.del({id})
           .then(res => {
               for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
                  if (that.tableData[i].id == id) {
 
                      that.tableData.splice(i,1);
+                     that.total = that.total-1;
                  }
               }
           })
           .catch(res => {
-            // console.log(res);
+            console.log(res);
           });
 
         },
         delAll(){
           let that = this;
-          console.log(that.select_group);
+          let length = that.tableData.length - 1,
+              quickKey = {};
+
+          for(var i = 0; i <= length; i ++){
+            quickKey[that.select_group[i]] = true;
+
+          }
+
+          that.$api.patient_recycling_bin.delAll({'id':that.select_group})
+          .then(res => {
+              let newData = [];
+              for(var i = 0; i < that.tableData.length; i++){
+                var item = that.tableData[i];
+
+                if(!quickKey[item.id]){
+                  newData.push(item);
+                }
+                else{
+                  that.total = that.total-1;
+                }
+              }
+
+              that.tableData = newData;
+
+
+              // for (var i = length; i > 0; i--) {
+              //    if (that.select_group.includes(that.tableData[i].id)) {
+                     
+              //    }
+              // }
+
+          })
+          .catch(res => {
+            console.log(res);
+          });
+
+          // console.log(that.select_group);
         },
         update(id){
           let that = this;
