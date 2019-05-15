@@ -3,7 +3,6 @@
     title="收费设置"
     :visible.sync="show"
     width="550px"
-    :before-close="handleClose"
     :close-on-click-modal="false"
     class="custom-dialog"
     center
@@ -75,14 +74,14 @@ export default {
     dialogClose() {
       this.$emit("update:show", false);
     },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          this.dialogClose();
-          done();
-        })
-        .catch(_ => {});
-    }
+    // handleClose(done) {
+    //   this.$confirm("确认关闭？")
+    //     .then(_ => {
+    //       this.dialogClose();
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // }
   }
 };
 </script>

@@ -76,8 +76,8 @@
               <div>
                 <el-tree
                   style="height:100%;
-                  font-weight:bold;
-                       background-color:#efefef"
+                         font-weight:bold;
+                         background-color:#efefef"
                   :data="data"
                   :props="defaultProps"
                 ></el-tree>
@@ -160,14 +160,20 @@
           label="处置记录"
           name="disposalRecords"
         >
-          <disposal-records v-if="disposalRecords" :refresh.sync="disposalRecords"></disposal-records>
+          <disposal-records
+            v-if="disposalRecords"
+            :refresh.sync="disposalRecords"
+          ></disposal-records>
         </el-tab-pane>
 
         <el-tab-pane
           label="收费信息"
           name="chargeInfo"
         >
-          <charge-info v-if="chargeInfo" :refresh.sync="chargeInfo"></charge-info>
+          <charge-info
+            v-if="chargeInfo"
+            :refresh.sync="chargeInfo"
+          ></charge-info>
         </el-tab-pane>
 
         <!-- <el-tab-pane
@@ -181,7 +187,10 @@
           label="病历信息"
           name="medicalRecordsInfo"
         >
-          <medical-records-info v-if="medicalRecordsInfo" :refresh.sync="medicalRecordsInfo"></medical-records-info>
+          <medical-records-info
+            v-if="medicalRecordsInfo"
+            :refresh.sync="medicalRecordsInfo"
+          ></medical-records-info>
         </el-tab-pane>
 
         <!-- <el-tab-pane
@@ -195,14 +204,20 @@
           label="回访信息"
           name="returnVisitInfo"
         >
-          <return-visit-info v-if="returnVisitInfo" :refresh.sync="returnVisitInfo"></return-visit-info>
+          <return-visit-info
+            v-if="returnVisitInfo"
+            :refresh.sync="returnVisitInfo"
+          ></return-visit-info>
         </el-tab-pane>
 
         <el-tab-pane
           label="咨询信息"
           name="consultingInfo"
         >
-          <consulting-info v-if="consultingInfo" :refresh.sync="consultingInfo"></consulting-info>
+          <consulting-info
+            v-if="consultingInfo"
+            :refresh.sync="consultingInfo"
+          ></consulting-info>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -223,7 +238,7 @@ import MedicalRecordsInfo from "./MedicalRecordsInfo";
 // import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "./ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
-import AddPatient from "./AddPatient"; 
+import AddPatient from "./AddPatient";
 import AppointmentVisit from "./AppointmentVisit";
 
 export default {
@@ -251,7 +266,7 @@ export default {
       curTab: "pationInfo",
       activeName: "patient",
       addp_show: false,
-      appvisit_show:false,
+      appvisit_show: false,
       //   pationRefresh: false,
       //   disposalRecordsRefresh: false,
 
@@ -370,7 +385,7 @@ export default {
       this.addp_show = true;
     },
     //
-    app_visit(){
+    app_visit() {
       this.appvisit_show = true;
     }
 
@@ -422,9 +437,9 @@ export default {
   line-height: 60px;
   margin-top: -10px;
 }
-el-tabs__header is-top .move-line {
-  border: 1px solid rgb(235, 235, 235);
-}
+// el-tabs__header is-top .move-line {
+//   border: 1px solid rgb(235, 235, 235);
+// }
 
 .content-left {
   .left_top {

@@ -23,12 +23,12 @@
         </el-col>
         <el-col :span="4">
               <span class="mr10">
-                  <el-input v-model="staff" placeholder="请输入姓名"></el-input>
+                  <el-input v-model="search.name" placeholder="请输入姓名"></el-input>
               </span>
         </el-col>
         <el-col :span="2">
               <span class="">
-                  <el-button type="primary" @click="search">查询</el-button>
+                  <el-button type="primary" @click="searchName">查询</el-button>
               </span>
         </el-col>
         <el-col :span="2">
@@ -95,7 +95,7 @@
                 </template> -->
               </el-table-column>
               <el-table-column
-                prop="is_job"
+                prop="entry"
                 label="在职情况">
                 <!-- <template slot-scope="scope">
                 <el-select
@@ -198,46 +198,46 @@ export default {
           passwordDialog:false,
           addDialog:false,
           editDialog:false,
-          staff:'',
+          search:{ name:'' },
           id:'',
           editItem:{},
            tableData: [
-           {
-                id: 1,
-                name: '刘伟',
-                phone: '13888888888',
-                password:'liuwei666',
-                role:'主任',
-                is_job:'在职',
-                operation:''
-                },
-           {
-                id: 2,
-                name: '张三',
-                phone: '13800090990',
-                password:'liuwei666',
-                role:'医生',
-                is_job:'在职',
-                operation:''
-          },
-          {
-                id: 3,
-                name: '李四',
-                phone: '13813458888',
-                password:'liuwei666',
-                role:'护士',
-                is_job:'在职',
-                operation:''
-                },
-          {
-                id: 4,
-                name: '王五',
-                phone: '13899599599',
-                password:'',
-                role:'前台',
-                is_job:'在职',
-                operation:''
-          }
+          //  {
+          //       id: 1,
+          //       name: '刘伟',
+          //       phone: '13888888888',
+          //       password:'liuwei666',
+          //       role:'主任',
+          //       is_job:'在职',
+          //       operation:''
+          //       },
+          //  {
+          //       id: 2,
+          //       name: '张三',
+          //       phone: '13800090990',
+          //       password:'liuwei666',
+          //       role:'医生',
+          //       is_job:'在职',
+          //       operation:''
+          // },
+          // {
+          //       id: 3,
+          //       name: '李四',
+          //       phone: '13813458888',
+          //       password:'liuwei666',
+          //       role:'护士',
+          //       is_job:'在职',
+          //       operation:''
+          //       },
+          // {
+          //       id: 4,
+          //       name: '王五',
+          //       phone: '13899599599',
+          //       password:'',
+          //       role:'前台',
+          //       is_job:'在职',
+          //       operation:''
+          // }
 
           ],
           
@@ -283,7 +283,7 @@ export default {
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
 
-                // that.getData();
+                that.getData();
             }
         }
     },
@@ -306,9 +306,9 @@ export default {
           that.editItem = editItem;
           that.editDialog = true;
         },
-        search(){
+        searchName(){
           let that = this;
-          alert(that.staff);
+          that.getData();
         },
         showPasswordDialog(id){
           let that = this;
@@ -331,18 +331,17 @@ export default {
         //    that.$refs["ruleForm"].resetFields();
         //    that.setPassword = false;
         // },
-        getPatientInfo() {
+        getData() {
           let that = this;
-
-          that.$api.aaaa.aaaa
+          that.$api.user.user_list(that.search)
             .then(res => {
-              that.getDataDone();
+               that.tableData = res.data;
             })
             .catch(res => {
-              that.getDataDone();
+               console.log(res);
             });
         },
-
+        
         getDataDone() {
           setTimeout(() => {
             that.$emit("update:refresh", false);

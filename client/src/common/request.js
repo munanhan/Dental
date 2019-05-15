@@ -6,6 +6,17 @@ let instance = null,
     refreshTokenUrl = "/api/refreshment",
     oauthToken = getCookie("token");
 
+
+
+// refreshTokenUrl = apiBaseURL + refreshTokenUrl;
+
+// instance = axios.create({
+//     baseURL: `${apiBaseURL}/api`, // api的base_url
+//     timeout: 6000, // 请求超时时间
+//     withCredentials: true //允许携带cookie
+// });
+
+
 //development模式下使用
 try {
     refreshTokenUrl = apiBaseURL + refreshTokenUrl;
@@ -73,7 +84,7 @@ const rejectParams = (url, data) => {
 
     for (var key in data) {
         if (RegExp(":" + key).test(complieUrl)) {
-            url.replace(":" + key, data[key]);
+            complieUrl = complieUrl.replace(":" + key, data[key]);
 
             delete data[key];
         }

@@ -94,24 +94,25 @@
                         :disabled="commitLoading"
                     >取 消</el-button>
                 </div> -->
-                <div>
-                    <el-button
-                        type="primary"
-                        @click="commit"
-                        :loading="commitLoading"
-                    >确 定</el-button>
-                </div>
+                <el-button
+                    type="primary"
+                    @click="commit"
+                    :loading="commitLoading"
+                >确 定</el-button>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
-        <add-expenditure-category :show.sync="addExpendDialog" @add-item="addItem"></add-expenditure-category>
+        <add-expenditure-category
+            :show.sync="addExpendDialog"
+            @add-item="addItem"
+        ></add-expenditure-category>
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddExpenditureCategory from './AddExpenditureCategory';
+import AddExpenditureCategory from "./AddExpenditureCategory";
 
 export default {
     name: "ExpenditureCategory",
@@ -123,7 +124,7 @@ export default {
     data() {
         return {
             commitLoading: false,
-            tableHeight: "340px",
+            tableHeight: 340,
             tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
             // tableData: []
 
@@ -154,18 +155,22 @@ export default {
             that.tableData.splice(index, 1);
         },
 
-        commit() {},
+        commit() {
+            let that = this;
 
-        addItem(item){
+            that.$emit('update-category', '');
+
+            that.closeDialog();
+
+        },
+
+        addItem(item) {
             let that = this;
 
             console.log(item);
-
-            that.closeDialog();
         }
     }
 };
 </script>
 <style lang="less" scoped>
-
 </style>

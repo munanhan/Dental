@@ -1,11 +1,13 @@
 <template>
     <div>
         <el-dialog
-            title="类型"
+            title="支出类别设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog pay-dialog"
+            class="custom-dialog expenditure-category"
             :close-on-click-modal="false"
+            top="3vh"
+            :append-to-body="true"
             v-dialog-drag
         >
             <div class="content">
@@ -19,7 +21,7 @@
                 >
                     <el-table-column
                         prop="aaaa"
-                        label="类型"
+                        label="支出类型"
                         align="center"
                         show-overflow-tooltip
                     >
@@ -82,49 +84,51 @@
                 <div class="pull-left">
                     <el-button
                         type="primary"
-                        @click="addTypeDialog = true"
+                        @click="addExpendDialog = true"
                         :disabled="commitLoading"
                     >新增</el-button>
                 </div>
 
                 <!-- <div>
+                </div> -->
+                <div>
                     <el-button
                         @click="closeDialog"
                         :disabled="commitLoading"
                     >取 消</el-button>
-                </div> -->
-                <el-button
-                    type="primary"
-                    @click="commit"
-                    :loading="commitLoading"
-                >确 定</el-button>
+                    <el-button
+                        type="primary"
+                        @click="commit"
+                        :loading="commitLoading"
+                    >确 定</el-button>
+                </div>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
         </el-dialog>
 
-        <add-type
-            :show.sync="addTypeDialog"
-            @add-item="addItem"
-        ></add-type>
+        <!-- <add-expenditure-category :show.sync="addExpendDialog" @add-item="addItem"></add-expenditure-category> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddType from "./AddType";
+// import AddExpenditureCategory from './AddExpenditureCategory';
+
 export default {
-    name: "Type",
+    name: "ExpenditureCategory",
     mixins: [DialogForm],
 
-    components: { AddType },
+    components: {  },
     props: {},
+
     data() {
         return {
             commitLoading: false,
-            tableHeight: 340,
-            tableData: [{ aaaa: "123123123" }, { aaaa: "bbbbbbbbbbbbb" }],
+            tableHeight: "340px",
+            tableData: [{ aaaa: "网络咨询" }, { aaaa: "朋友介绍" }, { aaaa: "家住附近" }, { aaaa: "诊所网站" }],
+            // tableData: []
 
-            addTypeDialog: false
+            // addExpendDialog: false
         };
     },
     created() {},
@@ -151,22 +155,18 @@ export default {
             that.tableData.splice(index, 1);
         },
 
-        commit() {
-            let that = this;
+        commit() {},
 
-            that.$emit('update-type', '');
-
-            that.closeDialog();
-
-        },
-
-        addItem(item) {
+        addItem(item){
             let that = this;
 
             console.log(item);
+
+            that.closeDialog();
         }
     }
 };
 </script>
 <style lang="less" scoped>
+
 </style>

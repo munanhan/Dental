@@ -16,7 +16,7 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
-            format="yyyy-MM-dd"
+            format="yyyy-MM-dd"              
             value-format="yyyy-MM-dd"
             :clearable="false"
           >

@@ -224,7 +224,7 @@ export function getByID(data){
  */
 export function add(data){
     return request({
-        url: `${prefix}/add`,
+        url: `${prefix}`,
         method: 'post',
         data: data
     });
@@ -362,4 +362,22 @@ export function changeUserAvatar(data){
         method: 'post',
         data: data
     });
+}
+
+//获取员工列表
+export function user_list(data){
+    return request({
+        url: `${prefix}/user_list`,
+        method: 'get',
+        params: data
+    })
+}
+
+//获取员工列表
+export function get_role(data){
+    return request({
+        url: `${prefix}/get_role`,
+        method: 'get',
+        params: data
+    })
 }

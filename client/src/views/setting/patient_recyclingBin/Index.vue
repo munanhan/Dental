@@ -59,7 +59,7 @@
                 label="电话">
               </el-table-column>
               <el-table-column
-                prop="patient_source"
+                prop="source"
                 label="患者来源">
               </el-table-column>
               <el-table-column
@@ -69,7 +69,7 @@
               <el-table-column
                 prop="group"
                 label="分组">
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                   <div v-if="scope.row.group == 0">
                     最近患者
                   </div>
@@ -79,7 +79,7 @@
                   <div v-if="scope.row.group == 2">
                     治疗完成
                   </div>
-                </template>
+                </template> -->
               </el-table-column>
               <el-table-column
                 prop="operation"
@@ -94,7 +94,7 @@
                             <el-button
                                 type="primary"
                                 size="mini"
-                                icon="el-icon-edit"
+                                icon="el-icon-upload2"
                                 circle
                                 @click.stop="update(scope.row.id)"
                             ></el-button>
@@ -125,7 +125,7 @@
               @size-change="sizeChange"
               @current-change="currentChange"
               :current-page="search.current_page"
-              :page-sizes="[2, 4, 6, 20]"
+              :page-sizes="[10, 15, 20, 25]"
               :page-size="search.page_size"
               layout="total, sizes, prev, pager, next, jumper"
               class="pager"
@@ -162,7 +162,7 @@ export default {
               name:'',
               phone:'',
               current_page:1,
-              page_size:2
+              page_size:10
             },
             // currentData:[{}],
             tableData:[
@@ -322,14 +322,77 @@ export default {
            }
         },
         del(id){
-          alert(id);
+          let that = this;
+          that.$api.patient_recycling_bin.del({id})
+          .then(res => {
+              for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                 if (that.tableData[i].id == id) {
+
+                     that.tableData.splice(i,1);
+                     that.total = that.total-1;
+                 }
+              }
+          })
+          .catch(res => {
+            console.log(res);
+          });
+
         },
         delAll(){
           let that = this;
-          console.log(that.select_group);
+          let length = that.tableData.length - 1,
+              quickKey = {};
+
+          for(var i = 0; i <= length; i ++){
+            quickKey[that.select_group[i]] = true;
+
+          }
+
+          that.$api.patient_recycling_bin.delAll({'id':that.select_group})
+          .then(res => {
+              let newData = [];
+              for(var i = 0; i < that.tableData.length; i++){
+                var item = that.tableData[i];
+
+                if(!quickKey[item.id]){
+                  newData.push(item);
+                }
+                else{
+                  that.total = that.total-1;
+                }
+              }
+
+              that.tableData = newData;
+
+
+              // for (var i = length; i > 0; i--) {
+              //    if (that.select_group.includes(that.tableData[i].id)) {
+                     
+              //    }
+              // }
+
+          })
+          .catch(res => {
+            console.log(res);
+          });
+
+          // console.log(that.select_group);
         },
         update(id){
-          alert(id);
+          let that = this;
+
+          that.$api.patient_recycling_bin.reduction({id})
+          .then(res => {
+              for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                 if (that.tableData[i].id == id) {
+
+                     that.tableData.splice(i,1);
+                 }
+              }
+          })
+          .catch(res => {
+            // console.log(res);
+          });
         },
         getData() {
             let that = this;

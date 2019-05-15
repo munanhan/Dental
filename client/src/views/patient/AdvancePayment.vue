@@ -247,7 +247,7 @@ export default {
       margin-top: 6px;
       margin-left: 10px;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: bold; 
     }
   }
   .Advan-middle {
