@@ -33,8 +33,8 @@
       label-position="left"
     >
       <div class="left">
-        <el-form-item label="病历号" prop="sick_id">
-          <el-input v-model="formData.sick_id" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="病历号" prop="case_id">
+          <el-input v-model="formData.case_id" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name" required>
           <el-input v-model="formData.name" type="text" autocomplete="off" placeholder></el-input>
@@ -42,7 +42,7 @@
         <el-form-item label="电话" prop="phone" required>
           <el-input v-model="formData.phone" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-      
+
         <el-form-item label="性别" prop="sex" required>
           <el-radio-group v-model="formData.sex">
             <el-radio label="男"></el-radio>
@@ -64,26 +64,36 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="预约医生" prop="doctor_id">
-          <el-input v-model="formData.doctor_id" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="预约医生" prop="appointment_doctor">
+          <el-input
+            v-model="formData.appointment_doctor"
+            type="text"
+            autocomplete="off"
+            placeholder
+          ></el-input>
         </el-form-item>
-        <el-form-item label="就诊类型" prop="type_id" required>
-          <el-radio-group v-model="formData.type_id">
-            <el-radio label="初诊"></el-radio>
-            <el-radio label="复诊"></el-radio>
+        <el-form-item label="就诊类型" prop="type" required>
+          <el-radio-group v-model="formData.type">
+            <el-radio label="0">初诊</el-radio>
+            <el-radio label="1">复诊</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="患者备注" prop="comment">
-          <el-input v-model="formData.comment" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="患者备注" prop="content">
+          <el-input v-model="formData.content" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="预约备注" prop="apt_comment">
-          <el-input v-model="formData.apt_comment" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="预约备注" prop="appointment_comment">
+          <el-input
+            v-model="formData.appointment_comment"
+            type="text"
+            autocomplete="off"
+            placeholder
+          ></el-input>
         </el-form-item>
       </div>
 
       <div class="center">
-        <el-form-item prop="apt_date" label-width="0">
-          <el-input v-model="formData.apt_date" type="text" suffix-icon="el-icon-caret-bottom"></el-input>
+        <el-form-item prop="appointment_date" label-width="0">
+          <el-input v-model="formData.appointment_date" type="text"></el-input>
         </el-form-item>
         <div class="day-time">
           <div class="other-left">
@@ -94,20 +104,21 @@
               </div>
               <div>
                 <span>30</span>
-              
               </div>
             </div>
           </div>
           <div class="other-right" @click="chooseTime">
             <template v-for="(item,index) in dayTime">
-              <div :key="index"
-                :data-time="item + ':00'"
+              <div
+                :key="index"
+                :data-time="item + ' : 00'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +'00'
               }"
               ></div>
-              <div :key="index+20"
-                :data-time="item + ':30'"
+              <div
+                :key="index+20"
+                :data-time="item + ' : 30'"
                 :class="{
                   'gray':yuyue_time == item + ' : ' +30
                   }"
@@ -148,6 +159,13 @@ let telRules = [
     trigger: "blur"
   }
 ];
+let ageRules = [
+  {
+    required: true,
+    message: "请填写正确年龄",
+    trigger: "blur"
+  }
+];
 const itemsOptions = [
   "试戴义齿",
   "换药",
@@ -173,18 +191,14 @@ import DialogForm from "@/views/base/DialogForm";
 export default {
   name: "ChangePassword",
   mixins: [DialogForm],
-  props: ["dayTime", "yuyue_time"],
+  props: ["dayTime", "yuyue_time", "yuyue_id"],
+  inject: ["getTodayAppointment"],
   created() {
-    
-    this.$nextTick(function() {
-      this.formData.apt_date = this.chooseDate;
+    this.$api.appointment.getCaseNumber().then(res => {
+      if (res.code == 200) {
+        this.formData.case_id = res.data;
+      }
     });
-     this.$api.appointment.getCaseNumber().then(res=>{
-       if (res.code == 200) {
-         this.formData.sick_id = res.data
-       }
-     })
-    
   },
   computed: {
     chooseDate() {
@@ -194,25 +208,34 @@ export default {
   data() {
     return {
       formData: {
-        sick_id: "190418001",
-        apt_date: "",
+        case_id: "190418001",
+        appointment_date: "",
         source: "",
         items: ""
-        // time_frame_begin:this.yuyue_time,
+        // start_time:this.yuyue_time,
       },
 
       items_o: itemsOptions,
       checked_items: [],
       rules: {
         phone: telRules.concat({
-          validator:(rule,value,callback)=>{
-            if(!/^1[34578]\d{9}$/.test(value)){
-              callback(new Error("请输入正确手机号码"))
-            }else{
+          validator: (rule, value, callback) => {
+            if (!/^1[34578]\d{9}$/.test(value)) {
+              callback(new Error("请输入正确手机号码"));
+            } else {
               callback();
             }
           }
         }),
+        age: ageRules.concat({
+          validator: (rule, value, callback) => {
+            if (!/^\d{2}$/.test(value)) {
+              callback(new Error("请输入正确年龄"));
+            } else {
+              callback();
+            }
+          }
+        })
       },
 
       commitLoading: false
@@ -223,29 +246,49 @@ export default {
       this.formData.items = this.checked_items.join(",");
     },
     show(new_show, old_show) {
+      if (new_show) {
+        if (this.yuyue_id) {
+          this.$api.appointment
+            .getByIdAppointment({ id: this.yuyue_id })
+            .then(res => {
+              if (res.code == 200) {
+                this.formData = res.data;
+              
+                // console.log(this.formData.start_time);
+              }
+            });
+        }else{
+
+        }
+      }
+      this.formData.appointment_date = this.chooseDate;
+
+
+      if (!this.yuyue_time) {
+         this.$emit('yuyue_time',this.formData.start_time);
+         console.log(this.formData);
+         console.log(this.yuyue_time);return;
+      }
+        this.formData.start_time = this.yuyue_time;
+      
+      let [H, i] = this.yuyue_time.split(":");
+
+      
+      H = +H + 1;
       this.$nextTick(function() {
         let gray = document.getElementsByClassName("gray");
-      
-        if(!this.yuyue_time){
-          return;
-        }
-        let [H, i] = this.yuyue_time.split(":");
-       
-        this.formData.time_frame_begin = this.yuyue_time;
-        H = +H + 1;
         if (new_show) {
-     
           if (i != 30) {
-            gray[0].innerHTML = `${this.yuyue_time}-${H}:00 (60m)`;
-      
+            gray[0].innerHTML = `<div class="double">${
+              this.yuyue_time
+            }-${H}:00 (60m)</div>`;
           } else {
-            gray[0].innerHTML = `${this.yuyue_time}-${H}:30 (60m)`;
+            gray[0].innerHTML = `<div class="double">${
+              this.yuyue_time
+            }-${H}:30 (60m)</div>`;
           }
-          addClass(gray[0].nextSibling, "gray");
         } else {
           gray[0].innerHTML = "";
-          removeClass(gray[0].nextSibling, "gray");
-          removeClass(gray[0], "gray");
         }
       });
     }
@@ -278,7 +321,7 @@ export default {
       } else {
         event.target.innerHTML = `${value}-${H}:30 (60m)`;
       }
-      this.formData.time_frame_begin = value;
+      this.formData.start_time = value;
     },
     submitFrom() {
       let that = this;
@@ -295,7 +338,7 @@ export default {
                   type: "success",
                   duration: 800
                 });
-
+                that.getTodayAppointment();
                 that.closeDialog();
               } else {
                 that.$message.error(res.message);
@@ -317,7 +360,7 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 @import "~@/assets/css/var.less";
 
 .header {
@@ -430,13 +473,23 @@ export default {
           }
           &.gray {
             flex: 0 1 auto;
-            background-color: #ccc;
-            color: #fff;
+            position: relative;
+            .double {
+              background-color: #ccc;
+              color: #fff;
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              padding-top: 8%;
+              padding-bottom: 8%;
+            }
           }
         }
       }
     }
   }
+
   .right {
     padding: 10px;
     margin-left: 5px;
