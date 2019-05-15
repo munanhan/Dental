@@ -16,3 +16,17 @@ export function getCaseNumber(data) {
         data: data
     })
 }
+export function getTodayAppointment(data){
+    return request({
+        url:`${prefix}/getTodayAppointment`,
+        method:'get',
+        params:data,
+    })
+}
+export function getByIdAppointment(data){
+    return request({
+        url:`${prefix}/getByIdAppointment`,
+        method:'get',
+        params:data,
+    })
+}

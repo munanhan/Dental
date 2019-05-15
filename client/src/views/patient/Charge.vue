@@ -22,11 +22,20 @@
           <div class="left">*(无病历号)</div>
           <div class="right">收费时间:</div>
           <div style="margin-top:5px">
-            <el-date-picker
+            <!-- <el-date-picker
               type="datetime"
               style="margin-left:10px"
               size="mini"
               placeholder="选择日期时间"
+            >
+            </el-date-picker> -->
+            <el-date-picker
+              v-model="form.value1"
+              size="small"
+              type="date"
+              style="margin-left:10px"
+              format="yyyy-MM-dd hh:mm"
+              placeholder="选择日期"
             >
             </el-date-picker>
           </div>
@@ -35,6 +44,48 @@
         <div class="charge-middle">
           <div class="left-content">
             <div class="charge-upperleft">
+              <table border="1">
+                <tr>
+                  <th width="85">收费项目</th>
+                  <th>费用(元)</th>
+                  <th width="85">收费项目</th>
+                  <th>费用(元)</th>
+                  <th width="85">收费项目</th>
+                  <th>费用(元)</th>
+                </tr>
+                <tr>
+                  <td align="center">西药费</td>
+                  <input>
+                  <td align="center">补牙费</td>
+                  <input>
+                  <td align="center">修复费</td>
+                  <input>
+                </tr>
+                <tr>
+                  <td align="center">放射费</td>
+                  <input>
+                  <td align="center">手术费</td>
+                  <input>
+                  <td align="center">修复费</td>
+                  <input>
+                </tr>
+                <tr>
+                  <td align="center">检查费</td>
+                  <input>
+                  <td align="center">正畸费</td>
+                  <input>
+                  <td></td>
+                  <input>
+                </tr>
+                <tr>
+                  <td align="center">诊疗费</td>
+                  <input>
+                  <td align="center">拔牙费</td>
+                  <input>
+                  <td></td>
+                  <input>
+                </tr>
+              </table>
             </div>
             <div class="chagre-lowerleft">
               <div style="display:flex">
@@ -163,6 +214,7 @@
                           font-size:25px">0.00</div>
             </div>
             <div style="margin-left:40px;
+                        margin-right:5px;
                         display:flex;
                         margin-top:30px">
               <div style="margin-top:10px;
@@ -170,18 +222,19 @@
                           font-weight:bold;
                           color:#000">优惠后金额</div>
               <el-form-item>
-                <el-input style="width:170px;margin-left:-75px"></el-input>
+                <el-input style="width:165px;margin-left:-75px"></el-input>
               </el-form-item>
             </div>
             <div style="display:flex">
               <el-form-item>
                 <el-select
-                  v-model="value"
+                  class="lower-input"
+                  v-model="form.value"
                   placeholder="请选择"
-                  style="width:130px;margin-left:-70px"
+                  style="width:130px;margin-left:-75px"
                 >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in form.options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -189,11 +242,34 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+
               <el-form-item>
                 <el-input style="width:170px;margin-left:-75px"></el-input>
               </el-form-item>
             </div>
             <div style="display:flex">
+              <el-form-item>
+                <el-select
+                  class="lower-input"
+                  v-model="form.value"
+                  placeholder="请选择"
+                  style="width:130px;margin-left:-75px"
+                >
+                  <el-option
+                    v-for="item in form.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item>
+                <el-input style="width:170px;margin-left:-75px"></el-input>
+              </el-form-item>
+            </div>
+            <!-- <div style="display:flex">
               <el-form-item>
                 <el-select
                   v-model="value"
@@ -215,7 +291,7 @@
               <el-form-item>
                 <el-button style="width:65px;margin-left:-75px">确定</el-button>
               </el-form-item>
-            </div>
+            </div> -->
             <div style="margin-left:80px;display:flex;">
               <div style="margin-top:5px;font-size:20px;font-weight:bold;color:#000">欠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款</div>
               <div style="font-weight:bold;color:#000;margin-left:100px;font-size:25px">0.00</div>
@@ -249,6 +325,7 @@ export default {
   data() {
     return {
       form: {
+        value1: "",
         options: [
           {
             value: "选项1",
@@ -321,6 +398,27 @@ export default {
       .charge-upperleft {
         border: 2px solid #e3e3e3;
         height: 320px;
+        table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      border: 1px solid #e3e3e3;
+    }
+    tr{
+      font-size: 16px
+    }
+    td {
+      color: #000;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+    input {
+      width: 130px;
+      height:20px;
+    }
+    // select {
+    //   width: 664px;
+    //   height: 40px;
+    // }
       }
       .chagre-lowerleft {
         // border: 1px solid red;
@@ -342,6 +440,9 @@ export default {
       width: 400px;
       margin-left: 10px;
     }
+  }
+  .tr3 {
+    border: 1px solid #000;
   }
 }
 </style>

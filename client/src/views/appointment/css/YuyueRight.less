@@ -171,7 +171,6 @@
         }
         .day-other {
           flex: auto;
-  
           display: flex;
           .other-left {
             flex-basis: 80px;
@@ -229,14 +228,20 @@
                   &.day-blue {
                       font-size: 12px;
                       position: relative;
-                     
-                      >div{
-                        background-color: rgba(151, 189, 214, 1);
+                      // display: flex;
+                      .add-day{
+                        
                         position: absolute;
                         left: 0;
                         right: 0;
                         height: 52px;
                         overflow: hidden;
+                        display: flex;
+                        >div{
+                          flex: auto;
+                          margin-right:2px;
+                          background-color: rgba(151, 189, 214, 1);
+                        }
                         p {
                             margin: 0;
                           }

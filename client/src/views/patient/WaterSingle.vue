@@ -2,7 +2,7 @@
   <el-dialog
     title="流水单   "
     :visible.sync="show"
-    :before-close="closeDialog"
+    :close-on-click-modal="false"
     class="custom-dialog"
     v-dialog-drag
     width="1000px"

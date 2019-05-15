@@ -3,7 +3,7 @@
     title="票据打印格式设置"
     :visible.sync="show"
     width="30%"
-    :before-close="handleClose"
+    :close-on-click-modal="false"
     class="custom-dialog"
     center
     v-dialog-drag
@@ -16,7 +16,6 @@
       <el-button @click="dialogClose">取 消</el-button>
       <el-button
         type="primary"
-        @click="dialogClose"
       >确 定</el-button>
     </span>
   </el-dialog>
@@ -35,14 +34,14 @@ export default {
     dialogClose() {
       this.$emit("update:show", false);
     },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          this.dialogClose();
-          done();
-        })
-        .catch(_ => {});
-    }
+    // handleClose(done) {
+    //   this.$confirm("确认关闭？")
+    //     .then(_ => {
+    //       this.dialogClose();
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // }
   }
 };
 </script>

@@ -6,7 +6,7 @@
     class="custom-dialog"
     :close-on-click-modal="false"
     v-dialog-drag
-    width="1000px"
+    width="800px"
   >
     <el-form
       :model="changePwd"
@@ -14,114 +14,101 @@
       label-width="100px"
       :rules="rules"
     >
-      <!-- <el-alert
-        title="王生 8岁  *(无病历号)"
-        type="success"
-        :closable="false"
-      >
-      </el-alert> -->
-      <div class="Advan-top">
-        <div style="margin:0 20px;margin-top:10px"> 1503010120</div>
-        <div style="margin:0 20px;margin-top:10px"> 5岁</div>
-        <div style="margin-top:10px"> *(无病历号)</div>
-      </div>
-      <!-- <el-form-item
-        label="新密码"
-        prop="newPass"
-      >
-        <el-input
-          v-model="changePwd.newPass"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item
-        label="确认密码"
-        prop="newPassRe"
-      >
-        <el-input
-          v-model="changePwd.newPassRe"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item> -->
-      <!-- <div style="height:10px;width:100%;display:flex">
-        <div style="border:1px solid #e3e3e3;height:40px;width:10%">客户主诉</div>
-        <div style="border:1px solid #e3e3e3;height:40px;width:90%">
-          <el-form-item
-        label="确认密码"
-        prop="newPassRe"
-      >
-        <el-input
-          v-model="changePwd.newPassRe"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item> 
+      <div class="Advan-content">
+        <div class="Advan-top">
+          <div class="advan-1"> 1503010120</div>
+          <div class="advan-1"> 5岁</div>
+          <div
+            class="advan-2"
+            style=""
+          > *(无病历号)</div>
+        </div>
+
+        <div class="Advan-bottom">
+          <table border="1">
+            <tr>
+              <td
+                align="center"
+                width="200"
+              >客户主诉</td>
+              <input>
+            </tr>
+            <tr>
+              <td align="center"> 基本需求</td>
+              <input style="width:620px">
+              <i
+              class="fa fa-cog"
+              style="
+              margin-left:10px;
+                 font-size:22px;
+                 cursor:pointer"
+            ></i>
+            </tr>
+            <!-- <i
+              class="el el-icon-question"
+              style="
+                 font-size:20px;
+                 cursor:pointer"
+            ></i> -->
+            <tr>
+              <td align="center">潜在需求</td>
+              <div>
+              <input style="width:620px">
+              <i
+              class="fa fa-cog"
+              style="
+              margin-left:10px;
+                 font-size:22px;
+                 cursor:pointer"
+            ></i>
+            </div>
+            </tr>
+            <tr>
+              <td align="center">医生方案</td>
+              <input>
+            </tr>
+            <tr>
+              <td align="center">沟通记录</td>
+              <input>
+            </tr>
+            <tr>
+              <td align="center">服务建议</td>
+              <input>
+            </tr>
+            <tr>
+              <td align="center">接诊医生</td>
+              <select style="">
+                <option> </option>
+                <option>222</option>
+                <option>333</option>
+              </select>
+            </tr>
+            <tr>
+              <td align="center">资料录入人</td>
+              <select style="width:664px">
+                <option> </option>
+                <option>222</option>
+                <option>333</option>
+              </select>
+            </tr>
+          </table>
         </div>
       </div>
-      <div style="height:10px;width:100%;display:flex;margin-top:30px">
-        <div style="border:1px solid #e3e3e3;height:40px;width:10%"></div>
-        <div style="border:1px solid #e3e3e3;height:40px;width:90%"></div>
-      </div>
-      <div style="height:10px;width:100%;display:flex;margin-top:30px">
-        <div style="border:1px solid #e3e3e3;height:40px;width:10%"></div>
-        <div style="border:1px solid #e3e3e3;height:40px;width:90%"></div>
-      </div>
-      <div style="height:10px;width:100%;display:flex;margin-top:30px">
-        <div style="border:1px solid #e3e3e3;height:40px;width:10%"></div>
-        <div style="border:1px solid #e3e3e3;height:40px;width:90%"></div>
-      </div> -->
-      
-      <el-form-item
-        label="确认密码"
-        prop="newPassRe"
-        style="border:1px solid #e3e3e3"
-      >
-        <el-input
-          v-model="changePwd.newPassRe"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item
-        label="确认密码"
-        prop="news"
-        style="border:2px solid #red"
-      >
-      <el-input></el-input>
-
-      </el-form-item>
-      
     </el-form>
     <div
       slot="footer"
       class="dialog-footer"
     >
-      <el-button @click="closeDialog">取 消</el-button>
       <el-button
         :loading="commitLoading"
         type="primary"
-      >确 定</el-button>
+      >保存</el-button>
+      <el-button @click="closeDialog">退出</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-// let passRules = [
-//   {
-//     required: true,
-//     message: "请填写所需要的密码",
-//     trigger: "blur"
-//   },
-//   {
-//     min: 6,
-//     // max: 16,
-//     message: "长度在最小在6个字符",
-//     trigger: "blur"
-//   }
-// ];
-
 import DialogForm from "../base/DialogForm";
 export default {
   name: "AddConsulting",
@@ -136,21 +123,7 @@ export default {
         newPassRe: ""
       },
 
-      rules: {
-        // oldPass: passRules,
-        // newPass: passRules,
-        // newPassRe: passRules.concat({
-        //   validator: (rule, value, callback) => {
-        //     let that = this;
-
-        //     if (that.changePwd.newPass !== value) {
-        //       callback(new Error("两次的密码不一致，请重新输入."));
-        //     } else {
-        //       callback();
-        //     }
-        //   }
-        // })
-      },
+      rules: {},
 
       commitLoading: false
     };
@@ -160,14 +133,46 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.Advan-top {
-  display: flex;
-  margin-bottom: 10px;
-  border: 1px solid red;
-  font-size: 15px;
-  width: 100%;
-  height: 40px;
-  background-color: #f9f9f9;
-  border: 1px solid #f6f6f6;
+.Advan-content {
+  .Advan-top {
+    display: flex;
+    margin-bottom: 10px;
+    border: 1px solid red;
+    font-size: 15px;
+    width: 100%;
+    height: 40px;
+    background-color: #f9f9f9;
+    border: 1px solid #f6f6f6;
+    .advan-1 {
+      margin: 0 20px;
+      margin-top: 10px;
+    }
+    .advan-2 {
+      margin-top: 10px;
+    }
+  }
+  .Advan-bottom {
+    // border:1px solid red;
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      border: 1px solid #e3e3e3;
+    }
+    tr{
+      font-size: 16px
+    }
+    td {
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+    input {
+      width: 660px;
+      height:40px;
+    }
+    select {
+      width: 664px;
+      height: 40px;
+    }
+  }
 }
 </style>

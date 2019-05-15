@@ -212,7 +212,6 @@
       </el-collapse-item> -->
       <el-collapse-item
         class="sliding-two"
-        style=""
       >
         <template slot="title">
 
@@ -222,7 +221,10 @@
         <div>水水水水</div>
 
       </el-collapse-item>
-
+<!-- <el-collapse-item  class="sliding-three" title="亲友关系" name="1">
+    <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
+    <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+  </el-collapse-item> -->
       <el-collapse-item class="sliding-three">
         <template slot="title">
           <span class="base-fz">亲友关系</span>
@@ -237,18 +239,18 @@
                 bottom:0;width:100%;
                 height:59px">
 
-      <el-button class="patient-button">扫一扫</el-button>
+      <!-- <el-button class="patient-button">扫一扫</el-button> -->
       <el-button
-        style="width:110px;margin-right: 20px;"
+        style="width:110px;margin-top:10px;margin-left:10px"
         type="primary"
         porp="modify-inormation"
         @click="Modify_info"
       >修改信息</el-button>
-      <el-button class="patient-button">病历首页打印</el-button>
-      <i
+      <!-- <el-button class="patient-button">病历首页打印</el-button> -->
+      <!-- <i
         class="fa fa-cog"
         style="cursor:pointer"
-      ></i>
+      ></i> -->
 
     </div>
     <modify-info :show.sync="modinfo_show"></modify-info>
@@ -272,7 +274,7 @@ export default {
   data() {
     return {
       sex: "",
-      activeNames: ["1"],
+      activeNames:['1'],
       value2: null,
       modinfo_show: false
     };

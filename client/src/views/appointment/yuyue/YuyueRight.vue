@@ -87,6 +87,7 @@
             <template v-for="(item,index) in dayTime">
               <div
                 data-time="00"
+                :data-h="item"
                 :key="index +'3'"
                 :class="[targetArr[1].indexOf(`${item} : 00`) != -1 &&
                 targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
@@ -95,6 +96,7 @@
               ></div>
               <div
                 data-time="30"
+                :data-h="item"
                 :key="index+ '4'"
                 :class="[targetArr[1].indexOf(`${item} : 30`) != -1 &&
                 targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == chooseDatesub5   
@@ -134,7 +136,12 @@
     </div>
 
     <!-- 新增预约 start -->
-    <add-yuyue :show.sync="addYuyueShow" :dayTime="dayTime" :yuyue_time="yuyue_time"></add-yuyue>
+    <add-yuyue
+      :show.sync="addYuyueShow"
+      :dayTime="dayTime"
+      :yuyue_time.sync="yuyue_time"
+      :yuyue_id="yuyue_id"
+    ></add-yuyue>
     <!-- 新增预约  end-->
   </div>
 </template>
@@ -162,12 +169,14 @@ export default {
       navBar: this.navBar,
       week: this.week,
       dayTime: this.dayTime,
-      getWeekStartEnd: this.getWeekStartEnd
+      getWeekStartEnd: this.getWeekStartEnd,
+      getTodayAppointment: this.getTodayAppointment
     };
   },
   created() {
     this.$nextTick(function() {
       this.getWeekStartEnd(this.chooseDate);
+      this.getTodayAppointment();
     });
   },
   data() {
@@ -207,30 +216,9 @@ export default {
       weekStart: null,
       weekEnd: null,
       yuyue_time: null,
-      yuyue_res: [
-        {
-          age: "18",
-          apt_data: "2019-04-23",
-          tel_one: "13538048392",
-          doctor_id: "王医生",
-          name: "韩楠",
-          sex: "男",
-          time_frame_begin: "11 : 00",
-          type_id: "初诊",
-          items: "拆线"
-        },
-        {
-          age: "18",
-          apt_data: "2019-04-28",
-          doctor_id: "王医生",
-          tel_one: "13538048392",
-          name: "韩楠",
-          sex: "男",
-          time_frame_begin: "14 : 30",
-          type_id: "初诊",
-          items: ""
-        }
-      ]
+      yuyue_res: [],
+      yuyue_id: null,
+      target: null
     };
   },
 
@@ -252,12 +240,18 @@ export default {
       let date = new Date(this.chooseDate);
       date.setDate(date.getDate() - 1);
       let upDate = formatDate(date, "yyyy-MM-dd");
+
+      this.$store.commit("updateChooseDate", upDate);
+      this.getTodayAppointment();
       this.myCalender.choosePrevNextDay(upDate);
     },
     handleNextDay() {
       let date = new Date(this.chooseDate);
       date.setDate(date.getDate() + 1);
       let upDate = formatDate(date, "yyyy-MM-dd");
+
+      this.$store.commit("updateChooseDate", upDate);
+      this.getTodayAppointment();
       this.myCalender.choosePrevNextDay(upDate);
     },
     handlePrevWeek() {
@@ -305,17 +299,47 @@ export default {
         formatDate(end, "yyyy年MM月dd日")
       ];
     },
+    //获取一天的预约数据
+    getTodayAppointment() {
+      this.$api.appointment
+        .getTodayAppointment({ date: this.chooseDate })
+        .then(res => {
+          if (res.code == 200) {
+            this.yuyue_res = res.data;
+          }
+        });
+    },
+
     addYuyue(item) {
       this.addYuyueShow = true;
-
-      if (item) {
-        let time = event.target.attributes["data-time"].value;
-        let yuyueDate = `${item} : ${time}`;
-        this.yuyue_time = yuyueDate;
+      this.isAttrDataTime(event.target);
+      if (this.target.hasAttribute("data-id")) {
+        this.yuyue_id = this.target.getAttribute("data-id");
+       
+      } else {
+        this.yuyue_id =null;
+        if (item) {
+          let time = this.target.attributes["data-time"].value;
+          let yuyueDate = `${item} : ${time}`;
+          this.yuyue_time = yuyueDate;
+        }
       }
     },
     inArray(arr, str) {
       return inArray(arr, str);
+    },
+    isAttrDataTime(dom) {
+      if (dom.hasAttribute("data-id")) {
+        this.target = dom;
+        return;
+      }
+      if (dom.hasAttribute("data-time")) {
+        this.target = dom;
+        return;
+      }
+
+      dom = dom.parentNode;
+      this.isAttrDataTime(dom);
     }
   },
   computed: {
@@ -361,7 +385,7 @@ export default {
     time_begin() {
       let arr = [];
       this.yuyue_res.forEach((item, index) => {
-        arr.push(item.time_frame_begin);
+        arr.push(item.start_time);
       });
       return arr;
     },
@@ -369,10 +393,10 @@ export default {
       let xArr = [],
         yArr = [];
       this.yuyue_res.forEach((item, index) => {
-        let str = item.apt_data.substr(5).replace("-", ".");
+        let str = item.appointment_date.substr(5).replace("-", ".");
         xArr.push(str);
-        yArr.push(item.time_frame_begin);
-        // arr.push([{ x: str, y: item.time_frame_begin }, item]);
+        yArr.push(item.start_time);
+        // arr.push([{ x: str, y: item.start_time }, item]);
       });
       return [xArr, yArr];
     },
@@ -388,20 +412,39 @@ export default {
   },
   updated() {
     let grays = document.getElementsByClassName("day-blue");
-
-    if (grays.length != 0) {
+    grays = Array.from(grays);
+    grays.forEach((ele, key) => {
+      let strhtml = '<div class="add-day">';
       this.yuyue_res.forEach((item, index) => {
-        if (grays[index]) {
-          grays[index].innerHTML = `<div class="add-day"><p><span>${
+        if (
+          `${ele.getAttribute("data-h")} : ${ele.getAttribute("data-time")}` ==
+          item.start_time
+        ) {
+          strhtml += `<div data-id="${item.id}"><p><span>${
             item.name
-          }</span><span>${item.type_id}</span><span>${item.age}</span></p>
-                            <p><span>${item.tel_one}</span></p>
-                            <p><span>${item.items}</span></p>
-                            <p><span>${
-                              item.time_frame_begin
-                            } - ${+item.time_frame_begin.substr(0, 2) +
-            1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+          }</span><span>${item.type == 1 ? "复" : "初"}</span><span>${
+            item.age
+          }</span></p>
+                                <p><span>${item.phone}</span></p>
+                                <p><span>${item.items}</span></p>
+                              </div>`;
         }
+      });
+      strhtml += "</div>";
+      ele.innerHTML = strhtml;
+    });
+    if (grays.length != 0) {
+      let strhtml = "";
+      this.yuyue_res.forEach((item, index) => {
+        strhtml += `<div class="add-item"><p><span>${item.name}</span><span>${
+          item.type == 1 ? "复" : "初"
+        }</span><span>${item.age}</span></p>
+                            <p><span>${item.phone}</span></p>
+                            <p><span>${item.items}</span></p>
+                           </div>`;
+
+        // console.log(strhtml);
+        //  grays[index].innerHTML = strhtml
       });
     }
   }
@@ -411,8 +454,7 @@ export default {
 <style lang="less">
 @import "~@/assets/css/var.less";
 @import "~@views/appointment/css/YuyueRight.less";
-.month{
-    
-    width: 100% !important;
+.month {
+  width: 100% !important;
 }
 </style>

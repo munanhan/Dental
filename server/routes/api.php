@@ -236,6 +236,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
 
 
+    // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
+    //lw
+    Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
+
+    Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
+
+    Route::get('appointment/getByIdAppointment','AppointmentController@getByIdAppointment');
+
+    Route::post('appointment/add_appointment','AppointmentController@addAppointment');
 
 });
 
@@ -256,9 +265,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('order','OrderController@store');
 
-    Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
 
-    Route::get('appointment/add_appointment','AppointmentItemController@addAppointment');
     // Route::get('publish', function () {
     //     // Route logic...
 
