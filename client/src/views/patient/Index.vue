@@ -230,15 +230,15 @@
 </template>
 
 <script>
-import PatientInfo from "./PatientInfo";
+import PatientInfo from "@/views/patient/PatientInfo/PatientInfo";
 import DisposalRecords from "./DisposalRecords";
-import ChargeInfo from "./ChargeInfo";
+import ChargeInfo from "@/views/patient/ChargeInfo/ChargeInfo";
 // import ImageInfo from "./ImageInfo";
-import MedicalRecordsInfo from "./MedicalRecordsInfo";
+import MedicalRecordsInfo from "@/views/patient/MedicalRecordsInfo/MedicalRecordsInfo";
 // import OutsideProcessing from "./OutsideProcessing";
-import ReturnVisitInfo from "./ReturnVisitInfo";
+import ReturnVisitInfo from "@/views/patient/ReturnVisitInfo/ReturnVisitInfo";
 import ConsultingInfo from "./ConsultingInfo";
-import AddPatient from "./AddPatient";
+import AddPatient from "@/views/patient/AddPatient/AddPatient";
 import AppointmentVisit from "./AppointmentVisit";
 
 export default {

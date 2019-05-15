@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="患者分类设置"
+      title="会员等级维护"
       :visible.sync="show"
       :before-close="closeDialog"
       class="custom-dialog expenditure-category"
@@ -21,7 +21,14 @@
         >
           <el-table-column
             prop="aaaa"
-            label="支出类型"
+            label="会员等级"
+            align="center"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="bbbb"
+            label="会员折扣"
             align="center"
             show-overflow-tooltip
           >
@@ -84,7 +91,7 @@
         <div class="pull-left">
           <el-button
             type="primary"
-            @click="addExpendDialog = true"
+            @click="add_grade"
             :disabled="commitLoading"
           >新增</el-button>
         </div>
@@ -102,37 +109,35 @@
             :loading="commitLoading"
           >确 定</el-button>
         </div>
-        <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
       </div>
     </el-dialog>
 
-    <!-- <add-expenditure-category :show.sync="addExpendDialog" @add-item="addItem"></add-expenditure-category> -->
+    <add-membership-grade :show.sync="addgrade_show"></add-membership-grade>
   </div>
 </template>
 
 <script>
-import DialogForm from "../base/DialogForm";
-// import AddExpenditureCategory from './AddExpenditureCategory';
+import DialogForm from "@/views/base/DialogForm";
+import AddMembershipGrade from "./AddMembershipGrade";
 
 export default {
-  name: "ClassificationPatients",
+  name: "MembershipGrade",
   mixins: [DialogForm],
 
-  components: {},
+  components: {
+    AddMembershipGrade
+  },
   props: {},
 
   data() {
     return {
-      commitLoading: false,
+      addgrade_show: false,
       tableHeight: "340px",
       tableData: [
-        { aaaa: "洗牙" },
-        { aaaa: "治疗" },
-        { aaaa: "修复" },
-        { aaaa: "种植" },
-        { aaaa: "正畸" },
-        { aaaa: "检查" },
-        { aaaa: "其他" }
+        { aaaa: "网络咨询" },
+        { aaaa: "朋友介绍" },
+        { aaaa: "家住附近" },
+        { aaaa: "诊所网站" }
       ]
       // tableData: []
 
@@ -171,6 +176,9 @@ export default {
       console.log(item);
 
       that.closeDialog();
+    },
+    add_grade() {
+      this.addgrade_show = true;
     }
   }
 };

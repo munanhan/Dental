@@ -125,6 +125,13 @@
           class="el-icon-setting form-setting"
          
         ></i> -->
+          <el-form-item
+            style="margin-left:30px;width:300px"
+            label="年 龄"
+            prop="age"
+          >
+            <el-input v-model="form.age"></el-input>
+          </el-form-item>
         </div>
 
         <div style="display:flex">
@@ -138,13 +145,7 @@
               v-model="form.birthday"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            style="margin-left:30px;width:300px"
-            label="年 龄"
-            prop="age"
-          >
-            <el-input v-model="form.age"></el-input>
-          </el-form-item>
+
         </div>
 
         <div style="display:flex">
@@ -182,7 +183,7 @@
             class="el-icon-setting form-setting"
             @click="Patient_sour"
           ></i>
-          <div style="margin-top:10px;margin-left:10px">
+          <div style="margin-top:10px;margin-left:20px">
             类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-radio
@@ -256,7 +257,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <i class="el-icon-setting form-setting" @click="class_pat"></i>
+          <i
+            class="el-icon-setting form-setting"
+            @click="class_pat"
+          ></i>
           <el-form-item
             style="margin-left:20px;width:300px"
             prop="content"
@@ -285,7 +289,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+          <i
+            class="el-icon-setting form-setting"
+            @click="member_grade"
+          ></i>
 
           <el-form-item
             style="margin-left:20px;width:300px"
@@ -314,19 +321,28 @@
               >
               </el-option>
             </el-select>
-            <i class="el-icon-setting form-setting"></i>
+            <i
+              class="el-icon-setting form-setting"
+              @click="contact_add"
+            ></i>
           </el-form-item>
         </div>
         <div>
-          <el-form-item label="过 敏 使">
+          <el-form-item label="过 敏 史">
             <el-input style="width:570px"></el-input>
-            <i class="el-icon-setting form-setting"></i>
+            <i
+              class="el-icon-setting form-setting"
+              @click="allergy"
+            ></i>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="既 往 史">
             <el-input style="width:570px"></el-input>
-            <i class="el-icon-setting form-setting"></i>
+            <i
+              class="el-icon-setting form-setting"
+              @click="past_med"
+            ></i>
           </el-form-item>
         </div>
         <div style="display:flex">
@@ -358,7 +374,10 @@
               v-model="form.impression_id"
             ></el-input>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+          <i
+            class="el-icon-setting form-setting"
+            @click="pat_impre"
+          ></i>
           <el-form-item
             style="margin-left:30px;width:300px"
             label="电网咨询"
@@ -366,6 +385,19 @@
           >
             <el-input v-model="form.grid_consulting"></el-input>
           </el-form-item>
+        </div>
+        <div style="display:flex">
+          <el-form-item
+            label="洁牙习惯"
+            prop="teeth_cleaning_habits"
+            style=";width:300px"
+          >
+            <el-input v-model="form.teeth_cleaning_habits"></el-input>
+          </el-form-item>
+          <i
+            class="el-icon-setting form-setting"
+            @click="teeth_habit"
+          ></i>
         </div>
         <div style="display:flex">
           <!-- <el-form-item
@@ -386,21 +418,6 @@
               </el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item
-            label="吸烟"
-            style="margin-left:30px"
-            prop="smoking"
-          >
-            <div style="display:flex">
-              <el-input
-                style="width:100px"
-                v-model="form.smoking"
-              ></el-input>
-              <div style="margin-left:10px">次/天</div>
-            </div>
-          </el-form-item>
-        </div>
-        <div style="display:flex">
           <el-form-item
             label="刷牙"
             prop="brush_teeth"
@@ -424,14 +441,20 @@
                         margin-top:13px">分钟/次</div>
           </div>
           <el-form-item
-            label="洁牙习惯"
-            prop="teeth_cleaning_habits"
-            style="margin-left:46px;
-                   width:300px"
+            label="吸烟"
+            style="margin-left:30px"
+            prop="smoking"
           >
-            <el-input v-model="form.teeth_cleaning_habits"></el-input>
+            <div style="display:flex">
+              <el-input
+                style="width:100px"
+                v-model="form.smoking"
+              ></el-input>
+              <div style="margin-left:10px">次/天</div>
+            </div>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+        </div>
+        <div style="display:flex">
 
         </div>
       </div>
@@ -441,8 +464,8 @@
       slot="footer"
       class="dialog-footer"
     >
-      <el-button @click="closeDialog">读身份证</el-button>
-      <el-button @click="closeDialog">清空</el-button>
+      <el-button>读身份证</el-button>
+      <el-button>清空</el-button>
       <el-button
         :loading="commitLoading"
         type="primary"
@@ -453,14 +476,26 @@
     </div>
     <patients-source :show.sync="patsour_show"></patients-source>
     <classification-patients :show.sync="classpat_show"></classification-patients>
+    <membership-grade :show.sync="memgrade_show"></membership-grade>
+    <contact-address :show.sync="contadd_show"></contact-address>
+    <allergy :show.sync="allergy_show"></allergy>
+    <past-medicalhistory :show.sync="pastmed_show"></past-medicalhistory>
+    <patients-impression :show.sync="patimpre_show"></patients-impression>
+    <teethcleaning-habits :show.sync="teehabit_show"></teethcleaning-habits>
   </el-dialog>
 </template>
 
 
 <script>
-import AddDialogForm from "../base/AddDialogForm";
+import AddDialogForm from "@/views/base/AddDialogForm";
 import PatientsSource from "./PatientsSource";
 import ClassificationPatients from "./ClassificationPatients";
+import MembershipGrade from "./MembershipGrade";
+import ContactAddress from "./ContactAddress";
+import Allergy from "./Allergy";
+import PastMedicalhistory from "./PastMedicalhistory";
+import PatientsImpression from "./PatientsImpression";
+import TeethcleaningHabits from "./TeethcleaningHabits";
 
 export default {
   name: "AddPatient",
@@ -469,37 +504,26 @@ export default {
 
   components: {
     PatientsSource,
-    ClassificationPatients
+    ClassificationPatients,
+    MembershipGrade,
+    ContactAddress,
+    Allergy,
+    PastMedicalhistory,
+    PatientsImpression,
+    TeethcleaningHabits
   },
 
   data() {
     return {
       patsour_show: false,
       classpat_show: false,
+      memgrade_show: false,
+      contadd_show: false,
+      allergy_show: false,
+      pastmed_show: false,
+      patimpre_show: false,
+      teehabit_show: false,
       form: {
-        tel_two: [
-          {
-            value: "选项1",
-            label: "爸爸"
-          },
-          {
-            value: "选项2",
-            label: "双皮奶"
-          },
-          {
-            value: "选项3",
-            label: "蚵仔煎"
-          },
-          {
-            value: "选项4",
-            label: "龙须面"
-          },
-          {
-            value: "选项5",
-            label: "北京烤鸭"
-          }
-        ],
-        two: "",
         options: [
           {
             value: "选项1",
@@ -590,6 +614,24 @@ export default {
     },
     class_pat() {
       this.classpat_show = true;
+    },
+    member_grade() {
+      this.memgrade_show = true;
+    },
+    contact_add() {
+      this.contadd_show = true;
+    },
+    allergy() {
+      this.allergy_show = true;
+    },
+    past_med() {
+      this.pastmed_show = true;
+    },
+    pat_impre() {
+      this.patimpre_show = true;
+    },
+    teeth_habit() {
+      this.teehabit_show = true;
     }
   }
 };

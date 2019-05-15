@@ -22,7 +22,7 @@
           <div style="display:flex">
             <div
               class="number"
-              style="background-color:red;margin-right:3px"
+              style="background-color:#a6d2ff;margin-right:3px"
             >1</div>
             <div class="number">基本资料</div>
           </div>
@@ -41,14 +41,6 @@
           prop="medical_record"
         >
           <el-input></el-input>
-          <!-- <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                   font-size:20px;
-                   cursor:pointer;
-                   margin-left:10px
-                    "
-          ></i> -->
         </el-form-item>
 
         <el-form-item
@@ -143,11 +135,8 @@
             <el-input></el-input>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
+            class="el-icon-setting form-setting"
+            @click="mem_grade"
           ></i>
           <el-form-item
             label="会员卡号"
@@ -164,11 +153,8 @@
             <el-input></el-input>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
+            class="el-icon-setting form-setting"
+            @click="pro_fess"
           ></i>
           <el-form-item
             label="社保号"
@@ -221,12 +207,8 @@
             <el-input></el-input>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="
-                 margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
+            class="el-icon-setting form-setting"
+            @click="cont_add"
           ></i>
         </div>
         <div style="display:flex">
@@ -237,11 +219,8 @@
             <el-input></el-input>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
+            class="el-icon-setting form-setting"
+            @click="pat_impre"
           ></i>
           <el-form-item
             label="电网咨询"
@@ -256,7 +235,7 @@
         <div style="display:flex">
           <div
             class="number"
-            style="background-color:red;margin-right:3px"
+            style="background-color:#a6d2ff;margin-right:3px"
           >2</div>
           <div class="number">就诊信息</div>
         </div>
@@ -268,11 +247,8 @@
             <el-input></el-input>
           </el-form-item>
           <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
+            class="el-icon-setting form-setting"
+            @click="pat_sour"
           ></i>
           <el-form-item
             label="患者分类"
@@ -280,13 +256,7 @@
           >
             <el-input></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
-          ></i>
+          <i class="el-icon-setting form-setting" @click="class_pat"></i>
         </div>
         <div style="display:flex">
           <el-form-item
@@ -295,13 +265,7 @@
           >
             <el-input></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
-          ></i>
+          <i class="el-icon-setting form-setting"></i>
         </div>
         <div style="display:flex">
           <el-form-item
@@ -310,13 +274,7 @@
           >
             <el-input></el-input>
           </el-form-item>
-          <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
-          ></i>
+          <i class="el-icon-setting form-setting"></i>
         </div>
         <!-- <div style="display:flex">
           <el-form-item
@@ -368,20 +326,14 @@
           </el-form-item>
         </div>
         <div style="display:flex">
-        <el-form-item
-          label="洁牙习惯"
-          style="width:700px"
-        >
-          <el-input></el-input>
-        </el-form-item>
-        <i
-            class="fa fa-cog"
-            style="margin-top:10px;
-                 padding-left:10px;
-                 font-size:20px;
-                 cursor:pointer"
-          ></i>
-          </div>
+          <el-form-item
+            label="洁牙习惯"
+            style="width:700px"
+          >
+            <el-input></el-input>
+          </el-form-item>
+          <i class="el-icon-setting form-setting"></i>
+        </div>
         <div style="display:flex">
           <el-form-item
             label="初诊医生"
@@ -416,7 +368,7 @@
         <div style="display:flex">
           <div
             class="number"
-            style="background-color:red;margin-right:3px"
+            style="background-color:#a6d2ff;margin-right:3px"
           >3</div>
           <div class="number">亲友关系</div>
         </div>
@@ -491,26 +443,49 @@
         :loading="commitLoading"
         type="primary"
       >确 定</el-button>
-      <el-button
-        @click="closeDialog"
-        type="primary"
-      >新增关系</el-button>
+      <el-button>新增关系</el-button>
       <el-button @click="closeDialog">取 消</el-button>
 
+      <membership-grade :show.sync="memgrade_show"></membership-grade>
+      <professional :show.sync="profess_show"></professional>
+      <contact-address :show.sync="contadd_show"></contact-address>
+      <patients-impression :show.sync="patimpre_show"></patients-impression>
+      <patients-source :show.sync="patsour_show"></patients-source>
+      <classification-patients :show.sync="classpat_show"></classification-patients>
     </div>
   </el-dialog>
 </template>
 
 
 <script>
-import AddDialogForm from "../base/AddDialogForm";
+import AddDialogForm from "@/views/base/AddDialogForm";
+import MembershipGrade from "./MembershipGrade";
+import professional from "./professional";
+import ContactAddress from "./ContactAddress";
+import PatientsImpression from "./PatientsImpression";
+import PatientsSource from "./PatientsSource";
+import ClassificationPatients from "./ClassificationPatients";
 export default {
   name: "AddPatient",
 
   mixins: [AddDialogForm],
 
+  components: {
+    MembershipGrade,
+    professional,
+    ContactAddress,
+    PatientsImpression,
+    PatientsSource,
+    ClassificationPatients,
+  },
   data() {
     return {
+      memgrade_show: false,
+      profess_show: false,
+      contadd_show: false,
+      patimpre_show: false,
+      patsour_show: false,
+      classpat_show:false,
       form: {
         phone: [
           {
@@ -555,7 +530,26 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+    mem_grade() {
+      this.memgrade_show = true;
+    },
+    pro_fess() {
+      this.profess_show = true;
+    },
+    cont_add() {
+      this.contadd_show = true;
+    },
+    pat_impre() {
+      this.patimpre_show = true;
+    },
+    pat_sour() {
+      this.patsour_show = true;
+    },
+    class_pat() {
+      this.classpat_show = true;
+    },
+  }
 };
 </script>
 
@@ -575,6 +569,17 @@ export default {
   }
   .right-width {
     width: 330px;
+  }
+  .form-setting {
+    text-align: right;
+    width: 30px;
+    font-size: 22px;
+    margin-top: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: @color;
+    }
   }
 }
 </style>

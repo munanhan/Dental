@@ -316,7 +316,7 @@
 </template>
 
 <script>
-import DialogForm from "../base/DialogForm";
+import DialogForm from "@/views/base/DialogForm";
 export default {
   name: "Charge",
 
