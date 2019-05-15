@@ -25,7 +25,7 @@
               :data="tableData"
               style="width: 100%">
               <el-table-column
-                prop="cost_type"
+                prop="category"
                 label="费用类型"
                 >
               </el-table-column>
@@ -58,7 +58,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row.id)"
+                                @click.stop="showDel(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -72,14 +72,25 @@
     <!--添加-->
     <add-cost-type 
         :show.sync="addDialog"
+        @flush="flush"
     >
     </add-cost-type>
     <!--修改-->
     <edit-cost-type 
         :show.sync="editDialog"
         :editItem="editItem"
+        @flushData="flushData"
     >
     </edit-cost-type>
+
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="del" >确 定</el-button>
+      </span>
+    </el-dialog>
     </div>
 </template>
 
@@ -107,95 +118,147 @@ export default {
           addDialog:false,
           editDialog:false,
           id:'',
+          is_del:false,
+          del_id:0,
           editItem:{},
            tableData: [
-                {
-                id: 1,
-                cost_type: '西药费',
-                operation:''
-                },
-                {
-                id: 2,
-                cost_type: '放射费',
-                operation:''
-                },
-                {
-                id: 3,
-                cost_type: '检查费',
-                operation:''
-                },
-                {
-                id: 4,
-                cost_type: '诊疗费',
-                operation:''
-                },
-                {
-                id: 5,
-                cost_type: '补牙费',
-                operation:''
-                },
-                {
-                id: 6,
-                cost_type: '手术费',
-                operation:''
-                },
-                {
-                id: 7,
-                cost_type: '正畸费',
-                operation:''
-                },
-                {
-                id: 8,
-                cost_type: '拔牙费',
-                operation:''
-                },
-                {
-                id: 9,
-                cost_type: '修复费',
-                operation:''
-                },
-                {
-                id: 10,
-                cost_type: '其他',
-                operation:''
-                },
+                // {
+                // id: 1,
+                // cost_type: '西药费',
+                // operation:''
+                // },
+                // {
+                // id: 2,
+                // cost_type: '放射费',
+                // operation:''
+                // },
+                // {
+                // id: 3,
+                // cost_type: '检查费',
+                // operation:''
+                // },
+                // {
+                // id: 4,
+                // cost_type: '诊疗费',
+                // operation:''
+                // },
+                // {
+                // id: 5,
+                // cost_type: '补牙费',
+                // operation:''
+                // },
+                // {
+                // id: 6,
+                // cost_type: '手术费',
+                // operation:''
+                // },
+                // {
+                // id: 7,
+                // cost_type: '正畸费',
+                // operation:''
+                // },
+                // {
+                // id: 8,
+                // cost_type: '拔牙费',
+                // operation:''
+                // },
+                // {
+                // id: 9,
+                // cost_type: '修复费',
+                // operation:''
+                // },
+                // {
+                // id: 10,
+                // cost_type: '其他',
+                // operation:''
+                // },
           ]
           // tableData:[]
         };
       },
       created() {},
-      mounted() {},
+      mounted() {
+        let that = this;
+        that.getData();
+      },
       watch: {
         refresh(newValue, oldValue) {
           let that = this;
 
           if (newValue) {
-            that.getPatientInfo();
+            // that.getData();
           }
         }
       },
       computed: {},
       methods: {
-        del(id){
-           alert(id);
+        showDel(id){
+          //删除框
+          let that = this;
+          that.del_id = id;
+          that.is_del = true;
+        },
+        del(){
+          let that = this;
+          let id = that.del_id;
+          that.$api.cost_category.del({id})
+            .then(res => {
+              if(res.code == 200){
+                for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+
+                     if (that.tableData[i].id == id) {
+
+                         that.tableData.splice(i,1);
+                     }
+                }
+                this.$message({
+                    message: res.msg,
+                    type: "success",
+                    duration: 800
+                });
+                that.is_del = false;
+                that.$emit("delMenu",id);
+               }
+               else{
+                   that.$message.error(
+                        res.msg || "delete error."
+                    );
+               }
+            })
+            .catch(res => {
+               // console.log(res);
+            });
+        },
+        flush(data){
+          let that = this;
+          that.tableData.push(data);
+          that.$emit("flushMenu",data);//刷新父级
+        },
+        flushData(data){
+          let that = this;
+          for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+               if (that.tableData[i].id == data.id) {
+                   that.tableData[i] = data;
+                   break;
+               }
+          }
+          that.$emit("updateMenu",data);//刷新父级
         },
         showEditDialog(editItem){
           let that = this;
           that.editItem = editItem;
           that.editDialog = true;
         },
-        getPatientInfo() {
-          let that = this;
-
-          that.$api.aaaa.aaaa
+        getData() {
+            let that = this;
+            that.$api.cost_category.get()
             .then(res => {
-              that.getDataDone();
+               that.tableData = res.data;
             })
             .catch(res => {
-              that.getDataDone();
+
             });
         },
-
         getDataDone() {
           setTimeout(() => {
             that.$emit("update:refresh", false);

@@ -36,7 +36,7 @@
                         @row-click="getMenuTableData"
                         >
                         <el-table-column
-                          prop="catepory"
+                          prop="category"
                         >
                         </el-table-column>
                       </el-table>
@@ -67,6 +67,7 @@
                   <el-table-column
                     label="处置名称"
                     prop="disposal_name"
+                    width="300"
                   >
                   </el-table-column>
                   <el-table-column
@@ -94,7 +95,7 @@
                   </el-table-column>
                   <el-table-column
                     label="费用类型"
-                    prop="cost_type"
+                    prop="category"
                   >
                  
                   </el-table-column>
@@ -102,14 +103,14 @@
                     label="计费方式"
                     prop="billing_mode"
                   >
-                  <template slot-scope="scope">
+                  <!-- <template slot-scope="scope">
                       <div v-if="scope.row.billing_mode == 1">
                          按牙齿数计费
                       </div>
                       <div v-if="scope.row.billing_mode == 2">
                          按其他计费
                       </div>
-                  </template>
+                  </template> -->
                   </el-table-column>
                   <el-table-column
                     label="备注"
@@ -175,7 +176,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row.id)"
+                                @click.stop="showDel(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                         
@@ -210,6 +211,9 @@
     <!-- 费用大类 -->
     <cost-type
       :show.sync="costTypeDialog"
+      @flushMenu="flushMenu"
+      @delMenu="delMenu"
+      @updateMenu="updateMenu"
     >
     </cost-type>
     <!-- 添加处置与收费 -->
@@ -224,6 +228,14 @@
     >
     </edit-disposal-charging>
 
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="del" >确 定</el-button>
+      </span>
+    </el-dialog>
 
     </div>
 </template>
@@ -247,6 +259,8 @@ export default {
       },
       data() {
         return {
+          is_del:false,
+          del_id:0,
           //费用类型窗口
           costTypeDialog:false,
           //添加处置窗口
@@ -259,74 +273,74 @@ export default {
           tableHeight:700,
           menuHeight:667,
           menuData:[
-                    {
-                      id:1,
-                      catepory:'西药费'
-                    },
-                    {
-                      id:2,
-                      catepory:'放射费'
-                    },
-                    {
-                      id:3,
-                      catepory:'检查费'
-                    },
-                    {
-                      id:4,
-                      catepory:'诊疗费'
-                    },
-                    {
-                      id:5,
-                      catepory:'补牙费'
-                    },
-                    {
-                      id:6,
-                      catepory:'手术费'
-                    },
-                    {
-                      id:7,
-                      catepory:'正崎费'
-                    },
-                    {
-                      id:8,
-                      catepory:'拔牙费'
-                    },
-                    {
-                      id:9,
-                      catepory:'修复费'
-                    },
-                    {
-                      id:10,
-                      catepory:'其  他'
-                    },
+                    // {
+                    //   id:1,
+                    //   catepory:'西药费'
+                    // },
+                    // {
+                    //   id:2,
+                    //   catepory:'放射费'
+                    // },
+                    // {
+                    //   id:3,
+                    //   catepory:'检查费'
+                    // },
+                    // {
+                    //   id:4,
+                    //   catepory:'诊疗费'
+                    // },
+                    // {
+                    //   id:5,
+                    //   catepory:'补牙费'
+                    // },
+                    // {
+                    //   id:6,
+                    //   catepory:'手术费'
+                    // },
+                    // {
+                    //   id:7,
+                    //   catepory:'正崎费'
+                    // },
+                    // {
+                    //   id:8,
+                    //   catepory:'拔牙费'
+                    // },
+                    // {
+                    //   id:9,
+                    //   catepory:'修复费'
+                    // },
+                    // {
+                    //   id:10,
+                    //   catepory:'其  他'
+                    // },
                    ],
           tableData:[
-            {
-              id:1,
-              disposal_code:'001',
-              disposal_name:'必兰麻',
-              price:50.00,
-              unit:'项',
-              mem_discount:1,
-              cost_type:'西药费',
-              billing_mode:1,
-              remarks:'无',
-              operation:'',
-              status:1
-            },
-            {
-              id:2,
-              disposal_code:'002',
-              disposal_name:'保丽净',
-              price:999.99,
-              unit:'项',
-              mem_discount:0,
-              cost_type:'西药费',
-              billing_mode:2,
-              remarks:'无',
-              operation:'',
-              status:0
-            },
+            // {
+            //   id:1,
+            //   disposal_code:'001',
+            //   disposal_name:'必兰麻',
+            //   price:50.00,
+            //   unit:'项',
+            //   mem_discount:1,
+            //   cost_type:'西药费',
+            //   billing_mode:1,
+            //   remarks:'无',
+            //   operation:'',
+            //   status:1
+            // },
+            // {
+            //   id:2,
+            //   disposal_code:'002',
+            //   disposal_name:'保丽净',
+            //   price:999.99,
+            //   unit:'项',
+            //   mem_discount:0,
+            //   cost_type:'西药费',
+            //   billing_mode:2,
+            //   remarks:'无',
+            //   operation:'',
+            //   status:0
+            // },
           ]
         };
       },
@@ -355,6 +369,7 @@ export default {
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
 
+                that.getMenu();
                 // that.getData();
             }
         }
@@ -363,7 +378,8 @@ export default {
       computed: {},
       methods: {
         getMenuTableData(row){
-          alert(row.id);
+          let that = this;
+          that.getData(row.id);
         },
         showCostTypeDialog(){
            let that = this;
@@ -396,7 +412,13 @@ export default {
           that.editItem = editItem;
           that.editDisposalChargingDialog = true;
         },
-        del(id){
+        showDel(id){
+          //删除框
+          let that = this;
+          that.del_id = id;
+          that.is_del = true;
+        },
+        del(){
           //删除
           alert(id);
         },
@@ -410,17 +432,50 @@ export default {
         exportData(){
 
         },
-       
-        getPatientInfo() {
+        getData(id){
           let that = this;
-
-          that.$api.aaaa.aaaa
+            that.$api.disposal.get({'id':id})
             .then(res => {
-              that.getDataDone();
+               that.tableData = res.data;
             })
             .catch(res => {
-              that.getDataDone();
+
             });
+
+        },
+        getMenu() {
+            let that = this;
+            that.$api.cost_category.get()
+            .then(res => {
+               that.menuData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+        flushMenu(data){
+            let that = this;
+            that.menuData.push(data);
+        },
+        delMenu(id){
+          let that = this;
+          for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
+               if (that.menuData[i].id == id) {
+                   that.menuData.splice(i,1);
+                   break;
+               }
+          }
+        },
+        updateMenu(data){
+          let that = this;
+          for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
+               if (that.menuData[i].id == data.id) {
+                   that.menuData[i] = data;
+                   that.menuData.push({});//为了刷新数据新增一个空对象，然后删除
+                   that.menuData.pop();
+                   break;
+               }
+          }
         },
 
         getDataDone() {

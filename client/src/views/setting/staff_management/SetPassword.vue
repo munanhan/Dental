@@ -10,8 +10,8 @@
 	      >
 	      <!-- <div class="title"><span>设置用户{{show_name}}的密码</span></div> -->
 	      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-	        <el-form-item label="密码" prop="new_password">
-	          <el-input type="password" v-model="ruleForm.new_password" autocomplete="off"></el-input>
+	        <el-form-item label="密码" prop="password">
+	          <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
 	        </el-form-item>
 	        <el-form-item label="确认密码" prop="re_password">
 	          <el-input type="password" v-model="ruleForm.re_password" autocomplete="off"></el-input>
@@ -45,6 +45,7 @@ export default {
     mixins: [DialogForm],
     components: {},
       props: {
+        
         // refresh: {
         //   type: Boolean,
         //   required: true
@@ -55,7 +56,7 @@ export default {
         return {
           
           ruleForm: {
-            new_password: '',
+            password: '',
             re_password: ''
           },
 
@@ -66,7 +67,7 @@ export default {
                     validator: (rule, value, callback) => {
                         let that = this;
 
-                        if (that.ruleForm.new_password !== value) {
+                        if (that.ruleForm.password !== value) {
                             callback(
                                 new Error("两次的密码不一致，请重新输入.")
                             );
@@ -107,10 +108,32 @@ export default {
         },
         
         submitForm(formName) {
-          let id = this.id;
+          let that = this;
+          that.ruleForm.id = that.id;
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              alert('submit!');
+              that.$api.user.changePassword(that.ruleForm)
+                .then(res => {
+                  if(res.code == 200){
+                    this.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.closePassDialog();
+                    // that.$emit(
+                    //   "flush"
+                    // );
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "修改失败."
+                        );
+                   }
+                })
+              // console.log(that.ruleForm);
+              // alert('submit!');
             } else {
               console.log('error submit!!');
               return false;

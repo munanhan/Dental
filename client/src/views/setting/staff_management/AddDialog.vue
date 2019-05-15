@@ -131,12 +131,20 @@ export default {
         };
       },
       created() {
+
+      },
+      mounted() {
         let that = this;
         that.getData();
       },
-      mounted() {},
       watch: {
-        
+        refresh(newValue, oldValue) {
+            let that = this;
+
+            // if (newValue) {
+                // that.getData();
+            // }
+        }
         
       },
       computed: {},
@@ -154,8 +162,12 @@ export default {
           that.$api.user.get_role()
             .then(res => {
                that.role_list = res.data;
+               
             })
             .catch(res => {
+              // that.$message.error(
+              //     res.msg || "add error."
+              // );
                console.log(res);
             });
         },
@@ -165,10 +177,29 @@ export default {
             if (valid) {
               that.$api.user.add(that.form)
                 .then(res => {
-                   that.role_list = res.data;
+                  if(res.code == 200){
+                    this.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.closethisDialog();
+                    that.$emit(
+                      "flush"
+                    );
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "add error."
+                        );
+                   }
                 })
                 .catch(res => {
-                   console.log(res);
+                  that.$message.error(
+                            res.msg || "add error."
+                        );
+                   // console.log(res);
                 });
             } else {
               console.log('error submit!!');

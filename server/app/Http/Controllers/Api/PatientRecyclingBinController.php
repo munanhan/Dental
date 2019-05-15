@@ -51,7 +51,7 @@ class PatientRecyclingBinController extends Controller
     				'page_size' => $pager['page_size']
     			 ];
 
-    	$sql = select($select).where($parms).limit($limit);
+    	$sql = MySelect($select).MyWhere($parms).MyLimit($limit);
 
     	$total = Patient::where('status',0)->count();
 
@@ -61,9 +61,9 @@ class PatientRecyclingBinController extends Controller
 
     }
 
-    public function reduction(Request $request){
+    public function reduction($id){
     	//还原被删除的患者
-    	$id = empty($request->input('id'))?0:$request->input('id');
+    	$id = empty($id)?0:$id;
     	if ($id == 0) {
     		return message('缺少id',[],404);
     	}
@@ -77,8 +77,35 @@ class PatientRecyclingBinController extends Controller
 
     }
 
-    public function delete(Request $request){
-    	dd(1);
+    public function delete($id){
+    	$id = empty($id)?0:$id;
+    	if ($id == 0) {
+    		return message('缺少id',[],404);
+    	}
+    	$res = Patient::where('id',$id)->delete();
+    	if ($res) {
+    		return message('成功',[],200);
+    	}
+    	else{
+    		return message('失败',[],500);
+    	}
     }
+
+    public function deleteAll(Request $request){
+    	//批量删除
+    	$id = empty($request->input('id'))?0:$request->input('id');
+    	if ($id == 0) {
+    		return message('缺少id',[],404);
+    	}
+    	$res = Patient::whereIn('id', $id)->delete();
+    	if ($res) {
+    		return message('成功',[],200);
+    	}
+    	else{
+    		return message('失败',[],500);
+    	}
+    }
+
+    
 
 }

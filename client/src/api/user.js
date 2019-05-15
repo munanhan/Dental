@@ -76,30 +76,7 @@ export function getUserInfo(routerUse){
     })
 }
 
-/** 
- * 修改自己密码
- * url: /api/user/change_password
- * @method post
- * @param {Object} data 发送的数据
- *      {
- *          passwd: '6666666', 
- *          repasswd: '6666666',
- *      }
- * 
- * @returns
- *      {
- *          code: 0, // 0表示没问题，不为0表示出错
- *          msg: '提示信息',
- *          data: 可以不返回
- *      }
- */
-export function changePassword(data) {
-    return request({
-        url: `${prefix}/change_password`,
-        method: 'post',
-        data: data
-    })
-}
+
 
 /** 
  * 获取用户列表（分页）
@@ -224,40 +201,13 @@ export function getByID(data){
  */
 export function add(data){
     return request({
-        url: `${prefix}`,
+        url: `${prefix}/add`,
         method: 'post',
         data: data
     });
 }
 
-/** 
- * 修改用户信息
- * url: /api/user/edit
- * @method post
- * @param {Object} data 修改的数据
- *      {
- *          id: 1
- *          personal_name: '姓名',
- *          phone: 136666666,
- *      }
- * @returns
- *      {
- *          code: 0, // 0表示没问题，不为0表示出错
- *          msg: '提示信息',
- *          data: {
- *              id: 1
- *              personal_name: '张三', //姓名
- *              phone: 1366666666
- *          }
- *      }
- */
-export function edit(data){
-    return request({
-        url: `${prefix}/edit`,
-        method: 'post',
-        data: data
-    });
-}
+
 
 /** 
  * 系统管理员修改用户的密码
@@ -284,28 +234,7 @@ export function changeUserPasswd(data){
     });
 }
 
-/** 
- * 删除
- * url: /api/user/del
- * @method post
- * @param {Object} data 删除的数据
- *      {
- *          id: 1
- *      }
- * @returns
- *      {
- *          code: 0, // 0表示没问题，不为0表示出错
- *          msg: '提示信息',
- *          data: null //不返回
- *      }
- */
-export function del(data){
-    return request({
-        url: `${prefix}/del`,
-        method: 'post',
-        data: data
-    });
-}
+
 
 /** 
  * 获取所有的用户，用户权限分配（不分页）
@@ -380,4 +309,31 @@ export function get_role(data){
         method: 'get',
         params: data
     })
+}
+
+//删除用户
+export function del(data) {
+    return request({
+        url: `${prefix}/:id`,
+        method: 'delete',
+        params: data
+    })
+}
+//修改密码
+export function changePassword(data) {
+    return request({
+        url: `${prefix}/update_password`,
+        method: 'post',
+        data: data
+    })
+}
+ 
+//修改用户信息
+
+export function edit(data){
+    return request({
+        url: `${prefix}`,
+        method: 'put',
+        params: data
+    });
 }

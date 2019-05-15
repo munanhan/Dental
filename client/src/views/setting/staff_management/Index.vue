@@ -143,7 +143,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row.id)"
+                                @click.stop="showDel(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -162,14 +162,26 @@
     <!--添加员工-->
     <add-dialog 
         :show.sync="addDialog"
+        @flush="flush"
     >
     </add-dialog>
     <!--修改员工-->
     <edit-dialog 
         :show.sync="editDialog"
         :editItem="editItem"
+        @flush="flush"
     >
     </edit-dialog>
+
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="del" >确 定</el-button>
+      </span>
+    </el-dialog>
+
     </div>
 </template>
 
@@ -200,6 +212,8 @@ export default {
           editDialog:false,
           search:{ name:'' },
           id:'',
+          del_id:0,
+          is_del:false,
           editItem:{},
            tableData: [
           //  {
@@ -298,8 +312,43 @@ export default {
               }
             
         },
-        del(id){
-           alert(id);
+        showDel(id){
+           let that = this;
+           that.del_id = id;
+           that.is_del = true;
+        },
+        del(){
+           let that = this;
+           let id = that.del_id;
+           
+            that.$api.user.del({id})
+            .then(res => {
+
+                  if(res.code == 200){
+                    for (var i = 0, length = that.tableData.length - 1; i < length; i++) {
+
+                           if (that.tableData[i].id == id) {
+                               that.tableData.splice(i,1);
+                               that.total = that.total-1;
+                           }
+                      }
+
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      that.is_del = false;
+                  }
+                  else{
+                       that.$message.error(
+                            res.msg || "操作异常请重试."
+                        );
+                  }
+            })
+            .catch(res => {
+              console.log(res);
+            });
         },
         showEditDialog(editItem){
           let that = this;
@@ -340,6 +389,10 @@ export default {
             .catch(res => {
                console.log(res);
             });
+        },
+        flush(){
+           let that = this;
+           that.getData();
         },
         
         getDataDone() {
