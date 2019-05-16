@@ -45,9 +45,9 @@ class UserController extends Controller
         if (isset($parms['entry'])) {
             unset($parms['entry']);
         }
-        $role['role_id'] = $parms['role'];
+        $role['role_id'] = $parms['role_id'];
 
-        unset($parms['role']);
+        unset($parms['role_id']);
 
         $res = User::where('id',$parms['id'])->update($parms);
         $res2 = RoleUser::where('user_id',$parms['id'])->update($role);
@@ -56,7 +56,7 @@ class UserController extends Controller
             return message('修改成功',[], 200);
         }
         else{
-            return message('修改失败',[], 500);
+            return message('无修改',[], 200);
         }
 
         
@@ -148,7 +148,7 @@ class UserController extends Controller
         $fields = [ 'phone' => '电话',
                     'password' => '密码',
                     'name' => '姓名',
-                    'role' => '角色'
+                    'role_id' => '角色'
                   ];//必填字段
 
         $parms = $request->input();
@@ -163,7 +163,7 @@ class UserController extends Controller
         if ($find) {
             // return message('用户已存在',[],500);
         }
-        $role['role_id'] = $parms['role'];
+        $role['role_id'] = $parms['role_id'];
         unset($parms['role']);
         $parms['password'] = bcrypt($parms['password']);
         $data = User::create($parms);
@@ -215,6 +215,18 @@ class UserController extends Controller
             return message('修改失败',[],500);
         }
 
+    }
+
+    public function getById(Request $request){
+        //根据id获取
+        $id = $request->input('id') != ''?$request->input('id'):0;
+        if (!$id) {
+            return message('缺少id',[],404);
+        }
+        $data = User::leftJoin('role_users','role_users.user_id','users.id')
+                    ->where('users.id',$id)
+                    ->first(['users.id','role_id','phone','name']);
+        return message('成功',$data,200);
     }
 
 

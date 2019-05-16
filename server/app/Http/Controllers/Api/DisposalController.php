@@ -16,19 +16,31 @@ class DisposalController extends Controller
         	    		      	'table' => 'disposals',//表
         	    		      	'field' => 'billing_mode'
         	    			  ];
+
+                $_medical_insurance = [
+                                        'data' => config('config.common_status'),//收费模式
+                                        'table' => 'disposals',//表
+                                        'field' => 'medical_insurance'
+                                      ];
+                
             	$_select = [
             				   'table' => 'disposals',//表
-            				   'field' => 'disposals.id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,mem_discount,'.caseThen($_case_mode)
+            				   'field' => 'disposals.id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,mem_discount,'.caseThen($_case_mode).','.caseThen($_medical_insurance)
             			   ];
+
             	$_join = [
             				'cost_categories' => 'cost_categories.id = disposals.cate_id'
             			 ];
-            	$_where = [
-            				   'cate_id' => $parms['id']
-            	          ];
-            	          
+
+
+                $_where = [];
+                isset($parms['id'])?$_where[] = ['cate_id','=',$parms['id']]:'';
+                isset($parms['disposal_name'])?$_where[] = ['disposal_name','like','%'.$parms['disposal_name'].'%']:'';
+
             	$sql = MySelect($_select).MyJoin($_join).MyWhere($_where);
-            	$res = getData($sql,$_where);
+
+            	$res = getData($sql,dbParms($_where));
+
             	return message($res['msg'],$res['data'],$res['code']);
 
             }

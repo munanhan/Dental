@@ -367,7 +367,7 @@ export default {
           //显示修改组合窗口
           let that = this;
           if (Object.keys(that.currentNode).length == 0) {
-            alert('请选择一项');
+            that.$message.error("请选择一项.");
           }
           else{
             alert(that.currentNode.id);
@@ -379,7 +379,7 @@ export default {
           //显示修改组合窗口
           let that = this;
           if (Object.keys(that.currentNode).length == 0) {
-            alert('请选择一项');
+            that.$message.error("请选择一项.");
           }
           else{
             that.editItem = that.currentNode;
@@ -405,7 +405,7 @@ export default {
           //弹出添加组合窗口
           let that = this;
           if (Object.keys(that.currentNode).length==0) {
-             alert('请先选择一个目录');
+             that.$message.error("请选择一个目录.");
           }
           else{
             that.parentId = that.currentNode.level == 1?that.currentNode.id:that.currentNode.p_id;

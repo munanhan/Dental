@@ -187,7 +187,7 @@ use Illuminate\Support\Facades\DB;
 
                 foreach ($parms as $k => $v) {
                     if (is_array($v)) {
-                        $where.= ' '.$v[0].$v[1].':'.preg_replace("/\w+\./",'',$v[0]);
+                        $where.= ' '.$v[0].' '.$v[1].' :'.preg_replace("/\w+\./",'',$v[0]);
                     }
                     else{
                         $where.= " $k = :".preg_replace("/\w+\./",'',$k);
@@ -196,6 +196,7 @@ use Illuminate\Support\Facades\DB;
                     $n < $length?$where.=' and':'';
                     $n++;
                 }
+
                 return $where;
             }
 
@@ -254,7 +255,8 @@ use Illuminate\Support\Facades\DB;
 
 /***
  * check the parms 
-
+   输入类型，字段集合，参数
+   输出类型，错误信息或者false表示通过验证
  */
             function checkParms($fields,$parms){
                 foreach ($fields as $k => $v) {
@@ -264,3 +266,17 @@ use Illuminate\Support\Facades\DB;
                 }
                 return false;
             }
+/***
+ * where parms
+ * 输入类型，where参数集合
+ * 输出类型，返回一个可用的where参数
+ */     
+            function dbParms($parms){
+                //dbParms
+                $new_parms = [];
+                foreach ($parms as $k => $v) {
+                    $new_parms[$v[0]] = $v[2];
+                }
+                return $new_parms;
+            }
+

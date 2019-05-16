@@ -26,6 +26,10 @@
             <el-radio v-model="form.mem_discount" label="1">是</el-radio>
             <el-radio v-model="form.mem_discount" label="0">否</el-radio>
           </el-form-item>
+          <el-form-item label="是否医保" prop="medical_insurance">
+            <el-radio v-model="form.medical_insurance" label="1">是</el-radio>
+            <el-radio v-model="form.medical_insurance" label="0">否</el-radio>
+          </el-form-item>
           <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
@@ -151,6 +155,7 @@ export default {
               cate_id:undefined,
               billing_mode:undefined,
               remarks:'',
+              medical_insurance:undefined
           },
           rules:{
               cate_id: [

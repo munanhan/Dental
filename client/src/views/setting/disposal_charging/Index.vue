@@ -365,22 +365,22 @@ export default {
         } else {
             window.attachEvent("bodyChange", that.resizeTable);
         }
-    },
-    watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
+      },
+      watch: {
+          refresh(newValue, oldValue) {
+              let that = this;
 
-            if (newValue) {
-                that.resizeTable();
+              if (newValue) {
+                  that.resizeTable();
 
-                //更新原来的refresh, 防止下次点击时不通知更新
-                that.$emit("update:refresh", false);
+                  //更新原来的refresh, 防止下次点击时不通知更新
+                  that.$emit("update:refresh", false);
 
-                that.getMenu();
-                // that.getData();
-            }
-        }
-    },
+                  that.getMenu();
+                  // that.getData();
+              }
+          }
+      },
 
       computed: {},
       methods: {
@@ -418,8 +418,8 @@ export default {
           //修改
           let that = this;
           that.editItem = editItem;
-          // that.getById(editItem);
-          that.editDisposalChargingDialog = true;
+          that.getById(editItem);
+          // that.editDisposalChargingDialog = true;
         },
         showDel(id){
           //删除框
@@ -472,18 +472,18 @@ export default {
         exportData(){
 
         },
-        // getById(editItem){
-        //     let that = this;
-        //     let id = editItem.id
-        //     that.$api.disposal.getById({'id':id})
-        //     .then(res => {
-        //        that.editItem = res.data;
-        //        that.editDisposalChargingDialog = true;
-        //     })
-        //     .catch(res => {
-        //       // console.log(res)
-        //     });
-        // },
+        getById(editItem){
+            let that = this;
+            let id = editItem.id
+            that.$api.disposal.getById({'id':id})
+            .then(res => {
+               that.editItem = res.data;
+               that.editDisposalChargingDialog = true;
+            })
+            .catch(res => {
+              // console.log(res)
+            });
+        },
         getData(id){
           //获取列表数据
           let that = this;
@@ -546,11 +546,11 @@ export default {
         },
 
         getDataDone() {
-          setTimeout(() => {
-            that.$emit("update:refresh", false);
-          }, 6e3);
+              setTimeout(() => {
+                that.$emit("update:refresh", false);
+              }, 6e3);
+            }
         }
-      }
 }
 </script>
 <style lang="less" scoped>

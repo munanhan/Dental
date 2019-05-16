@@ -58,6 +58,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::put('user', 'UserController@update');//修改用户信息
 
+    Route::get('user/get_by_id','UserController@getById');//根据id获取
+
 
 
     /*
