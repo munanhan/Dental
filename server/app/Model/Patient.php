@@ -13,8 +13,10 @@ class Patient extends Model
         return $this->hasOne(PatientInfo::class);
     }
 
+
     public function appointment()
     {
         return $this->hasMany(Appointment::class);
     }
+
 }

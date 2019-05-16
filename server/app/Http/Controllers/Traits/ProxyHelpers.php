@@ -19,9 +19,8 @@ trait ProxyHelpers
 
             $client = new Client();
 
-            // $url = request()->root(). ':' . request()->getPort().'/oauth/token';
-            $url = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"].'/oauth/token';
-            
+            $url = $this->getUrl() . '/oauth/token';
+
             $params = array_merge(config('passport.proxy'), [
                 'username' => request('username'),
                 'password' => request('password'),
@@ -41,6 +40,14 @@ trait ProxyHelpers
     }
 
 
+    public function getUrl()
+    {
+        $addr=request()->server('REMOTE_ADDR');
+        $port=request()->server('SERVER_PORT');
+        $http='http://';
+        $url=$http.$addr.':'.$port;
+        return $url;
+    }
     /***
      * 刷新令牌
      * @return mixed
@@ -50,7 +57,7 @@ trait ProxyHelpers
         $client = new Client();
 
         try {
-            $url = request()->root() .':' . request()->getPort() . '/oauth/token';
+            $url = $this->getUrl() . '/oauth/token';
 
             $params = array_merge(config('passport.refresh'), [
                 'refresh_token' => request('refresh_token'),

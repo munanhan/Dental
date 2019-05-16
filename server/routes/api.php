@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 /*
  * We can improve the endpoints by using implicit route model binding.
@@ -24,6 +24,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  */
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
+
+    /*
+     * Route Patient Config Api
+     */
+
+    Route::get('/patient_resource', function () {
+        return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
+    });
 
     /*
      * Route User APi
@@ -121,17 +129,17 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::delete('patient_consults/{patientConsult}', 'PatientConsultController@delete');
 
     /*
-     * Route PatientGroup Api
+     * Route PatientCategory Api
      */
-    Route::get('patient_groups', 'PatientGroupController@index');
+    Route::get('patient_groups', 'PatientCategoryController@index');
 
-    Route::get('patient_groups/{patientGroup}', 'PatientGroupController@show');
+    Route::get('patient_groups/{patientGroup}', 'PatientCategoryController@show');
 
-    Route::post('patient_groups', 'PatientGroupController@store');
+    Route::post('patient_groups', 'PatientCategoryController@store');
 
-    Route::put('patient_groups/{patientGroup}', 'PatientGroupController@update');
+    Route::put('patient_groups/{patientGroup}', 'PatientCategoryController@update');
 
-    Route::delete('patient_groups/{patientGroup}', 'PatientGroupController@delete');
+    Route::delete('patient_groups/{patientGroup}', 'PatientCategoryController@delete');
 
     /*
      * Route PatientImpression Api
