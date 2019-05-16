@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\TestEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Auth;
 
 class TestListener
 {
@@ -18,14 +19,11 @@ class TestListener
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
+    /***
+     * @param TestEvent $event
      */
     public function handle(TestEvent $event)
     {
-        info($event->order);
+        $event->model->fill(['created_by'=>Auth::user()->name]);
     }
 }

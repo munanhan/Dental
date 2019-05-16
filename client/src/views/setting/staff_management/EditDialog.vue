@@ -15,9 +15,9 @@
           <el-form-item label="手机号码" prop="phone">
             <el-input v-model="form.phone"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <!-- <el-form-item label="密码" prop="password">
             <el-input v-model="form.password" type="password"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="职位" prop="role">
                       <el-select
                           clearable
@@ -30,9 +30,9 @@
                       >
                           <el-option
                               v-for="item in role_list"
-                              :key="item"
-                              :label="item"
-                              :value="item"
+                              :key="item.id"
+                              :label="item.name"
+                              :value="item.id"
                           ></el-option>
                       </el-select>
           </el-form-item>
@@ -69,13 +69,13 @@ export default {
             role:''
           },
           role_list:[
-            '主任',
-            '医生',
-            '前台',
-            '护士',
-            '收银员',
-            '技师',
-            '咨询师'
+            // '主任',
+            // '医生',
+            // '前台',
+            // '护士',
+            // '收银员',
+            // '技师',
+            // '咨询师'
           ],
 
           rules:{
@@ -133,7 +133,10 @@ export default {
       created() {
         
       },
-      mounted() {},
+      mounted() {
+        let that = this;
+        this.getData();
+      },
       watch: {
         // refresh(newValue, oldValue) {
         //   let that = this;
@@ -144,7 +147,8 @@ export default {
         // }
         
       },
-      computed: {},
+      computed: {
+      },
       methods: {
         // setHasErrorMessage() {
         //     let that = this;
@@ -156,14 +160,51 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log('submit!');
+              that.$api.user.edit(that.form)
+                .then(res => {
+                  if(res.code == 200){
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.closethisDialog();
+                    that.$emit(
+                      "flush"
+                    );
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "修改失败."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
             } else {
               console.log('error submit!!');
               return false;
             }
           });
+        },
+        getData(){
+          let that = this;
+          that.$api.user.get_role()
+            .then(res => {
+               that.role_list = res.data;
+               
+            })
+            .catch(res => {
+              // that.$message.error(
+              //     res.msg || "add error."
+              // );
+               console.log(res);
+            });
         },
         closethisDialog(){
            let that = this;

@@ -109,7 +109,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row.id)"
+                                @click.stop="showDel(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -134,7 +134,14 @@
             </el-pagination>
           </div>
       </el-row>
- 
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="del" >确 定</el-button>
+      </span>
+    </el-dialog>
     </div>
 </template>
 
@@ -157,6 +164,8 @@ export default {
             select_group:[],
             // current_page:1,
             // page_size:5,
+            is_del:false,
+            del_id:0,
             total:0,
             search:{
               name:'',
@@ -321,17 +330,39 @@ export default {
               that.select_group.push(val[i].id);
            }
         },
-        del(id){
+        showDel(id){
           let that = this;
+          that.del_id = id;
+          that.is_del = true;
+        },
+        del(){
+          let that = this;
+          let id = that.del_id;
           that.$api.patient_recycling_bin.del({id})
           .then(res => {
-              for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+            if (res.code == 200) {
+              for (var i = 0, length = that.tableData.length - 1; i < length; i++) {
                  if (that.tableData[i].id == id) {
 
                      that.tableData.splice(i,1);
                      that.total = that.total-1;
                  }
               }
+              that.$message({
+                  message: res.msg,
+                  type: "success",
+                  duration: 800
+              });
+              that.is_del = false;
+            }
+            else{
+              that.$message.error(
+                            res.msg || "操作异常请重试."
+                        );
+            }
+              
+
+              
           })
           .catch(res => {
             console.log(res);

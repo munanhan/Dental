@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 /*
  * We can improve the endpoints by using implicit route model binding.
@@ -24,6 +24,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  */
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
+
+    /*
+     * Route Patient Config Api
+     */
+
+    Route::get('/patient_resource', function () {
+        return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
+    });
 
     /*
      * Route User APi
@@ -38,7 +46,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::put('users/{user}', 'UserController@update');
 
-    Route::delete('users/{user}', 'UserController@delete');
+    Route::get('user/user_list','UserController@userList');//员工列表
+
+    Route::get('user/get_role','UserController@getRole');//获取下拉职位
+
+    Route::post('user/add', 'UserController@addUser');//添加用户
+
+    Route::delete('user/{id}', 'UserController@delete');//删除用户
+
+    Route::post('user/update_password', 'UserController@updatePassword');//修改密码
+
+    Route::put('user', 'UserController@update');//修改用户信息
+
+
 
     /*
      * Route Patient Api
@@ -58,7 +78,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
 
     /*
-     * Route OperationLog Api y
+     * Route OperationLog Api
+     * created for yu
      */
     Route::get('operation_log', 'operationLogController@operationLogList');//日志列表
 
@@ -108,17 +129,17 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::delete('patient_consults/{patientConsult}', 'PatientConsultController@delete');
 
     /*
-     * Route PatientGroup Api
+     * Route PatientCategory Api
      */
-    Route::get('patient_groups', 'PatientGroupController@index');
+    Route::get('patient_groups', 'PatientCategoryController@index');
 
-    Route::get('patient_groups/{patientGroup}', 'PatientGroupController@show');
+    Route::get('patient_groups/{patientGroup}', 'PatientCategoryController@show');
 
-    Route::post('patient_groups', 'PatientGroupController@store');
+    Route::post('patient_groups', 'PatientCategoryController@store');
 
-    Route::put('patient_groups/{patientGroup}', 'PatientGroupController@update');
+    Route::put('patient_groups/{patientGroup}', 'PatientCategoryController@update');
 
-    Route::delete('patient_groups/{patientGroup}', 'PatientGroupController@delete');
+    Route::delete('patient_groups/{patientGroup}', 'PatientCategoryController@delete');
 
     /*
      * Route PatientImpression Api
@@ -186,20 +207,54 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
 
     /*
-     * Route PatientRecyclingBin Api y
+     * Route PatientRecyclingBin Api 
+     * created for yu
      */
     Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');
 
-    // Route::get('patient_recycling_bin/reduction', 'PatientRecyclingBinController@reduction');
-    
-    // Route::get('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@show');
+    Route::put('patient_recycling_bin/{id}', 'PatientRecyclingBinController@reduction');
 
-    // Route::post('patient_recycling_bin', 'PatientRecyclingBinController@store');
+    Route::delete('patient_recycling_bin/{id}', 'PatientRecyclingBinController@delete');
 
-    Route::put('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@reduction');
+    Route::post('patient_recycling_bin', 'PatientRecyclingBinController@deleteAll');
 
-    Route::delete('patient_recycling_bin/{patient}', 'PatientRecyclingBinController@delete');
+    /*
+     * Route Disposal Api
+     * created for yu
+     */
+    Route::get('disposal','DisposalController@index');
 
+    Route::post('disposal', 'DisposalController@addDisposal');
+
+    Route::get('disposal/get_by_id','DisposalController@getById');
+
+    Route::put('disposal', 'DisposalController@update');
+
+    Route::delete('disposal/{id}', 'DisposalController@delete');
+
+    /*
+     * Route CostCategory Api
+     * created for yu
+     */
+    Route::get('cost_category','CostCategoryController@index');
+
+    Route::post('cost_category', 'CostCategoryController@addCategory');
+
+    Route::put('cost_category', 'CostCategoryController@update');
+
+    Route::delete('cost_category/{id}', 'CostCategoryController@delete');
+
+
+
+    // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
+    //lw
+    Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
+
+    Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
+
+    Route::get('appointment/getByIdAppointment','AppointmentController@getByIdAppointment');
+
+    Route::post('appointment/add_appointment','AppointmentController@addAppointment');
 
 });
 
@@ -220,9 +275,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('order','OrderController@store');
 
-    Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
 
-    Route::get('appointment/add_appointment','AppointmentItemController@addAppointment');
     // Route::get('publish', function () {
     //     // Route logic...
 

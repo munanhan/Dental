@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Model\Order;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,16 +16,16 @@ class TestEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
+    public $model;
 
     /**
      * Create a new event instance.
      * TestEvent constructor.
-     * @param Order $order
+     * @param Model $model
      */
-    public function __construct(Order $order)
+    public function __construct(Model $model)
     {
-        $this->order=$order;
+        $this->model=$model;
     }
 
     /**

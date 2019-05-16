@@ -158,8 +158,8 @@ export default {
               phone:'',
               dtfm:'',
               dtto:'',
-              start_money:'',
-              end_money:''
+              start_money:undefined,
+              end_money:undefined
             },
             tableData:[{
               case_no:'001',

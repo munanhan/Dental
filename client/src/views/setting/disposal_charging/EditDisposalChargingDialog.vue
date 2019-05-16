@@ -28,20 +28,20 @@
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="费用类型" prop="cost_type">
+          <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
               filterable
               placeholder="请选择费用类型"
               size=""
-              v-model="form.cost_type"
+              v-model="form.cate_id"
               class="width100"
               
           >
               <el-option
-                  v-for="item in cost_type"
+                  v-for="item in cost_data"
                   :key="item.id"
-                  :label="item.cost_type"
+                  :label="item.category"
                   :value="item.id"
               ></el-option>
           </el-select>
@@ -84,6 +84,8 @@ export default {
     mixins: [EditDialogForm],
     components: {},
       props: {
+
+        
         // refresh: {
         //   type: Boolean,
         //   required: true
@@ -102,47 +104,47 @@ export default {
             value:2
           }
           ],
-          cost_type:[
-          {
-                id: 1,
-                cost_type: '西药费'
-                },
-                {
-                id: 2,
-                cost_type: '放射费'
-                },
-                {
-                id: 3,
-                cost_type: '检查费'
-                },
-                {
-                id: 4,
-                cost_type: '诊疗费'
-                },
-                {
-                id: 5,
-                cost_type: '补牙费'
-                },
-                {
-                id: 6,
-                cost_type: '手术费'
-                },
-                {
-                id: 7,
-                cost_type: '正畸费'
-                },
-                {
-                id: 8,
-                cost_type: '拔牙费'
-                },
-                {
-                id: 9,
-                cost_type: '修复费'
-                },
-                {
-                id: 10,
-                cost_type: '其他'
-                },
+          cost_data:[
+          // // {
+          // //       id: 1,
+          // //       cost_type: '西药费'
+          // //       },
+          // //       {
+          // //       id: 2,
+          // //       cost_type: '放射费'
+          // //       },
+          // //       {
+          // //       id: 3,
+          // //       cost_type: '检查费'
+          // //       },
+          // //       {
+          // //       id: 4,
+          // //       cost_type: '诊疗费'
+          // //       },
+          // //       {
+          // //       id: 5,
+          // //       cost_type: '补牙费'
+          // //       },
+          // //       {
+          // //       id: 6,
+          // //       cost_type: '手术费'
+          // //       },
+          // //       {
+          // //       id: 7,
+          // //       cost_type: '正畸费'
+          // //       },
+          // //       {
+          // //       id: 8,
+          // //       cost_type: '拔牙费'
+          // //       },
+          // //       {
+          // //       id: 9,
+          // //       cost_type: '修复费'
+          // //       },
+          // //       {
+          // //       id: 10,
+          // //       cost_type: '其他'
+          // //       },
           ],
           form:{
               disposal_code:'',
@@ -150,12 +152,12 @@ export default {
               price:undefined,
               unit:'',
               mem_discount:undefined,
-              cost_type:'',
-              billing_mode:'',
+              cate_id: undefined,
+              billing_mode:undefined,
               remarks:'',
           },
           rules:{
-              cost_type: [
+              cate_id: [
                   {
                       required: true,
                       message:'请输入费用类型.',
@@ -218,17 +220,30 @@ export default {
         };
       },
       created() {
-        
+
       },
-      mounted() {},
+      mounted() {
+         let that = this;
+         that.getCategory();
+         // that.getData();
+      },
       watch: {
         // refresh(newValue, oldValue) {
         //   let that = this;
 
         //   if (newValue) {
-        //     that.getPatientInfo();
+        //     that.getCategory();
+        //     that.getData();
         //   }
-        // }
+        // },
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCategory();
+                that.getData();
+            }
+        }
+
         
       },
       computed: {},
@@ -243,14 +258,58 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log(this.form);
+              that.$api.disposal.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      that.closethisDialog();
+                      that.$emit("flush");
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
+              // console.log(this.form);
             } else {
               console.log('error submit!!');
               return false;
             }
           });
+        },
+        getData(){
+            let that = this;
+            let id = that.form.id;
+            that.$api.disposal.getById({'id':id})
+            .then(res => {
+               that.form = res.data;
+
+               // console.log(that.form);
+            })
+            .catch(res => {
+              // console.log(res)
+            });
+        },
+        getCategory() {
+            let that = this;
+            that.$api.cost_category.get()
+            .then(res => {
+               that.cost_data = res.data;
+            })
+            .catch(res => {
+              // console.log(res)
+            });
         },
         closethisDialog(){
            let that = this;
