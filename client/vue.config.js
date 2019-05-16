@@ -17,6 +17,7 @@ plugins.push(
     })
 );
 
+//gzip 压缩
 if (process.env.NODE_ENV === "production") {
     plugins.push(
         new compressionWebpackPlugin({
