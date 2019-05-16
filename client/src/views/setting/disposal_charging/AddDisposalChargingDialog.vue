@@ -26,20 +26,20 @@
             <el-radio v-model="form.mem_discount" label="1">是</el-radio>
             <el-radio v-model="form.mem_discount" label="0">否</el-radio>
           </el-form-item>
-          <el-form-item label="费用类型" prop="cost_type">
+          <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
               filterable
               placeholder="请选择费用类型"
               size=""
-              v-model="form.cost_type"
+              v-model="form.cate_id"
               class="width100"
               
           >
               <el-option
-                  v-for="item in cost_type"
+                  v-for="item in cost_data"
                   :key="item.id"
-                  :label="item.cost_type"
+                  :label="item.category"
                   :value="item.id"
               ></el-option>
           </el-select>
@@ -100,47 +100,47 @@ export default {
             value:2
           }
           ],
-          cost_type:[
-          {
-                id: 1,
-                cost_type: '西药费'
-                },
-                {
-                id: 2,
-                cost_type: '放射费'
-                },
-                {
-                id: 3,
-                cost_type: '检查费'
-                },
-                {
-                id: 4,
-                cost_type: '诊疗费'
-                },
-                {
-                id: 5,
-                cost_type: '补牙费'
-                },
-                {
-                id: 6,
-                cost_type: '手术费'
-                },
-                {
-                id: 7,
-                cost_type: '正畸费'
-                },
-                {
-                id: 8,
-                cost_type: '拔牙费'
-                },
-                {
-                id: 9,
-                cost_type: '修复费'
-                },
-                {
-                id: 10,
-                cost_type: '其他'
-                },
+          cost_data:[
+          // {
+                // id: 1,
+                // cost_type: '西药费'
+                // },
+                // {
+                // id: 2,
+                // cost_type: '放射费'
+                // },
+                // {
+                // id: 3,
+                // cost_type: '检查费'
+                // },
+                // {
+                // id: 4,
+                // cost_type: '诊疗费'
+                // },
+                // {
+                // id: 5,
+                // cost_type: '补牙费'
+                // },
+                // {
+                // id: 6,
+                // cost_type: '手术费'
+                // },
+                // {
+                // id: 7,
+                // cost_type: '正畸费'
+                // },
+                // {
+                // id: 8,
+                // cost_type: '拔牙费'
+                // },
+                // {
+                // id: 9,
+                // cost_type: '修复费'
+                // },
+                // {
+                // id: 10,
+                // cost_type: '其他'
+                // },
           ],
           form:{
               disposal_code:'',
@@ -148,12 +148,12 @@ export default {
               price:undefined,
               unit:'',
               mem_discount:'',
-              cost_type:'',
-              billing_mode:'',
+              cate_id:undefined,
+              billing_mode:undefined,
               remarks:'',
           },
           rules:{
-              cost_type: [
+              cate_id: [
                   {
                       required: true,
                       message:'请输入费用类型.',
@@ -218,7 +218,10 @@ export default {
       created() {
         
       },
-      mounted() {},
+      mounted() {
+        let that = this;
+        that.getCategory();
+      },
       watch: {
         // refresh(newValue, oldValue) {
         //   let that = this;
@@ -227,6 +230,12 @@ export default {
         //     that.getPatientInfo();
         //   }
         // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCategory();
+            }
+        }
         
       },
       computed: {},
@@ -241,14 +250,45 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log(this.form);
+              // console.log(this.form);
+              that.$api.disposal.add(that.form)
+              .then(res => {
+                if(res.code == 200){
+                  that.$message({
+                      message: res.msg,
+                      type: "success",
+                      duration: 800
+                  });
+                  that.closethisDialog();
+                  that.$emit("flush",res.data);
+                 }
+                 else{
+                     that.$message.error(
+                          res.msg || "add error."
+                      );
+                 }
+              })
+              .catch(res => {
+                 // console.log(res);
+              });
             } else {
               console.log('error submit!!');
               return false;
             }
           });
+        },
+        getCategory() {
+            let that = this;
+            that.$api.cost_category.get()
+            .then(res => {
+               that.cost_data = res.data;
+            })
+            .catch(res => {
+              // console.log(res)
+            });
         },
         closethisDialog(){
            let that = this;

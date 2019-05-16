@@ -157,7 +157,7 @@ export default {
               remarks:'',
           },
           rules:{
-              cost_type: [
+              cate_id: [
                   {
                       required: true,
                       message:'请输入费用类型.',
@@ -240,7 +240,7 @@ export default {
             if (newValue) {
                 let that = this;
                 that.getCategory();
-                // that.getData();
+                that.getData();
             }
         }
 
@@ -270,7 +270,7 @@ export default {
                           duration: 800
                       });
                       that.closethisDialog();
-                      that.$emit("flush",res.data);
+                      that.$emit("flush");
                      }
                      else{
                          that.$message.error(
@@ -294,8 +294,8 @@ export default {
             that.$api.disposal.getById({'id':id})
             .then(res => {
                that.form = res.data;
-               
-               console.log(that.form);
+
+               // console.log(that.form);
             })
             .catch(res => {
               // console.log(res)

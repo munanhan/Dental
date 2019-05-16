@@ -26,6 +26,14 @@ export function update(data) {
     })
 }
 
+export function add(data){
+    return request({
+        url: `${prefix}`,
+        method: 'post',
+        data: data
+    });
+}
+
 export function del(data) {
     return request({
         url: `${prefix}/:id`,

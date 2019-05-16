@@ -219,12 +219,14 @@
     <!-- 添加处置与收费 -->
     <add-disposal-charging
       :show.sync="addDisposalChargingDialog"
+      @flush="flushData"
     >
     </add-disposal-charging>
     <!-- 修改处置与收费 -->
     <edit-disposal-charging
       :show.sync="editDisposalChargingDialog"
       :editItem="editItem"
+      @flush="flush"
     >
     </edit-disposal-charging>
 
@@ -259,19 +261,24 @@ export default {
       },
       data() {
         return {
-          is_del:false,
+          is_del:false,//删除窗口
+          
           del_id:0,
-          //费用类型窗口
-          costTypeDialog:false,
-          //添加处置窗口
-          addDisposalChargingDialog:false,
-          //修改处置窗口
-          editDisposalChargingDialog:false,
-          //修改数据组合
-          editItem:{},
-          //高度设定
-          tableHeight:700,
+
+          menu_id:0,//当前菜单id
+                   
+          costTypeDialog:false,//费用类型窗口
+          
+          addDisposalChargingDialog:false,//添加处置窗口
+          
+          editDisposalChargingDialog:false,//修改处置窗口
+          
+          editItem:{},//修改数据组合
+          
+          tableHeight:700,//高度设定
+
           menuHeight:667,
+
           menuData:[
                     // {
                     //   id:1,
@@ -379,6 +386,7 @@ export default {
       methods: {
         getMenuTableData(row){
           let that = this;
+          that.menu_id = row.id;
           that.getData(row.id);
         },
         showCostTypeDialog(){
@@ -421,7 +429,38 @@ export default {
         },
         del(){
           //删除
-          alert(id);
+          let that = this;
+          let id = that.del_id;
+           
+          that.$api.disposal.del({id})
+          .then(res => {
+
+                if(res.code == 200){
+                  for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                        console.log(id);
+                        console.log(that.tableData[i].id);
+                         if (that.tableData[i].id == id) {
+                             that.tableData.splice(i,1);
+                             break;
+                         }
+                    }
+
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.is_del = false;
+                }
+                else{
+                     that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+          })
+          .catch(res => {
+            console.log(res);
+          });
         },
         showAddDialog(){
           let that = this;
@@ -433,19 +472,20 @@ export default {
         exportData(){
 
         },
-        getById(editItem){
-            let that = this;
-            let id = editItem.id
-            that.$api.disposal.getById({'id':id})
-            .then(res => {
-               that.editItem = res.data;
-               that.editDisposalChargingDialog = true;
-            })
-            .catch(res => {
-              // console.log(res)
-            });
-        },
+        // getById(editItem){
+        //     let that = this;
+        //     let id = editItem.id
+        //     that.$api.disposal.getById({'id':id})
+        //     .then(res => {
+        //        that.editItem = res.data;
+        //        that.editDisposalChargingDialog = true;
+        //     })
+        //     .catch(res => {
+        //       // console.log(res)
+        //     });
+        // },
         getData(id){
+          //获取列表数据
           let that = this;
             that.$api.disposal.get({'id':id})
             .then(res => {
@@ -457,6 +497,7 @@ export default {
 
         },
         getMenu() {
+          //获取菜单
             let that = this;
             that.$api.cost_category.get()
             .then(res => {
@@ -466,11 +507,23 @@ export default {
 
             });
         },
+        flushData(data){
+          //刷新数据
+          let that = this;
+          that.menu_id == data.cate_id?that.flush():'';
+        },
         flushMenu(data){
+          //刷新菜单
             let that = this;
             that.menuData.push(data);
         },
+        flush(){
+          //刷新列表
+          let that = this;
+          that.getData(that.menu_id);
+        },
         delMenu(id){
+          //删除菜单
           let that = this;
           for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
                if (that.menuData[i].id == id) {
@@ -480,6 +533,7 @@ export default {
           }
         },
         updateMenu(data){
+          //刷新菜单2
           let that = this;
           for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
                if (that.menuData[i].id == data.id) {
