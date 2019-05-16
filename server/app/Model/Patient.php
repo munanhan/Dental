@@ -2,11 +2,18 @@
 
 namespace App\Model;
 
+use App\Events\CreatingEvent;
+use App\Events\UpdatingEvent;
 use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
     protected $guarded=['id',];
+
+    protected $dispatchesEvents=[
+        'creating'=>CreatingEvent::class,
+        'updating'=>UpdatingEvent::class,
+    ];
 
     public function patientInfo()
     {

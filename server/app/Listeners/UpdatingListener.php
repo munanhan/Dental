@@ -2,12 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\TestEvent;
+use App\Events\UpdatingEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Auth;
 
-class TestListener
+class UpdatingListener
 {
     /**
      * Create the event listener.
@@ -19,11 +18,14 @@ class TestListener
         //
     }
 
-    /***
-     * @param TestEvent $event
+    /**
+     * Handle the event.
+     *
+     * @param  UpdatingEvent  $event
+     * @return void
      */
-    public function handle(TestEvent $event)
+    public function handle(UpdatingEvent $event)
     {
-        $event->model->fill(['created_by'=>Auth::user()->name]);
+        $event->model->fill(['updated_by'=>Auth::user()->name]);
     }
 }

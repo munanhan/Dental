@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Model\Order;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
@@ -12,15 +11,14 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TestEvent
+class UpdatingEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $model;
 
     /**
-     * Create a new event instance.
-     * TestEvent constructor.
+     * UpdatingEvent constructor.
      * @param Model $model
      */
     public function __construct(Model $model)
