@@ -232,16 +232,14 @@ export default {
         that.getColor();
 
         that.$nextTick(() => {
+            that.resizeContent();
+
+            //监听事件,由layout那边的resize抛出的
+            window.addEventListener("bodyChange", that.resizeContent);
+
             //绑定全局的mouseup事件，取消移动
             document.addEventListener("click", that.documentCelearSelect);
         });
-
-        //监听事件,由layout那边的resize抛出的
-        if (window.addEventListener) {
-            window.addEventListener("bodyChange", that.resizeContent);
-        } else {
-            window.attachEvent("bodyChange", that.resizeContent);
-        }
     },
 
     destroyed() {
@@ -625,26 +623,26 @@ export default {
                     }
 
                     //调整left和bottom，降低遍历的元素数量，提高速度
-                    that.topRow = Math.min(
-                        that.topRow,
-                        that.curRow,
-                        that.bottomRow
-                    );
-                    that.leftCol = Math.min(
-                        that.leftCol,
-                        that.curCol,
-                        that.rightCol
-                    );
-                    that.bottomRow = Math.max(
-                        that.topRow,
-                        that.curRow,
-                        that.bottomRow
-                    );
-                    that.rightCol = Math.max(
-                        that.leftCol,
-                        that.curCol,
-                        that.rightCol
-                    );
+                    // that.topRow = Math.min(
+                    //     that.topRow,
+                    //     that.curRow,
+                    //     that.bottomRow
+                    // );
+                    // that.leftCol = Math.min(
+                    //     that.leftCol,
+                    //     that.curCol,
+                    //     that.rightCol
+                    // );
+                    // that.bottomRow = Math.max(
+                    //     that.topRow,
+                    //     that.curRow,
+                    //     that.bottomRow
+                    // );
+                    // that.rightCol = Math.max(
+                    //     that.leftCol,
+                    //     that.curCol,
+                    //     that.rightCol
+                    // );
                 }, 80); //可以设置60,80，100
             }
         },
@@ -674,7 +672,7 @@ export default {
                 //计算合计
                 that.calcTotal(rowCalc);
                 //发送远程的数据
-                that.updateRemote();
+                that.updateRemote(data);
 
                 //判断是否有选中，用于处理点击上面的按钮无法确定当前是否有选中
                 that.hasSelect = false;
@@ -705,8 +703,10 @@ export default {
         },
 
         //更新考勤数据
-        updateRemote(){
+        updateRemote(data) {
             let that = this;
+
+            // TODO
         },
 
         exportExcel() {}
