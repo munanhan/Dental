@@ -218,6 +218,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::post('disposal', 'DisposalController@addDisposal');
 
+    Route::get('disposal/get_by_id','DisposalController@getById');
+
     Route::put('disposal', 'DisposalController@update');
 
     Route::delete('disposal/{id}', 'DisposalController@delete');

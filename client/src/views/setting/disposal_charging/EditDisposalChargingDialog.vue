@@ -28,13 +28,13 @@
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="费用类型" prop="category">
+          <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
               filterable
               placeholder="请选择费用类型"
               size=""
-              v-model="form.category"
+              v-model="form.cate_id"
               class="width100"
               
           >
@@ -152,8 +152,8 @@ export default {
               price:undefined,
               unit:'',
               mem_discount:undefined,
-              category: null,
-              billing_mode:'',
+              cate_id: undefined,
+              billing_mode:undefined,
               remarks:'',
           },
           rules:{
@@ -225,15 +225,25 @@ export default {
       mounted() {
          let that = this;
          that.getCategory();
+         // that.getData();
       },
       watch: {
         // refresh(newValue, oldValue) {
         //   let that = this;
 
         //   if (newValue) {
-        //     that.getPatientInfo();
+        //     that.getCategory();
+        //     that.getData();
         //   }
-        // }
+        // },
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCategory();
+                // that.getData();
+            }
+        }
+
         
       },
       computed: {},
@@ -278,6 +288,19 @@ export default {
             }
           });
         },
+        getData(){
+            let that = this;
+            let id = that.form.id;
+            that.$api.disposal.getById({'id':id})
+            .then(res => {
+               that.form = res.data;
+               
+               console.log(that.form);
+            })
+            .catch(res => {
+              // console.log(res)
+            });
+        },
         getCategory() {
             let that = this;
             that.$api.cost_category.get()
@@ -285,7 +308,7 @@ export default {
                that.cost_data = res.data;
             })
             .catch(res => {
-
+              // console.log(res)
             });
         },
         closethisDialog(){

@@ -10,6 +10,14 @@ export function get(data) {
     })
 }
 
+export function getById(data) {
+    return request({
+        url: `${prefix}/get_by_id`,
+        method: 'get',
+        params: data
+    })
+}
+
 export function update(data) {
     return request({
         url: `${prefix}`,

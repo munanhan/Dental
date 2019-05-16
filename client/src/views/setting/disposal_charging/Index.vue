@@ -410,6 +410,7 @@ export default {
           //修改
           let that = this;
           that.editItem = editItem;
+          // that.getById(editItem);
           that.editDisposalChargingDialog = true;
         },
         showDel(id){
@@ -431,6 +432,18 @@ export default {
         },
         exportData(){
 
+        },
+        getById(editItem){
+            let that = this;
+            let id = editItem.id
+            that.$api.disposal.getById({'id':id})
+            .then(res => {
+               that.editItem = res.data;
+               that.editDisposalChargingDialog = true;
+            })
+            .catch(res => {
+              // console.log(res)
+            });
         },
         getData(id){
           let that = this;

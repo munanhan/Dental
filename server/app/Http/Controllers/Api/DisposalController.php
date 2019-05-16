@@ -32,11 +32,21 @@ class DisposalController extends Controller
 
     }
 
+    public function getById(Request $request){
+        //get by id
+        $id = $request->input('id') != ''?$request->input('id'):0;
+        if (!$id) {
+            return message('缺少id',[],404);
+        }
+        $data = Disposal::where('id',$id)->first();
+        return message('成功',$data,200);
+    }
+
     public function update(Request $request){
         $parms = getParms($request->input())['parms'];
         $fields = [//必填项
                      'billing_mode' => '收费模式',
-                     'category' => '费用类型',
+                     'cate_id' => '费用类型',
                      'disposal_code' => '处置代码',
                      'disposal_name' => '处置名称',
                      'mem_discount' => '会员折扣',
