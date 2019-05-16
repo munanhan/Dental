@@ -69,35 +69,19 @@
                 ref="contentHead"
             >
                 <el-button
+                    v-for="(item, index) in settingBtn"
+                    :key="index"
                     class="btns"
-                    @click="setAttendance(1, '全勤')"
+                    @click.prevent.stop="setAttendance(item.type, item.innerText, item.bgColor)"
                     type="primary"
-                >全勤</el-button>
-                <el-button
-                    class="btns"
-                    @click="setAttendance(2, '请假')"
-                    type="primary"
-                >请假</el-button>
-                <el-button
-                    class="btns"
-                    @click="setAttendance(3, '早退')"
-                    type="primary"
-                >早退</el-button>
-                <el-button
-                    class="btns"
-                    @click="setAttendance(4, '迟到')"
-                    type="primary"
-                >迟到</el-button>
-                <el-button
-                    class="btns"
-                    @click="setAttendance(5, '缺勤')"
-                    type="primary"
-                >缺勤</el-button>
-                <el-button
-                    class="btns"
-                    @click="setAttendance(0, '')"
-                    type="primary"
-                >撤销</el-button>
+                >
+                    {{item.text}}
+                </el-button>
+
+                <i
+                    class="ml-10 el-icon-setting attend-setting"
+                    @click.stop="attendSettingDialog = true"
+                ></i>
             </div>
 
             <div class="right-content">
@@ -160,13 +144,17 @@
 
             </div>
         </div>
+
+        <attend-setting :show.sync="attendSettingDialog"></attend-setting>
     </div>
 </template>
 
 <script>
+import AttendSetting from './AttendSetting';
+
 export default {
     name: "Attendance",
-    components: {},
+    components: {AttendSetting},
     props: {},
     data() {
         return {
@@ -187,8 +175,6 @@ export default {
 
             contentHeight: "300px",
 
-            //考勤对应的颜色
-            colorMapping: { 0: "white", 1: "red" },
             //通知外部不清除，用于处理拖选的时候拖出边界，然后放到放开鼠标的时候不要清除框
             clear: true,
             //是否开始拖动
@@ -214,7 +200,48 @@ export default {
             hasSelect: false,
 
             //用户的考勤数组数据映射，用于设置后快速找到相应的人员考勤数据
-            dataObjectMapping: {}
+            dataObjectMapping: {},
+
+            settingBtn: [
+                {
+                    type: 0,
+                    text: "撤销",
+                    innerText: "",
+                    bgColor: ""
+                },
+                {
+                    type: 1,
+                    text: "全勤",
+                    innerText: "全勤",
+                    bgColor: "red"
+                },
+                {
+                    type: 2,
+                    text: "请假",
+                    innerText: "请假",
+                    bgColor: "green"
+                },
+                {
+                    type: 3,
+                    text: "早退",
+                    innerText: "早退",
+                    bgColor: "blue"
+                },
+                {
+                    type: 4,
+                    text: "迟到",
+                    innerText: "迟到",
+                    bgColor: "rgba(19, 206, 102, 0.8)"
+                },
+                {
+                    type: 5,
+                    text: "缺勤",
+                    innerText: "缺勤",
+                    bgColor: "rgba(130, 143, 136, 0.8)"
+                }
+            ],
+
+            attendSettingDialog: false
         };
     },
     created() {},
@@ -229,7 +256,7 @@ export default {
         that.setSelectText();
         that.buildHeader();
         that.getData();
-        that.getColor();
+        that.getBtns();
 
         that.$nextTick(() => {
             that.resizeContent();
@@ -268,8 +295,10 @@ export default {
         },
 
         //获取状态对应的颜色
-        getColor() {
+        getBtns() {
             let that = this;
+
+            //这里同时设置
         },
 
         setSelectText() {
@@ -331,6 +360,8 @@ export default {
         },
 
         buildHeader() {
+            // TODO 更新远程的数据， 这里组织列头
+
             let that = this,
                 firstDateInstance = new Date(
                     that.selectYear,
@@ -405,6 +436,8 @@ export default {
         },
 
         getData() {
+            // TODO 更新远程的数据， 这里组织数据
+
             //测试数据
             let that = this,
                 lastDateInstance = new Date(that.selectYear, that.selectMth, 0),
@@ -447,7 +480,7 @@ export default {
                         type: 0,
                         text: "",
                         isTotal: false,
-                        backgroundColor: that.colorMapping[0],
+                        backgroundColor: '',
                         currentSelect: false,
                         otherSelect: false
                     });
@@ -474,15 +507,15 @@ export default {
                     tdata["aaa"] = item;
 
                     //设置快速映射
-                    that.dataObjectMapping["aaa"] = 0;
+                    that.dataObjectMapping[0] = "aaa";
                 } else if (j == 1) {
                     tdata["bbb"] = item;
 
-                    that.dataObjectMapping["bbb"] = 1;
+                    that.dataObjectMapping[1] = "bbb";
                 } else if (j == 2) {
                     tdata["ccc"] = item;
 
-                    that.dataObjectMapping["ccc"] = 2;
+                    that.dataObjectMapping[2] = "ccc";
                 }
             }
 
@@ -622,83 +655,69 @@ export default {
                         }
                     }
 
-                    //调整left和bottom，降低遍历的元素数量，提高速度
-                    // that.topRow = Math.min(
-                    //     that.topRow,
-                    //     that.curRow,
-                    //     that.bottomRow
-                    // );
-                    // that.leftCol = Math.min(
-                    //     that.leftCol,
-                    //     that.curCol,
-                    //     that.rightCol
-                    // );
-                    // that.bottomRow = Math.max(
-                    //     that.topRow,
-                    //     that.curRow,
-                    //     that.bottomRow
-                    // );
-                    // that.rightCol = Math.max(
-                    //     that.leftCol,
-                    //     that.curCol,
-                    //     that.rightCol
-                    // );
+                    //调整新的left，right，top和bottom
+                    that.leftCol = seedLeft == "left" ? colIdx : that.curCol;
+                    that.rightCol = seedLeft == "left" ? that.curCol : colIdx;
+                    that.topRow = seedTop == "top" ? rowIdx : that.curRow;
+                    that.bottomRow = seedTop == "top" ? that.curRow : rowIdx;
                 }, 80); //可以设置60,80，100
             }
         },
 
         //设置状态
-        setAttendance(type, text) {
+        setAttendance(type, text, color) {
             let that = this,
-                rowCalc = []; //需要计算row的数量
+                rowCalc = [], //需要计算row的数量
+                remoteData = [];
 
             //判断是否有选中，用于处理点击上面的按钮无法确定当前是否有选中
             if (that.hasSelect) {
-                //这里设置后顺带清楚，提升效率，不调用clearSelect
+                //这里设置后顺带清除，同时计算总数，提升效率，不调用clearSelect，只计算一部分的行
                 for (var row = that.topRow; row <= that.bottomRow; row++) {
-                    rowCalc.push(row);
+                    var curRow = that.quickRow[row],
+                        count = {}, //计算总数
+                        //远程发送的数据
+                        remoteItem = {
+                            name: that.dataObjectMapping[row],
+                            data: []
+                        };
 
-                    for (var col = that.leftCol; col <= that.rightCol; col++) {
+                    for (var col = 0; col < curRow.length; col++) {
                         var item = that.quickRow[row][col];
 
-                        item["type"] = type;
-                        item["text"] = text;
-                        item["backgroundColor"] = that.colorMapping[type];
-                        item["otherSelect"] = false;
-                        item["currentSelect"] = false;
+                        //设置状态
+                        if (col >= that.leftCol && col <= that.rightCol) {
+                            item["type"] = type;
+                            item["text"] = text;
+                            item["backgroundColor"] = color;
+                            //这里顺便设置清除，不要继续调用清除，提高速度
+                            item["otherSelect"] = false;
+                            item["currentSelect"] = false;
+
+                            //组织远程的数据
+                            remoteItem.data.push(item);
+                        }
+
+                        if (item.type) {
+                            //显示total
+                            if (item.isTotal) {
+                                item.text = count[item.type] || 0;
+                            } else {
+                                //计算total
+                                count[item.type] = (count[item.type] || 0) + 1;
+                            }
+                        }
                     }
+
+                    //追加到要发送到服务器的数据
+                    remoteData.push(remoteItem);
                 }
 
-                //计算合计
-                that.calcTotal(rowCalc);
                 //发送远程的数据
-                that.updateRemote(data);
+                that.updateRemote(remoteData);
 
                 //判断是否有选中，用于处理点击上面的按钮无法确定当前是否有选中
                 that.hasSelect = false;
-            }
-        },
-
-        //计算合计
-        calcTotal(rows) {
-            let that = this;
-
-            for (var i = 0; i < rows.length; i++) {
-                var rowIdx = rows[i],
-                    curRow = that.quickRow[rowIdx],
-                    count = {};
-
-                for (var j = 0; j < curRow.length; j++) {
-                    var item = curRow[j];
-
-                    if (item.type) {
-                        if (item.isTotal) {
-                            item.text = count[item.type] || 0;
-                        } else {
-                            count[item.type] = (count[item.type] || 0) + 1;
-                        }
-                    }
-                }
             }
         },
 
@@ -706,7 +725,7 @@ export default {
         updateRemote(data) {
             let that = this;
 
-            // TODO
+            // TODO 更新远程的数据
         },
 
         exportExcel() {}
@@ -809,6 +828,16 @@ export default {
             line-height: 60px;
             padding-left: 16px;
             box-sizing: border-box;
+
+            .attend-setting {
+                font-size: 24px;
+                vertical-align: sub;
+                cursor: pointer;
+
+                &:hover {
+                    color: @color;
+                }
+            }
         }
 
         .right-content {
