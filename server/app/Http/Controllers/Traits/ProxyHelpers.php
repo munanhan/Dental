@@ -42,7 +42,7 @@ trait ProxyHelpers
 
     public function getUrl()
     {
-        $addr=request()->server('REMOTE_ADDR');
+        $addr=request()->server('SERVER_NAME');
         $port=request()->server('SERVER_PORT');
         $http='http://';
         $url=$http.$addr.':'.$port;
