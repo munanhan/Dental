@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4942e3a4-376c-4cd9-8c63-bbe7953973d0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/server/app/Events/TestEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Events/TestEvent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Listeners/TestListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Listeners/TestListener.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Model/Patient.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Model/Patient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Providers/EventServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,6 +15,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+              <folding>
+                <element signature="e#47#69#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/app/Providers/EventServiceProvider.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -79,15 +88,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/storage/logs/laravel-2019-05-16.log">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="144" column="87" selection-start-line="144" selection-start-column="82" selection-end-line="144" selection-end-column="87" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/app/Model/Patient.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
@@ -203,7 +203,6 @@
         <option value="$PROJECT_DIR$/server/app/Http/Resources/PatientTeethHabit.php" />
         <option value="$PROJECT_DIR$/server/app/Http/Resources/User.php" />
         <option value="$PROJECT_DIR$/server/app/Http/Resources/PatientCollection.php" />
-        <option value="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" />
         <option value="$PROJECT_DIR$/server/app/Events/TestEvent.php" />
         <option value="$PROJECT_DIR$/server/app/Listeners/TestListener.php" />
         <option value="$PROJECT_DIR$/server/app/Providers/EventServiceProvider.php" />
@@ -212,6 +211,7 @@
         <option value="$PROJECT_DIR$/server/app/Listeners/CreatingListener.php" />
         <option value="$PROJECT_DIR$/server/app/Listeners/UpdatingListener.php" />
         <option value="$PROJECT_DIR$/server/app/Model/Patient.php" />
+        <option value="$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php" />
       </list>
     </option>
   </component>
@@ -497,12 +497,12 @@
       <workItem from="1557451522939" duration="5663000" />
       <workItem from="1557472744818" duration="259000" />
       <workItem from="1557477149856" duration="17698000" />
-      <workItem from="1557883601541" duration="21215000" />
+      <workItem from="1557883601541" duration="22074000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="379746000" />
+    <option name="totallyTimeSpent" value="380605000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -850,16 +850,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="54" column="37" lean-forward="true" selection-start-line="54" selection-start-column="37" selection-end-line="54" selection-end-column="37" />
-          <folding>
-            <element signature="e#47#69#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/storage/logs/laravel-2019-05-16.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="387">
@@ -953,6 +943,16 @@
           <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
           <folding>
             <element signature="e#29#58#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Traits/ProxyHelpers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+          <folding>
+            <element signature="e#47#69#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
