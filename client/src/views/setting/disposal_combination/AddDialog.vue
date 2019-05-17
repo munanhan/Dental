@@ -40,7 +40,7 @@
 
                         >
                         <el-table-column
-                          prop="catepory"
+                          prop="category"
                         >
                         </el-table-column>
                       </el-table>
@@ -60,7 +60,7 @@
                       </el-col>
                       <el-col :span="2" style="margin-left: 10px;">
                             <span class="">
-                                <el-button type="primary" @click="getData">查询</el-button>
+                                <el-button type="primary" @click="searchData">查询</el-button>
                             </span>
                       </el-col>
                       <el-col :span="2" :offset="11">
@@ -78,7 +78,7 @@
                     </div>
                 </el-row>
                   <el-table
-                    :data="disposalData"
+                    :data="tableData"
                     stripe
                     border
                     highlight-current-row
@@ -131,14 +131,14 @@
                       prop="medical_insurance"
                       width="80px"
                     >
-                    <template slot-scope="scope">
+<!--                     <template slot-scope="scope">
                       <div v-if="scope.row.medical_insurance == 1">
                          是
                       </div>
                       <div v-if="scope.row.medical_insurance == 0">
                          否
                       </div>
-                    </template>
+                    </template> -->
                     </el-table-column>
                     <el-table-column
                       label="处置备注"
@@ -147,7 +147,7 @@
                     </el-table-column>
                     <el-table-column
                       label="费用类型"
-                      prop="cost_type"
+                      prop="category"
                     >
                     </el-table-column>
                   </el-table>
@@ -206,7 +206,7 @@
                         </el-table-column>
                         <el-table-column
                           label="费用类型"
-                          prop="cost_type"
+                          prop="category"
                         >
                         </el-table-column>
                     </el-table>
@@ -253,175 +253,175 @@ export default {
 
         return {
           disposalChargingDialog:false,
-          select_disposal:{},
-          select_form:{},
+          select_disposal:{},//选择的处置
+          select_form:{},//选择的表单
           menuData:[
-                    {
-                      id:0,
-                      catepory:'全部'
-                    },
-                    {
-                      id:1,
-                      catepory:'西药费'
-                    },
-                    {
-                      id:2,
-                      catepory:'放射费'
-                    },
-                    {
-                      id:3,
-                      catepory:'检查费'
-                    },
-                    {
-                      id:4,
-                      catepory:'诊疗费'
-                    },
-                    {
-                      id:5,
-                      catepory:'补牙费'
-                    },
-                    {
-                      id:6,
-                      catepory:'手术费'
-                    },
-                    {
-                      id:7,
-                      catepory:'正崎费'
-                    },
-                    {
-                      id:8,
-                      catepory:'拔牙费'
-                    },
-                    {
-                      id:9,
-                      catepory:'修复费'
-                    },
-                    {
-                      id:10,
-                      catepory:'其  他'
-                    },
+                    // {
+                    //   id:0,
+                    //   catepory:'全部'
+                    // },
+                    // {
+                    //   id:1,
+                    //   catepory:'西药费'
+                    // },
+                    // {
+                    //   id:2,
+                    //   catepory:'放射费'
+                    // },
+                    // {
+                    //   id:3,
+                    //   catepory:'检查费'
+                    // },
+                    // {
+                    //   id:4,
+                    //   catepory:'诊疗费'
+                    // },
+                    // {
+                    //   id:5,
+                    //   catepory:'补牙费'
+                    // },
+                    // {
+                    //   id:6,
+                    //   catepory:'手术费'
+                    // },
+                    // {
+                    //   id:7,
+                    //   catepory:'正崎费'
+                    // },
+                    // {
+                    //   id:8,
+                    //   catepory:'拔牙费'
+                    // },
+                    // {
+                    //   id:9,
+                    //   catepory:'修复费'
+                    // },
+                    // {
+                    //   id:10,
+                    //   catepory:'其  他'
+                    // },
                    ],
-          disposalData:[
-                {
-                   id:1,
-                   disposal_code:7002,
-                   disposal_name:'必兰麻',
-                   unit:'项',
-                   price:50.00,
-                   medical_insurance:1,
-                   remarks:'无',
-                   cost_type:'西药费'
-                },
-                {
-                   id:2,
-                   disposal_code:7003,
-                   disposal_name:'保丽净',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'西药费'
-                },
-                {
-                   id:3,
-                   disposal_code:7005,
-                   disposal_name:'芬必得',
-                   unit:'项',
-                   price:20.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'西药费'
-                },
-                {
-                   id:4,
-                   disposal_code:5001,
-                   disposal_name:'口内根尖片',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'放射费'
-                },
-                {
-                   id:5,
-                   disposal_code:5002,
-                   disposal_name:'头颅定位侧位片',
-                   unit:'项',
-                   price:100.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'放射费'
-                },
-                {
-                   id:6,
-                   disposal_code:5003,
-                   disposal_name:'头颅定位正位片',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'放射费'
-                },
-                {
-                   id:7,
-                   disposal_code:7001,
-                   disposal_name:'口腔检查',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'检查费'
-                },
-                {
-                   id:8,
-                   disposal_code:2001,
-                   disposal_name:'单面洞',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'诊疗费'
-                },
-                {
-                   id:9,
-                   disposal_code:2005,
-                   disposal_name:'超声波洁牙',
-                   unit:'全口',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'手术费'
-                },
-                {
-                   id:10,
-                   disposal_code:1010,
-                   disposal_name:'齿槽骨修正术',
-                   unit:'次',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'手续费'
-                },
-                {
-                   id:11,
-                   disposal_code:4002,
-                   disposal_name:'固定矫正',
-                   unit:'项',
-                   price:60.00,
-                   medical_insurance:0,
-                   remarks:'无',
-                   cost_type:'正畸费'
-                }
+          tableData:[
+                // {
+                //    id:1,
+                //    disposal_code:7002,
+                //    disposal_name:'必兰麻',
+                //    unit:'项',
+                //    price:50.00,
+                //    medical_insurance:1,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:2,
+                //    disposal_code:7003,
+                //    disposal_name:'保丽净',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:3,
+                //    disposal_code:7005,
+                //    disposal_name:'芬必得',
+                //    unit:'项',
+                //    price:20.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:4,
+                //    disposal_code:5001,
+                //    disposal_name:'口内根尖片',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:5,
+                //    disposal_code:5002,
+                //    disposal_name:'头颅定位侧位片',
+                //    unit:'项',
+                //    price:100.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:6,
+                //    disposal_code:5003,
+                //    disposal_name:'头颅定位正位片',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:7,
+                //    disposal_code:7001,
+                //    disposal_name:'口腔检查',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'检查费'
+                // },
+                // {
+                //    id:8,
+                //    disposal_code:2001,
+                //    disposal_name:'单面洞',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'诊疗费'
+                // },
+                // {
+                //    id:9,
+                //    disposal_code:2005,
+                //    disposal_name:'超声波洁牙',
+                //    unit:'全口',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'手术费'
+                // },
+                // {
+                //    id:10,
+                //    disposal_code:1010,
+                //    disposal_name:'齿槽骨修正术',
+                //    unit:'次',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'手续费'
+                // },
+                // {
+                //    id:11,
+                //    disposal_code:4002,
+                //    disposal_name:'固定矫正',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'正畸费'
+                // }
           ],
           form:[
-                {
-                  disposal_id:1,
-                  disposal_code:2005,
-                  disposal_name:'超声波洁牙',
-                  unit:'全口',
-                  price:120.00,
-                  cost_type:'诊疗费'
-                }
+                // {
+                //   disposal_id:1,
+                //   disposal_code:2005,
+                //   disposal_name:'超声波洁牙',
+                //   unit:'全口',
+                //   price:120.00,
+                //   cost_type:'诊疗费'
+                // }
 
           ],
           rules:{
@@ -460,6 +460,12 @@ export default {
         //     that.getPatientInfo();
         //   }
         // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getMenu();
+            }
+        }
         
       },
       computed: {},
@@ -520,13 +526,45 @@ export default {
           // this.form.push(new_data);
           
         },
-
-        getData(){
-          //搜索
-          console.log(this.search);
+        searchData(){
+           //查询
+           let that = this;
+           that.getData();
         },
+        getData(id = ''){
+          //获取列表数据
+          let that = this;
+          let disposal_name = that.search.disposal_name;
+
+            that.$api.disposal.get({'id':id,'disposal_name':disposal_name})
+            .then(res => {
+               that.tableData = res.data;
+            })
+            .catch(res => {
+
+            });
+
+        },
+        getMenu() {
+          //获取菜单
+            let that = this;
+            that.$api.cost_category.get()
+            .then(res => {
+               that.menuData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+
+        // getData(){
+        //   //搜索
+        //   console.log(this.search);
+        // },
         getMenuTableData(row){
-          alert(row.id);
+          let that = this;
+          that.search.disposal_name = '';
+          that.getData(row.id);
         },
         
         submitForm(formName) {

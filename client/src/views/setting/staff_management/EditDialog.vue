@@ -24,7 +24,7 @@
                           filterable
                           placeholder="请选择职位"
                           size="small"
-                          v-model="form.role"
+                          v-model="form.role_id"
                           class="width100"
                           
                       >
@@ -66,7 +66,7 @@ export default {
             name:'',
             phone:'',
             password:'',
-            role:''
+            role_id:''
           },
           role_list:[
             // '主任',
@@ -110,7 +110,7 @@ export default {
                         trigger:'blur'
                     }
                 ],
-              role: [
+              role_id: [
                   {
                       required: true,
                       message:'请选择职位.',

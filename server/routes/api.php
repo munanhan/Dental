@@ -29,9 +29,11 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Config Api
      */
 
-    Route::get('/patient_resource', function () {
+    Route::get('patients/patient_resource', function () {
         return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
     });
+
+    //Route::get('patients/patient_')
 
     /*
      * Route User APi
@@ -57,6 +59,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::post('user/update_password', 'UserController@updatePassword');//修改密码
 
     Route::put('user', 'UserController@update');//修改用户信息
+
+    Route::get('user/get_by_id','UserController@getById');//根据id获取
 
 
 
@@ -244,6 +248,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('cost_category/{id}', 'CostCategoryController@delete');
 
+    /*
+     * Route DiisposalCombo Api
+     * created for yu
+     */
+    Route::get('disposal_combo_menu','DisposalComboMenuController@index');
+
+    Route::post('disposal_combo_menu', 'DisposalComboMenuController@addCombo');
+
+    Route::put('disposal_combo_menu', 'DisposalComboMenuController@update');
+
+    Route::delete('disposal_combo_menu/{id}', 'DisposalComboMenuController@delete');
+
+
 
 
     // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
@@ -269,7 +286,9 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('message','UserController@getMessage');
 
-    Route::get('hashpassword','UserController@getHashPassword');
+    Route::get('password',function (){
+        return \Illuminate\Support\Facades\Hash::make(request('password'));
+    });
 
     Route::get('dysms','UserController@sendMessage');
 

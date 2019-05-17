@@ -337,3 +337,12 @@ export function edit(data){
         params: data
     });
 }
+
+//根据id获取
+export function getById(data) {
+    return request({
+        url: `${prefix}/get_by_id`,
+        method: 'get',
+        params: data
+    })
+}

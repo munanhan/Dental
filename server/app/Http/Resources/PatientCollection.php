@@ -23,7 +23,17 @@ class PatientCollection extends ResourceCollection
             'patient_allergy'=>PatientAllergy::collection(\App\Model\PatientAllergy::all()),
             'patient_anamnesis'=>PatientAnamnesis::collection(\App\Model\PatientAnamnesis::all()),
             'patient_teeth_habit'=>PatientTeethHabit::collection(\App\Model\PatientTeethHabit::all()),
-            'user'=>User::collection(\App\Model\User::all()),
+            'user'=>[
+                'all'=>User::collection(\App\Model\User::all()),
+                'doctor'=>User::collection(\App\Model\User::whereHas('roles',function($query){
+                    $query->whereIn('roles.id',[2,3,8]);
+                })->get()),
+                'consult'=>User::collection(\App\Model\User::whereHas('roles',function($query){
+                    $query->where('roles.id',3);
+                })->get()),
+            ],
         ];
     }
+
+
 }

@@ -28,6 +28,12 @@
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否医保" prop="medical_insurance">
+            <el-radio-group v-model="form.medical_insurance">
+              <el-radio :label="1">是</el-radio>
+              <el-radio :label="0">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
@@ -155,6 +161,7 @@ export default {
               cate_id: undefined,
               billing_mode:undefined,
               remarks:'',
+              medical_insurance:undefined
           },
           rules:{
               cate_id: [
@@ -239,8 +246,8 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getCategory();
-                that.getData();
+                // that.getCategory();
+                // that.getData();
             }
         }
 

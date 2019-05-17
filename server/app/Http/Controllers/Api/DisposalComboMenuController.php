@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Disposal;
+use App\Model\DisposalCombo;
 
-class DisposalController extends Controller
+class DisposalComboMenuController extends Controller
 {
             public function index(Request $request){
                 //主页
@@ -55,23 +56,19 @@ class DisposalController extends Controller
                 return message('成功',$data,200);
             }
 
-            public function addDisposal(Request $request){
+            public function addCombo(Request $request){
                 //添加
                 $parms = getParms($request->input())['parms'];
                 $fields = [//必填项
-                             'billing_mode' => '收费模式',
-                             'cate_id' => '费用类型',
-                             'disposal_code' => '处置代码',
-                             'disposal_name' => '处置名称',
-                             'mem_discount' => '会员折扣',
-                             'price' => '价格',
-                             'unit' => '单位'
+                             'combo_name' => '组合名'
                           ];
+
                 $res = checkParms($fields,$parms);
                 if ($res) {
                     return message($res,[],404);
                 }
-                $res = Disposal::create($parms);
+
+                $res = DisposalCombo::create($parms);
                 if ($res) {
                     return message('新增成功',$res,200);
                 }
@@ -109,7 +106,7 @@ class DisposalController extends Controller
 
             public function delete($id){
                 //删
-                $res = Disposal::destroy($id);
+                $res = DisposalCombo::destroy($id);
                 if ($res) {
                     return message('删除成功',null, 200);
                 }

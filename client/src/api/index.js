@@ -7,6 +7,8 @@ import * as patient_recycling_bin from './patient_recycling_bin'
 import * as patient from './patient'
 import * as disposal from './disposal'
 import * as cost_category from './cost_category'
+import * as disposal_combo from './disposal_combo'
+import * as disposal_combo_menu from './disposal_combo_menu'
 
 const apis = {
     base,
@@ -17,7 +19,9 @@ const apis = {
     patient_recycling_bin,
     patient,
     cost_category,
-    disposal
+    disposal,
+    disposal_combo,
+    disposal_combo_menu
 }
 
 const install = function (Vue) {

@@ -55,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         public function roles()
         {
-            return $this->belongsToMany(Role::class);
+            return $this->belongsToMany(Role::class,'role_users');
         }
 
         //获取关联中间表的创建时间字段
