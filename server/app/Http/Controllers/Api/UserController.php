@@ -11,6 +11,7 @@ use App\Model\Role;
 use App\Model\RoleUser;
 use App\Http\Controllers\Traits\SendSmsHelpers;
 use Illuminate\Support\Facades\Crypt;
+use phpseclib\Crypt\Hash;
 
 
 class UserController extends Controller
