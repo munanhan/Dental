@@ -70,33 +70,94 @@ export default {
   name: "",
   inject: ["week", "navBar", "dayTime", "getWeekStartEnd"],
   props: ["weekStart", "weekEnd", "weekArr"],
-  created() {},
+  created() {
+    this.$nextTick(function(){
+      setTimeout(()=>{
+        this.$api.appointment.getWeekAppointment({weekStart:this.weekStart,weekEnd:this.weekEnd})
+          .then(res=>{
+            if(res.code == 200){
+              this.yuyue_week_res = res.data;
+            }
+          })
+          
+      },1000);
+      
+    });
+  },
   data() {
     return {
-      yuyue_week_res: [
+      yuyue_week_res:  [
         {
-          age: "18",
-          apt_data: "2019-04-29",
-          tel_one: "13538048392",
-          doctor_id: "王医生",
-          name: "韩楠",
-          sex: "男",
-          time_frame_begin: "10 : 30",
-          type_id: "初诊",
-          items: "拆线"
+            id: 21,
+            patient_id: 75,
+            type: "0",
+            status: null,
+            appointment_doctor: "d",
+            appointment_comment: "hdf",
+            appointment_date: "2019-05-14",
+            start_time: "10 : 00",
+            over_time: "11 : 00",
+            items: "牙周上药",
+            created_at: "2019-05-14 09:25:46",
+            created_by: null,
+            updated_at: "2019-05-14 09:25:46",
+            updated_by: null,
+            age: 18,
+            source: "朋友介绍",
+            name: "h10",
+            case_id: "20190514167",
+            sex: "男",
+            phone: "13538048392",
+            content: "gh"
         },
         {
-          age: "18",
-          apt_data: "2019-04-10",
-          doctor_id: "王医生",
-          tel_one: "13538048392",
-          name: "韩楠",
-          sex: "男",
-          time_frame_begin: "14 : 00",
-          type_id: "初诊",
-          items: "拆线"
-        }
-      ]
+            id: 23,
+            patient_id: 75,
+            type: "0",
+            status: null,
+            appointment_doctor: "d",
+            appointment_comment: "hdf",
+            appointment_date: "2019-05-14",
+            start_time: "10 : 00",
+            over_time: "11 : 00",
+            items: "牙周上药",
+            created_at: "2019-05-14 09:25:46",
+            created_by: null,
+            updated_at: "2019-05-14 09:25:46",
+            updated_by: null,
+            age: 18,
+            source: "朋友介绍",
+            name: "h10",
+            case_id: "20190514167",
+            sex: "男",
+            phone: "13538048392",
+            content: "gh"
+        },
+        {
+            id: 22,
+            patient_id: 75,
+            type: "0",
+            status: null,
+            appointment_doctor: "d",
+            appointment_comment: "hdf",
+            appointment_date: "2019-05-15",
+            start_time: "11 : 00",
+            over_time: "12 : 00",
+            items: "牙周上药",
+            created_at: "2019-05-14 09:25:46",
+            created_by: null,
+            updated_at: "2019-05-14 09:25:46",
+            updated_by: null,
+            age: 18,
+            source: "朋友介绍",
+            name: "h10",
+            case_id: "20190514167",
+            sex: "男",
+            phone: "13538048392",
+            content: "gh"
+        },
+     
+    ]
     };
   },
   computed: {
@@ -104,9 +165,9 @@ export default {
       let xArr = [],
         yArr = [];
       this.yuyue_week_res.forEach((item, index) => {
-        let str = item.apt_data.substr(5).replace("-", ".");
+        let str = item.appointment_date.substr(5).replace("-", ".");
         xArr.push(str);
-        yArr.push(item.time_frame_begin);
+        yArr.push(item.start_time);
        
       });
       return [xArr, yArr];
@@ -124,22 +185,48 @@ export default {
   },
   mounted() {},
   updated() {
+    // let grays = document.getElementsByClassName("week-blue");
+    // if (grays.length != 0) {
+    //   this.yuyue_week_res.forEach((item, index) => {
+    //     if (grays[index]) {
+    //       grays[index].innerHTML = `<div class="add-week"><p><span>${
+    //         item.name
+    //       }</span><span>${item.type_id}</span><span>${item.age}</span></p>
+    //                         <p><span>${item.tel_one}</span></p>
+    //                         <p><span>${item.items}</span></p>
+    //                         <p><span>${
+    //                           item.time_frame_begin
+    //                         } - ${+item.time_frame_begin.substr(0, 2) +
+    //         1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+    //     }
+    //   });
+    // }
+    // --------------------------
     let grays = document.getElementsByClassName("week-blue");
-    if (grays.length != 0) {
+    grays = Array.from(grays);
+    grays.forEach((ele, key) => {
+      let strhtml = '<div class="add-week">';
       this.yuyue_week_res.forEach((item, index) => {
-        if (grays[index]) {
-          grays[index].innerHTML = `<div class="add-week"><p><span>${
+    
+        if (
+          `${ele.getAttribute("data-y")}` ==item.start_time && ele.getAttribute('data-x') == item.appointment_date.substr(5).replace('-','.')
+        ) {
+          strhtml += `<div data-id="${item.id}" data-h="${item.start_time}"><p><span>${
             item.name
-          }</span><span>${item.type_id}</span><span>${item.age}</span></p>
-                            <p><span>${item.tel_one}</span></p>
-                            <p><span>${item.items}</span></p>
-                            <p><span>${
-                              item.time_frame_begin
-                            } - ${+item.time_frame_begin.substr(0, 2) +
-            1} : ${item.time_frame_begin.substr(-2)} (60m)</span></p></div>`;
+          }</span><span>${item.type == 1 ? "复" : "初"}</span><span>${
+            item.age
+          }</span></p>
+                                <p><span>${item.phone}</span></p>
+                                <p><span>${item.items}</span></p>
+                              </div>`;
         }
       });
-    }
+      strhtml += "</div>";
+      ele.innerHTML = strhtml;
+    });
+
+    // --------------------------
+
   }
 };
 </script>
@@ -218,7 +305,6 @@ export default {
       flex: auto;
       display: flex;
       flex-wrap: wrap;
-      // border: 1px solid black;
       > div {
         flex: auto;
         width: 14.28%;
@@ -234,15 +320,21 @@ export default {
         &.week-blue {
           font-size: 12px;
           position: relative;
-
+         
           > div.add-week {
             position: absolute;
             left: 0;
             right: 0;
             z-index: 1000;
-            height: 52px;
+            top: 0;
+            bottom: -28px;
             overflow: hidden;
-            background-color: rgba(151, 189, 214, 1);
+            display: flex;
+            >div{
+              flex: auto;
+              margin-right: 2px;
+              background-color: rgba(151, 189, 214, 1);
+            }
             p {
               margin: 0;
             }

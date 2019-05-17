@@ -9,6 +9,14 @@ export function addAppointment(data) {
         data: data
     })
 }
+export function getWeekAppointment(data) {
+    return request({
+        url: `${prefix}/getWeekAppointment`,
+        method: 'post',
+        data: data
+    })
+}
+
 export function getCaseNumber(data) {
     return request({
         url: `${prefix}/getCaseNumber`,
