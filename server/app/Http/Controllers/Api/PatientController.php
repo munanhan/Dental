@@ -64,7 +64,7 @@ class PatientController extends Controller
 
         $seq=$this->getSequence($sequence);
 
-        $serial['case_no']=$date.$seq;
+        $serial['case_id']=$date.$seq;
 
         return message('',$serial);
 

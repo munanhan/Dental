@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="修改密码"
+    title="咨询信息"
     :visible.sync="show"
     :before-close="closeDialog"
     class="custom-dialog"
@@ -37,12 +37,12 @@
               <td align="center"> 基本需求</td>
               <input style="width:620px">
               <i
-              class="fa fa-cog"
-              style="
+                class="fa fa-cog"
+                style="
               margin-left:10px;
                  font-size:22px;
                  cursor:pointer"
-            ></i>
+              ></i>
             </tr>
             <!-- <i
               class="el el-icon-question"
@@ -53,15 +53,15 @@
             <tr>
               <td align="center">潜在需求</td>
               <div>
-              <input style="width:620px">
-              <i
-              class="fa fa-cog"
-              style="
+                <input style="width:620px">
+                <i
+                  class="fa fa-cog"
+                  style="
               margin-left:10px;
                  font-size:22px;
                  cursor:pointer"
-            ></i>
-            </div>
+                ></i>
+              </div>
             </tr>
             <tr>
               <td align="center">医生方案</td>
@@ -158,8 +158,8 @@ export default {
       border-spacing: 0;
       border: 1px solid #e3e3e3;
     }
-    tr{
-      font-size: 16px
+    tr {
+      font-size: 16px;
     }
     td {
       padding: 0;
@@ -167,7 +167,7 @@ export default {
     }
     input {
       width: 660px;
-      height:40px;
+      height: 40px;
     }
     select {
       width: 664px;

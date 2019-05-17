@@ -29,11 +29,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Config Api
      */
 
-    Route::get('patients/patient_resource', function () {
+    Route::get('patients/resource', function () {
         return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
     });
 
-    //Route::get('patients/patient_')
+    /*
+     * Route PatientConsult Config Api
+     */
+
+    Route::get('patients_consult/resource',function (){
+        return new \App\Http\Resources\PatientConsultCollection(\App\Model\PatientConsult::all());
+    });
+
+
 
     /*
      * Route User APi
@@ -289,6 +297,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::post('appointment/add_appointment','AppointmentController@addAppointment');
 
+    Route::post('appointment/getWeekAppointment','AppointmentController@getWeekAppointment');
 });
 
 

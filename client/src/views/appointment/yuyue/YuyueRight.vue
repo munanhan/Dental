@@ -265,6 +265,17 @@ export default {
 
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
+      //获取一个星期的数据
+      this.$api.appointment
+        .getWeekAppointment({
+          weekStart: this.weekStart,
+          weekEnd: this.weekEnd
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.yuyue_week_res = res.data;
+          }
+        });
       //  console.log(111);
     },
     handleNextWeek() {
@@ -276,6 +287,17 @@ export default {
       start.setTime(start.getTime() + 1 * oneDayTime);
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
+      //获取一个星期的数据
+      this.$api.appointment
+        .getWeekAppointment({
+          weekStart: this.weekStart,
+          weekEnd: this.weekEnd
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.yuyue_week_res = res.data;
+          }
+        });
     },
     chooseToday() {
       this.myCalender.chooseToday();
@@ -315,9 +337,9 @@ export default {
       this.isAttrDataTime(event.target);
       if (this.target.hasAttribute("data-id")) {
         this.yuyue_id = this.target.getAttribute("data-id");
-       
+        this.yuyue_time = this.target.getAttribute("data-h");
       } else {
-        this.yuyue_id =null;
+        this.yuyue_id = null;
         if (item) {
           let time = this.target.attributes["data-time"].value;
           let yuyueDate = `${item} : ${time}`;
@@ -420,11 +442,11 @@ export default {
           `${ele.getAttribute("data-h")} : ${ele.getAttribute("data-time")}` ==
           item.start_time
         ) {
-          strhtml += `<div data-id="${item.id}"><p><span>${
-            item.name
-          }</span><span>${item.type == 1 ? "复" : "初"}</span><span>${
-            item.age
-          }</span></p>
+          strhtml += `<div data-id="${item.id}" data-h="${
+            item.start_time
+          }"><p><span>${item.name}</span><span>${
+            item.type == 1 ? "复" : "初"
+          }</span><span>${item.age}</span></p>
                                 <p><span>${item.phone}</span></p>
                                 <p><span>${item.items}</span></p>
                               </div>`;
@@ -433,20 +455,17 @@ export default {
       strhtml += "</div>";
       ele.innerHTML = strhtml;
     });
-    if (grays.length != 0) {
-      let strhtml = "";
-      this.yuyue_res.forEach((item, index) => {
-        strhtml += `<div class="add-item"><p><span>${item.name}</span><span>${
-          item.type == 1 ? "复" : "初"
-        }</span><span>${item.age}</span></p>
-                            <p><span>${item.phone}</span></p>
-                            <p><span>${item.items}</span></p>
-                           </div>`;
-
-        // console.log(strhtml);
-        //  grays[index].innerHTML = strhtml
-      });
-    }
+    // if (grays.length != 0) {
+    //   let strhtml = "";
+    //   this.yuyue_res.forEach((item, index) => {
+    //     strhtml += `<div class="add-item"><p><span>${item.name}</span><span>${
+    //       item.type == 1 ? "复" : "初"
+    //     }</span><span>${item.age}</span></p>
+    //                         <p><span>${item.phone}</span></p>
+    //                         <p><span>${item.items}</span></p>
+    //                        </div>`;
+    //   });
+    // }
   }
 };
 </script>
