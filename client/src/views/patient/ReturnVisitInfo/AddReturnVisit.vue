@@ -7,6 +7,7 @@
     :close-on-click-modal="false"
     v-dialog-drag
     width="600px"
+    top="2vh"
   >
     <el-form
       ref="form"
