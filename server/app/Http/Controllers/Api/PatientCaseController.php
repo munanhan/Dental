@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PatientCase;
 
-class PatientCaseContoller extends Controller
+class PatientCaseController extends Controller
 {
     public function index()
     {
