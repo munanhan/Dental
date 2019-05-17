@@ -28,6 +28,12 @@
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否医保" prop="medical_insurance">
+            <el-radio-group v-model="form.medical_insurance">
+              <el-radio :label="1">是</el-radio>
+              <el-radio :label="0">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="费用类型" prop="cate_id">
             <el-select
               clearable
@@ -155,9 +161,10 @@ export default {
               cate_id: undefined,
               billing_mode:undefined,
               remarks:'',
+              medical_insurance:undefined
           },
           rules:{
-              cost_type: [
+              cate_id: [
                   {
                       required: true,
                       message:'请输入费用类型.',
@@ -239,7 +246,7 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getCategory();
+                // that.getCategory();
                 // that.getData();
             }
         }
@@ -270,7 +277,7 @@ export default {
                           duration: 800
                       });
                       that.closethisDialog();
-                      that.$emit("flush",res.data);
+                      that.$emit("flush");
                      }
                      else{
                          that.$message.error(
@@ -294,8 +301,8 @@ export default {
             that.$api.disposal.getById({'id':id})
             .then(res => {
                that.form = res.data;
-               
-               console.log(that.form);
+
+               // console.log(that.form);
             })
             .catch(res => {
               // console.log(res)

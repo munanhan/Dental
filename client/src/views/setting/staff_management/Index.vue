@@ -352,8 +352,9 @@ export default {
         },
         showEditDialog(editItem){
           let that = this;
-          that.editItem = editItem;
-          that.editDialog = true;
+          // that.editItem = editItem;
+          // that.editDialog = true;
+          that.getById(editItem.id);
         },
         searchName(){
           let that = this;
@@ -385,6 +386,17 @@ export default {
           that.$api.user.user_list(that.search)
             .then(res => {
                that.tableData = res.data;
+            })
+            .catch(res => {
+               console.log(res);
+            });
+        },
+        getById(id){
+            let that = this;
+            that.$api.user.getById({'id':id})
+            .then(res => {
+               that.editItem = res.data;
+               that.editDialog = true;
             })
             .catch(res => {
                console.log(res);
