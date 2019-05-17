@@ -196,35 +196,28 @@
 
       </el-collapse-item>
 
-      <!-- <el-collapse-item
-        title="等待确认"
-        style="width:1000px;margin-left:10px;margin-bottom:10px"
-
-      >
-        <div>简化流程：设计简洁直观的操作流程；</div>
-        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-        <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
-        <div>简化流程：设计简洁直观的操作流程；</div>
-        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-        <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
-        <div>简化流程：设计简洁直观的操作流程；</div>
-
-      </el-collapse-item> -->
       <el-collapse-item
         class="sliding-two"
       >
         <template slot="title">
 
-          <span class="base-fz">初诊信息</span>
+          <span class="base-fz">就诊信息</span>
 
         </template>
         <div>水水水水</div>
 
       </el-collapse-item>
-<!-- <el-collapse-item  class="sliding-three" title="亲友关系" name="1">
-    <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-    <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-  </el-collapse-item> -->
+      <el-collapse-item
+        class="sliding-two"
+      >
+        <template slot="title">
+
+          <span class="base-fz">预约信息</span>
+
+        </template>
+        <div>水水水水</div>
+
+      </el-collapse-item>
       <el-collapse-item class="sliding-three">
         <template slot="title">
           <span class="base-fz">亲友关系</span>

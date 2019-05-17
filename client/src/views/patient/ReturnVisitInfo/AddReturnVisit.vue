@@ -61,15 +61,15 @@
             style="margin-left:10px"
             v-model="form.radio"
             label="1"
-          >备选项</el-radio>
+          >已回访</el-radio>
           <el-radio
             v-model="form.radio"
             label="2"
-          >备选项</el-radio>
+          >做计划</el-radio>
           <el-radio
             v-model="form.radio"
             label="3"
-          >备选项</el-radio>
+          >待跟进</el-radio>
         </div>
 
         <el-form-item
@@ -92,7 +92,7 @@
       class="dialog-footer"
     >
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary">确 定</el-button>
+      <el-button type="primary" @click.stop.prevent="commit">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -113,7 +113,14 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+    commit(){
+      let that = this;
+
+      that.$emit('update', {});
+    }
+
+  }
 };
 </script>
 <style lang="less" scoped>

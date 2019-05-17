@@ -206,10 +206,6 @@
           >
             <el-input></el-input>
           </el-form-item>
-          <i
-            class="el-icon-setting form-setting"
-            @click="cont_add"
-          ></i>
         </div>
         <div style="display:flex">
           <el-form-item
@@ -260,21 +256,21 @@
         </div>
         <div style="display:flex">
           <el-form-item
-            label="过敏使"
+            label="过敏史"
             style="width:700px"
           >
             <el-input></el-input>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+          <i class="el-icon-setting form-setting" @click="allergy"></i>
         </div>
         <div style="display:flex">
           <el-form-item
-            label="既往使"
+            label="既往史"
             style="width:700px"
           >
             <el-input></el-input>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+          <i class="el-icon-setting form-setting" @click="past_med"></i>
         </div>
         <!-- <div style="display:flex">
           <el-form-item
@@ -332,7 +328,7 @@
           >
             <el-input></el-input>
           </el-form-item>
-          <i class="el-icon-setting form-setting"></i>
+          <i class="el-icon-setting form-setting" @click="teeth_hab"></i>
         </div>
         <div style="display:flex">
           <el-form-item
@@ -448,10 +444,13 @@
 
       <membership-grade :show.sync="memgrade_show"></membership-grade>
       <professional :show.sync="profess_show"></professional>
-      <contact-address :show.sync="contadd_show"></contact-address>
+      <!-- <contact-address :show.sync="contadd_show"></contact-address> -->
       <patients-impression :show.sync="patimpre_show"></patients-impression>
       <patients-source :show.sync="patsour_show"></patients-source>
       <classification-patients :show.sync="classpat_show"></classification-patients>
+      <allergy :show.sync="allergy_show"></Allergy>
+      <past-medicalhistory :show.sync="pastmed_show"></past-medicalhistory>
+      <teethcleaning-habits :show.sync="teethhab_show"></teethcleaning-habits>
     </div>
   </el-dialog>
 </template>
@@ -461,10 +460,13 @@
 import AddDialogForm from "@/views/base/AddDialogForm";
 import MembershipGrade from "./MembershipGrade";
 import professional from "./professional";
-import ContactAddress from "./ContactAddress";
+// import ContactAddress from "./ContactAddress";
 import PatientsImpression from "./PatientsImpression";
 import PatientsSource from "./PatientsSource";
 import ClassificationPatients from "./ClassificationPatients";
+import Allergy from "./Allergy";
+import PastMedicalhistory from "./PastMedicalhistory";
+import TeethcleaningHabits from "./TeethcleaningHabits";
 export default {
   name: "AddPatient",
 
@@ -473,10 +475,13 @@ export default {
   components: {
     MembershipGrade,
     professional,
-    ContactAddress,
+    // ContactAddress,
     PatientsImpression,
     PatientsSource,
     ClassificationPatients,
+    Allergy,
+    PastMedicalhistory,
+    TeethcleaningHabits
   },
   data() {
     return {
@@ -486,6 +491,9 @@ export default {
       patimpre_show: false,
       patsour_show: false,
       classpat_show:false,
+      allergy_show:false,
+      pastmed_show:false,
+      teethhab_show:false,
       form: {
         phone: [
           {
@@ -519,11 +527,11 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "请输入病历号", trigger: "blur" }
+          { required: true, message: "请输入姓名", trigger: "blur" }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         medical_record: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
+          { required: true, message: "请输入病历号", trigger: "blur" }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
       }
@@ -548,6 +556,15 @@ export default {
     },
     class_pat() {
       this.classpat_show = true;
+    },
+    allergy() {
+      this.allergy_show = true;
+    },
+    past_med() {
+      this.pastmed_show = true;
+    },
+    teeth_hab() {
+      this.teethhab_show = true;
     },
   }
 };

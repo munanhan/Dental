@@ -72,7 +72,7 @@
     </div>
     <!-- <div style="flex:">asd</div> -->
     <add-plan :show.sync="addplan_show"></add-plan>
-    <add-returnVisit :show.sync="addrevisit_show"></add-returnVisit>
+    <add-return-visit :show.sync="addrevisit_show" @update="upateRetrunVisit"></add-return-visit>
   </div>
 </template>
 
@@ -122,6 +122,10 @@ export default {
     },
      Add_Revisit() {
       this.addrevisit_show = true;
+    },
+
+    upateRetrunVisit(){
+      let that = this;
     }
   }
 };

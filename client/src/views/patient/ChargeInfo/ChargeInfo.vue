@@ -265,7 +265,7 @@ export default {
 
 .charge-top {
   width: 100%;
-  height: 100%;
+  height: 500px;
   margin: 0;
   padding: 0;
   position: relative;

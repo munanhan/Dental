@@ -131,7 +131,6 @@
               <el-input style="width:850px"></el-input>
             </el-form-item>
             <el-form-item
-            
               label="回访结果"
               style="margin-top:-15px"
             >
@@ -139,25 +138,25 @@
             </el-form-item>
           </div>
           <el-form-item
-              size="small"
-              label="回访人员"
-              style="margin-top:10px"
+            size="small"
+            label="回访人员"
+            style="margin-top:10px"
+          >
+            <el-select
+              v-model="form.value"
+              placeholder="请选择"
             >
-              <el-select
-                v-model="form.value"
-                placeholder="请选择"
+              <el-option
+                v-for="item in form.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               >
-                <el-option
-                  v-for="item in form.options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
+              </el-option>
+            </el-select>
+          </el-form-item>
         </div>
-      </div>
+      </div>  
     </el-form>
 
     <div
@@ -165,9 +164,7 @@
       class="dialog-footer"
     >
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button
-        type="primary"
-      >确 定</el-button>
+      <el-button type="primary">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -210,23 +207,29 @@ export default {
           }
         ],
         multipleSelection: [],
-         options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: '',
+        options: [
+          {
+            value: "选项1",
+            label: "黄金糕"
+          },
+          {
+            value: "选项2",
+            label: "双皮奶"
+          },
+          {
+            value: "选项3",
+            label: "蚵仔煎"
+          },
+          {
+            value: "选项4",
+            label: "龙须面"
+          },
+          {
+            value: "选项5",
+            label: "北京烤鸭"
+          }
+        ],
+        value: ""
       }
     };
   },

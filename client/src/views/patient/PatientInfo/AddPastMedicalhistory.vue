@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="常用地址设置"
+    title="既往史设置"
     :visible.sync="show"
     :before-close="closeDialog"
     class="custom-dialog"
@@ -44,7 +44,7 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 export default {
-  name: "AddContactAddress",
+  name: "AddPastMedicalhistory",
   mixins: [DialogForm],
   components: {},
   props: {},
