@@ -246,34 +246,25 @@ export default {
       this.formData.items = this.checked_items.join(",");
     },
     show(new_show, old_show) {
-      if (new_show) {
-        if (this.yuyue_id) {
+      if (this.yuyue_id) {
+        if (new_show) {
           this.$api.appointment
             .getByIdAppointment({ id: this.yuyue_id })
             .then(res => {
               if (res.code == 200) {
                 this.formData = res.data;
-              
-                // console.log(this.formData.start_time);
               }
             });
-        }else{
-
         }
       }
+
       this.formData.appointment_date = this.chooseDate;
-
-
       if (!this.yuyue_time) {
-         this.$emit('yuyue_time',this.formData.start_time);
-         console.log(this.formData);
-         console.log(this.yuyue_time);return;
+        return;
       }
-        this.formData.start_time = this.yuyue_time;
-      
-      let [H, i] = this.yuyue_time.split(":");
+      this.formData.start_time = this.yuyue_time;
 
-      
+      let [H, i] = this.yuyue_time.split(":");
       H = +H + 1;
       this.$nextTick(function() {
         let gray = document.getElementsByClassName("gray");
