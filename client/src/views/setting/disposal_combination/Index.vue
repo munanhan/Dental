@@ -190,12 +190,14 @@
         <add-combo
           :show.sync="addComboDialog"
           :p_id="parentId"
+          @flush="addMenu"
         >
         </add-combo>
         <!-- 修改组合 -->
         <edit-combo
           :show.sync="editComboDialog"
           :editItem="editItem"
+          @flush="updateItem"
         >
         </edit-combo>
         <!-- 修改数量 -->
@@ -350,7 +352,7 @@ export default {
     },
     mounted() {
         let that = this;
-
+        that.getMenu();
         that.$nextTick(() => {
             that.resizeTable();
         });
@@ -371,7 +373,7 @@ export default {
 
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
-
+                // that.getMenu();
                 // that.getData();
             }
         }
@@ -380,7 +382,7 @@ export default {
     computed: {},
     methods: {
       delCombo(){
-          //显示修改组合窗口
+          //删除菜单组合
           let that = this;
           if (Object.keys(that.currentNode).length == 0) {
             that.$message.error("请选择一项.");
@@ -399,8 +401,9 @@ export default {
             that.$message.error("请选择一项.");
           }
           else{
-            that.editItem = that.currentNode;
-            that.editComboDialog = true;
+            // that.editItem = that.currentNode;
+            that.getMenuById(that.currentNode.id);
+            // that.editComboDialog = true;
           }
 
 
@@ -415,13 +418,11 @@ export default {
             let that = this;
             that.selectThis = true;
             that.currentNode = data;
-            console.log(data);
+            // console.log(data);
             if(data.level == 1){
-                that.add_btn = 'block';
                 that.edit_btn = 'none';
             }
             if (data.level == 2) {
-                that.add_btn = 'none';
                 that.edit_btn = 'block';
             }
         },
@@ -434,7 +435,7 @@ export default {
           }
           else{
             that.parentId = that.currentNode.level == 1?that.currentNode.id:that.currentNode.p_id;
-            console.log(that.parentId);
+            // console.log(that.parentId);
             that.addComboDialog = true;
           }
           
@@ -503,7 +504,20 @@ export default {
         /*****************处理菜单*******************/
         addMenu(data){
             let that = this;
-            that.menuData.push(data);
+            // console.log(data);
+            if(data.p_id != 0){
+                for (var i = 0, length = that.menuData.length -1 ; i <= length; i++) {
+                    if (that.menuData[i].id == data.p_id) {
+                        that.menuData[i].children.push(data);
+                        break;
+                    }
+                }
+
+            }
+            else{
+                that.menuData.push(data);
+            }
+            
         },
         delMenu(id){
           let that = this;
@@ -537,6 +551,58 @@ export default {
           .catch(res => {
             console.log(res);
           });
+        },
+        getMenu(){
+            //获取菜单
+            let that = this;
+            that.$api.disposal_combo_menu.get()
+            .then(res => {
+               that.menuData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+        getMenuById(id){
+            //获取菜单根据id
+            let that = this;
+            that.$api.disposal_combo_menu.getById({'id':id})
+            .then(res => {
+                if (res.code == 200) {
+                    that.editItem = res.data;
+                    that.editComboDialog = true;
+                }else{
+                    that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+            })
+            .catch(res => {
+
+            });
+        },
+        updateItem(data){
+            //更新菜单
+            let that = this;
+            // console.log(data);
+            for (var i = 0, length = that.menuData.length -1 ; i <= length; i++) {
+                if (that.menuData[i].id == data.id) {
+                    that.$set(that.menuData,i,data);//修改值
+                    break;
+                }
+                if (typeof that.menuData[i].children!="undefined") {
+
+                    for (var j = 0, length = that.menuData[i].children.length -1 ; j <= length; j++){
+                        
+                        if (that.menuData[i].children[j].id == data.id) {
+                            that.menuData[i].children[j] = data;
+                            that.$set(that.menuData[i].children,j,data);
+                            break;
+                        }
+                    }
+                }
+            }
+
         }
     }
 };

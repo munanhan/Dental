@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Events\CreatingEvent;
 use App\Events\UpdatingEvent;
 
-class DisposalCombo extends Model
+class BaseModel extends Model
 {
+
     protected $guarded = [
             'id',
         ];
@@ -17,5 +18,11 @@ class DisposalCombo extends Model
     		'updating' => UpdatingEvent::class,
     	];
 
-    // public $timestamps = false;
+	public function __construct($table){
+		$this->table = $table;
+	}
+
+	public function getData(){
+		return $this->all();
+	}
 }
