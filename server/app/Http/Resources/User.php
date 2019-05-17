@@ -17,8 +17,6 @@ class User extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'doctor'=>'',
-            'nurse'=>'',
         ];
     }
 }

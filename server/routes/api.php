@@ -29,9 +29,11 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Config Api
      */
 
-    Route::get('/patient_resource', function () {
+    Route::get('patients/patient_resource', function () {
         return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
     });
+
+    //Route::get('patients/patient_')
 
     /*
      * Route User APi
@@ -284,7 +286,9 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::get('message','UserController@getMessage');
 
-    Route::get('hashpassword','UserController@getHashPassword');
+    Route::get('password',function (){
+        return \Illuminate\Support\Facades\Hash::make(request('password'));
+    });
 
     Route::get('dysms','UserController@sendMessage');
 

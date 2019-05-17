@@ -26,6 +26,13 @@ class EnableCrossRequestMiddleware
             $response->header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, OPTIONS, DELETE');
             $response->header('Access-Control-Allow-Credentials', 'true');
         }
+
+        if(mb_strtolower($request->getMethod())=='options')
+        {
+            $response->header('Access-Control-Max-Age',3600);
+            return response()->json('',204);
+        }
+
         return $response;
     }
 }
