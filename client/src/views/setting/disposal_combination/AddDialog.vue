@@ -206,7 +206,7 @@
                         </el-table-column>
                         <el-table-column
                           label="费用类型"
-                          prop="cost_type"
+                          prop="category"
                         >
                         </el-table-column>
                     </el-table>
@@ -414,14 +414,14 @@ export default {
                 // }
           ],
           form:[
-                {
-                  disposal_id:1,
-                  disposal_code:2005,
-                  disposal_name:'超声波洁牙',
-                  unit:'全口',
-                  price:120.00,
-                  cost_type:'诊疗费'
-                }
+                // {
+                //   disposal_id:1,
+                //   disposal_code:2005,
+                //   disposal_name:'超声波洁牙',
+                //   unit:'全口',
+                //   price:120.00,
+                //   cost_type:'诊疗费'
+                // }
 
           ],
           rules:{

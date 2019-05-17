@@ -246,6 +246,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('cost_category/{id}', 'CostCategoryController@delete');
 
+    /*
+     * Route DiisposalCombo Api
+     * created for yu
+     */
+    Route::get('disposal_combo_menu','DisposalComboMenuController@index');
+
+    Route::post('disposal_combo_menu', 'DisposalComboMenuController@addCombo');
+
+    Route::put('disposal_combo_menu', 'DisposalComboMenuController@update');
+
+    Route::delete('disposal_combo_menu/{id}', 'DisposalComboMenuController@delete');
+
+
 
 
     // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');

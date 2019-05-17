@@ -53,10 +53,14 @@
                                 <span slot-scope="{ node }">
                                     <span>
                                         <div v-if="node.level == 1">
-                                          <i class="fa fa-folder-open"></i> {{ node.label }}
+                                          <i class="fa fa-folder-open"></i> 
+                                          {{ node.label }} 
                                         </div>
                                         <div v-if="node.level == 2">
-                                          <i class="fa fa-file-alt"></i> {{ node.label }}
+
+                                          <i class="fa fa-file-alt"></i> 
+                                           {{ node.label }}
+                                          
                                         </div>
                                     </span>              
                                 </span>
@@ -155,12 +159,19 @@
                     <el-row>
                         <div class="btn_content">
                             <el-col :span="24">
-                                <span class="">
+                                <!-- <span :style="{'display':add_btn}">
                                     <el-button
                                         type="primary"
                                         style="margin-right: 10px;"
                                         @click="showAddDialog"
                                     >添加</el-button>
+                                </span> -->
+                                <span :style="{'display':edit_btn}">
+                                    <el-button
+                                        type="primary"
+                                        style="margin-right: 10px;"
+                                        @click="showAddDialog"
+                                    >设置处置组合明细</el-button>
                                 </span>
                             </el-col>
                         </div>
@@ -172,6 +183,7 @@
         <!-- 添加组合目录 -->
         <add-combo-dir
             :show.sync="addComboDirDialog"
+            @flush="addMenu"
         >
         </add-combo-dir>
         <!-- 添加处置与收费 -->
@@ -246,6 +258,10 @@ export default {
             //记录父id
             parentId:0,
             //对应tree的字段
+            // add_btn:'none',
+            // //添加按钮
+            edit_btn:'none',
+            //修改按钮
             treeField:{
               id:'id',
               children:'children',
@@ -253,58 +269,58 @@ export default {
             },
             //左菜单的数据
             menuData: [
-                {
-                    id: 1,
-                    combo_name: "蛀牙用药组合",
-                    level: 1,
-                    p_id:0,
-                    children: [
-                        {
-                            id: 6,
-                            combo_name: "白+黑",
-                            level: 2,
-                            p_id:1
-                        },
-                        {
-                            id: 8,
-                            combo_name: "必兰麻+保丽净",
-                            level: 2,
-                            p_id:1
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    combo_name: "拔牙用药组合",
-                    level: 1,
-                    p_id:0,
-                    children: [
-                        {
-                            id: 7,
-                            combo_name: "西药+中药",
-                            level: 2,
-                            p_id:2
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    combo_name: "服用类组合",
-                    level: 1,
-                    p_id:0
-                },
-                {
-                    id: 4,
-                    combo_name: "外敷类组合",
-                    level: 1,
-                    p_id:0
-                },
-                {
-                    id: 5,
-                    combo_name: "日常类组合",
-                    level: 1,
-                    p_id:0
-                }
+                // {
+                //     id: 1,
+                //     combo_name: "蛀牙用药组合",
+                //     level: 1,
+                //     p_id:0,
+                //     children: [
+                //         {
+                //             id: 6,
+                //             combo_name: "白+黑",
+                //             level: 2,
+                //             p_id:1
+                //         },
+                //         {
+                //             id: 8,
+                //             combo_name: "必兰麻+保丽净",
+                //             level: 2,
+                //             p_id:1
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: 2,
+                //     combo_name: "拔牙用药组合",
+                //     level: 1,
+                //     p_id:0,
+                //     children: [
+                //         {
+                //             id: 7,
+                //             combo_name: "西药+中药",
+                //             level: 2,
+                //             p_id:2
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: 3,
+                //     combo_name: "服用类组合",
+                //     level: 1,
+                //     p_id:0
+                // },
+                // {
+                //     id: 4,
+                //     combo_name: "外敷类组合",
+                //     level: 1,
+                //     p_id:0
+                // },
+                // {
+                //     id: 5,
+                //     combo_name: "日常类组合",
+                //     level: 1,
+                //     p_id:0
+                // }
             ],
             //表单数据
             tableData: [
@@ -370,7 +386,8 @@ export default {
             that.$message.error("请选择一项.");
           }
           else{
-            alert(that.currentNode.id);
+            that.delMenu(that.currentNode.id);
+            // alert(that.currentNode.id);
           }
 
 
@@ -399,6 +416,14 @@ export default {
             that.selectThis = true;
             that.currentNode = data;
             console.log(data);
+            if(data.level == 1){
+                that.add_btn = 'block';
+                that.edit_btn = 'none';
+            }
+            if (data.level == 2) {
+                that.add_btn = 'none';
+                that.edit_btn = 'block';
+            }
         },
 
         showAddComboDialog(){
@@ -474,6 +499,44 @@ export default {
             setTimeout(() => {
                 that.$emit("update:refresh", false);
             }, 6e3);
+        },
+        /*****************处理菜单*******************/
+        addMenu(data){
+            let that = this;
+            that.menuData.push(data);
+        },
+        delMenu(id){
+          let that = this;
+           
+          that.$api.disposal_combo_menu.del({id})
+          .then(res => {
+
+                if(res.code == 200){
+                  for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
+                        // console.log(id);
+                        console.log(that.menuData[i].id);
+                         if (that.menuData[i].id == id) {
+                             that.menuData.splice(i,1);
+                             break;
+                         }
+                    }
+
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    
+                }
+                else{
+                     that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+          })
+          .catch(res => {
+            console.log(res);
+          });
         }
     }
 };

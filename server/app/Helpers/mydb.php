@@ -275,6 +275,9 @@ use Illuminate\Support\Facades\DB;
                 //dbParms
                 $new_parms = [];
                 foreach ($parms as $k => $v) {
+                    if ($v[1] == 'like') {
+                        $new_parms[$v[0]] = '%'.$v[2].'%';
+                    }
                     $new_parms[$v[0]] = $v[2];
                 }
                 return $new_parms;
