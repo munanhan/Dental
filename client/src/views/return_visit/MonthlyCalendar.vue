@@ -162,7 +162,7 @@
                                     <div
                                         class="return-list"
                                         :style="{
-											height: `${returnItemHeight}px`
+											height: returnItemHeight
 										}"
                                     >
                                         <div
@@ -279,7 +279,7 @@ export default {
 
             that.calendarCellHeight = `${calendarCellHeight}px`;
 
-            that.returnItemHeight = calendarCellHeight - 30;
+            that.returnItemHeight = (calendarCellHeight - 30) + 'px';
         },
 
         setSelectText() {
