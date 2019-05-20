@@ -490,7 +490,12 @@ export default {
 
         changeShow(value){
             let that = this;
-            that.$emit('change-show', value);
+            that.$emit('update:type', value);
+            
+            //原来的值不更新，直接替换页面
+            setTimeout(() =>{
+                that.currentType = 'diagnose';
+            }, 300);
         }
     }
 };

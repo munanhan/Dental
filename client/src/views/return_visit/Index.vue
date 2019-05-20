@@ -1,8 +1,8 @@
 <template>
     <div class="return-visit">
-        <diagnose v-show="showContent == 'diagnose'" @change-show="changeShow"></diagnose>
-        <monthly-calendar v-show="showContent == 'monthlyCalendar'" @change-show="changeShow"></monthly-calendar>
-        <return-visit v-show="showContent == 'returnVisit'" @change-show="changeShow"></return-visit>
+        <diagnose v-show="showContent == 'diagnose'" :type.sync="showContent"></diagnose>
+        <monthly-calendar v-show="showContent == 'monthlyCalendar'" :type.sync="showContent"></monthly-calendar>
+        <return-visit v-show="showContent == 'returnVisit'" :type.sync="showContent"></return-visit>
     </div>
 </template>
 
@@ -25,11 +25,6 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        changeShow(value){
-            let that = this;
-            that.showContent = value;
-        }
-
     }
 };
 </script>

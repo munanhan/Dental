@@ -240,8 +240,8 @@
             </div>
         </div>
 
-        <add-recovery :show.sync="addDialog"></add-recovery>
-        <edit-recovery :show.sync="editDialog"></edit-recovery>
+        <add-recovery :show.sync="addDialog" @add-item="addItem"></add-recovery>
+        <edit-recovery :show.sync="editDialog" @edit-item="editItem"></edit-recovery>
     </div>
 </template>
 
