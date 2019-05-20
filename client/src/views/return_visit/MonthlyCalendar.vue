@@ -335,9 +335,9 @@ export default {
                 var count = Math.abs(inter);
 
                 if (inter < 0) {
-                    dayCurrent = `前${count}天`;
+                    dayCurrent = `${count}天前`;
                 } else {
-                    dayCurrent = `后${count}天`;
+                    dayCurrent = `${count}天后`;
                 }
             }
 
