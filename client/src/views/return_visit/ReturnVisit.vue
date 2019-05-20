@@ -338,6 +338,11 @@ export default {
         type: {
             type: String,
             required: true
+        },
+        date: {
+            type: Date,
+            required: false,
+            default: null
         }
     },
     data() {
@@ -407,6 +412,22 @@ export default {
 
             if (newValue == "returnVisit") {
                 that.resizeTable();
+
+                if (that.date) {
+                    that.search.dtFm = that.search.dtTo = that.date;
+
+                    that.dateFmText = formatDate(
+                        that.search.dtFm,
+                        "yyyy年MM月dd日"
+                    );
+                    that.dateToText = formatDate(
+                        that.search.dtTo,
+                        "yyyy年MM月dd日"
+                    );
+
+                    that.checkCurrentData();
+                    that.calcDateCount();
+                }
             }
         },
 

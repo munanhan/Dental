@@ -74,6 +74,19 @@
                         </el-radio-group>
                     </span>
 
+                    <span class="mr-10 retrun-type">
+
+                        <el-radio-group
+                            v-model="return_type"
+                            @change="getData"
+                        >
+                            <el-radio :label="0">全部</el-radio>
+                            <el-radio :label="1">未访</el-radio>
+                            <el-radio :label="2">已回访</el-radio>
+                            <el-radio :label="3">待跟进</el-radio>
+                        </el-radio-group>
+                    </span>
+
                 </div>
 
                 <div>
@@ -142,6 +155,7 @@
 											'current-day': item.year == currentYear && item.mth == currentMth && item.date == currentDate,
 											'weekday': item.red }"
                                     @click="switchDate('select-date', item)"
+                                    @dblclick="changeShow('returnVisit', item)"
                                 >
                                     <span class="ml-10">{{item.date}}</span>
 
@@ -155,7 +169,7 @@
                                             v-for="(item, index) in returnData[item.fullDate]"
                                             :key="index"
                                             class="return-item"
-											:class="{'face-green': item.type == 1, 'face-orange': item.type == 2, 'face-plum': item.type == 3}"
+                                            :class="{'face-green': item.type == 1, 'face-orange': item.type == 2, 'face-plum': item.type == 3}"
                                         >
                                             {{item.name}}
                                         </div>
@@ -200,6 +214,8 @@ export default {
             dateList: [],
             calendarCellHeight: "70px",
             returnItemHeight: "40px",
+
+            return_type: 0,
 
             returnData: {
                 "2019510": [
@@ -420,9 +436,16 @@ export default {
 
         getData() {},
 
-        changeShow(value) {
+        changeShow(value, item) {
             let that = this;
             that.$emit("update:type", value);
+
+            if (item) {
+                that.$emit(
+                    "change-visit-date",
+                    new Date(item.year, item.mth, item.date)
+                );
+            }
 
             //原来的值不更新，直接替换页面
             setTimeout(() => {
@@ -604,6 +627,12 @@ export default {
             font-size: 18px;
             border-bottom: 1px solid #e3e3e3;
 
+            .retrun-type {
+                border: 1px solid #e3e3e3;
+                padding: 6px 10px;
+                border-radius: 4px;
+            }
+
             .mth-calendar {
                 .current,
                 .pre-mth,
@@ -643,14 +672,14 @@ export default {
                     .return-item {
                         white-space: nowrap; /*不换行 */
                         overflow: hidden; /*内容超出宽度时隐藏超出部分的内容 */
-						text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
-						border-top: 1px solid #e3e3e3;
-						border-left: 8px solid;
-						border-bottom: 0;
+                        text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+                        border-top: 1px solid #e3e3e3;
+                        border-left: 8px solid;
+                        border-bottom: 0;
 
-						&:last-of-type{
-							border-bottom: 1px solid #e3e3e3;
-						}
+                        &:last-of-type {
+                            border-bottom: 1px solid #e3e3e3;
+                        }
 
                         &.face-green {
                             border-left-color: greenyellow;
