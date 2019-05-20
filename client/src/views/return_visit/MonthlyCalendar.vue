@@ -437,15 +437,21 @@ export default {
         getData() {},
 
         changeShow(value, item) {
-            let that = this;
+            let that = this,
+                selectDate = null;
             that.$emit("update:type", value);
 
             if (item) {
-                that.$emit(
-                    "change-visit-date",
-                    new Date(item.year, item.mth, item.date)
+                selectDate = new Date(item.year, item.mth, item.date);
+            } else {
+                selectDate = new Date(
+                    that.selectYear,
+                    that.selectMth,
+                    that.selectDate
                 );
             }
+
+            that.$emit("change-visit-date", selectDate);
 
             //原来的值不更新，直接替换页面
             setTimeout(() => {
