@@ -6,6 +6,7 @@
           v-for="(item,index) in navBar"
           :key="index"
           :class="{'active-li':item.active,'unactive':!item.active}"
+          :id="'li'+index"
           @click="activeLi(item,index)"
         >{{item.select}}</li>
       </ul>
@@ -125,10 +126,10 @@
         </el-row>
       </div>
       <div v-show="navBar[1].active" class="week">
-        <yuyue-week :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
+        <yuyue-week ref="week" :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
       </div>
       <div v-show="navBar[2].active" class="month">
-        <yuyue-month :update.sync="navBar[2].active"></yuyue-month>
+        <yuyue-month ref="month" :update.sync="navBar[2].active" @OnUpdateYuyueRes="updateYuyueRes"></yuyue-month>
       </div>
       <div v-show="navBar[3].active" class="list">
         <yuyue-list></yuyue-list>
@@ -223,6 +224,9 @@ export default {
   },
 
   methods: {
+    updateYuyueRes(data) {
+      this.yuyue_res = data;
+    },
     activeLi(item, index) {
       this.$nextTick(function() {
         let self = this;
@@ -234,7 +238,6 @@ export default {
     },
     search() {
       let $search = this.$refs.inputSearch;
-      console.log($search.value);
     },
     handlePrevDay() {
       let date = new Date(this.chooseDate);
@@ -273,7 +276,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.yuyue_week_res = res.data;
+            this.$refs.week.yuyue_week_res = res.data;
           }
         });
       //  console.log(111);
@@ -295,7 +298,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.yuyue_week_res = res.data;
+            this.$refs.week.yuyue_week_res = res.data;
           }
         });
     },

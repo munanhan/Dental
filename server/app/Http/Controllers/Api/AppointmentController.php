@@ -62,6 +62,17 @@ class AppointmentController extends Controller
 
         return message('获取成功',$res,200);
     }
+    //获取某个月的数据
+    public function getMonthAppointment(Request $request){
+        $data=$request->all();
+        $startMonth = $data['start'];
+        $endMonth = $data['end'];
+        $appoinment =new Appointment();
+        $res =$appoinment->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        get(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
+
+        return message('获取成功',$res,200);
+    }
     public function getByIdAppointment(){
 //        $res =Appointment::find(\request('id'));
         $appoinment =new Appointment();

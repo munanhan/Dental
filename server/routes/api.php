@@ -282,6 +282,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::post('appointment/add_appointment','AppointmentController@addAppointment');
 
     Route::post('appointment/getWeekAppointment','AppointmentController@getWeekAppointment');
+
+    Route::post('appointment/getMonthAppointment','AppointmentController@getMonthAppointment');
 });
 
 
