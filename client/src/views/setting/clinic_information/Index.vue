@@ -1,131 +1,175 @@
 <template>
-  <div>
-    <el-row :span="12">
-      <div class="top">
-        <el-col :span="2">
-                  <i
-                    class="fa fa-shield-alt"
-                    style="margin-top:10px;
-                           font-size:40px;
-                           cursor:pointer;
-                           margin-left:10px;
-                           color: #2f6386;
-                         "
-                  ></i>
-        </el-col>
-        <el-col :span="22">
-          <el-col :span="24" class="titel">
-            安全中心
-          </el-col>
-          <el-col :span="24">
-            账号:admin
-          </el-col>
-          <el-col :span="24">
-            安全等级:强
-          </el-col>
-          <el-col :span="24">
-            目前账号非常安全
-          </el-col>
-        </el-col>
+    <div class="clinic-info">
+        <div class="clinic-item">
+            <div class="title">
+                <i class="fa fa-link mr-10 store"></i>
+                <span>连锁机构</span>
+            </div>
+            <div class="org-content clearfix">
+                机构名称： <span class="tip">诊所1</span>
 
-      </div>
-    </el-row>
-      <div class="midden">
-        <i
-          class="fa fa-paperclip"
-          style="margin-top:10px;
-                 font-size:40px;
-                 cursor:pointer;
-                 margin-left:10px;
-                 color: #2f6386;
-               "
-        ></i>
-      </div>
-    <el-row :span="12">
-      <div class="bottom">
-        <i
-          class="fa fa-hospital"
-          style="margin-top:10px;
-                 font-size:40px;
-                 cursor:pointer;
-                 margin-left:10px;
-                 color: #2f6386;
-               "
-        ></i>
-      </div>
-    </el-row>    
-  </div>
+                <div class="pull-right">
+                    <el-button type="primary" @click.stop="chainStoreDialog = true">连锁店管理</el-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="clinic-item">
+            <div class="title">
+                <i class="fa fa-hospital mr-10 hospital"></i>
+                <span>我的诊所</span>
+            </div>
+
+            <div class="hsp-content clearfix">
+                <span class="hsp-msg">剩余短信数： <span class="tip">500</span> </span>
+                <div class="info">
+                    <div class="info-item">
+                        <div class="info-left clinic">诊所名称*：</div>
+                        <div class="info-right">测试</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-left">QQ号：</div>
+                        <div class="info-right">123456789</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-left">联系人：</div>
+                        <div class="info-right">root</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-left">联系电话：</div>
+                        <div class="info-right">13456789</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-left">邮箱：</div>
+                        <div class="info-right">13131313</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-left">地址：</div>
+                        <div class="info-right">4556024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <chain-store :show.sync="chainStoreDialog"></chain-store>
+    </div>
 
 </template>
 
 <script>
+import ChainStore from "./ChainStore";
 export default {
-    name: 'ClinicInformation',
-    components: {},
-      props: {
+    name: "ClinicInformation",
+    components: { ChainStore },
+    props: {
         refresh: {
-          type: Boolean,
-          required: true
+            type: Boolean,
+            required: true
         }
-      },
-      data() {
-        return {};
-      },
-      created() {},
-      mounted() {},
-      watch: {
+    },
+    data() {
+        return {
+			chainStoreDialog: false
+		};
+    },
+    created() {},
+    mounted() {},
+    watch: {
         refresh(newValue, oldValue) {
-          let that = this;
+            let that = this;
 
-          if (newValue) {
-            that.getPatientInfo();
-          }
+            if (newValue) {
+                that.getPatientInfo();
+            }
         }
-      },
-      computed: {},
-      methods: {
+    },
+    computed: {},
+    methods: {
         getPatientInfo() {
-          let that = this;
+            let that = this;
 
-          that.$api.aaaa.aaaa
-            .then(res => {
-              that.getDataDone();
-            })
-            .catch(res => {
-              that.getDataDone();
-            });
+            that.$api.aaaa.aaaa
+                .then(res => {
+                    that.getDataDone();
+                })
+                .catch(res => {
+                    that.getDataDone();
+                });
         },
 
         getDataDone() {
-          setTimeout(() => {
-            that.$emit("update:refresh", false);
-          }, 6e3);
+            setTimeout(() => {
+                that.$emit("update:refresh", false);
+            }, 6e3);
         }
-      }
-}
+    }
+};
 </script>
 <style lang="less" scoped>
-.titel{
-  font-size: 20px;
-  font-weight: bold;
-  margin: 12px 0 10px 8px;
-}
-.top{
-  border: 1px solid black;
-  width: 600px;
-  height: 150px;
-  margin: 0 0 0 40px;
-}
-.midden{
-  border: 1px solid black;
-  width: 600px;
-  height: 150px;
-  margin: 0 0 0 40px;
-}
-.bottom{
-  border: 1px solid black;
-  width: 600px;
-  height: 150px;
-  margin: 0 0 0 40px;
+//导入全局的颜色
+@import "~@css/var";
+
+.clinic-info {
+    padding-left: 60px;
+
+    .clinic-item {
+        margin-top: 20px;
+        width: 600px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e3e3e3;
+
+        .title {
+            font-size: 24px;
+
+            i {
+                font-size: 28px;
+
+                &.store {
+                    color: orange;
+                }
+
+                &.hospital {
+                    color: blue;
+                }
+            }
+        }
+
+        .tip {
+            color: @color;
+            font-size: 18px;
+        }
+
+        .org-content {
+            margin: 20px;
+            margin-left: 20px;
+            font-size: 20px;
+        }
+
+        .hsp-content {
+            .hsp-msg {
+                margin: 10px 0 0 10px;
+            }
+
+            .info {
+                margin-left: 20px;
+
+                .info-item {
+                    margin-top: 16px;
+
+                    .info-left {
+                        width: 120px;
+                        text-align: right;
+
+                        &.clinic {
+                            color: orange;
+                        }
+                    }
+
+                    > div {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
