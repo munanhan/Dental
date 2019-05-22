@@ -3,6 +3,7 @@
     <el-table
       border
       class="charge-top"
+      height="800px"
       :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
     >
       <div>
@@ -297,10 +298,6 @@ export default {
   //     }
   //   }
   // }
-}
-
-/deep/ .el-table__body-wrapper {
-  height: 755px;
 }
 
 .button {

@@ -245,7 +245,7 @@
                     <div class="diagnose-detail">
                         <div class="tooth">
                             <div class="tooth-row">
-                                <div class="tooth-left">12345678</div>
+                                <div class="tooth-left" >12345678</div>
                                 <div class="tooth-right">12345678</div>
                             </div>
                             <div class="tooth-row">

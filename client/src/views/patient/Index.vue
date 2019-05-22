@@ -145,12 +145,12 @@
                         </div>
                     </el-tab-pane>
                     <!-- <div class="visit-bottom-content" >
-              <el-button
-               type="primary"
-                @click="add_patient"
-              >新增患者</el-button>
-              <el-button>复诊预约</el-button>
-            </div> -->
+                       <el-button
+                        type="primary"
+                         @click="add_patient"
+                       >新增患者</el-button>
+                       <el-button>复诊预约</el-button>
+                    </div> -->
                 </el-tabs>
             </div>
         </div>
@@ -171,6 +171,18 @@
 
                 </el-tab-pane>
 
+                <el-tab-pane
+                    label="就诊信息"
+                    name="11"
+                >
+                    <div>asdasdas</div>
+                </el-tab-pane>
+                <el-tab-pane
+                    label="预约信息"
+                    name="12"
+                >
+
+                </el-tab-pane>
                 <el-tab-pane
                     label="处置记录"
                     name="disposalRecords"
