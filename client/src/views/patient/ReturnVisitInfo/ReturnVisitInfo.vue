@@ -3,6 +3,7 @@
     <el-table
       border
       class="charge-top"
+      height="802px"
       :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
     >
       <div>
@@ -150,9 +151,9 @@ export default {
   width: 100%;
 }
 
-/deep/ .el-table__body-wrapper {
-  height: 755px;
-}
+// /deep/ .el-table__body-wrapper {
+//   height: 755px;
+// }
 
 .button {
   width: 130px;
