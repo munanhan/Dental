@@ -79,7 +79,7 @@ import PermissionSettings from "./permission_settings/Index";
 import StaffManagement from "./staff_management/Index";
 import DisposalCharging from "./disposal_charging/Index";
 import DisposalCombination from "./disposal_combination/Index";
-import CaseTemplate from "./CaseTemplate";
+import CaseTemplate from "./case_template/Index";
 import MemberUpgrade from "./member_upgrade/Index";
 import PatientRecyclingBin from "./patient_recyclingBin/Index";
 import OperationRecord from "./operation_record/Index";
