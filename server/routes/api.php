@@ -29,7 +29,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Config Api
      */
 
-    Route::get('patients/resource', function () {
+    Route::get('patients/patient_resource', function () {
         return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
     });
 
@@ -37,7 +37,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route PatientConsult Config Api
      */
 
-    Route::get('patients_consult/resource',function (){
+    Route::get('patients/consult_resource',function (){
         return new \App\Http\Resources\PatientConsultCollection(\App\Model\PatientConsult::all());
     });
 
@@ -299,10 +299,15 @@ Route::group(['namespace'=>'Api'],function (){
         return \Illuminate\Support\Facades\Hash::make(request('password'));
     });
 
-    Route::get('dysms','UserController@sendMessage');
+    /*
+     * 获取地区省
+     */
+    Route::get('areas/province','AreaController@getProvince');
 
-    Route::get('order','OrderController@store');
-
+    /*
+     * 获取地区城市或区
+     */
+    Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
 
     // Route::get('publish', function () {
     //     // Route logic...
