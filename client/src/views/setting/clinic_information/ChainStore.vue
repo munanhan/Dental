@@ -7,7 +7,7 @@
             class="custom-dialog chain-store"
             :close-on-click-modal="false"
             v-dialog-drag
-            width="810px"
+            width="1010px"
             top="2vh"
         >
             <el-tabs v-model="activeName">
@@ -134,7 +134,151 @@
                     label="员工管理"
                     name="StaffManagement"
                 >
+                    <div class="staff-management">
+                        <div class="action-bar">
+                            <div class="search-item">
+                                <span class="mr-10">所属诊所</span>
+                                <el-select
+                                    v-model="search.hospital"
+                                    collapse-tags
+                                >
+                                    <el-option
+                                        v-for="item in hospitalList"
+                                        :key="item.id"
+                                        :label="item.label"
+                                        :value="item.id"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </div>
 
+                            <div class="search-item">
+                                <el-button
+                                    type="primary"
+                                    @click="getStaffData"
+                                >查询</el-button>
+                            </div>
+                        </div>
+
+                        <el-table
+                            border
+                            class="width100 mb-10"
+                            :data="tableData"
+                            :height="tableHeight"
+                            :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                        >
+                            <el-table-column
+                                prop="aaaa"
+                                label="姓名"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="所属门店"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="职位"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="联系电话"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="连锁管理员"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                    <el-radio
+                                        v-model="scope.row.id"
+                                        @change="(value) => changeType(scope.row, 'type', vlaue)"
+                                    ></el-radio>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="连锁查看权限"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                    <el-radio
+                                        v-model="scope.row.id"
+                                        @change="(value) => changeType(scope.row, 'type', vlaue)"
+                                    ></el-radio>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="单店查看权限"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                    <el-radio
+                                        v-model="scope.row.id"
+                                        @change="(value) => changeType(scope.row, 'type', vlaue)"
+                                    ></el-radio>
+                                </template>
+
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="患者管理"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                    <el-checkbox
+                                        v-model="scope.row.check"
+                                        @change="(value) => changeType(scope.row, 'type', vlaue)"
+                                    ></el-checkbox>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="aaaa"
+                                label="连锁店管理"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                 <el-checkbox
+                                        v-model="scope.row.check"
+                                        @change="(value) => changeType(scope.row, 'type', vlaue)"
+                                    ></el-checkbox>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-row
+                            class="pager"
+                            type="flex"
+                            justify="end"
+                        >
+                            <el-pagination
+                                @current-change="changePage"
+                                @size-change="pageSizeChange"
+                                background
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :page-sizes="[10, 20, 50, 100]"
+                                :page-size="pager.size"
+                                :total="pager.total"
+                                :current-page="pager.current"
+                            ></el-pagination>
+                        </el-row>
+                    </div>
                 </el-tab-pane>
 
                 <el-tab-pane
@@ -168,6 +312,21 @@ export default {
             showInfoDialog: false,
 
             addStoreDialog: false,
+
+            //员工管理
+            tableHeight: 370,
+            tableData: [{}],
+            search: {
+                hospital: 0
+            },
+
+            hospitalList: [{ id: 0, label: "全部" }],
+
+            pager: {
+                total: 0,
+                current: 1,
+                size: 20
+            }
         };
     },
     created() {},
@@ -177,9 +336,37 @@ export default {
     methods: {
         showInfo(id) {
             let that = this;
-
             that.showInfoDialog = true;
-        }
+        },
+
+        changePage(index) {
+            let that = this;
+
+            that.pager.current = index;
+            that.getStaffData();
+        },
+
+        pageSizeChange(val) {
+            let that = this;
+
+            that.pager.size = val;
+            that.getStaffData();
+        },
+
+        //获取员工的信息
+        getStaffData() {
+            let that = this,
+                params = {},
+                searchData = JSON.parse(JSON.stringify(that.search));
+
+            params["pageIndex"] = that.pager.current;
+            params["pageSize"] = that.pager.size;
+
+            //获取数据
+        },
+
+        //监听表格的radio和checkbox的事件
+        changeType(row, type, value) {}
     }
 };
 </script>
@@ -245,6 +432,10 @@ export default {
                 }
             }
         }
+    }
+
+    .staff-management {
+        padding: 10px;
     }
 }
 </style>
