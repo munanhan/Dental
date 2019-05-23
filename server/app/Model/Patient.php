@@ -15,15 +15,19 @@ class Patient extends Model
         'updating'=>UpdatingEvent::class,
     ];
 
-    public function patientInfo()
-    {
-        return $this->hasOne(PatientInfo::class);
-    }
-
-
-    public function appointment()
+    public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function patientCases()
+    {
+        return $this->hasMany(PatientCase::class);
+    }
+
+    public function patientVisit()
+    {
+        return $this->hasMany(PatientVisit::class);
     }
 
 }

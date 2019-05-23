@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientVisit extends Model
 {
-    protected $fillable=[
+    protected $guarded=['id','patient_id'];
 
-    ];
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
 }
