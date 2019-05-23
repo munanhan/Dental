@@ -255,7 +255,7 @@
                                 show-overflow-tooltip
                             >
                                 <template slot-scope="scope">
-                                 <el-checkbox
+                                    <el-checkbox
                                         v-model="scope.row.check"
                                         @change="(value) => changeType(scope.row, 'type', vlaue)"
                                     ></el-checkbox>
@@ -285,7 +285,186 @@
                     label="连锁信息"
                     name="chainInformation"
                 >
+                    <div class="chain-info">
+                        <div
+                            v-if="activeName == 'chainInformation'"
+                            class="chain-btn"
+                        >
+                            <div v-if="isDisabled">
+                                <el-button
+                                    type="primary"
+                                    @click="isDisabled = false"
+                                    size="medium"
+                                >编辑</el-button>
+                            </div>
 
+                            <div v-else>
+                                <el-button
+                                    @click="cancelEditChain(true)"
+                                    :disabled="commitLoading"
+                                    size="medium"
+                                >取 消</el-button>
+                                <el-button
+                                    type="primary"
+                                    @click="editChain"
+                                    size="medium"
+                                >保存</el-button>
+                            </div>
+
+                        </div>
+
+                        <el-form
+                            :model="form"
+                            :rules="formRules"
+                            label-width="100px"
+                        >
+
+                            <el-form-item
+                                label="企业logo"
+                                prop="license_no"
+                            >
+                                <div class="image-upload">
+                                    <el-upload
+                                        class="image-uploader"
+                                        action="/upload"
+                                        :show-file-list="false"
+                                        :on-success="handleSuccess"
+                                        :before-upload="beforeUpload"
+                                        :disabled="isDisabled"
+                                        :class="{'disabled': isDisabled }"
+                                    >
+                                        <img
+                                            v-if="form.image_url"
+                                            :src="form.image_url"
+                                            class="image"
+                                        >
+                                        <span
+                                            v-else
+                                            class="image-uploader-icon"
+                                        >
+                                            <i class="el-icon-plus "></i>
+                                        </span>
+
+                                    </el-upload>
+                                    <div class="image-upload-tip">
+                                        大小不超过2M（.jpg或.png格式）
+                                    </div>
+                                </div>
+
+                            </el-form-item>
+
+                            <el-form-item
+                                label="企业名称"
+                                prop="name"
+                            >
+                                <el-input
+                                    :disabled="isDisabled"
+                                    v-model.trim="form.name"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                            <el-form-item
+                                label="企业联系人"
+                                prop="contact"
+                            >
+                                <el-input
+                                    :disabled="isDisabled"
+                                    v-model.trim="form.contact"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                            <el-form-item
+                                label="联系电话"
+                                prop="phone"
+                            >
+                                <el-input
+                                    v-model.trim="form.phone"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                            <el-form-item
+                                label="企业地址"
+                                prop="addresss"
+                            >
+                                <div class="address">
+                                    <div>
+                                        <el-select
+                                            v-model="form.province"
+                                            collapse-tags
+                                            class="width100"
+                                            placeholder="省份"
+                                            :disabled="isDisabled"
+                                        >
+                                            <el-option
+                                                v-for="item in provinceList"
+                                                :key="item.id"
+                                                :label="item.label"
+                                                :value="item.id"
+                                            >
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                    <div>
+                                        <el-select
+                                            v-model="form.city"
+                                            collapse-tags
+                                            class="width100"
+                                            placeholder="城市"
+                                            :disabled="isDisabled"
+                                        >
+                                            <el-option
+                                                v-for="item in cityList"
+                                                :key="item.id"
+                                                :label="item.label"
+                                                :value="item.id"
+                                            >
+                                            </el-option>
+                                        </el-select>
+
+                                    </div>
+                                    <div>
+                                        <el-select
+                                            v-model="form.area"
+                                            collapse-tags
+                                            class="width100"
+                                            placeholder="地区"
+                                            :disabled="isDisabled"
+                                        >
+                                            <el-option
+                                                v-for="item in areaList"
+                                                :key="item.id"
+                                                :label="item.label"
+                                                :value="item.id"
+                                            >
+                                            </el-option>
+                                        </el-select>
+
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <el-input
+                                        v-model.trim="form.addresss"
+                                        autocomplete="off"
+                                        placeholder="详细地址"
+                                        :disabled="isDisabled"
+                                    ></el-input>
+                                </div>
+
+                            </el-form-item>
+                            <el-form-item
+                                label="企业简介"
+                                prop="desc"
+                            >
+                                <el-input
+                                    v-model.trim="form.desc"
+                                    autocomplete="off"
+                                    type="textarea"
+                                    :disabled="isDisabled"
+                                ></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </div>
                 </el-tab-pane>
 
             </el-tabs>
@@ -326,7 +505,51 @@ export default {
                 total: 0,
                 current: 1,
                 size: 20
-            }
+            },
+
+            //企业信息
+            commitLoading: false,
+            isDisabled: true,
+
+            form: {
+                name: "",
+                contact: "",
+                phone: "",
+                province: -1,
+                city: -1,
+                area: -1,
+                addresss: "",
+                desc: "",
+                image_url: ""
+            },
+
+            formRules: {
+                name: [
+                    {
+                        required: true,
+                        message: "请输入企业名称",
+                        trigger: "blur"
+                    }
+                ],
+                contact: [
+                    {
+                        required: true,
+                        message: "请输入联系人",
+                        trigger: "blur"
+                    }
+                ],
+                phone: [
+                    {
+                        required: true,
+                        message: "请输入联系电话",
+                        trigger: "blur"
+                    }
+                ]
+            },
+
+            provinceList: [{ id: -1, label: "省份" }],
+            cityList: [{ id: -1, label: "城市" }],
+            areaList: [{ id: -1, label: "地区" }]
         };
     },
     created() {},
@@ -366,7 +589,48 @@ export default {
         },
 
         //监听表格的radio和checkbox的事件
-        changeType(row, type, value) {}
+        changeType(row, type, value) {},
+
+        //诊所信息
+        handleSuccess(res, file) {
+            this.formHosp.image_url = URL.createObjectURL(file.raw);
+            // this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeUpload(file) {
+            // const isJPG = file.type === "image/jpeg";
+            // const isLt2M = file.size / 1024 / 1024 < 2;
+            // if (!isJPG) {
+            //     this.$message.error("上传头像图片只能是 JPG 格式!");
+            // }
+            // if (!isLt2M) {
+            //     this.$message.error("上传头像图片大小不能超过 2MB!");
+            // }
+            // return isJPG && isLt2M;
+        },
+
+        editChain(){
+            let that = this;
+            
+            //设置转转
+            that.commitLoading = true;
+
+            //拿数据---
+            that.commitLoading = false;
+
+            that.cancelEditChain(false);
+        },
+
+        cancelEditChain(refresh){
+            let that = this;
+            that.isDisabled = true;
+            
+            //重新拿数据，还原原来的数据
+            if(refresh){
+
+            }
+
+            
+        }
     }
 };
 </script>
@@ -377,7 +641,7 @@ export default {
 
 .chain-store {
     /deep/ .el-dialog__body {
-        height: 530px;
+        height: 550px;
         padding: 0;
 
         .el-tabs__content {
@@ -394,7 +658,7 @@ export default {
             position: absolute;
             right: 10px;
             top: -38px;
-            z-index: 9999;
+            z-index: 99;
         }
 
         .store-item {
@@ -436,6 +700,72 @@ export default {
 
     .staff-management {
         padding: 10px;
+    }
+
+    .chain-info {
+        padding: 10px;
+        width: 400px;
+
+        .chain-btn {
+            position: absolute;
+            right: 10px;
+            top: -38px;
+            z-index: 99;
+        }
+
+        .address {
+            display: flex;
+            margin-bottom: 22px;
+
+            > div {
+                flex: 1 auto;
+                margin-right: 1%;
+
+                :last-of-type {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .image-upload {
+            display: flex;
+        }
+
+        .image-uploader {
+            font-size: 28px;
+            color: #8c939d;
+            width: 100px;
+            height: 100px;
+            line-height: 60px;
+            text-align: center;
+            border: 3px dotted #e3e3e3;
+            display: inline-block;
+            box-sizing: border-box;
+            margin-right: 10px;
+
+            &.disabled {
+                background-color: #e3e3e3;
+                opacity: 0.6;
+            }
+
+            /deep/ .el-upload {
+                width: 100%;
+                height: 100%;
+                padding-top: 18px;
+                box-sizing: border-box;
+            }
+        }
+
+        .image {
+            width: 100px;
+            height: 100px;
+            display: block;
+        }
+
+        .image-upload-tip {
+            flex: 1;
+            line-height: 30px;
+        }
     }
 }
 </style>

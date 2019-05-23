@@ -574,12 +574,13 @@ export default {
                     border: 3px dotted #e3e3e3;
                     display: inline-block;
                     box-sizing: border-box;
-                    padding-top: 18px;
                     margin-right: 10px;
 
                     /deep/ .el-upload {
                         width: 100%;
                         height: 100%;
+                        padding-top: 18px;
+                        box-sizing: border-box;
                     }
                 }
 
@@ -588,19 +589,6 @@ export default {
                     height: 100px;
                     display: block;
                 }
-
-                // .image-upload {
-                //     font-size: 28px;
-                //     color: #8c939d;
-                //     width: 100px;
-                //     height: 100px;
-                //     line-height: 60px;
-                //     text-align: center;
-                //     border: 3px dotted #e3e3e3;
-                //     display: inline-block;
-                //     box-sizing: border-box;
-                //     padding-top: 18px;
-                // }
 
                 .image-upload-tip {
                     flex: 1;
