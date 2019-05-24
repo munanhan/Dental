@@ -18,7 +18,7 @@
       <div class="search">
         <el-col :span="3">
               <span class="mr10">
-                  <el-input v-model="search.staff" placeholder="姓名"></el-input>
+                  <el-input v-model="search.name" placeholder="姓名"></el-input>
               </span>
         </el-col>
         <el-col :span="3">
@@ -29,7 +29,7 @@
         <el-col :span="6">
               <span class="mr10">
                   <el-date-picker
-                    v-model="search.dateRange"
+                    v-model="dateRange"
                     type="daterange"
                     class="input_size"
                     range-separator="至"
@@ -65,7 +65,7 @@
               :height="tableHeight"
               style="width: 100%">
               <el-table-column
-                prop="case_no"
+                prop="case_id"
                 label="病历号"
                 >
               </el-table-column>
@@ -87,15 +87,15 @@
                 label="电话">
               </el-table-column>
               <el-table-column
-                prop="sale_total"
+                prop="receipts"
                 label="消费总额">
               </el-table-column>
               <el-table-column
-                prop="mem_level"
+                prop="member_level"
                 label="会员级别">
               </el-table-column>
               <el-table-column
-                prop="mem_card"
+                prop="member_card"
                 label="会员卡号">
               </el-table-column>
               <el-table-column
@@ -123,14 +123,32 @@
         </el-col>
       </el-row>
 
+
    
     <!-- 弹出会员升级 -->
     <set-member-dialog 
       :show.sync="up_dialog"
       :editItem="editItem"
+      @flush="updateData"
     >
     </set-member-dialog>
  
+       <!--分页-->
+      <el-row>
+          <div class="block">
+            <el-pagination
+              @size-change="sizeChange"
+              @current-change="currentChange"
+              :current-page="search.current_page"
+              :page-sizes="[10, 15, 20, 25]"
+              :page-size="search.page_size"
+              layout="total, sizes, prev, pager, next, jumper"
+              class="pager"
+              background
+              :total="total">
+            </el-pagination>
+          </div>
+      </el-row>
     </div>
 </template>
 
@@ -149,30 +167,22 @@ export default {
       },
       data() {
         return {
+            total:0,
             editItem:{},
             up_dialog:false,
             tableHeight:700,
+            dateRange :[],
             search:{
-              dateRange :[],
-              staff:'',
+              current_page:1,
+              page_size:15,
+              name:'',
               phone:'',
               dtfm:'',
               dtto:'',
               start_money:undefined,
               end_money:undefined
             },
-            tableData:[{
-              case_no:'001',
-              name:'琳',
-              age:18,
-              sex:'女',
-              phone:'138888888',
-              sale_total:123.06,
-              mem_level:'黄金会员',
-              mem_card:'huanjin001',
-              mem_up:''
-
-          }]
+            tableData:[],
         };
       },
       created() {},
@@ -200,7 +210,7 @@ export default {
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
 
-                // that.getData();
+                that.getData();
             }
         }
     },
@@ -210,47 +220,108 @@ export default {
             let that = this;
             // console.log(that.$refs.ContentData.clientHeight);
                 if (that.$refs.Content.clientHeight != 0) {
-                  let tableHeight = that.$refs.Content.clientHeight - 70;
+                  let tableHeight = that.$refs.Content.clientHeight - 140;
                   that.tableHeight = tableHeight;
                 }
             
         },
-        getPatientInfo() {
+        currentChange(val){
+          //改变当前页
           let that = this;
-
-          that.$api.aaaa.aaaa
-            .then(res => {
-              that.getDataDone();
-            })
-            .catch(res => {
-              that.getDataDone();
-            });
+          that.search.current_page = val;
+          //***后端分页***/
+          that.getData();
+          //*************/
+          //***前端分页***/
+          // let start = (val-1)*that.page_size;
+          // let end = start+that.page_size;
+          // if (end >= that.tableData.length) {
+          //    end = that.tableData.length;
+          // }
+          // that.currentData = that.tableData.slice(start,end);
+          /****************/
         },
-        getData() {
-            let that = this;
-                that.search.dtfm = that.search.dateRange[0];
-                that.search.dtto = that.search.dateRange[1];
-                console.log(that.search);
-            // that.pager.current = 1;
-
-            // if (that.$check_pm("report_candidate_info_statistics")) {
-            //     //权限
-            //     that.getCandidateInfoStatistics(params);
-            // } else {
-            //     that.$message.error("无此权限.");
-            // }
+        sizeChange(val){
+          //当前页数量
+          let that = this;
+          /*******后端分页*********/
+          that.search.page_size = val;
+          that.getData();
+          // that.search.current_page = 1;
+          // that.tableData = that.tableData.slice(0,that.page_size);
+          // that.total = that.tableData.length;
+          /***********************/
+          /****前端分页*****/
+          // that.page_size = val;
+          // that.current_page = 1;
+          // that.currentData = that.tableData.slice(0,that.page_size);
+          // that.total = that.tableData.length;
+          /****************/
         },
         showUpDialog(editItem){
             let that = this;
-            that.editItem = editItem;
-            that.up_dialog = true;
+            that.getById(editItem);
+            // that.editItem = editItem;
+            // that.up_dialog = true;
         },
-
         getDataDone() {
           setTimeout(() => {
             that.$emit("update:refresh", false);
           }, 6e3);
-        }
+        },
+        /*******获取数据********/
+        getData(){
+            //获取数据
+            let that = this;
+            console.log(that.dateRange);
+            if (that.dateRange != null ) {
+                that.search.dtfm = that.dateRange[0];
+                that.search.dtto = that.dateRange[1];
+            }
+            else{
+                that.search.dtfm = undefined;
+                that.search.dtto = undefined;
+            }
+
+            that.$api.member.get(that.search)
+            .then(res => {
+               that.tableData = res.data.row;
+               that.total = res.data.total;
+            })
+            .catch(res => {
+
+            });
+        },
+        getById(parms){
+            let that = this;
+            let id = parms.id;
+            that.$api.member.getById({'id':id})
+            .then(res => {
+                if (res.code == 200) {
+                    that.editItem = res.data;
+                    that.up_dialog = true;
+                    // that.editMemberDialog = true;
+                }else{
+                    that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+            })
+            .catch(res => {
+
+            });
+        },
+        updateData(data){
+            //更新数据
+            let that = this;
+            for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                // console.log(id);
+                if (that.tableData[i].id == data.id) {
+                     that.$set(that.tableData,i,data);
+                     break;
+                }
+            }
+        },
       }
 }
 </script>
@@ -275,5 +346,8 @@ export default {
 }
 .input_size{
     width:100%;
+}
+.block{
+  padding: 25px;
 }
 </style>

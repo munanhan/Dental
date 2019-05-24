@@ -11,26 +11,26 @@
       <el-row :gutter="10">
         <el-col :span="20">
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="会员等级" prop="mem_level_id">
+          <el-form-item label="会员等级" prop="member_id">
             <el-select
               clearable
               filterable
               placeholder="请选择会员等级"
               size=""
-              v-model="form.mem_level_id"
+              v-model="form.member_id"
               class="width100"
               
           >
               <el-option
                   v-for="item in member"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
               ></el-option>
           </el-select>
           </el-form-item>
-          <el-form-item label="会员卡号" prop="mem_card">
-            <el-input v-model="form.mem_card"></el-input>
+          <el-form-item label="会员卡号" prop="phone" readonly>
+            <el-input v-model="form.phone"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">确定</el-button>
@@ -79,35 +79,18 @@ export default {
         return {
           setMemberLevelDialog:false,
           form:{
-            mem_level_id:'',
-            mem_card:''
+            member_id:'',
+            phone:''
           },
-          member:[
-             {
-              label:'无',
-              value:0
-             },
-             {
-              label:'铜卡会员',
-              value:1
-             },
-             {
-              label:'银卡会员',
-              value:2
-             },
-             {
-              label:'金卡会员',
-              value:3
-             }
-          ],
+          member:[],
 
           rules:{
-            mem_level_id: [{
+            member_id: [{
                     required: true,
                     message:'请选择会员等级.',
                     trigger: "blur"
                 }],
-              mem_card: 
+              phone: 
                   [{
                       required: true,
                       message:'请输入会员卡号.',
@@ -129,15 +112,22 @@ export default {
       created() {
         
       },
-      mounted() {},
+      mounted() {
+        let that = this;
+        that.getMember();
+      },
       watch: {
-        // refresh(newValue, oldValue) {
-        //   let that = this;
+        refresh(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                // that.resizeTable();
 
-        //   if (newValue) {
-        //     that.getPatientInfo();
-        //   }
-        // }
+                //更新原来的refresh, 防止下次点击时不通知更新
+                // that.$emit("update:refresh", false);
+                that.getMember();
+                // that.getData();
+            }
+        }
         
       },
       computed: {},
@@ -154,11 +144,31 @@ export default {
             this.setMemberLevelDialog = true;
         },
         submitForm(formName) {
-          console.log(this.editItem);
-          console.log(this.form);
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log('submit!');
+              // console.log(this.form);
+              that.$api.member.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      // console.log(res.data);
+                      that.closethisDialog();
+                      that.$emit("flush",res.data);
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
             } else {
               console.log('error submit!!');
               return false;
@@ -169,6 +179,18 @@ export default {
            let that = this;
            that.$refs["form"].resetFields();
            that.closeDialog();
+        },
+        /**获取数据**/
+        getMember(){
+          //获取会员信息
+            let that = this;
+            that.$api.patient_member.get()
+            .then(res => {
+               that.member = res.data;
+            })
+            .catch(res => {
+
+            });
         }
       }
 }

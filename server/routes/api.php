@@ -169,15 +169,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route PatientMember Api
      */
-    Route::get('patient_members', 'PatientMemberController@index');
+    // Route::get('patient_members', 'PatientMemberController@index');
 
-    Route::get('patient_members/{patientMember}', 'PatientMemberController@show');
+    // Route::get('patient_members/{patientMember}', 'PatientMemberController@show');
 
-    Route::post('patient_members', 'PatientMemberController@store');
+    // Route::post('patient_members', 'PatientMemberController@store');
 
-    Route::put('patient_members/{patientMember}', 'PatientMemberController@update');
+    // Route::put('patient_members/{patientMember}', 'PatientMemberController@update');
 
-    Route::delete('patient_members/{patientMember}', 'PatientMemberController@delete');
+    // Route::delete('patient_members/{patientMember}', 'PatientMemberController@delete');
 
     /*
      * Route PatientProfession Api
@@ -270,19 +270,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('disposal_combo_menu/{id}', 'DisposalComboMenuController@delete');//删除
     
-    /*
-     * Route DisposalConbo Api
-     * created for yu
-     */
-    Route::get('disposal_combo','DisposalComboController@index');//处置列表
-
-    Route::post('disposal_combo', 'DisposalComboController@addDisposalCombo');//添加
-
-    Route::get('disposal_combo/get_by_id','DisposalComboController@getById');//根据id获取
-
-    Route::put('disposal_combo', 'DisposalComboController@update');//修改
-
-    Route::delete('disposal_combo/{id}', 'DisposalComboController@delete');//删除
+    
 
 
 
@@ -298,6 +286,53 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::post('appointment/add_appointment','AppointmentController@addAppointment');
 
     Route::post('appointment/getWeekAppointment','AppointmentController@getWeekAppointment');
+});
+
+
+
+Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function(){
+    /*
+     * Route DisposalConbo Api
+     * created for yu
+     */
+    Route::get('disposal_combo','DisposalComboController@index');//处置列表
+
+    Route::post('disposal_combo', 'DisposalComboController@addData');//添加
+
+    Route::get('disposal_combo/get_by_id','DisposalComboController@getById');//根据id获取数量
+
+    Route::get('disposal_combo/get_list','DisposalComboController@getList');//根据id获取列表
+
+    Route::put('disposal_combo', 'DisposalComboController@update');//修改
+
+    Route::delete('disposal_combo/{id}', 'DisposalComboController@delete');//删除
+
+     /*
+     * Route PatientMember Api
+     * created for yu
+     */
+    Route::get('patient_member','PatientMemberController@index');//处置列表
+
+    Route::post('patient_member', 'PatientMemberController@addData');//添加
+
+    Route::get('patient_member/get_by_id','PatientMemberController@getById');//根据id获取数量
+
+    Route::put('patient_member', 'PatientMemberController@update');//修改
+
+    Route::delete('patient_member/{id}', 'PatientMemberController@delete');//删除
+
+     /*
+     * Route Member Api
+     * created for yu
+     */
+    Route::get('member','MemberController@index');//列表
+
+    Route::get('member/get_by_id','MemberController@getById');//根据id获取数量
+
+    Route::put('member', 'MemberController@update');//修改
+
+
+
 });
 
 

@@ -87,7 +87,7 @@
                                 
                                 <el-table-column
                                     label="费用类型"
-                                    prop="cost_type"
+                                    prop="category"
                                 >
                                 </el-table-column>
                                 <el-table-column
@@ -107,7 +107,7 @@
                                 </el-table-column>
                                 <el-table-column
                                     label="数量"
-                                    prop="qty"
+                                    prop="combo_qty"
                                 >
                                 </el-table-column>
                                 <el-table-column
@@ -145,7 +145,7 @@
                                                 size="mini"
                                                 icon="el-icon-delete"
                                                 circle
-                                                @click.stop="del(scope.row.id)"
+                                                @click.stop="showDel(scope.row.disposal_id)"
                                             ></el-button>
                                         </el-tooltip>
 
@@ -204,13 +204,34 @@
         <edit-qty
           :show.sync="editQtyDialog"
           :editItem="editItem"
+          @flush="updateData"
         >
         </edit-qty>
         <!-- 添加 -->
         <add
           :show.sync="addDialog"
+          :itemList="itemList"
+          :comboId=" comboId"
+          @flush="flushData"
         >
         </add>
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="delData" >确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 删除菜单提示框 -->
+    <el-dialog title="提示" :visible.sync="is_menu_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_menu_del = false">取 消</el-button>
+          <el-button type="primary" @click="delMenu" >确 定</el-button>
+      </span>
+    </el-dialog>
+
     </div>
 </template>
 
@@ -237,6 +258,17 @@ export default {
     },
     data() {
         return {
+            del_menu_id:0,
+            //删除菜单id
+            is_menu_del:false,
+            //删除菜单窗口
+            del_id:0,
+            //删除id
+            is_del:false,//删除窗口
+            //当前组合
+            comboId:0,
+            //添加列表
+            itemList:[],
             //修改列表
             editItem: {},
             //表格高度
@@ -326,24 +358,24 @@ export default {
             ],
             //表单数据
             tableData: [
-                {
-                    id: 1,
-                    disposal_name: "必兰麻",
-                    price: 50.00,
-                    cost_type: "西药费",
-                    remarks: "无",
-                    qty:2,
-                    cost:100.00
-                },
-                {
-                    id: 2,
-                    disposal_name: "保丽净",
-                    price: 99.99,
-                    cost_type: "西药费",
-                    remarks: "无",
-                    qty:1,
-                    cost:99.99
-                },
+                // {
+                //     id: 1,
+                //     disposal_name: "必兰麻",
+                //     price: 50.00,
+                //     cost_type: "西药费",
+                //     remarks: "无",
+                //     qty:2,
+                //     cost:100.00
+                // },
+                // {
+                //     id: 2,
+                //     disposal_name: "保丽净",
+                //     price: 99.99,
+                //     cost_type: "西药费",
+                //     remarks: "无",
+                //     qty:1,
+                //     cost:99.99
+                // },
             ]
         };
     },
@@ -373,7 +405,7 @@ export default {
 
                 //更新原来的refresh, 防止下次点击时不通知更新
                 that.$emit("update:refresh", false);
-                // that.getMenu();
+                that.getMenu();
                 // that.getData();
             }
         }
@@ -388,7 +420,9 @@ export default {
             that.$message.error("请选择一项.");
           }
           else{
-            that.delMenu(that.currentNode.id);
+            that.del_menu_id = that.currentNode.id;
+            that.is_menu_del = true;
+            // that.delMenu(that.currentNode.id);
             // alert(that.currentNode.id);
           }
 
@@ -424,6 +458,7 @@ export default {
             }
             if (data.level == 2) {
                 that.edit_btn = 'block';
+                that.getData(data.id);
             }
         },
 
@@ -465,35 +500,28 @@ export default {
         },
         edit(editItem) {
             //修改
+            // console.log(editItem);
             let that = this;
-            that.editItem = editItem;
-            that.editQtyDialog = true;
+            that.getById(editItem);
+            // that.editItem = editItem;
+            // that.editQtyDialog = true;
         },
-        del(id) {
+        showDel(id) {
             //删除
-            alert(id);
+            let that = this;
+            that.del_id = id;
+            that.is_del = true;
         },
         showAddDialog() {
             let that = this;
-            that.addDialog = true;
+            that.getList();
+            // that.addDialog = true;
         },
         importData() {
             //导入
         },
         exportData() {
             //导出
-        },
-
-        getPatientInfo() {
-            let that = this;
-
-            that.$api.aaaa.aaaa
-                .then(res => {
-                    that.getDataDone();
-                })
-                .catch(res => {
-                    that.getDataDone();
-                });
         },
 
         getDataDone() {
@@ -504,37 +532,43 @@ export default {
         /*****************处理菜单*******************/
         addMenu(data){
             let that = this;
-            // console.log(data);
+            console.log(data);
             if(data.p_id != 0){
                 for (var i = 0, length = that.menuData.length -1 ; i <= length; i++) {
                     if (that.menuData[i].id == data.p_id) {
-                        that.menuData[i].children.push(data);
-                        break;
+                        if (typeof that.menuData[i].children != "undefined") {
+                            that.menuData[i].children.push(data);
+                            // console.log(that.menuData[i]);
+                            break;
+                        }
+
                     }
+
                 }
 
             }
-            else{
+            if(typeof data.p_id == "undefined"){
                 that.menuData.push(data);
+                console.log(that.menuData[i]);
             }
             
         },
-        delMenu(id){
+        delMenu(){
           let that = this;
-           
+          let id = that.del_menu_id;
           that.$api.disposal_combo_menu.del({id})
           .then(res => {
 
                 if(res.code == 200){
                   for (var i = 0, length = that.menuData.length - 1; i <= length; i++) {
                         // console.log(id);
-                        console.log(that.menuData[i].id);
+                        // console.log(that.menuData[i].id);
                          if (that.menuData[i].id == id) {
                              that.menuData.splice(i,1);
                              break;
                          }
                     }
-
+                    that.is_menu_del = false;
                     that.$message({
                         message: res.msg,
                         type: "success",
@@ -584,15 +618,18 @@ export default {
         updateItem(data){
             //更新菜单
             let that = this;
-            // console.log(data);
+
             for (var i = 0, length = that.menuData.length -1 ; i <= length; i++) {
+
                 if (that.menuData[i].id == data.id) {
+                    data['children'] = that.menuData[i].children;
                     that.$set(that.menuData,i,data);//修改值
                     break;
-                }
-                if (typeof that.menuData[i].children!="undefined") {
 
-                    for (var j = 0, length = that.menuData[i].children.length -1 ; j <= length; j++){
+                }
+                else {
+
+                    for (var j = 0, c_length = that.menuData[i].children.length -1 ; j <= c_length; j++){
                         
                         if (that.menuData[i].children[j].id == data.id) {
                             that.menuData[i].children[j] = data;
@@ -603,7 +640,106 @@ export default {
                 }
             }
 
+        },
+        /*******************处理数据********************************/
+        getList(){
+            //获取列表数据
+            //获取数据
+            let that = this;
+            let id = that.currentNode.id;
+            that.$api.disposal_combo.getList({'id':id})
+            .then(res => {
+               that.itemList = res.data;
+               that.comboId = id;
+               // console.log(that.itemList);
+               that.addDialog = true;
+            })
+            .catch(res => {
+
+            });
+        },
+        getData(id){
+            //获取数据
+            let that = this;
+            that.$api.disposal_combo.get({'combo_id':id})
+            .then(res => {
+               that.tableData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+        getById(parms){
+            let that = this;
+            let commit = {};
+                commit.disposal_id = parms.disposal_id;
+                commit.combo_id = parms.combo_id;
+            that.$api.disposal_combo.getById(commit)
+            .then(res => {
+                if (res.code == 200) {
+                    parms.combo_qty = res.data.combo_qty;
+                    that.editItem = parms;
+                    that.editQtyDialog = true;
+                }else{
+                    that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+            })
+            .catch(res => {
+
+            });
+        },
+        updateData(data){
+            //更新数据
+            let that = this;
+            for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                // console.log(id);
+                if (that.tableData[i].disposal_id == data.disposal_id) {
+                     that.$set(that.tableData,i,data);
+                     break;
+                }
+            }
+        },
+        flushData(){
+            //刷新数据
+            let that = this;
+            that.getData(that.comboId);
+        },
+        delData(){
+            //删除数据
+          let that = this;
+          let id = that.del_id;
+          that.$api.disposal_combo.del({id})
+          .then(res => {
+
+                if(res.code == 200){
+                  for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+
+                         if (that.tableData[i].disposal_id == id) {
+                             that.tableData.splice(i,1);
+                             break;
+                         }
+                    }
+
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.is_del = false;
+                }
+                else{
+                     that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+          })
+          .catch(res => {
+            console.log(res);
+          });
         }
+
     }
 };
 </script>

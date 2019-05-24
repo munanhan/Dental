@@ -9,8 +9,8 @@
         v-dialog-drag
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="数量" prop="qty">
-            <el-input v-model="form.qty"></el-input>
+          <el-form-item label="数量" prop="combo_qty">
+            <el-input v-model="form.combo_qty"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">修改</el-button>
@@ -39,7 +39,7 @@ export default {
 
         return {
           form:{
-            qty:''
+            combo_qty:0
           },
           rules:{
               combo_name: [
@@ -88,9 +88,30 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log(this.form);
+              that.$api.disposal_combo.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      // console.log(that.form);
+                      that.closethisDialog();
+                      that.$emit("flush",res.data);
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
             } else {
               console.log('error submit!!');
               return false;

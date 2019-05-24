@@ -42,6 +42,9 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+        'check' => [
+            'base.verify.fields'
+        ],
     ];
 
     /**
@@ -61,6 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'base.verify.fields' => \App\Http\Middleware\BaseVerifyFields::class,
         //多表验路由中间件
         //'passport'=>\App\Http\Middleware\PassportCustomProvider::class,
     ];

@@ -9,8 +9,8 @@
         v-dialog-drag
         >
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-          <el-form-item label="会员等级" prop="mem_level">
-            <el-input v-model="form.mem_level"></el-input>
+          <el-form-item label="会员等级" prop="name">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="会员折扣(%)" prop="discount">
             <el-input-number v-model="form.discount" :precision="2" :step="0.1" :min="0" :max="100" controls-position="right"  class="input_size"></el-input-number>
@@ -44,30 +44,12 @@ export default {
         return {
           setMemberLevelDialog:false,
           form:{
-            mem_level:'',
+            name:'',
             discount:''
           },
-          member:[
-             {
-              label:'无',
-              value:0
-             },
-             {
-              label:'铜卡会员',
-              value:1
-             },
-             {
-              label:'银卡会员',
-              value:2
-             },
-             {
-              label:'金卡会员',
-              value:3
-             }
-          ],
 
           rules:{
-            mem_level: [
+            name: [
                     {
                         required: true,
                         message:'请输入会员等级.',
@@ -122,11 +104,31 @@ export default {
             this.setMemberLevelDialog = true;
         },
         submitForm(formName) {
-          console.log(this.editItem);
-          console.log(this.form);
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log('submit!');
+              // console.log(this.form);
+              that.$api.patient_member.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      // console.log(res.data);
+                      that.closethisDialog();
+                      that.$emit("flush",res.data);
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
             } else {
               console.log('error submit!!');
               return false;
@@ -137,7 +139,8 @@ export default {
            let that = this;
            that.$refs["form"].resetFields();
            that.closeDialog();
-        }
+        },
+
       }
 }
 </script>

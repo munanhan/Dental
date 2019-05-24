@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/disposal_combo';
+const prefix = '/patient_member';
 
 export function add(data){
     return request({
@@ -38,15 +38,6 @@ export function del(data) {
 export function getById(data) {
     return request({
         url: `${prefix}/get_by_id`,
-        method: 'get',
-        params: data
-    })
-}
-
-//根据id获取列表
-export function getList(data) {
-    return request({
-        url: `${prefix}/get_list`,
         method: 'get',
         params: data
     })

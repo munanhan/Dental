@@ -25,7 +25,7 @@ class DisposalController extends Controller
                 
             	$_select = [
             				   'table' => 'disposals',//表
-            				   'field' => 'disposals.id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,mem_discount,'.caseThen($_case_mode).','.caseThen($_medical_insurance)
+            				   'field' => 'disposals.id,disposals.id as disposal_id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,mem_discount,'.caseThen($_case_mode).','.caseThen($_medical_insurance)
             			   ];
 
             	$_join = [

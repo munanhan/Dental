@@ -24,10 +24,10 @@
         <el-col :span="24">
           <div>
             <el-table
-              :data="form"
+              :data="tableData"
               style="width: 100%">
               <el-table-column
-                prop="mem_level"
+                prop="name"
                 label="会员等级"
                 >
               </el-table-column>
@@ -70,7 +70,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row)"
+                                @click.stop="showDel(scope.row)"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -85,13 +85,23 @@
       <edit-member-level
         :show.sync="editMemberDialog"
         :editItem="editItem"
+        @flush="updateData"
       >
       </edit-member-level>
       <!--新增-->
       <add-member-level
         :show.sync="addMemberDialog"
+        @flush="addData"
       >
       </add-member-level>
+    <!-- 删除提示框 -->
+    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
+       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="is_del = false">取 消</el-button>
+          <el-button type="primary" @click="delData" >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template> 
 <script>
@@ -115,26 +125,14 @@ export default {
       data() {
 
         return {
+          is_del:false,
+          //删除窗口
+          del_id:0,
+          //删除id
           editMemberDialog:false,
           addMemberDialog:false,
           editItem:{},
-          form: [
-            {
-              id:1,
-              mem_level: '金牌会员',
-              discount: 50
-            },
-            {
-              id:2,
-              mem_level: '白银会员',
-              discount: 70
-            },
-            {
-              id:3,
-              mem_level: '铜牌会员',
-              discount: 90
-            }
-          ],
+          tableData: [],
           rules:{
             
           },
@@ -146,15 +144,22 @@ export default {
       created() {
 
       },
-      mounted() {},
+      mounted() {
+        let that = this;
+        that.getData();
+      },
       watch: {
-        // refresh(newValue, oldValue) {
-        //   let that = this;
+        refresh(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                // that.resizeTable();
 
-        //   if (newValue) {
-        //     that.getPatientInfo();
-        //   }
-        // }
+                //更新原来的refresh, 防止下次点击时不通知更新
+                // that.$emit("update:refresh", false);
+                that.getData();
+                // that.getData();
+            }
+        }
         
       },
       computed: {},
@@ -165,27 +170,97 @@ export default {
         },
         showEditDialog(item){
           let that = this;
-          that.editItem = item;
-          that.editMemberDialog = true;
+          that.getById(item);
         },
-        del(item){
-          alert(item.id);
-        },
-        submitForm(formName) {
-          let id = this.id;
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              alert('submit!');
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+        showDel(item){
+          let that = this;
+          that.del_id = item.id;
+          that.is_del = true;
         },
         closePassDialog(){
            let that = this;
            that.$refs["form"].resetFields();
            that.closeDialog();
+        },
+
+        /*******获取数据********/
+        getData(){
+            //获取数据
+            let that = this;
+            that.$api.patient_member.get()
+            .then(res => {
+               that.tableData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+        addData(data){
+          //添加数据到列表
+          let that = this;
+          that.tableData.push(data);
+        },
+        getById(parms){
+            let that = this;
+            let id = parms.id;
+            that.$api.patient_member.getById({'id':id})
+            .then(res => {
+                if (res.code == 200) {
+                    that.editItem = res.data;
+                    that.editMemberDialog = true;
+                }else{
+                    that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+            })
+            .catch(res => {
+
+            });
+        },
+        updateData(data){
+            //更新数据
+            let that = this;
+            for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+                // console.log(id);
+                if (that.tableData[i].id == data.id) {
+                     that.$set(that.tableData,i,data);
+                     break;
+                }
+            }
+        },
+        delData(){
+          //删除数据
+          let that = this;
+          let id = that.del_id;
+          that.$api.patient_member.del({id})
+          .then(res => {
+
+                if(res.code == 200){
+                  for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
+
+                         if (that.tableData[i].id == id) {
+                             that.tableData.splice(i,1);
+                             break;
+                         }
+                    }
+
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    that.is_del = false;
+                }
+                else{
+                     that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                }
+          })
+          .catch(res => {
+            console.log(res);
+          });
         }
       }
 }

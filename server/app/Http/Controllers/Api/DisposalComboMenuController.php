@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Disposal;
 use App\Model\DisposalComboMenu;
+use App\Model\DisposalCombo;
 
 class DisposalComboMenuController extends Controller
 {
@@ -71,13 +72,13 @@ class DisposalComboMenuController extends Controller
 
             public function delete($id){
                 //删
-                $res = DisposalComboMenu::destroy($id);
-                $res2 = DisposalComboMenu::where('p_id',$id)->delete();
-                if ($res && $res2) {
-                    return message('删除成功',null, 200);
-                }
-                else{
-                    return message('删除失败',null, 500);
-                }
+                $ids = DisposalComboMenu::where('p_id',$id)->get(['id'])->toArray();
+                $ids = array_column($ids,'id');
+                array_push($ids,$id);
+                DisposalComboMenu::destroy($ids);
+                // DisposalComboMenu::where('p_id',$id)->delete();
+                DisposalCombo::whereIn('combo_id',$ids)->delete();
+
+                return message('删除成功',null, 200);
             }
 }
