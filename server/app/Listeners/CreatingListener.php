@@ -27,7 +27,7 @@ class CreatingListener
      * @return void
      */
     public function handle(CreatingEvent $event)
-    {   
+    {
         $event->model->fill(['created_by'=>Auth::user()->name]);
     }
 }

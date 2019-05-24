@@ -177,7 +177,7 @@
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
-                        @click="Patient_sour"
+                        @click="Patient_source"
                     ></i>
                     <div style="margin-top:10px;margin-left:20px">
                         类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -709,7 +709,7 @@ export default {
 
             console.log();
         },
-        Patient_sour() {
+        Patient_source() {
             this.patsourShow = true;
         },
         class_pat() {
