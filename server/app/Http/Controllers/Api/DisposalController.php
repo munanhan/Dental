@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Disposal;
+use App\Http\Controllers\Api\BaseController;
 
-class DisposalController extends Controller
+class DisposalController extends BaseController
 {
-            public function index(Request $request){
+            public function index(){
                 //主页
-            	$parms = getParms($request->input())['parms'];
+            	$parms = $this->parms;
             	$_case_mode = [
         	    		      	'data' => config('config.billing_mode'),//收费模式
         	    		      	'table' => 'disposals',//表
@@ -45,9 +46,9 @@ class DisposalController extends Controller
 
             }
 
-            public function getById(Request $request){
+            public function getById(){
                 //get by id
-                $id = $request->input('id') != ''?$request->input('id'):0;
+                $id = $this->parms['id'] != ''?$this->parms['id']:0;
                 if (!$id) {
                     return message('缺少id',[],404);
                 }
@@ -55,9 +56,9 @@ class DisposalController extends Controller
                 return message('成功',$data,200);
             }
 
-            public function addDisposal(Request $request){
+            public function addData(){
                 //添加
-                $parms = getParms($request->input())['parms'];
+                $parms = $this->parms;
                 $fields = [//必填项
                              'billing_mode' => '收费模式',
                              'cate_id' => '费用类型',
@@ -80,9 +81,9 @@ class DisposalController extends Controller
                 }
             }
 
-            public function update(Request $request){
+            public function update(){
                 //改
-                $parms = getParms($request->input())['parms'];
+                $parms = $this->parms;
                 $fields = [//必填项
                              'billing_mode' => '收费模式',
                              'cate_id' => '费用类型',

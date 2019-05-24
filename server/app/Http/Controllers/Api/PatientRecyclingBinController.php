@@ -61,7 +61,7 @@ class PatientRecyclingBinController extends Controller
 
     }
 
-    public function reduction($id){
+    public function update($id){
     	//还原被删除的患者
     	$id = empty($id)?0:$id;
     	if ($id == 0) {

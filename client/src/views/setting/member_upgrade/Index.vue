@@ -95,7 +95,7 @@
                 label="会员级别">
               </el-table-column>
               <el-table-column
-                prop="member_card"
+                prop="phone"
                 label="会员卡号">
               </el-table-column>
               <el-table-column

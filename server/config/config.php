@@ -12,13 +12,15 @@ return [
         ],
 
     'module' => [ 
-                    'members' => '会员',
-                    'cost_categories' => '处置收费大类',
-                    'disposals' => '处置与收费',
-                    'disposal_combo_menus' => '处置组合菜单',
-                    'disposal_combos' => '处置组合',
-                    'patients' => '患者',
+                    'members' => '会员管理',
+                    'patient_members' => '会员等级管理',
+                    'cost_categories' => '处置收费大类管理',
+                    'disposals' => '处置与收费管理',
+                    'disposal_combo_menus' => '处置组合菜单管理',
+                    'disposal_combos' => '处置组合管理',
+                    'patients' => '会员管理',
                     'users' => '员工管理',
+                    'patient_recycling_bin' => '患者回收管理'
                 ],
 
     'patient_group' => [

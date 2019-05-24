@@ -159,7 +159,7 @@ export default {
         // },
         getData(){
           let that = this;
-          that.$api.user.get_role()
+          that.$api.staff.get_role()
             .then(res => {
                that.role_list = res.data;
                
@@ -175,7 +175,7 @@ export default {
           let that = this;
           that.$refs[formName].validate((valid) => {
             if (valid) {
-              that.$api.user.add(that.form)
+              that.$api.staff.add(that.form)
                 .then(res => {
                   if(res.code == 200){
                     this.$message({

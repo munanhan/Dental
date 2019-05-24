@@ -321,7 +321,7 @@ export default {
            let that = this;
            let id = that.del_id;
            
-            that.$api.user.del({id})
+            that.$api.staff.del({id})
             .then(res => {
 
                   if(res.code == 200){
@@ -383,7 +383,7 @@ export default {
         // },
         getData() {
           let that = this;
-          that.$api.user.user_list(that.search)
+          that.$api.staff.user_list(that.search)
             .then(res => {
                that.tableData = res.data;
             })
@@ -393,7 +393,7 @@ export default {
         },
         getById(id){
             let that = this;
-            that.$api.user.getById({'id':id})
+            that.$api.staff.getById({'id':id})
             .then(res => {
                that.editItem = res.data;
                that.editDialog = true;

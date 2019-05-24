@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\CostCategory;
+use App\Http\Controllers\Api\BaseController;
 
-class CostCategoryController extends Controller
+class CostCategoryController extends BaseController
 {
     public function index(){
     	//左菜单
@@ -14,9 +15,9 @@ class CostCategoryController extends Controller
     	return message('成功',$data,200);
     }
 
-    public function addCategory(Request $request){
+    public function addData(){
     	//新增
-    	$parms = getParms($request->input())['parms'];
+    	$parms = $this->parms;
 
     	$res = checkParms(['category' => '类别'],$parms);
     	if ($res) {
@@ -45,9 +46,9 @@ class CostCategoryController extends Controller
     	}
     }
 
-    public function update(Request $request){
+    public function update(){
     	//改
-    	$parms = getParms($request->all())['parms'];
+    	$parms = $this->parms;
     	$res = CostCategory::where('id',$parms['id'])->update($parms);
     	if ($res) {
     		return message('成功',$parms,200);

@@ -32,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UpdatingEvent'=>[
             'App\Listeners\UpdatingListener',
         ],
+        'App\Events\LogEvent' => [
+            'App\Listeners\LogListener',
+        ],
 
     ];
 
