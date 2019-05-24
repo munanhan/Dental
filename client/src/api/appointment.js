@@ -16,6 +16,14 @@ export function getWeekAppointment(data) {
         data: data
     })
 }
+export function changeAppointmentStatus(data) {
+    return request({
+        url: `${prefix}/changeAppointmentStatus`,
+        method: 'post',
+        data: data
+    })
+}
+
 export function getMonthAppointment(data) {
     return request({
         url: `${prefix}/getMonthAppointment`,

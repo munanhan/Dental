@@ -10,6 +10,12 @@ use App\Model\Appointment;
 
 class AppointmentController extends Controller
 {
+    //修改预约状态
+    public function changeAppointmentStatus(Request $request){
+        $data=$request->all();
+        Appointment::where('id',$data['id'])->update(['status'=>$data['status']]);
+        return  message('修改成功','',200);
+    }
     //添加预约和修改预约
     public function addAppointment(Request $request){
         $data=$request->all();
@@ -68,6 +74,10 @@ class AppointmentController extends Controller
         $startMonth = $data['start'];
         $endMonth = $data['end'];
         $appoinment =new Appointment();
+
+        $now = explode(" ", date("Y-m-d H:i:s"));
+        Appointment::where('status','0')->where('appointment_date','<',$now[0])->update(['status'=>3]);
+        Appointment::where('status','0')->where('appointment_date','=',$now[0])->where('over_time','<=',$now[1])->update(['status'=>3]);
         $res =$appoinment->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
         get(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
 
