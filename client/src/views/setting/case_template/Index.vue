@@ -71,7 +71,7 @@
             <div :style="{
                     height: rightContentHeight
                 }">
-                <case-template v-if="selectType == 0"></case-template>
+                <case-template v-if="selectType == 0" :data="caseData"></case-template>
             </div>
         </div>
 
@@ -127,7 +127,9 @@ export default {
 
             selectType: 0,
 
-            rightContentHeight: "500px"
+            rightContentHeight: "500px",
+
+            caseData: {},
         };
     },
     created() {},
@@ -175,6 +177,8 @@ export default {
             let that = this;
 
             that.selectNode = data;
+            // //设置选中的id
+            // that.selectID = data.id;
         },
 
         showEditNode() {

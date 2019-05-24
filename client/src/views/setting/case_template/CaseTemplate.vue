@@ -131,7 +131,12 @@
 export default {
     name: "CaseTemplate",
     components: {},
-    props: {},
+    props: {
+		data:{
+			type: Object,
+			required: true
+		}
+	},
     data() {
         return {
             form: {
@@ -143,9 +148,21 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+		id(newValue, oldValue){
+			let that = this;
+			that.getData()
+		}
+
+	},
     computed: {},
     methods: {
+		getData(){
+			let that = this;
+
+			console.log('*****************')
+		},
+
         saveChange() {
             let that = this;
 
