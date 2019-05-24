@@ -4,7 +4,7 @@
       title="患者印象设置"
       :visible.sync="show"
       :before-close="closeDialog"
-      class="custom-dialog expenditure-category"
+      class="custom-dialog patients-impression"
       :close-on-click-modal="false"
       top="3vh"
       :append-to-body="true"
@@ -173,4 +173,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.patients-impression {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>

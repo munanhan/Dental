@@ -75,7 +75,6 @@
                 <el-form-item
                     label="姓名"
                     style="width:300px"
-                    size="small"
                     prop="name"
                 >
                     <el-input v-model="form.name"></el-input>
@@ -86,15 +85,15 @@
                     别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <el-radio
                         v-model="form.sex"
-                        label="1"
+                        label="0"
                     >男</el-radio>
                     <el-radio
                         v-model="form.sex"
-                        label="2"
+                        label="1"
                     >女</el-radio>
                     <el-radio
                         v-model="form.sex"
-                        label="3"
+                        label="2"
                     >未填</el-radio>
                 </div>
 
@@ -474,7 +473,7 @@
                         <div style="display:flex">
                             <el-input
                                 style="width:60px"
-                                v-model="form.brush_teeth_Timeday"
+                                v-model="form.brush_day"
                             ></el-input>
                             <div style="margin-left:10px">次/天</div>
                         </div>
@@ -482,7 +481,7 @@
 
                     <div style="display:flex">
                         <el-input
-                            v-model="form.brush_teeth_minutestime"
+                            v-model="form.brush_minutes"
                             style="width:60px;
                              margin-left:10px"
                         ></el-input>
@@ -581,7 +580,7 @@ export default {
             teethList: [],
 
             form: {
-                value1: '',
+                value1: "",
                 // options: [
                 //     {
                 //         value: "选项1",
@@ -628,7 +627,8 @@ export default {
                 // name: "",
                 // attendingphysician: "",
                 // anamnesis: "",
-
+                brush_day: "",
+                brush_minutes: "",
                 case_id: "",
                 name: "",
                 sex: "",

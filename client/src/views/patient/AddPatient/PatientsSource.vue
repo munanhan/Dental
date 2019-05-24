@@ -4,7 +4,7 @@
       title="患者来源设置"
       :visible.sync="show"
       :before-close="closeDialog"
-      class="custom-dialog expenditure-category"
+      class="custom-dialog patients-source"
       :close-on-click-modal="false"
       top="3vh"
       :append-to-body="true"
@@ -21,7 +21,7 @@
         >
           <el-table-column
             prop="aaaa"
-            label="支出类型"
+            label="患者来源"
             align="center"
             show-overflow-tooltip
           >
@@ -33,7 +33,7 @@
           >
             <template slot-scope="scope">
 
-              <el-tooltip
+              <!-- <el-tooltip
                 effect="dark"
                 content="上移"
                 placement="bottom"
@@ -59,7 +59,7 @@
                   circle
                   @click.stop="move(1, scope.$index)"
                 ></el-button>
-              </el-tooltip>
+              </el-tooltip> -->
               <el-tooltip
                 effect="dark"
                 content="删除"
@@ -178,4 +178,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.patients-source {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>

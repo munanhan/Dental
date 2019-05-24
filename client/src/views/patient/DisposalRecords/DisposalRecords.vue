@@ -6,7 +6,7 @@
                 <div class="background">
                     <div class="background-left">
                         <div class="left-top">
-                            <div> &nbsp; 2019-05-17</div>
+                            <div> &nbsp;&nbsp; 2019-05-17 &nbsp;&nbsp; 23:20</div>
                         </div>
                         <div class="left-bottom">
                             <div class="diagnose-detail">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="background-right">
                         <div class="right-top">
-                            <div>23:20 &nbsp; 初诊 &nbsp; 1212</div>
+                            <div>初诊 &nbsp; 1212</div>
                             <div></div>
                             <div class="right-i-content">
                                 <i
@@ -44,7 +44,7 @@
                             <div style="display:flex">
                                 <input
                                     class="middle-input"
-                                    style="width:500px"
+                                    style="width:500px;margin-left:10px"
                                     placeholder="其他"
                                 >
                                 <i
@@ -190,7 +190,7 @@ export default {
                     border-color: @color;
                 }
                 .background-left {
-                    border:1px solid red;
+                    // border:1px solid red;
                     width: 250px;
                     .left-top {
                         // border:1px solid red;
@@ -206,10 +206,10 @@ export default {
                         // }
                     }
                     .left-bottom {
-                        border: 1px solid red;
+                        // border: 1px solid red;
                         cursor: pointer;
                         .diagnose-detail {
-                            border: 1px solid red;
+                            // border: 1px solid red;
                             display: flex;
                             margin-top: 15px;
 
@@ -256,16 +256,16 @@ export default {
                     }
                 }
                 .background-right {
-                    border: 1px solid red;
+                    // border: 1px solid red;
                     .right-top {
-                        border: 1px solid red;
+                        // border: 1px solid red;
                         font-weight: bold;
                         margin-top: 5px;
                         display: flex;
                         font-size: 20px;
                         .right-i-content {
                             .right-i {
-                                border: 1px solid red;
+                                // border: 1px solid red;
                                 font-size: 20px;
                                 cursor: pointer;
                                 margin-right: 10px;
@@ -275,7 +275,6 @@ export default {
                     .right-middle {
                         // border: 1px solid red;
                         margin-top: 10px;
-                        margin-left: 10px;
                         .middle-input {
                             width: 100px;
                             height: 20px;

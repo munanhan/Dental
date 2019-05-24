@@ -413,6 +413,10 @@ export default {
             input {
                 width: 520px;
                 height: 30px;
+                &:hover {
+                    background-color: #98ff79;
+                    // border:1px solid #000;
+                }
             }
             select {
                 width: 664px;

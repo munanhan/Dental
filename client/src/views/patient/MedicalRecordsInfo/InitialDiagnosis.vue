@@ -414,7 +414,10 @@ export default {
                 width: 520px;
                 height: 30px;
                 // border: 1px solid red;
-                
+                &:hover {
+                    background-color: #98ff79;
+                    // border:1px solid rgb(0, 255, 34);
+                }
             }
             select {
                 width: 664px;

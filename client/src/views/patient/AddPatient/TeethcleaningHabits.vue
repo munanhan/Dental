@@ -4,7 +4,7 @@
       title="洁牙习惯设置"
       :visible.sync="show"
       :before-close="closeDialog"
-      class="custom-dialog expenditure-category"
+      class="custom-dialog teethcleaning-habits"
       :close-on-click-modal="false"
       top="3vh"
       :append-to-body="true"
@@ -173,4 +173,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~@css/var";
+.teethcleaning-habits {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>
