@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="过敏史设置"
+    title="会员等级维护"
     :visible.sync="show"
     :before-close="closeDialog"
     class="custom-dialog"

@@ -86,6 +86,7 @@
                             v-model="search.patient_type"
                             collapse-tags
                             class="search-input"
+                            clearable
                         >
                             <el-option
                                 v-for="item in patientType"
@@ -104,6 +105,7 @@
                             v-model="search.doctor"
                             collapse-tags
                             class="search-input"
+                            clearable
                         >
                             <el-option
                                 v-for="item in doctor"
@@ -126,6 +128,27 @@
                         ></el-input>
                     </label>
                 </div>
+
+                <div>
+                    <label class="search-item">
+                        <span class="label-text mr-10">回访类型</span>
+                        <el-select
+                            v-model="search.return_type"
+                            collapse-tags
+                            class="search-input"
+                            clearable
+                        >
+                            <el-option
+                                v-for="item in returnTypeList"
+                                :key="item.id"
+                                :label="item.label"
+                                :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
+                    </label>
+                </div>
+
                 <div class="btn-container">
                     <div class="btn-item mr-10">
                         <el-button
@@ -153,14 +176,27 @@
                 ref="head"
             >
                 <div class="mb-10">
-                    <el-radio-group
-                        v-model="currentType"
-                        @change="changeShow"
-                    >
-                        <el-radio-button label="diagnose">就诊</el-radio-button>
-                        <el-radio-button label="returnVisit">回访</el-radio-button>
-                        <el-radio-button label="monthlyCalendar">月历</el-radio-button>
-                    </el-radio-group>
+
+                    <span class="mr-10">
+
+                        <el-radio-group
+                            v-model="currentType"
+                            @change="changeShow"
+                        >
+                            <el-radio-button label="diagnose">就诊</el-radio-button>
+                            <el-radio-button label="returnVisit">回访</el-radio-button>
+                            <el-radio-button label="monthlyCalendar">月历</el-radio-button>
+                        </el-radio-group>
+                    </span>
+
+                    <span>
+                        <el-button
+                            type="primary"
+                            class="btns"
+                            @click="addDialog = true"
+                        >新增回访</el-button>
+                    </span>
+
                 </div>
 
                 <div>
@@ -179,16 +215,136 @@
                 </div>
             </div>
 
+            <div class="return-table">
+
+                <el-table
+                    border
+                    class="width100"
+                    :data="tdata"
+                    :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                    :height="tableHeight"
+                >
+                    <el-table-column
+                        prop="address"
+                        label="录音"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="回访状态"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                        <template slot-scope="scope">
+                            <span>
+                                <i
+                                    class="fa fa-smile-beam return-smile"
+                                    :class="{'face-green': scope.row.type == 1, 'face-orange': scope.row.type == 2, 'face-plum': scope.row.type == 3}"
+                                ></i>
+                                <span v-if="scope.row.type == 1">已访</span>
+                                <span v-if="scope.row.type == 2">待跟进</span>
+                                <span v-if="scope.row.type == 3">未访</span>
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="姓名"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="回访人"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="患者分类"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="主治医生"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="回访时间"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="回访内容"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="回访结果"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="address"
+                        label="创建时间"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="就诊日期"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
+
+        <add-return-visit
+            :show.sync="addDialog"
+            @update="addItem"
+        ></add-return-visit>
     </div>
 </template>
 
 <script>
 import { formatDate } from "@common/util";
+import Base from "../base/TableBase";
+import AddReturnVisit from "../patient/ReturnVisitInfo/AddReturnVisit";
 export default {
     name: "ReturnVisit",
-    components: {},
-    props: {},
+
+    mixins: [Base],
+
+    components: { AddReturnVisit },
+    props: {
+        type: {
+            type: String,
+            required: true
+        },
+        date: {
+            type: Date,
+            required: false,
+            default: null
+        }
+    },
     data() {
         return {
             dateType: 0,
@@ -198,7 +354,8 @@ export default {
                 doctor: null,
                 patient_type: null,
                 patient_info: "",
-                disposal_info: ""
+                disposal_info: "",
+                return_type: null
             },
 
             pager: false,
@@ -215,10 +372,13 @@ export default {
                 { id: 2, label: "种植" }
             ],
 
-            currentType: "returnVisit",
+            returnTypeList: [
+                { id: 1, label: "未访" },
+                { id: 2, label: "已回访" },
+                { id: 3, label: "待跟进" }
+            ],
 
-            // tableData: [],
-            // tableHeight: "300px",
+            currentType: "returnVisit",
 
             dateFmText: "",
             dateToText: "",
@@ -229,7 +389,9 @@ export default {
 
             isCurrentDate: false,
 
-            addReturnDialog: false
+            addReturnDialog: false,
+
+            tableHeight: 300
         };
     },
     created() {},
@@ -243,19 +405,32 @@ export default {
 
         that.checkCurrentData();
         that.calcDateCount();
-
-        // that.$nextTick(() => {
-        //     that.resizeTable();
-        // });
-
-        // //监听事件,由layout那边的resize抛出的
-        // if (window.addEventListener) {
-        //     window.addEventListener("bodyChange", that.resizeTable);
-        // } else {
-        //     window.attachEvent("bodyChange", that.resizeTable);
-        // }
     },
     watch: {
+        type(newValue, oldValue) {
+            let that = this;
+
+            if (newValue == "returnVisit") {
+                that.resizeTable();
+
+                if (that.date) {
+                    that.search.dtFm = that.search.dtTo = that.date;
+
+                    that.dateFmText = formatDate(
+                        that.search.dtFm,
+                        "yyyy年MM月dd日"
+                    );
+                    that.dateToText = formatDate(
+                        that.search.dtTo,
+                        "yyyy年MM月dd日"
+                    );
+
+                    that.checkCurrentData();
+                    that.calcDateCount();
+                }
+            }
+        },
+
         "search.dtFm": {
             handler(newValue, oldValue) {
                 let that = this;
@@ -395,6 +570,25 @@ export default {
         getData() {},
         exportExcel() {},
 
+        changeShow(value) {
+            let that = this;
+            that.$emit("update:type", value);
+
+            //原来的值不更新，直接替换页面
+            setTimeout(() => {
+                that.currentType = "returnVisit";
+            }, 300);
+        },
+
+        resizeTable() {
+            let that = this,
+                tableHeight =
+                    that.$refs.content.clientHeight -
+                    that.$refs.head.clientHeight -
+                    24;
+
+            that.tableHeight = tableHeight;
+        }
     }
 };
 </script>
@@ -524,6 +718,29 @@ export default {
             padding: 16px 0 10px 16px;
             font-size: 18px;
             border-bottom: 1px solid #e3e3e3;
+        }
+
+        .return-table {
+            padding: 10px;
+            box-sizing: border-box;
+
+            .return-smile {
+                font-size: 20px;
+                vertical-align: middle;
+                margin-right: 5px;
+            }
+
+            .face-green {
+                color: greenyellow;
+            }
+
+            .face-orange {
+                color: orange;
+            }
+
+            .face-plum {
+                color: plum;
+            }
         }
     }
 }

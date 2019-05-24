@@ -245,7 +245,7 @@
                     <div class="diagnose-detail">
                         <div class="tooth">
                             <div class="tooth-row">
-                                <div class="tooth-left">12345678</div>
+                                <div class="tooth-left" >12345678</div>
                                 <div class="tooth-right">12345678</div>
                             </div>
                             <div class="tooth-row">
@@ -490,7 +490,12 @@ export default {
 
         changeShow(value){
             let that = this;
-            that.$emit('change-show', value);
+            that.$emit('update:type', value);
+            
+            //原来的值不更新，直接替换页面
+            setTimeout(() =>{
+                that.currentType = 'diagnose';
+            }, 300);
         }
     }
 };

@@ -67,7 +67,6 @@
                         <td
                             v-for="item in dateItem"
                             :key="item.year + item.mth + item.date"
-                            class="calendar-day-cell"
                             :class="{ 'not-current-mth': item.notCurr, 'active': item == selectItem, 
                                 'current-day': item.year == curYear && item.mth - 1 == curMonth && item.date == curDate,
                                 'weekday': item.red }"
