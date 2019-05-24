@@ -1,43 +1,190 @@
 <template>
     <div class="medical-content">
-        <div class="medical-top">
-            <div
-                class="diagnose-item"
-                @dblclick.stop.prevent="addReturnDialog = true"
-            >
-                <div class="diagnose-item-title is-current-day">
-                    <div>张飞</div>
-                    <div>昨天 &nbsp; 13:52</div>
-                    <div>复诊</div>
-                    <div>貂蝉</div>
-                    <div>
+        <el-form
+            ref="form"
+            :model="form"
+            label-width="80px"
+        >
+            <div class="medical-top">
+                <div
+                    class="background"
+                    @dblclick="int_diagn"
+                >
+                    <div class="medical-top-title">
+                        <div>2019-05-14 &nbsp; 14:56 &nbsp; 初诊 &nbsp;&nbsp; &nbsp; 医生：1212</div>
                         <i
-                            class="fa fa-comment-dots"
-                            @click.stop.prevent="addReturnDialog = true"
+                            style="margin-left:560px;"
+                            class="fa fa-weixin medical-top-i"
                         ></i>
-                    </div>
-                </div>
-
-                <div class="diagnose-detail">
-                    <div class="tooth">
-                        <div class="tooth-row">
-                            <div class="tooth-left">12345678</div>
-                            <div class="tooth-right">12345678</div>
-                        </div>
-                        <div class="tooth-row">
-                            <div class="tooth-left">123456789</div>
-                            <div class="tooth-right">123456789</div>
-                        </div>
+                        <i class="el-icon-edit medical-top-i"></i>
+                        <i class="fa fa-capsules medical-top-i"></i>
+                        <i class="el-icon-delete-solid medical-top-i"></i>
                     </div>
 
-                    <div class="detail">
-                        <div class="detail-row">维生C片</div>
-                        <div class="detail-row">口服一日三次</div>
-                    </div>
+                    <!-- 水水水水水水水水水水水水水水水水水水水 -->
+                    <!-- <el-main>
+                            <el-col
+                            :span="24"
+                            class="warp-main"
+                            v-loading=""
+                        >
+                            <el-form
+                                :inline="true"
+                                class="demo-form-inline"
+                                v-for="(item, i) in FormArr"
+                                :key="i"
+                            >
+                                        <el-form-item>
+                                              <el-input v-model="item.value"></el-input>
+                                            </el-form-item>
+                                        <el-button
+                                    type="primary"
+                                    @click="Delete(item.index)"
+                                >删除</el-button>
+                            </el-form>
+                                  <el-button
+                                type="primary"
+                                @click="AddForm"
+                            >增加更多</el-button>
+                               
+                        </el-col>
+                          </el-main> -->
+                    <!-- 水水水水水水水水水水水水水水水水水水水 -->
+                    <div class="patient-left">
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                :span="24"
+                                class="patient-left-col"
+                            >
+                                <div> 主诉：</div>
+                                <div style="color:#000;margin-left:200px">sadsad</div>
+                            </el-col>
 
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                :span="24"
+                            >
+                                <div> 现病史:</div>
+                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                            </el-col>
+
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                :span="24"
+                            >
+                                <div>既往史:</div>
+                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                            </el-col>
+
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                :span="24"
+                            >
+                                <div>过敏史:</div>
+                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-top:5px;margin-bottom:10px;"
+                                :span="24"
+                            >
+                                <div>检查:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-top:5px;margin-bottom:10px;"
+                                :span="24"
+                            >
+                                <div>辅助检查:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-bottom:5px;"
+                                :span="24"
+                            >
+                                <div>诊断:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-bottom:5px;"
+                                :span="24"
+                            >
+                                <div>治疗方案:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-bottom:5px;"
+                                :span="24"
+                            >
+                                <div>治疗:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                        <el-row
+                            :gutter="24"
+                            style="margin:20px"
+                        >
+                            <el-col
+                                class="patient-left-col"
+                                style="margin-bottom:5px;"
+                                :span="24"
+                            >
+                                <div>医嘱:</div>
+                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                            </el-col>
+                        </el-row>
+                    </div>
                 </div>
             </div>
-        </div>
+        </el-form>
+
         <div class="medical-bottom">
             <div class="image-bottom">
 
@@ -52,49 +199,19 @@
                 >复诊</el-button>
 
                 <el-select
-                    v-model="vaOral_cavitylue"
+                    v-model="form.vaOral_cavitylue"
                     class="medical-button"
                     style="width:120px"
                     placeholder="口腔检查"
                 >
                     <el-option
-                        v-for="item in oral"
+                        v-for="item in form.oral"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value"
                     >
                     </el-option>
                 </el-select>
-
-                <!-- <el-select
-          v-model="risk_assessment"
-          class="medical-button"
-          style="width:120px"
-          placeholder="风险评估"
-        >
-          <el-option
-            v-for="item in risk"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select> -->
-                <!-- <el-select
-          v-model="other"
-          class="medical-button"
-          style="width:90px"
-          placeholder="其他"
-        >
-          <el-option
-            v-for="item in others"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select> -->
-                <!-- <el-button class="medical-button">知情同意书</el-button> -->
                 <el-button class="medical-button">正畸病历</el-button>
             </div>
         </div>
@@ -120,6 +237,12 @@ export default {
     },
     data() {
         return {
+            FormArr: [
+                {
+                    index: 0,
+                    value: ""
+                }
+            ],
             // others: [
             //   {
             //     value: "选项1",
@@ -147,20 +270,22 @@ export default {
             //   }
             // ],
             // risk_assessment:"",
-            oral: [
-                {
-                    value: "选项1",
-                    label: "口腔检查"
-                },
-                {
-                    value: "选项2",
-                    label: "治疗计划"
-                },
-                {
-                    value: "选项3",
-                    label: "牙周检查"
-                }
-            ],
+            form: {
+                oral: [
+                    {
+                        value: "选项1",
+                        label: "口腔检查"
+                    },
+                    {
+                        value: "选项2",
+                        label: "治疗计划"
+                    },
+                    {
+                        value: "选项3",
+                        label: "牙周检查"
+                    }
+                ]
+            },
             vaOral_cavitylue: "",
             value: "",
             intdiag_show: false,
@@ -187,6 +312,7 @@ export default {
                 that.$emit("update:refresh", false);
             }, 6e3);
         },
+
         //初诊
         int_diagn() {
             this.intdiag_show = true;
@@ -194,6 +320,20 @@ export default {
         //复诊
         sub_visit() {
             this.subvisit_show = true;
+        },
+        // 阿斯顿发射点发生都杀都还塞的还是丢啊是
+        AddForm() {
+            this.FormArr.push({
+                index: this.FormArr.length,
+                value: ""
+            });
+            console.log(this.FormArr);
+        },
+        Delete(index) {
+            this.FormArr.splice(index, 1);
+            for (let i in this.FormArr) {
+                this.FormArr[i].index = i;
+            }
         }
     }
 };
@@ -209,127 +349,52 @@ export default {
 .medical-content {
     .medical-top {
         border: 1px solid #dadada;
-        position: relative;
-        height: 799px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
         background-color: #f3f1f1;
-        .diagnose-item {
-            .transition-2;
-            border: 2px solid #e3e3e3;
-            border-left-width: 10px;
+
+        .background {
             cursor: pointer;
+            height: 380px;
+            margin-top: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-left: 20px;
+            background-color: #f8f8f8;
+            border: 2px solid #88cdec;
+            border-left-width: 10px;
             padding: 10px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            .diagnose-item-title {
-                > div {
-                    display: inline-block;
-                    width: 160px;
-                    font-size: 18px;
-                    font-weight: bolder;
-                }
+            color: #989797;
 
-                i {
-                    font-size: 22px;
-                }
-
-                i:hover {
-                    color: @color;
-                }
-            }
-            .diagnose-detail {
+            .medical-top-title {
+                font-size: 22px;
                 display: flex;
-
-                .tooth {
-                    width: 220px;
-
-                    .tooth-row {
-                        display: flex;
-                        font-size: 16px;
-
-                        &:not(:last-of-type) {
-                            border-bottom: 2px solid #e3e3e3;
-                            transition: border 0.2s;
-                        }
-
-                        &:last-of-type {
-                            .tooth-left,
-                            .tooth-right {
-                                padding-top: 6px;
-                            }
-                        }
-
-                        > div {
-                            flex: 1 auto;
-                        }
-
-                        .tooth-left {
-                            border-right: 2px solid #e3e3e3;
-                            text-align: right;
-                            transition: border 0.2s;
-                        }
-
-                        .tooth-right {
-                            padding: 0 0 6px 6px;
-                        }
-
-                        .tooth-left,
-                        .tooth-right {
-                            letter-spacing: 2px;
-                        }
-                    }
+                border: 1px solid red;
+                width: 100%;
+            }
+            .patient-left {
+                margin-bottom: 100px;
+                margin-left: -25px;
+                // border: 1px solid red;
+                font-size: 15px;
+                color: #5e5e5e;
+                .patient-left-col {
+                    display: flex;
+                    margin-bottom: -20px;
+                    // border: 1px solid red;
                 }
             }
-            .detail,
-            .tooth {
-                margin: 16px 20px 0 0;
-            }
-            //设置间隔
-            .detail .detail-row:first-of-type,
-            .tooth .tooth-row .tooth-left {
-                padding: 0 6px 6px 0;
-            }
-            //设置间隔
-            .detail .detail-row:last-of-type,
-            .tooth .tooth-row:last-of-type .tooth-left,
-            .tooth .tooth-row:last-of-type .tooth-right {
-                padding-top: 6px;
-            }
-            //当天
-            &.is-current-day {
-                border-color: #8c8c8c;
-                color: #777474;
-
-                .diagnose-detail {
-                    .tooth {
-                        .tooth-row {
-                            &:not(:last-of-type) {
-                                border-color: #989797;
-                            }
-
-                            .tooth-left {
-                                border-color: #989797;
-                            }
-                        }
-                    }
-                }
+            .medical-top-i {
+                cursor: pointer;
+                margin-left: 20px;
             }
             &:hover {
-                border-color: @color;
+                border-color: #6ac2eb;
                 color: #484848;
-
-                .diagnose-detail {
-                    .tooth {
-                        .tooth-row {
-                            &:not(:last-of-type) {
-                                border-color: #989797;
-                            }
-
-                            .tooth-left {
-                                border-color: #989797;
-                            }
-                        }
-                    }
-                }
             }
         }
     }

@@ -29,7 +29,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Config Api
      */
 
-    Route::get('patients/patient_resource', function () {
+    Route::get('patients/resource', function () {
         return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
     });
 
@@ -37,10 +37,26 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route PatientConsult Config Api
      */
 
-    Route::get('patients/consult_resource',function (){
+    Route::get('consults/resource',function (){
         return new \App\Http\Resources\PatientConsultCollection(\App\Model\PatientConsult::all());
     });
 
+    /*
+     * Patient Visit Config Api
+     * author by han
+     */
+    Route::get('visit_items', 'VisitItemController@index');
+
+    Route::get('visit_items/{visitItem}', 'VisitItemController@show');
+
+    Route::post('visit_items', 'VisitItemController@store');
+
+    Route::put('visit_items/{visitItem}', 'VisitItemController@update');
+
+    Route::delete('visit_items/{visitItem}', 'VisitItemController@delete');
+
+    //批量删除
+    Route::delete('visit_items','VisitItemController@deleteById');
 
 
     /*

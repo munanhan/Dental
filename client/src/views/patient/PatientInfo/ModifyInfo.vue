@@ -33,7 +33,6 @@
                     margin-right: 244px;
                     width: 300px;
                     height: 350px;">
-                    asdasd
                 </div>
                 <el-form-item
                     label="病历号"
@@ -451,7 +450,7 @@
                 :loading="commitLoading"
                 type="primary"
             >确 定</el-button>
-            <el-button>新增关系</el-button>
+            <el-button @click="new_relat">新增关系</el-button>
             <el-button @click="closeDialog">取 消</el-button>
 
             <membership-grade :show.sync="memgrade_show"></membership-grade>
@@ -463,6 +462,7 @@
             <allergy :show.sync="allergy_show"></Allergy>
             <past-medicalhistory :show.sync="pastmed_show"></past-medicalhistory>
             <teethcleaning-habits :show.sync="teethhab_show"></teethcleaning-habits>
+            <new-relationship :show.sync="newrelat_show"></new-relationship>
         </div>
     </el-dialog>
 </template>
@@ -479,6 +479,7 @@ import ClassificationPatients from "./ClassificationPatients";
 import Allergy from "./Allergy";
 import PastMedicalhistory from "./PastMedicalhistory";
 import TeethcleaningHabits from "./TeethcleaningHabits";
+import NewRelationship from "./NewRelationship";
 export default {
     name: "AddPatient",
 
@@ -493,7 +494,8 @@ export default {
         ClassificationPatients,
         Allergy,
         PastMedicalhistory,
-        TeethcleaningHabits
+        TeethcleaningHabits,
+        NewRelationship
     },
     data() {
         return {
@@ -506,6 +508,7 @@ export default {
             allergy_show: false,
             pastmed_show: false,
             teethhab_show: false,
+            newrelat_show:false,
             form: {
                 phone: [
                     {
@@ -577,7 +580,10 @@ export default {
         },
         teeth_hab() {
             this.teethhab_show = true;
-        }
+        },
+        new_relat() {
+            this.newrelat_show = true;
+        },
     }
 };
 </script>

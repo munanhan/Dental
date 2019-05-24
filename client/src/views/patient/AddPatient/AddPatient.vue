@@ -21,7 +21,11 @@
                     size="small"
                     prop="case_id"
                 >
-                    <el-input :disabled="true" v-model="form.case_id" disable></el-input>
+                    <el-input
+                        :disabled="true"
+                        v-model="form.case_id"
+                        disable
+                    ></el-input>
                 </el-form-item>
                 <!-- <i
           class="el-icon-setting form-setting"
@@ -40,7 +44,7 @@
                         @click.prevent.stop="switchDate('pre')"
                     ></i> -->
 
-                <div
+                <!-- <div
                     class="block"
                     style="margin-top:10px;
                  margin-left:40px;
@@ -48,11 +52,11 @@
                 >
                     <span class="demonstration"></span>
                     <el-rate v-model="form.value1"></el-rate>
-                </div>
+                </div> -->
                 <div class="block">
                     <el-button
                         round
-                        style="margin-right:10px"
+                        style="margin-left:50px"
                     >新增头像</el-button>
                 </div>
                 <!-- <i
@@ -71,7 +75,6 @@
                 <el-form-item
                     label="姓名"
                     style="width:300px"
-                    size="small"
                     prop="name"
                 >
                     <el-input v-model="form.name"></el-input>
@@ -82,15 +85,15 @@
                     别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <el-radio
                         v-model="form.sex"
-                        label="1"
+                        label="0"
                     >男</el-radio>
                     <el-radio
                         v-model="form.sex"
-                        label="2"
+                        label="1"
                     >女</el-radio>
                     <el-radio
                         v-model="form.sex"
-                        label="3"
+                        label="2"
                     >未填</el-radio>
                 </div>
 
@@ -140,10 +143,16 @@
                         prop="birthday"
                         style="width:300px"
                     >
-                        <el-input
+                        <!-- <el-input
                             autocomplete="off"
                             v-model="form.birthday"
-                        ></el-input>
+                        ></el-input> -->
+                        <el-date-picker
+                            v-model="form.value1"
+                            type="date"
+                            placeholder="选择日期"
+                        >
+                        </el-date-picker>
                     </el-form-item>
 
                 </div>
@@ -151,37 +160,24 @@
                 <div style="display:flex">
                     <el-form-item
                         label="患者来源"
-                        prop="source_id"
+                        prop="source"
                     >
                         <el-select
-                            v-model="form.source_id"
+                            v-model="form.source"
                             style="width:220px"
                         >
                             <el-option
-                                label="   "
-                                value="guiling"
-                            ></el-option>
-                            <el-option
-                                label="网络咨询"
-                                value="shanghai"
-                            ></el-option>
-                            <el-option
-                                label="朋友介绍"
-                                value="beijing"
-                            ></el-option>
-                            <el-option
-                                label="家住附近"
-                                value="shenzhen"
-                            ></el-option>
-                            <el-option
-                                label="诊所网站"
-                                value="guangzhou"
-                            ></el-option>
+                                v-for="item in sourceList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                            >
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
-                        @click="Patient_sour"
+                        @click="Patient_source"
                     ></i>
                     <div style="margin-top:10px;margin-left:20px">
                         类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -227,10 +223,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in attend"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -249,10 +245,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in groupList"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -281,10 +277,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in memberList"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -328,19 +324,21 @@
                     </el-form-item>
                 </div>
                 <div>
-                    <el-form-item label="过 敏 史">
-                        <!-- <el-input style="width:570px"></el-input> -->
+                    <el-form-item
+                        label="过 敏 史"
+                        prop="allergie"
+                    >
                         <el-select
-                            v-model="form.value5"
+                            v-model="form.allergie"
                             style="width:570px"
                             multiple
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in allergieList"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -351,18 +349,21 @@
                     </el-form-item>
                 </div>
                 <div>
-                    <el-form-item label="既 往 史">
+                    <el-form-item
+                        label="既 往 史"
+                        prop="anamneses"
+                    >
                         <el-select
-                            v-model="form.value6"
+                            v-model="form.anamneses"
                             style="width:570px"
                             multiple
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in anamnesesList"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -427,16 +428,16 @@
                         style="margin-left:60px;width:300px"
                     >
                         <el-select
-                            v-model="form.value7"
+                            v-model="form.teeth_cleaning_habits"
                             style="width:220px"
                             multiple
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in teethList"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :label="item.name"
+                                :value="item.name"
                             >
                             </el-option>
                         </el-select>
@@ -472,7 +473,7 @@
                         <div style="display:flex">
                             <el-input
                                 style="width:60px"
-                                v-model="form.brush_teeth_Timeday"
+                                v-model="form.brush_day"
                             ></el-input>
                             <div style="margin-left:10px">次/天</div>
                         </div>
@@ -480,7 +481,7 @@
 
                     <div style="display:flex">
                         <el-input
-                            v-model="form.brush_teeth_minutestime"
+                            v-model="form.brush_minutes"
                             style="width:60px;
                              margin-left:10px"
                         ></el-input>
@@ -570,32 +571,41 @@ export default {
             pastmed_show: false,
             patimpre_show: false,
             teehabit_show: false,
+            sourceList: [],
+            attend: [],
+            groupList: [],
+            memberList: [],
+            allergieList: [],
+            anamnesesList: [],
+            teethList: [],
+
             form: {
-                options: [
-                    {
-                        value: "选项1",
-                        label: "爸爸"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
+                value1: "",
+                // options: [
+                //     {
+                //         value: "选项1",
+                //         label: "爸爸"
+                //     },
+                //     {
+                //         value: "选项2",
+                //         label: "双皮奶"
+                //     },
+                //     {
+                //         value: "选项3",
+                //         label: "蚵仔煎"
+                //     },
+                //     {
+                //         value: "选项4",
+                //         label: "龙须面"
+                //     },
+                //     {
+                //         value: "选项5",
+                //         label: "北京烤鸭"
+                //     }
+                // ],
                 value5: "",
                 value6: "",
-                value7: "",
+                teeth_cleaning_habits: "",
                 // patients_source: "guiling",
                 // birthday: "",
                 // tel_one: "",
@@ -617,14 +627,15 @@ export default {
                 // name: "",
                 // attendingphysician: "",
                 // anamnesis: "",
-
+                brush_day: "",
+                brush_minutes: "",
                 case_id: "",
                 name: "",
                 sex: "",
                 phone: "",
                 birthday: "",
                 age: "",
-                source_id: "",
+                source: "",
                 group: "",
                 member_level: "",
                 mem_card: "",
@@ -654,6 +665,13 @@ export default {
                             message: "请输入病历号",
                             trigger: "blur"
                         }
+                    ],
+                    phone: [
+                        {
+                            required: true,
+                            message: "请输入手机号",
+                            trigger: "blur"
+                        }
                     ]
                 }
             }
@@ -677,20 +695,21 @@ export default {
 
     methods: {
         submitFrom() {
-            // let that = this;
+            let that = this;
             // that.getCaseNo();
-            this.$api.patient
-                .addPatient(this.form)
-                .then(function(response) {
-                    console.log(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            console.log(that.form);
+            // this.$api.patient
+            //     .addPatient(this.form)
+            //     .then(function(response) {
+            //         console.log(response);
+            //     })
+            //     .catch(function(error) {
+            //         console.log(error);
+            //     });
 
             console.log();
         },
-        Patient_sour() {
+        Patient_source() {
             this.patsourShow = true;
         },
         class_pat() {
@@ -721,7 +740,7 @@ export default {
                 .caseNo()
                 .then(res => {
                     // console.log(res.data);
-                    that.form.case_id = res.data;
+                    that.form.case_id = res.data.case_id;
                 })
                 .catch(res => {
                     console.log(res);
@@ -733,6 +752,13 @@ export default {
             that.$api.patient
                 .configData()
                 .then(res => {
+                    that.sourceList = res.data.patient_sources;
+                    that.attend = res.data.users.doctor;
+                    that.groupList = res.data.patient_categories;
+                    that.memberList = res.data.patient_members;
+                    that.allergieList = res.data.patient_allergies;
+                    that.anamnesesList = res.data.patient_anamneses;
+                    that.teethList = res.data.patient_teeth_habits;
                     console.log(res.data);
                     // that.form.case_id = res.data;
                 })
