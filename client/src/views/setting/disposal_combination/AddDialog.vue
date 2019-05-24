@@ -64,7 +64,7 @@
                             </span>
                       </el-col>
                       <el-col :span="2" :offset="11">
-                            <i
+                            <!-- <i
                             class="fa fa-cog"
                             style="margin-top:10px;
                                    font-size:20px;
@@ -72,7 +72,7 @@
                                    margin-left:10px;
                                    float:right;"
                                    @click="showDisposalDialog"
-                            ></i>
+                            ></i> -->
                       </el-col>
 
                     </div>
@@ -237,6 +237,7 @@
 <script>
 import AddDialogForm from "@views/base/AddDialogForm";
 import DisposalCharging from "./DisposalChargingDialog"
+
 export default {
     name: 'Add',
     mixins: [AddDialogForm],
@@ -244,10 +245,13 @@ export default {
       DisposalCharging
     },
       props: {
-        // refresh: {
-        //   type: Boolean,
-        //   required: true
-        // }
+        itemList:{
+          type:Array,
+        },
+        comboId:{
+          type:Number,
+          default:0
+        }
       },
       data() {
 
@@ -464,6 +468,8 @@ export default {
             if (newValue) {
                 let that = this;
                 that.getMenu();
+                // console.log(that.itemList);
+                that.form = that.itemList;
             }
         }
         
@@ -568,10 +574,38 @@ export default {
         },
         
         submitForm(formName) {
+          let that = this;
+          let data = {};
+          data.list = that.form;
+          data.combo_id = that.comboId;
+
+          that.$api.disposal_combo.add(data)
+          .then(res => {
+            if(res.code == 200){
+              that.$message({
+                  message: res.msg,
+                  type: "success",
+                  duration: 800
+              });
+              that.closethisDialog();
+              that.$emit("flush");
+             }
+             else{
+                 that.$message.error(
+                      res.msg || "add error."
+                  );
+             }
+          })
+          .catch(res => {
+             // console.log(res);
+          });
+
+
           // this.$refs[formName].validate((valid) => {
           //   if (valid) {
           //     this.form.p_id = this.p_id;
-              console.log(this.form);
+              // console.log(this.form);
+              // console.log(this.comboId);
           //   } else {
           //     console.log('error submit!!');
           //     return false;

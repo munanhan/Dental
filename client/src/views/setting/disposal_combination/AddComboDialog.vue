@@ -88,14 +88,36 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              this.form.p_id = this.p_id;
-              console.log(this.form);
+              that.form.p_id = this.p_id;
+              that.$api.disposal_combo_menu.add(that.form)
+              .then(res => {
+                if(res.code == 200){
+                  that.$message({
+                      message: res.msg,
+                      type: "success",
+                      duration: 800
+                  });
+                  that.closethisDialog();
+                  that.$emit("flush",res.data);
+                 }
+                 else{
+                     that.$message.error(
+                          res.msg || "add error."
+                      );
+                 }
+              })
+              .catch(res => {
+                 // console.log(res);
+              });
+              // console.log(this.form);
             } else {
               console.log('error submit!!');
               return false;
             }
+              // console.log(this.form);
           });
         },
         closethisDialog(){

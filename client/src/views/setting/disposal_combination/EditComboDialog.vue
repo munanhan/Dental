@@ -88,9 +88,31 @@ export default {
         // },
         
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+          let that = this;
+          that.$refs[formName].validate((valid) => {
             if (valid) {
-              console.log(this.form);
+              // console.log(this.form);
+              that.$api.disposal_combo_menu.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      // console.log(res.data);
+                      that.closethisDialog();
+                      that.$emit("flush",res.data);
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
             } else {
               console.log('error submit!!');
               return false;

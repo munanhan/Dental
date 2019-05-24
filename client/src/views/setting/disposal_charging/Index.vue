@@ -475,6 +475,7 @@ export default {
         getById(editItem){
             let that = this;
             let id = editItem.id
+            console.log(id);
             that.$api.disposal.getById({'id':id})
             .then(res => {
                that.editItem = res.data;

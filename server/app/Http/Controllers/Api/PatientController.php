@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\Patient;
-use App\Model\PatientInfo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Schema;
 
 class PatientController extends Controller
 {
@@ -27,11 +25,9 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
-        $patient=$this->createPatient($request->all());
+        $patient=Patient::create($request->all());
 
-        PatientInfoController::createPatientInfo($patient,$request->all());
-
-        return message('',$request->all());
+        return message('',$patient);
     }
 
     public function update(Request $request ,Patient $patient)
@@ -87,17 +83,5 @@ class PatientController extends Controller
         return $seq;
     }
 
-    protected function createPatient(array $data)
-    {
-
-        $info=Schema::getColumnListing('patient_infos');
-
-        foreach ($info as $key){
-            array_key_exists($key,$data);
-            unset($data[$key]);
-        }
-
-        return Patient::create($data);
-    }
 
 }

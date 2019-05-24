@@ -8,6 +8,7 @@
       :close-on-click-modal="false"
       top="3vh"
       :append-to-body="true"
+      center
       v-dialog-drag
     >
       <div class="content">
@@ -91,7 +92,7 @@
 
         <!-- <div>
                 </div> -->
-        <div>
+        <div class="pull-right">
           <el-button
             @click="closeDialog"
             :disabled="commitLoading"

@@ -23,7 +23,7 @@ class EnableCrossRequestMiddleware
         if(mb_strtolower($request->getMethod())=='options')
         {
             $response->setStatusCode(204);
-            $response->header('Access-Control-Max-Age',3600);
+            $response->header('Access-Control-Max-Age',600);
         }
 
         if (in_array($origin, $allow_origin)) {

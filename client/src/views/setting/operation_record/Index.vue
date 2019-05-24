@@ -128,7 +128,7 @@
               
               <el-table-column
                   label="操作人"
-                  prop="ct_user"
+                  prop="created_by"
               >
               </el-table-column>
               <el-table-column
