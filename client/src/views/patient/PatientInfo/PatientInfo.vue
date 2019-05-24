@@ -109,14 +109,14 @@
                     <div style="display:flex;margin-bottom:5px">
                         <el-radio
                             v-model="sex"
-                            label="1"
+                            label="0"
                         >男</el-radio>
                         <el-radio
                             v-model="sex"
-                            label="2"
+                            label="1"
                         >女</el-radio>
                     </div>
-                    <div class="block">
+                    <!-- <div class="block">
                         <span
                             class="demonstration"
                             style="position: absolute;bottom:0;"
@@ -126,7 +126,7 @@
                             :colors="['#FF9900', '#FF9900', '#FF9900']"
                         >
                         </el-rate>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -236,7 +236,7 @@ export default {
     },
     data() {
         return {
-            sex: "",
+            sex: "0",
             activeNames: ["1"],
             value2: null,
             modinfo_show: false
@@ -287,7 +287,12 @@ export default {
 
 .patient-info {
     .el-collapse {
-        height: 800px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
         .base-fz {
             font-size: 18px;
             margin-left: 10px;
@@ -298,6 +303,7 @@ export default {
                 width: 850px;
             }
             .patient-right {
+                
                 margin-left: 10px;
                 margin-right: 30px;
                 margin-left: -40px;

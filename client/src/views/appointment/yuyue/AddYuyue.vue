@@ -196,7 +196,7 @@ export default {
   created() {
     this.$api.appointment.getCaseNumber().then(res => {
       if (res.code == 200) {
-        this.formData.case_id = res.data;
+        this.formData.case_id = res.data.case_id;
       }
     });
   },

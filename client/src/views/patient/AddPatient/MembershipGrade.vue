@@ -4,7 +4,7 @@
             title="会员等级维护"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog expenditure-category"
+            class="custom-dialog membership-grade"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
@@ -40,7 +40,7 @@
                     >
                         <template slot-scope="scope">
 
-                            <el-tooltip
+                            <!-- <el-tooltip
                                 effect="dark"
                                 content="上移"
                                 placement="bottom"
@@ -66,7 +66,7 @@
                                     circle
                                     @click.stop="move(1, scope.$index)"
                                 ></el-button>
-                            </el-tooltip>
+                            </el-tooltip> -->
                             <el-tooltip
                                 effect="dark"
                                 content="删除"
@@ -86,7 +86,7 @@
             </div>
             <div
                 slot="footer"
-                class="dialog-footer"
+                class="dialog-footer clearfix"
             >
                 <div class="pull-left">
                     <el-button
@@ -98,7 +98,7 @@
 
                 <!-- <div>
                 </div> -->
-                <div>
+                <div class="pull-right">
                     <el-button
                         @click="closeDialog"
                         :disabled="commitLoading"
@@ -120,7 +120,6 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 import AddMembershipGrade from "./AddMembershipGrade";
-
 export default {
     name: "MembershipGrade",
     mixins: [DialogForm],
@@ -185,4 +184,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.membership-grade {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>

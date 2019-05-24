@@ -6,6 +6,7 @@
           v-for="(item,index) in navBar"
           :key="index"
           :class="{'active-li':item.active,'unactive':!item.active}"
+          :id="'li'+index"
           @click="activeLi(item,index)"
         >{{item.select}}</li>
       </ul>
@@ -125,16 +126,34 @@
         </el-row>
       </div>
       <div v-show="navBar[1].active" class="week">
-        <yuyue-week :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
+        <yuyue-week ref="week" :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
       </div>
       <div v-show="navBar[2].active" class="month">
-        <yuyue-month :update.sync="navBar[2].active"></yuyue-month>
+        <yuyue-month ref="month" :update.sync="navBar[2].active" @OnUpdateYuyueRes="updateYuyueRes"></yuyue-month>
       </div>
       <div v-show="navBar[3].active" class="list">
         <yuyue-list></yuyue-list>
       </div>
     </div>
-
+    <!-- 错误提示 -->
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+      <span>预约日期不能小于今天</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 错误提示 -->
+    <!-- 更换预约状态 -->
+    <!-- <el-dialog title="更换预约状态" :visible.sync="statusDialog" width="30%">
+      <span>预约日期不能小于今天</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="statusDialog = false">取 消</el-button>
+        <el-button type="primary" @click="statusDialog = false">确 定</el-button>
+      </span>
+    </el-dialog>-->
+    <status-dialog :show.sync="statusDialog" :yuyue_id="yuyue_id"></status-dialog>
+    <!-- 更换预约状态 -->
     <!-- 新增预约 start -->
     <add-yuyue
       :show.sync="addYuyueShow"
@@ -149,6 +168,7 @@
 <script>
 import { formatDate, addClass, inArray } from "@/common/util.js";
 import AddYuyue from "./AddYuyue.vue";
+import StatusDialog from "./StatusDialog.vue";
 import YuyueWeek from "./YuyueWeek.vue";
 import YuyueMonth from "./YuyueMonth.vue";
 import YuyueList from "./YuyueList.vue";
@@ -162,7 +182,8 @@ export default {
     AddYuyue,
     YuyueWeek,
     YuyueMonth,
-    YuyueList
+    YuyueList,
+    StatusDialog
   },
   provide: function() {
     return {
@@ -170,7 +191,8 @@ export default {
       week: this.week,
       dayTime: this.dayTime,
       getWeekStartEnd: this.getWeekStartEnd,
-      getTodayAppointment: this.getTodayAppointment
+      getTodayAppointment: this.getTodayAppointment,
+      statusIcon:this.statusIcon,
     };
   },
   created() {
@@ -181,6 +203,8 @@ export default {
   },
   data() {
     return {
+      statusDialog: false,
+      dialogVisible: false,
       addYuyueShow: false,
       navBar: [
         { select: "天", active: true },
@@ -223,6 +247,9 @@ export default {
   },
 
   methods: {
+    updateYuyueRes(data) {
+      this.yuyue_res = data;
+    },
     activeLi(item, index) {
       this.$nextTick(function() {
         let self = this;
@@ -234,7 +261,6 @@ export default {
     },
     search() {
       let $search = this.$refs.inputSearch;
-      console.log($search.value);
     },
     handlePrevDay() {
       let date = new Date(this.chooseDate);
@@ -273,7 +299,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.yuyue_week_res = res.data;
+            this.$refs.week.yuyue_week_res = res.data;
           }
         });
       //  console.log(111);
@@ -295,7 +321,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.yuyue_week_res = res.data;
+            this.$refs.week.yuyue_week_res = res.data;
           }
         });
     },
@@ -333,8 +359,22 @@ export default {
     },
 
     addYuyue(item) {
-      this.addYuyueShow = true;
+      let date = formatDate(new Date(), "yyyy-MM-dd");
+      if (this.chooseDate < date) {
+        this.dialogVisible = true;
+        return;
+      }
       this.isAttrDataTime(event.target);
+      if (
+        this.target.hasAttribute("class") &&
+        this.target.getAttribute("class") == "left"
+      ) {
+        this.statusDialog = true;
+        this.yuyue_id = this.target.getAttribute("id");
+        return;
+      }
+      this.addYuyueShow = true;
+
       if (this.target.hasAttribute("data-id")) {
         this.yuyue_id = this.target.getAttribute("data-id");
         this.yuyue_time = this.target.getAttribute("data-h");
@@ -351,6 +391,10 @@ export default {
       return inArray(arr, str);
     },
     isAttrDataTime(dom) {
+      if (dom.getAttribute("class") == "left") {
+        this.target = dom;
+        return;
+      }
       if (dom.hasAttribute("data-id")) {
         this.target = dom;
         return;
@@ -362,6 +406,27 @@ export default {
 
       dom = dom.parentNode;
       this.isAttrDataTime(dom);
+    },
+    //根据状态值，处理icon
+    statusIcon(statusValue,id) {
+      let strhtml;
+      switch (statusValue) {
+        case '0':
+          strhtml = ` <div class="left" id="${id}"><i class="far fa-clock" style="color:#fff;"></i></div>`;
+          break;
+        case '1':
+          strhtml = `<div class="left" style="background-color:rgb(160, 101, 238)" id="${id}"><i class="far fa-thumbs-up" style="color:#fff;"></i></div>`;
+          break;
+        case '2':
+          strhtml = `<div class="left" style="background-color:rgb(50, 17, 233)" id="${id}"><i class="fas fa-warehouse" style="color:#fff;"></i></div>`;
+          break;
+        case '3':
+          strhtml = `<div class="left" style="background-color:#f40;" id="${id}"><i class="fas fa-exclamation-triangle" style="color:#fff;"></i></div>`;
+          break;
+        case '4':
+        strhtml = `<div class="left" id="${id}"><i class="el-icon-delete"></i></div>`
+      }
+      return strhtml;
     }
   },
   computed: {
@@ -444,28 +509,27 @@ export default {
         ) {
           strhtml += `<div data-id="${item.id}" data-h="${
             item.start_time
-          }"><p><span>${item.name}</span><span>${
+          }"><div class="inner">
+             
+                  `;
+          //-------------------------------------------------------
+        
+         strhtml += this.statusIcon(item.status,item.id);
+
+          strhtml += `
+              <div class="right">
+                <p><span>${item.name}</span><span>${
             item.type == 1 ? "复" : "初"
           }</span><span>${item.age}</span></p>
                                 <p><span>${item.phone}</span></p>
                                 <p><span>${item.items}</span></p>
-                              </div>`;
+              </div>
+                            </div>`;
         }
       });
       strhtml += "</div>";
       ele.innerHTML = strhtml;
     });
-    // if (grays.length != 0) {
-    //   let strhtml = "";
-    //   this.yuyue_res.forEach((item, index) => {
-    //     strhtml += `<div class="add-item"><p><span>${item.name}</span><span>${
-    //       item.type == 1 ? "复" : "初"
-    //     }</span><span>${item.age}</span></p>
-    //                         <p><span>${item.phone}</span></p>
-    //                         <p><span>${item.items}</span></p>
-    //                        </div>`;
-    //   });
-    // }
   }
 };
 </script>

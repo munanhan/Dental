@@ -20,10 +20,12 @@ export function caseNo(data) {
 //配置项
 export function configData(data) {
     return request({
-        url: `${prefix}/patient_resource`,
+        url: `${prefix}/resource`,
         method: 'get',
         params: data
     })
 }
+
+
 
 

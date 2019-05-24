@@ -12,6 +12,8 @@ import * as disposal_combo_menu from './disposal_combo_menu'
 import * as patient_member from './patient_member'
 import * as member from './member'
 import * as staff from './staff'
+import * as resource from  './patient_resource'
+
 
 const apis = {
     base,
@@ -27,7 +29,8 @@ const apis = {
     disposal_combo_menu,
     patient_member,
     member,
-    staff
+    staff,
+    resource,
 }
 
 const install = function (Vue) {

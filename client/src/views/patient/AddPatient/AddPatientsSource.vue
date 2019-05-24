@@ -53,7 +53,7 @@ export default {
       commitLoading: false,
 
       form: {
-        expenditure: ""
+        type:''
       },
       formRules: {
         expenditure: [
@@ -73,9 +73,12 @@ export default {
   methods: {
     addCommit() {
       let that = this;
+      console.log(that.form.type);
 
-      that.$emit("add-item", that.form.expenditure);
+      let data = { 'id': 10,'name':that.form.type};
 
+      that.$emit("flush", data);
+      //
       that.closeDialog();
     }
   }

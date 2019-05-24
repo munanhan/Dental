@@ -3,10 +3,10 @@
         <div class="disposa_top">
             <!-- <div class="background-1"> -->
             <div class="medical-top">
-                <div class="background-2">
+                <div class="background">
                     <div class="background-left">
                         <div class="left-top">
-                            <div> &nbsp; 2019-05-17</div>
+                            <div> &nbsp;&nbsp; 2019-05-17 &nbsp;&nbsp; 23:20</div>
                         </div>
                         <div class="left-bottom">
                             <div class="diagnose-detail">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="background-right">
                         <div class="right-top">
-                            <div>23:20 &nbsp; 初诊 &nbsp; 1212</div>
+                            <div>初诊 &nbsp; 1212</div>
                             <div></div>
                             <div class="right-i-content">
                                 <i
@@ -44,21 +44,42 @@
                             <div style="display:flex">
                                 <input
                                     class="middle-input"
-                                    style="margin-left:50px;width:500px"
+                                    style="width:500px;margin-left:10px"
                                     placeholder="其他"
                                 >
                                 <i
                                     class="el-icon-circle-plus-outline input-i"
                                     @click="dis_choice"
                                 ></i>
-                                <input class="middle-input">
-                                <input class="middle-input">
-                                <input class="middle-input">
+                                <input
+                                    style="margin-left:30px"
+                                    class="middle-input"
+                                    placeholder="单价"
+                                    type="text"
+                                    value="0.00"
+                                    onfocus="if(value=='0.00') {value=''}"
+                                    onblur="if (value=='') {value='0.00'}"
+                                    oninput="value=value.replace(/[^\d]/g,'')"
+                                >
+                                <input
+                                    class="middle-input"
+                                    type="text"
+                                    value="1"
+                                    onfocus="if(value=='1') {value=''}"
+                                    onblur="if (value=='') {value='1'}"
+                                >
+                                <input
+                                    class="middle-input"
+                                    placeholder="费用"
+                                    type="text"
+                                    value="0.00"
+                                    onfocus="if(value=='0.00') {value=''}"
+                                    onblur="if (value=='') {value='0.00'}"
+                                >
                                 <i class="el-icon-delete input-i"></i>
                             </div>
                             <div
                                 class="underline"
-                                style="margin-left: 50px"
                             ></div>
                         </div>
                         <input class="lower-input">
@@ -76,6 +97,7 @@
                 class="dis-button"
                 type="primary"
             >增加处置</el-button>
+
             <!-- <el-button class="dis-button">打印设置</el-button> -->
         </div>
         <disposal-choice :show.sync="dischoice_show"></disposal-choice>
@@ -129,7 +151,7 @@ export default {
     }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 //导入全局的颜色
 @import "~@css/var";
 
@@ -138,24 +160,24 @@ export default {
 }
 
 .disposa_content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
     height: 100%;
 
     .disposa_top {
-        // border: 1px solid red;
-        height: 800px;
+        height: 100%;
         width: 100%;
         position: relative;
         margin-bottom: 10px;
         .medical-top {
-            border: 1px solid #dadada;
-            position: relative;
-            height: 100%;
-
-            // background-color: #f3f1f1;
-            .background-2 {
+            .background {
+                margin-right: 15px;
                 .transition-2;
                 display: flex;
-                width: 1145px;
+                // width: 1145px;
                 margin-top: 5px;
                 margin-left: 20px;
                 background-color: #f8f8f8;
@@ -168,10 +190,10 @@ export default {
                     border-color: @color;
                 }
                 .background-left {
-                    // border: 1px solid red;
-                    height: 140px;
-                    width: 170px;
+                    // border:1px solid red;
+                    width: 250px;
                     .left-top {
+                        // border:1px solid red;
                         font-weight: bold;
                         display: flex;
                         margin-top: 5px;
@@ -184,10 +206,10 @@ export default {
                         // }
                     }
                     .left-bottom {
-                        width: 220px;
+                        // border: 1px solid red;
+                        cursor: pointer;
                         .diagnose-detail {
                             // border: 1px solid red;
-                            cursor: pointer;
                             display: flex;
                             margin-top: 15px;
 
@@ -235,8 +257,6 @@ export default {
                 }
                 .background-right {
                     // border: 1px solid red;
-                    height: 140px;
-                    width: 985px;
                     .right-top {
                         // border: 1px solid red;
                         font-weight: bold;
@@ -244,8 +264,8 @@ export default {
                         display: flex;
                         font-size: 20px;
                         .right-i-content {
-                            margin-left: 620px;
                             .right-i {
+                                // border: 1px solid red;
                                 font-size: 20px;
                                 cursor: pointer;
                                 margin-right: 10px;
@@ -253,37 +273,34 @@ export default {
                         }
                     }
                     .right-middle {
+                        // border: 1px solid red;
                         margin-top: 10px;
-
-                        margin-left: 10px;
                         .middle-input {
                             width: 100px;
                             height: 20px;
                             background-color: #f8f8f8;
                             border: 0;
                             margin: 0 5px;
-
                             &:focus {
                                 background: white;
+                            }
+                            &:hover {
+                                border: 1px solid #cfcfcf;
                             }
                         }
                         .input-i {
                             font-size: 20px;
                             cursor: pointer;
-                            margin-left: 5px;
-                            // &:hover {
-                            //     i: blue;
-                            // }
                         }
-                        input::-webkit-input-placeholder {
-                            color: #000;
-                        }
+                        // input::-webkit-input-placeholder {
+                        //     color: #000;
+                        // }
                         // .middle-lower {
                         //     margin-top: 20px;
                         // }
                     }
                     .lower-input {
-                        margin-left: 60px;
+                        margin-left: 10px;
                         background-color: #f8f8f8;
                         margin-top: 10px;
                         width: 900px;
@@ -291,9 +308,12 @@ export default {
                         &:focus {
                             background: white;
                         }
+                        &:hover {
+                            border: 1px solid #cfcfcf;
+                        }
                     }
-                    &:hover {
-                    }
+                    // &:hover {
+                    // }
                     .right-bottom {
                         display: flex;
                         font-size: 23px;
@@ -309,7 +329,7 @@ export default {
                         }
                     }
                     .underline {
-                        margin-left: 60px;
+                        margin-left: 10px;
                         width: 900px;
                         border: 0.5px solid #d5d5d5;
                     }

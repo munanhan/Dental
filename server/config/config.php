@@ -9,6 +9,8 @@ return [
         //允许跨域的列表
         'http://localhost:8080',
         'http://127.0.0.1:8080',
+        'http://192.168.199.175:8082',
+        'http://localhost:8082/',
         ],
 
     'module' => [ 
