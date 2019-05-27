@@ -13,7 +13,7 @@ import * as patient_member from './patient_member'
 import * as member from './member'
 import * as staff from './staff'
 import * as resource from  './patient_resource'
-import * as patient_class from  './patient_class'
+import * as category  from  './patient_category'
 
 
 
@@ -33,7 +33,7 @@ const apis = {
     member,
     staff,
     resource,
-    patient_class,
+    category,
 }
 
 const install = function (Vue) {

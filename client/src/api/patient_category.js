@@ -1,8 +1,8 @@
 import request from "../common/request";
 
-const prefix = "/patients_class";
+const prefix = "/patient_categories";
 //患者分类
-export function Class(data) {
+export function getCategory(data) {
     return request({
         url: `${prefix}`,
         method: "get",

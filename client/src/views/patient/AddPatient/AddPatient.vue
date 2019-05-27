@@ -237,15 +237,15 @@
                 <div style="display:flex">
                     <el-form-item
                         label="患者分类"
-                        prop="group"
+                        prop="categoryList"
                     >
                         <el-select
-                            v-model="form.group"
+                            v-model="form.patient_category"
                             style="width:220px"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in groupList"
+                                v-for="item in categoryList"
                                 :key="item.value"
                                 :label="item.name"
                                 :value="item.name"
@@ -573,7 +573,7 @@ export default {
             teehabit_show: false,
             sourceList: [],
             attend: [],
-            groupList: [],
+            categoryList: [],
             memberList: [],
             allergieList: [],
             anamnesesList: [],
@@ -754,7 +754,7 @@ export default {
                 .then(res => {
                     that.sourceList = res.data.patient_sources;
                     that.attend = res.data.users.doctor;
-                    that.groupList = res.data.patient_categories;
+                    that.categoryList = res.data.patient_categories;
                     that.memberList = res.data.patient_members;
                     that.allergieList = res.data.patient_allergies;
                     that.anamnesesList = res.data.patient_anamneses;

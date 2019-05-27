@@ -20,7 +20,7 @@
                     :height="tableHeight"
                 >
                     <el-table-column
-                        prop="aaaa"
+                        prop="name"
                         label="患者分类"
                         align="center"
                         show-overflow-tooltip
@@ -32,34 +32,6 @@
                         show-overflow-tooltip
                     >
                         <template slot-scope="scope">
-
-                            <!-- <el-tooltip
-                effect="dark"
-                content="上移"
-                placement="bottom"
-              >
-                <el-button
-                  type="primary"
-                  size="mini"
-                  icon="el-icon-arrow-up"
-                  circle
-                  @click.stop="move(-1, scope.$index)"
-                ></el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                effect="dark"
-                content="下移"
-                placement="bottom"
-              >
-                <el-button
-                  type="primary"
-                  size="mini"
-                  icon="el-icon-arrow-down"
-                  circle
-                  @click.stop="move(1, scope.$index)"
-                ></el-button>
-              </el-tooltip> -->
                             <el-tooltip
                                 effect="dark"
                                 content="删除"
@@ -128,34 +100,59 @@ export default {
         return {
             addclasspat_show: false,
             tableHeight: "340px",
-            tableData: [{ aaaa: "洗牙" }, { aaaa: "治疗" }, { aaaa: "修复" }]
-            // tableData: []
+            tableData: [],
 
             // addExpendDialog: false
         };
     },
-    created() {},
+    created() {
+        
+    },
     mounted() {},
-    watch: {},
+    watch: {
+       show(newValue,oldValue){
+          let that = this;
+          if(newValue){
+            that.$api.category.getCategory()
+            .then(res => {
+                // console.log(res.data)
+                that.tableData = res.data;
+            })
+            .catch(res => {
+                console.log(res);
+            });
+          }
+       }
+    },
     computed: {},
     methods: {
         //交换位置
-        move(act, index) {
-            let that = this,
-                moveIdx = index + act;
+        // move(act, index) {
+        //     let that = this,
+        //         moveIdx = index + act;
 
-            if (moveIdx != -1 && moveIdx != that.tableData.length) {
-                that.tableData[index] = that.tableData.splice(
-                    moveIdx,
-                    1,
-                    that.tableData[index]
-                )[0];
-            }
-        },
+        //     if (moveIdx != -1 && moveIdx != that.tableData.length) {
+        //         that.tableData[index] = that.tableData.splice(
+        //             moveIdx,
+        //             1,
+        //             that.tableData[index]
+        //         )[0];
+        //     }
+        // },
 
         del(row, index) {
             let that = this;
-            that.tableData.splice(index, 1);
+            let id = row.id;
+            that.$api.patient_class
+                .delClass({ id })
+                .then(res => {
+                    if (res.data) {
+                        that.tableData.splice(index, 1);
+                    }
+                })
+                .catch(res => {
+                    console.log(res);
+                });
         },
 
         commit() {},
@@ -172,6 +169,7 @@ export default {
         },
         flush(data) {
             let that = this;
+            // console.log(that.tableData)
             that.tableData.push(data);
         }
     }
