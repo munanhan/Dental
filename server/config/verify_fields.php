@@ -36,4 +36,10 @@ return [
                                            ] 
                           ], 
 
+    'AreaController' => [
+                            'getById' => [ 'province_id' => 'unique:省份id|type:int',
+                                           'city_id' => 'unique:城市id|type:int',
+                                         ] 
+                        ]
+
 ];

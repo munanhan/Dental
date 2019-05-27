@@ -48,14 +48,14 @@
                         <div>
                             <el-upload
                                 class="company-uploader"
-                                action="/upload"
+                                action="http://www.laravel.com/clinic/upload?type=1"
                                 :show-file-list="false"
                                 :on-success="handleSuccess"
                                 :before-upload="beforeUpload"
                             >
                                 <img
-                                    v-if="formHosp.image_url"
-                                    :src="formHosp.image_url"
+                                    v-if="formHosp.logo"
+                                    :src="formHosp.logo"
                                     class="company"
                                 >
                                 <span
@@ -75,10 +75,10 @@
 
                         <el-form-item
                             label="诊所名称"
-                            prop="hosp_name"
+                            prop="clinic_name"
                         >
                             <el-input
-                                v-model.trim="formHosp.hosp_name"
+                                v-model.trim="formHosp.clinic_name"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -109,32 +109,32 @@
                             <div class="address">
                                 <div>
                                     <el-select
-                                        v-model="formHosp.province"
+                                        v-model="formHosp.province_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="省份"
                                     >
                                         <el-option
                                             v-for="item in provinceList"
-                                            :key="item.id"
-                                            :label="item.label"
-                                            :value="item.id"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
                                         >
                                         </el-option>
                                     </el-select>
                                 </div>
                                 <div>
                                     <el-select
-                                        v-model="formHosp.city"
+                                        v-model="formHosp.city_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="城市"
                                     >
                                         <el-option
                                             v-for="item in cityList"
-                                            :key="item.id"
-                                            :label="item.label"
-                                            :value="item.id"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
                                         >
                                         </el-option>
                                     </el-select>
@@ -142,16 +142,16 @@
                                 </div>
                                 <div>
                                     <el-select
-                                        v-model="formHosp.area"
+                                        v-model="formHosp.region_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="地区"
                                     >
                                         <el-option
                                             v-for="item in areaList"
-                                            :key="item.id"
-                                            :label="item.label"
-                                            :value="item.id"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
                                         >
                                         </el-option>
                                     </el-select>
@@ -161,7 +161,7 @@
 
                             <div>
                                 <el-input
-                                    v-model.trim="formHosp.addresss"
+                                    v-model.trim="formHosp.address"
                                     autocomplete="off"
                                     placeholder="详细地址"
                                 ></el-input>
@@ -171,10 +171,10 @@
 
                         <el-form-item
                             label="诊所介绍"
-                            prop="desc"
+                            prop="introduction"
                         >
                             <el-input
-                                v-model.trim="formHosp.desc"
+                                v-model.trim="formHosp.introduction"
                                 autocomplete="off"
                                 type="textarea"
                             ></el-input>
@@ -231,7 +231,7 @@
                             <div class="image-upload">
                                 <el-upload
                                     class="image-uploader"
-                                    action="/upload"
+                                    action="/clinic"
                                     :show-file-list="false"
                                     :on-success="handleSuccess"
                                     :before-upload="beforeUpload"
@@ -341,7 +341,12 @@ export default {
     mixins: [DialogForm],
 
     components: {},
-    props: {},
+    props: {
+        editItem: {
+            type: Object,
+            default: () => {}
+        }
+    },
     data() {
         return {
             activeName: "hospInfo",
@@ -352,17 +357,18 @@ export default {
             contentHeight: "590px",
 
             formHosp: {
-                hosp_name: "",
+                clinic_name: "",
                 contact: "",
                 phone: "",
-                province: -1,
-                city: -1,
-                area: -1,
-                addresss: "",
-                image_url: ""
+                province_id: undefined,
+                city_id: undefined,
+                region_id: undefined,
+                address: "",
+                logo: "",
+                introduction:""
             },
             formRulesHosp: {
-                hosp_name: [
+                clinic_name: [
                     {
                         required: true,
                         message: "请输入诊所名称",
@@ -385,9 +391,9 @@ export default {
                 ]
             },
 
-            provinceList: [{ id: -1, label: "省份" }],
-            cityList: [{ id: -1, label: "城市" }],
-            areaList: [{ id: -1, label: "地区" }],
+            provinceList: [],
+            cityList: [],
+            areaList: [],
 
             //---------------------------
 
@@ -420,7 +426,9 @@ export default {
         };
     },
     created() {},
-    mounted() {},
+    mounted() {
+
+    },
     watch: {
         activeName(newValue, oldValue) {
             let that = this;
@@ -434,7 +442,19 @@ export default {
                     that.contentHeight = "635px";
                     break;
             }
+        },
+        show(newValue,oldValue){
+            let that = this;
+
+            if (newValue) {
+                that.formHosp = that.editItem;
+                that.formIntell = that.editItem;
+                that.getAreas();
+
+            }
+
         }
+
     },
     computed: {},
     methods: {
@@ -460,11 +480,28 @@ export default {
 
             switch (type) {
                 case "hosp":
+                console.log(that.formHosp);
                     break;
 
                 case "license":
+                console.log(that.formIntell);
                     break;
             }
+        },
+        getAreas(){
+            //获取省市区
+            let that = this;
+            let city_id = that.editItem.city_id;
+            let province_id = that.editItem.province_id;
+            that.$api.area.getById({'province_id':province_id,'city_id':city_id})
+            .then(res => {
+               that.provinceList = res.data.province;
+               that.cityList = res.data.city;
+               that.areaList = res.data.country;
+            })
+            .catch(res => {
+
+            });
         }
     }
 };
