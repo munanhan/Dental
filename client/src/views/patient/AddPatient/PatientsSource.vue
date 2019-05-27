@@ -133,7 +133,8 @@ export default {
 
       this.addpatsour_show = true;
     },
-    flush(data){
+
+    flush(data){ 
       let that=this;
       that.tableData.push(data);
       console.log(data);
