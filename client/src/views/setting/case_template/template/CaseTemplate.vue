@@ -212,10 +212,10 @@ export default {
         background-color: rgb(227, 227, 227);
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: 2px;
 
         .btn {
-            margin: 6px 20px;
+            margin: 6px 10px;
 
             &.save {
                 margin-right: 0;
