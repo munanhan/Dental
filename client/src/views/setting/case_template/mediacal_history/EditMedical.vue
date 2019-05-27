@@ -1,24 +1,30 @@
 <template>
     <el-dialog
-        title="患者来源设置"
+        :title="title"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog"
+        class="custom-dialog edit-medical"
         :close-on-click-modal="false"
-        :append-to-body="true"
         v-dialog-drag
     >
-        <el-form>
+        <el-form
+            :model="form"
+            :rules="formRules"
+            label-width="100px"
+            ref="form"
+        >
+
             <el-form-item
-                label="类型"
-                prop="name"
+                :label="type"
+                prop="medical_name"
             >
                 <el-input
-                    v-model.trim="form.name"
+                    v-model.trim="form.medical_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
         </el-form>
+
         <div
             slot="footer"
             class="dialog-footer"
@@ -29,32 +35,37 @@
             >取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
                 :loading="commitLoading"
             >确 定</el-button>
         </div>
+
     </el-dialog>
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import EditDialogForm from "../../../base/EditDialogForm";
 export default {
-    name: "AddPatientsSource",
-    mixins: [DialogForm],
+    name: "EditMedical",
+    mixins: [EditDialogForm],
+
     components: {},
-    props: {},
+    props: {
+        type: {
+            default: ''            
+        }
+
+    },
     data() {
         return {
-            commitLoading: false,
-
             form: {
-                name: ""
+                medical_name: "",
             },
             formRules: {
-                expenditure: [
+                medical_name: [
                     {
                         required: true,
-                        message: "请输入类型",
+                        message: "请输入" + this.type,
                         trigger: "blur"
                     }
                 ]
@@ -64,22 +75,19 @@ export default {
     created() {},
     mounted() {},
     watch: {},
-    computed: {},
-    methods: {
-        addCommit() {
-            let that = this;
-            that.$api.resource
-                .addResource(that.form)
-                .then(res => {
-                    that.$emit("flush", res.data);
-                    that.closeDialog();
-                })
-                .catch(res => {
-                    console.log(res);
-                });
+    computed: {
+        title(){
+            return '修改' + this.type
         }
-    }
+
+    },
+    methods: {}
 };
 </script>
 <style lang="less" scoped>
+.edit-medical {
+    /deep/ .el-dialog__body {
+        padding-bottom: 0;
+    }
+}
 </style>

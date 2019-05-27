@@ -71,7 +71,31 @@
             <div :style="{
                     height: rightContentHeight
                 }">
-                <case-template v-if="selectType == 0" :data="caseData"></case-template>
+                <case-template
+                    v-if="selectType == 0"
+                    :data="caseData"
+                ></case-template>
+
+                <medical-history
+                    v-if="selectType == 1"
+                    :data="medicalData"
+                ></medical-history>
+                <inspect
+                    v-if="selectType == 2"
+                    :data="inspectData"
+                ></inspect>
+
+                <diagnose
+                    v-if="selectType == 3"
+                    :data="diagnoseData"
+                >
+                </diagnose>
+
+                <advice
+                    v-if="selectType == 4"
+                    :data="adviceData"
+                >
+                </advice>
             </div>
         </div>
 
@@ -91,11 +115,23 @@
 <script>
 import AddTreeNode from "./AddTreeNode";
 import EditTreeNode from "./EditTreeNode";
-import CaseTemplate from "./CaseTemplate";
+import CaseTemplate from "./template/CaseTemplate";
+import MedicalHistory from "./mediacal_history/MedicalHistory";
+import Inspect from "./inspect/Inspect";
+import Diagnose from "./diagnose/Diagnose";
+import Advice from "./advice/Advice";
 
 export default {
     name: "CaseTemplateIndex",
-    components: { AddTreeNode, EditTreeNode, CaseTemplate },
+    components: {
+        AddTreeNode,
+        EditTreeNode,
+        CaseTemplate, //病历模板
+        MedicalHistory, //主诉、现病史、既往病史
+        Inspect, //检查
+        Diagnose, //诊断
+        Advice //治疗、治疗方案
+    },
     props: {
         refresh: {
             type: Boolean,
@@ -129,7 +165,11 @@ export default {
 
             rightContentHeight: "500px",
 
-            caseData: {},
+            caseData: {}, //模板
+            medicalData: {}, //病历
+            inspectData: {}, //检查
+            diagnoseData: {}, //诊断
+            adviceData: {}, //治疗、治疗方案
         };
     },
     created() {},
@@ -137,7 +177,7 @@ export default {
         let that = this;
 
         that.$nextTick(() => {
-            window.addEventListener("click", that.removeSelect);            
+            window.addEventListener("click", that.removeSelect);
 
             //监听事件,由layout那边的resize抛出的
             window.addEventListener("bodyChange", that.resizeContent);
@@ -163,7 +203,8 @@ export default {
             let that = this,
                 height =
                     that.$refs.right.clientHeight -
-                    that.$refs.rightTitle.clientHeight - 20;
+                    that.$refs.rightTitle.clientHeight -
+                    20;
 
             that.rightContentHeight = `${height}px`;
         },

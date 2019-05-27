@@ -39,8 +39,8 @@
                         <el-col :span="6">
                             <div>介 绍 人：</div>
                         </el-col>
-                        <el-col :span="6">
-                            <div>手 机 2：</div>
+                     <el-col :span="6">
+                            <div>职 业：</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -53,8 +53,8 @@
                         <el-col :span="6">
                             <div>年 龄：</div>
                         </el-col>
-                        <el-col :span="6">
-                            <div>职 业：</div>
+                           <el-col :span="6">
+                            <div>社 保 号：</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -67,9 +67,7 @@
                         <el-col :span="6">
                             <div>会员卡号：</div>
                         </el-col>
-                        <el-col :span="6">
-                            <div>社 保 号：</div>
-                        </el-col>
+                    
                     </el-row>
                     <el-row
                         :gutter="24"

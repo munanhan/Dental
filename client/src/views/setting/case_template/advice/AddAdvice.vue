@@ -1,24 +1,42 @@
 <template>
     <el-dialog
-        title="患者来源设置"
+        title="新增治疗"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog"
+        class="custom-dialog add-advice"
         :close-on-click-modal="false"
-        :append-to-body="true"
         v-dialog-drag
     >
-        <el-form>
+        <el-form
+            :model="form"
+            :rules="formRules"
+            label-width="100px"
+            ref="form"
+        >
+
             <el-form-item
-                label="类型"
-                prop="name"
+                label="治疗名称"
+                prop="advice_name"
             >
                 <el-input
-                    v-model.trim="form.name"
+                    v-model.trim="form.advice_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
+
+            <el-form-item
+                label="类型"
+                prop="type"
+            >
+                <el-radio-group v-model="form.type">
+                    <el-radio :label="0">备牙</el-radio>
+                    <el-radio :label="1">充值</el-radio>
+                    <el-radio :label="2">药物</el-radio>
+                    <el-radio :label="3">其他</el-radio>
+                </el-radio-group>
+            </el-form-item>
         </el-form>
+
         <div
             slot="footer"
             class="dialog-footer"
@@ -32,15 +50,19 @@
                 @click="addCommit"
                 :loading="commitLoading"
             >确 定</el-button>
+            <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
         </div>
+
     </el-dialog>
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import AddDialogForm from "../../../base/AddDialogForm";
+
 export default {
-    name: "AddPatientsSource",
-    mixins: [DialogForm],
+    name: "AddAdvice",
+    mixins: [AddDialogForm],
+
     components: {},
     props: {},
     data() {
@@ -48,13 +70,14 @@ export default {
             commitLoading: false,
 
             form: {
-                name: ""
+                advice_name: "",
+                type: 0
             },
             formRules: {
-                expenditure: [
+                advice_name: [
                     {
                         required: true,
-                        message: "请输入类型",
+                        message: "请输入治疗名称",
                         trigger: "blur"
                     }
                 ]
@@ -65,21 +88,13 @@ export default {
     mounted() {},
     watch: {},
     computed: {},
-    methods: {
-        addCommit() {
-            let that = this;
-            that.$api.resource
-                .addResource(that.form)
-                .then(res => {
-                    that.$emit("flush", res.data);
-                    that.closeDialog();
-                })
-                .catch(res => {
-                    console.log(res);
-                });
-        }
-    }
+    methods: {}
 };
 </script>
 <style lang="less" scoped>
+.add-advice {
+    /deep/ .el-dialog__body {
+        padding-bottom: 0;
+    }
+}
 </style>

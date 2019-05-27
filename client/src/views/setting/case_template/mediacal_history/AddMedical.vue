@@ -1,29 +1,42 @@
 <template>
     <el-dialog
-        title="患者分类设置"
+        title="新增病史"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog"
+        class="custom-dialog add-medical"
         :close-on-click-modal="false"
-        :append-to-body="true"
         v-dialog-drag
     >
         <el-form
             :model="form"
             :rules="formRules"
-            label-width="60px"
+            label-width="100px"
             ref="form"
         >
+
+            <el-form-item
+                label="病史名称"
+                prop="medical_name"
+            >
+                <el-input
+                    v-model.trim="form.medical_name"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+
             <el-form-item
                 label="类型"
                 prop="type"
             >
-                <el-input
-                    v-model.trim="form.type"
-                    autocomplete="off"
-                ></el-input>
+                <el-radio-group v-model="form.type">
+                    <el-radio :label="0">部位</el-radio>
+                    <el-radio :label="1">性质</el-radio>
+                    <el-radio :label="2">时间</el-radio>
+                    <el-radio :label="3">其他</el-radio>
+                </el-radio-group>
             </el-form-item>
         </el-form>
+
         <div
             slot="footer"
             class="dialog-footer"
@@ -37,29 +50,33 @@
                 @click="addCommit"
                 :loading="commitLoading"
             >确 定</el-button>
+            <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
         </div>
+
     </el-dialog>
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import AddDialogForm from "../../../base/AddDialogForm";
+
 export default {
-    name: "AddClassificationPatients",
-    mixins: [DialogForm],
+    name: "AddMedical",
+    mixins: [AddDialogForm],
+
     components: {},
     props: {},
     data() {
         return {
-            commitLoading: false,
 
             form: {
-                type: ""
+                medical_name: "",
+                type: 0
             },
             formRules: {
-                type: [
+                medical_name: [
                     {
                         required: true,
-                        message: "请输入类型",
+                        message: "请输入病史名称",
                         trigger: "blur"
                     }
                 ]
@@ -70,21 +87,13 @@ export default {
     mounted() {},
     watch: {},
     computed: {},
-    methods: {
-        addCommit() {
-            let that = this;
-            that.$api.patient_class
-                .addClass(that.form)
-                .then(res => {
-                    that.$emit("flush", res.data);
-                    that.closeDialog();
-                })
-                .catch(res => {
-                    console.log(res);
-                });
-        }
-    }
+    methods: {}
 };
 </script>
 <style lang="less" scoped>
+.add-medical {
+    /deep/ .el-dialog__body {
+        padding-bottom: 0;
+    }
+}
 </style>

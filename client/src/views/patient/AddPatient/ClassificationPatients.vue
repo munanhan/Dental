@@ -1,111 +1,86 @@
 <template>
-  <div>
-    <el-dialog
-      title="患者分类设置"
-      :visible.sync="show"
-      :before-close="closeDialog"
-      class="custom-dialog classification-patients"
-      :close-on-click-modal="false"
-      top="3vh"
-      :append-to-body="true"
-      v-dialog-drag
-    >
-      <div class="content">
-        <!-- <div class="letf-content"> -->
-        <el-table
-          border
-          class="width100 mb-10"
-          :data="tableData"
-          :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-          :height="tableHeight"
+    <div>
+        <el-dialog
+            title="患者分类设置"
+            :visible.sync="show"
+            :before-close="closeDialog"
+            class="custom-dialog classification-patients"
+            :close-on-click-modal="false"
+            top="3vh"
+            :append-to-body="true"
+            v-dialog-drag
         >
-          <el-table-column
-            prop="aaaa"
-            label="患者分类"
-            align="center"
-            show-overflow-tooltip
-          >
-          </el-table-column>
-          <el-table-column
-            label="删除"
-            align="center"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
+            <div class="content">
+                <!-- <div class="letf-content"> -->
+                <el-table
+                    border
+                    class="width100 mb-10"
+                    :data="tableData"
+                    :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                    :height="tableHeight"
+                >
+                    <el-table-column
+                        prop="name"
+                        label="患者分类"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        label="删除"
+                        align="center"
+                        show-overflow-tooltip
+                    >
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    circle
+                                    @click.stop="del(scope.row, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div
+                slot="footer"
+                class="dialog-footer"
+            >
+                <div class="pull-left">
+                    <el-button
+                        type="primary"
+                        @click="add_classpat"
+                        :disabled="commitLoading"
+                    >新增</el-button>
+                </div>
 
-              <!-- <el-tooltip
-                effect="dark"
-                content="上移"
-                placement="bottom"
-              >
-                <el-button
-                  type="primary"
-                  size="mini"
-                  icon="el-icon-arrow-up"
-                  circle
-                  @click.stop="move(-1, scope.$index)"
-                ></el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                effect="dark"
-                content="下移"
-                placement="bottom"
-              >
-                <el-button
-                  type="primary"
-                  size="mini"
-                  icon="el-icon-arrow-down"
-                  circle
-                  @click.stop="move(1, scope.$index)"
-                ></el-button>
-              </el-tooltip> -->
-              <el-tooltip
-                effect="dark"
-                content="删除"
-                placement="bottom"
-              >
-                <el-button
-                  type="danger"
-                  size="mini"
-                  icon="el-icon-delete"
-                  circle
-                  @click.stop="del(scope.row, scope.$index)"
-                ></el-button>
-              </el-tooltip>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
-        <div class="pull-left">
-          <el-button
-            type="primary"
-            @click="add_classpat"
-            :disabled="commitLoading"
-          >新增</el-button>
-        </div>
-
-        <!-- <div>
+                <!-- <div>
                 </div> -->
-        <div>
-          <el-button
-            @click="closeDialog"
-            :disabled="commitLoading"
-          >取 消</el-button>
-          <el-button
-            type="primary"
-            @click="commit"
-            :loading="commitLoading"
-          >确 定</el-button>
-        </div>
-      </div>
-    </el-dialog>
-<add-classification-patients :show.sync="addclasspat_show"></add-classification-patients>
-  </div>
+                <div>
+                    <el-button
+                        @click="closeDialog"
+                        :disabled="commitLoading"
+                    >取 消</el-button>
+                    <el-button
+                        type="primary"
+                        @click="commit"
+                        :loading="commitLoading"
+                    >确 定</el-button>
+                </div>
+            </div>
+        </el-dialog>
+        <add-classification-patients
+            :show.sync="addclasspat_show"
+            @flush="flush"
+        ></add-classification-patients>
+    </div>
 </template>
 
 <script>
@@ -113,66 +88,91 @@ import DialogForm from "@/views/base/DialogForm";
 import AddClassificationPatients from "./AddClassificationPatients";
 
 export default {
-  name: "ClassificationPatients",
-  mixins: [DialogForm],
+    name: "ClassificationPatients",
+    mixins: [DialogForm],
 
-  components: {
-    AddClassificationPatients
-  },
-  props: {},
+    components: {
+        AddClassificationPatients
+    },
+    props: {},
 
-  data() {
-    return {
-      addclasspat_show:false,
-      tableHeight: "340px",
-      tableData: [
-        { aaaa: "洗牙" },
-        { aaaa: "治疗" },
-        { aaaa: "修复" },
+    data() {
+        return {
+            addclasspat_show: false,
+            tableHeight: "340px",
+            tableData: [],
+
+            // addExpendDialog: false
+        };
+    },
+    created() {
         
-      ]
-      // tableData: []
-
-      // addExpendDialog: false
-    };
-  },
-  created() {},
-  mounted() {},
-  watch: {},
-  computed: {},
-  methods: {
-    //交换位置
-    move(act, index) {
-      let that = this,
-        moveIdx = index + act;
-
-      if (moveIdx != -1 && moveIdx != that.tableData.length) {
-        that.tableData[index] = that.tableData.splice(
-          moveIdx,
-          1,
-          that.tableData[index]
-        )[0];
-      }
     },
-
-    del(row, index) {
-      let that = this;
-      that.tableData.splice(index, 1);
+    mounted() {},
+    watch: {
+       show(newValue,oldValue){
+          let that = this;
+          if(newValue){
+            that.$api.category.getCategory()
+            .then(res => {
+                // console.log(res.data)
+                that.tableData = res.data;
+            })
+            .catch(res => {
+                console.log(res);
+            });
+          }
+       }
     },
+    computed: {},
+    methods: {
+        //交换位置
+        // move(act, index) {
+        //     let that = this,
+        //         moveIdx = index + act;
 
-    commit() {},
+        //     if (moveIdx != -1 && moveIdx != that.tableData.length) {
+        //         that.tableData[index] = that.tableData.splice(
+        //             moveIdx,
+        //             1,
+        //             that.tableData[index]
+        //         )[0];
+        //     }
+        // },
 
-    addItem(item) {
-      let that = this;
+        del(row, index) {
+            let that = this;
+            let id = row.id;
+            that.$api.patient_class
+                .delClass({ id })
+                .then(res => {
+                    if (res.data) {
+                        that.tableData.splice(index, 1);
+                    }
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        },
 
-      console.log(item);
+        commit() {},
 
-      that.closeDialog();
-    },
-    add_classpat(){
-      this.addclasspat_show = true;
+        addItem(item) {
+            let that = this;
+
+            console.log(item);
+
+            that.closeDialog();
+        },
+        add_classpat() {
+            this.addclasspat_show = true;
+        },
+        flush(data) {
+            let that = this;
+            // console.log(that.tableData)
+            that.tableData.push(data);
+        }
     }
-  }
 };
 </script>
 <style lang="less" scoped>

@@ -16,10 +16,13 @@ let instance = null,
 //     withCredentials: true //允许携带cookie
 // });
 
+window.HOSTNAME = '';
 
 //development模式下使用
 try {
     refreshTokenUrl = apiBaseURL + refreshTokenUrl;
+
+    window.HOSTNAME = apiBaseURL;
 
     instance = axios.create({
         baseURL: `${apiBaseURL}/api`, // api的base_url

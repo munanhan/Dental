@@ -26,7 +26,6 @@
                     <div class="background-right">
                         <div class="right-top">
                             <div>初诊 &nbsp; 1212</div>
-                            <div></div>
                             <div class="right-i-content">
                                 <i
                                     class="el-icon-printer right-i"
@@ -78,9 +77,7 @@
                                 >
                                 <i class="el-icon-delete input-i"></i>
                             </div>
-                            <div
-                                class="underline"
-                            ></div>
+                            <div class="underline"></div>
                         </div>
                         <input class="lower-input">
                         <div class="underline"></div>
@@ -264,6 +261,8 @@ export default {
                         display: flex;
                         font-size: 20px;
                         .right-i-content {
+                            border: 1px solid red;
+                            margin-left: 620px;
                             .right-i {
                                 // border: 1px solid red;
                                 font-size: 20px;
