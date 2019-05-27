@@ -16,10 +16,10 @@
     >
       <el-form-item
         label="类型"
-        prop="type"
+        prop="name"
       >
         <el-input
-          v-model.trim="form.type"
+          v-model.trim="form.name"
           autocomplete="off"
         ></el-input>
       </el-form-item>
@@ -53,7 +53,7 @@ export default {
       commitLoading: false,
 
       form: {
-        type:''
+        name:''
       },
       formRules: {
         expenditure: [
@@ -73,13 +73,15 @@ export default {
   methods: {
     addCommit() {
       let that = this;
-      console.log(that.form.type);
+      that.$api.resource.addResource(that.form)
+              .then(res=>{
+                that.$emit("flush", res.data);
+                that.closeDialog();
+              })
+              .catch(res=>{
+                  console.log(res);
+              })
 
-      let data = { 'id': 10,'name':that.form.type};
-
-      that.$emit("flush", data);
-      //
-      that.closeDialog();
     }
   }
 };

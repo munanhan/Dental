@@ -20,7 +20,6 @@ class PatientSourceController extends Controller
 
     public function store(Request $request)
     {
-
         $patientSource=PatientSource::create($request->all());
 
         return message('',$patientSource);
@@ -35,8 +34,9 @@ class PatientSourceController extends Controller
 
     public function delete(PatientSource $patientSource)
     {
+
         $patientSource->delete();
 
-        return message('',null, 200);
+        return message('',$patientSource, 200);
     }
 }
