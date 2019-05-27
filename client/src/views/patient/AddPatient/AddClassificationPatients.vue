@@ -59,7 +59,7 @@ export default {
         expenditure: [
           {
             required: true,
-            message: "请输入类型",
+            message: "请输入类型",  
             trigger: "blur"
           }
         ]
@@ -73,10 +73,14 @@ export default {
   methods: {
     addCommit() {
       let that = this;
-
-      that.$emit("add-item", that.form.expenditure);
-
-      that.closeDialog();
+       that.$api.patient_class.addClass(that.form)
+              .then(res=>{
+                that.$emit("flush", res.data);
+                that.closeDialog();
+              })
+              .catch(res=>{
+                  console.log(res);
+              })
     }
   }
 };

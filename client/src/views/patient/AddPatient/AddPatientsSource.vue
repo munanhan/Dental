@@ -8,6 +8,7 @@
         :append-to-body="true"
         v-dialog-drag
     >
+    <el-form>
       <el-form-item
         label="类型"
         prop="name"
@@ -77,7 +78,8 @@ export default {
               })
 
     }
-};
+}
+}
 </script>
 <style lang="less" scoped>
 </style>
