@@ -1,25 +1,19 @@
 <template>
-  <el-dialog
-    title="患者来源设置"
-    :visible.sync="show"
-    :before-close="closeDialog"
-    class="custom-dialog"
-    :close-on-click-modal="false"
-    :append-to-body="true"
-    v-dialog-drag
-  >
-    <el-form
-      :model="form"
-      :rules="formRules"
-      label-width="60px"
-      ref="form"
+    <el-dialog
+        title="患者来源设置"
+        :visible.sync="show"
+        :before-close="closeDialog"
+        class="custom-dialog"
+        :close-on-click-modal="false"
+        :append-to-body="true"
+        v-dialog-drag
     >
       <el-form-item
         label="类型"
-        prop="type"
+        prop="name"
       >
         <el-input
-          v-model.trim="form.type"
+          v-model.trim="form.name"
           autocomplete="off"
         ></el-input>
       </el-form-item>
@@ -44,16 +38,16 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 export default {
-  name: "AddPatientsSource",
-  mixins: [DialogForm],
-  components: {},
-  props: {},
-  data() {
-    return {
-      commitLoading: false,
+    name: "AddPatientsSource",
+    mixins: [DialogForm],
+    components: {},
+    props: {},
+    data() {
+        return {
+            commitLoading: false,
 
       form: {
-        type:''
+        name:''
       },
       formRules: {
         expenditure: [
@@ -73,15 +67,16 @@ export default {
   methods: {
     addCommit() {
       let that = this;
-      console.log(that.form.type);
+      that.$api.resource.addResource(that.form)
+              .then(res=>{
+                that.$emit("flush", res.data);
+                that.closeDialog();
+              })
+              .catch(res=>{
+                  console.log(res);
+              })
 
-      let data = { 'id': 10,'name':that.form.type};
-
-      that.$emit("flush", data);
-      //
-      that.closeDialog();
     }
-  }
 };
 </script>
 <style lang="less" scoped>

@@ -51,11 +51,13 @@
             <td
               v-for="item in dateItem"
               :key="item.year + item.mth + item.date"
+              :data="item.year+'-'+(item.mth<10?'0'+item.mth:item.mth)+'-'+item.date"
               class="calendar-day-cell"
               :class="{ 'not-current-mth': item.notCurr, 'active': item == selectItem, 
                                 'current-day': item.year == curYear && item.mth - 1 == curMonth && item.date == curDate,
                                 'weekday': item.red,
-                                 'month-blue':targetArr[0].indexOf((item.mth.toString().length == 1 ? '0'+ item.mth:item.mth)+'.'+
+                                'month-blue':targetArr[0].indexOf(
+                                  (item.mth.toString().length == 1 ? '0'+ item.mth:item.mth)+'.'+
             (item.date.toString().length == 1 ? '0'+ item.date:item.date)) != -1
                                 }"
               @click="selectDate(item)"
@@ -71,6 +73,7 @@
 export default {
   name: "ReconCalendar",
   components: {},
+  inject: ["navBar"],
   props: {
     update: {
       type: Boolean
@@ -91,41 +94,41 @@ export default {
       yuyue_month_res: [
         {
           age: "18",
-          apt_data: "2019-05-09",
-          tel_one: "13538048392",
-          doctor_id: "王医生",
+          appointment_date: "2019-05-09",
+          phone: "13538048392",
+          appointment_doctor: "王医生",
           name: "韩楠",
           sex: "男",
-          time_frame_begin: "10 : 30",
-          type_id: "初诊",
+          start_time: "10 : 30",
+          type: "初诊",
           items: "拆线"
         },
-        //  {
-        //   age: "19",
-        //   apt_data: "2019-05-09",
-        //   tel_one: "13538048392",
-        //   doctor_id: "王医生",
-        //   name: "韩楠",
-        //   sex: "男",
-        //   time_frame_begin: "14 : 30",
-        //   type_id: "初诊",
-        //   items: "拆线"
-        // },
         {
           age: "18",
-          apt_data: "2019-04-10",
-          doctor_id: "王医生",
-          tel_one: "13538048392",
+          appointment_date: "2019-04-10",
+          appointment_doctor: "王医生",
+          phone: "13538048392",
           name: "韩楠",
           sex: "男",
-          time_frame_begin: "14 : 00",
-          type_id: "初诊",
+          start_time: "14 : 00",
+          type: "初诊",
           items: "拆线"
         }
       ]
     };
   },
-  created() {},
+  created() {
+    let d = new Date();
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = new Date(year, month, 0).getDate();
+    month = month < 10 ? "0" + month : month;
+    let end = `${year}-${month}-${day}`;
+    let start = `${year}-${month}-1`;
+    this.$api.appointment.getMonthAppointment({ start, end }).then(res => {
+      this.yuyue_month_res = res.data;
+    });
+  },
 
   mounted() {
     let that = this;
@@ -142,19 +145,31 @@ export default {
     }
   },
   updated() {
+    // let grays = document.getElementsByClassName("month-blue");
+    // if (grays.length != 0) {
+    //   this.yuyue_month_res.forEach((item, index) => {
+    //     if (grays[index]) {
+    //       grays[index].innerHTML = `<div class="add-month"><p><span>${
+    //         item.name
+    //       }</span> : <span>${item.items}</span></p></div>`;
+    //     }
+    //   });
+    // }
     let grays = document.getElementsByClassName("month-blue");
-    if (grays.length != 0) {
+    grays = Array.from(grays);
+    grays.forEach((ele, key) => {
+      let strhtml = ele.innerHTML + '<div class="add-month">';
       this.yuyue_month_res.forEach((item, index) => {
-        if (grays[index]) {
-          grays[index].innerHTML = `<div class="add-month"><p><span>${
-            item.name
-          }</span><span>${item.type_id}</span><span>${item.age}</span></p>
-                            <p><span>${item.tel_one}</span></p>
-                            <p><span>${item.items}</span></p></div>
-                           `;
+        if (ele.getAttribute("data") == item.appointment_date) {
+          strhtml += `<div data-id="${item.appointment_date}" data-h="${
+            item.start_time
+          }"><p><span>${item.name}</span> : <span>${item.items}</span>
+                              </div>`;
         }
       });
-    }
+      strhtml += "</div>";
+      ele.innerHTML = strhtml;
+    });
   },
   watch: {
     update(newValue, oldValue) {
@@ -179,9 +194,9 @@ export default {
       let xArr = [],
         yArr = [];
       this.yuyue_month_res.forEach((item, index) => {
-        let str = item.apt_data.substr(5).replace("-", ".");
+        let str = item.appointment_date.substr(5).replace("-", ".");
         xArr.push(str);
-        yArr.push(item.time_frame_begin);
+        yArr.push(item.start_time);
       });
       return [xArr, yArr];
     }
@@ -290,14 +305,39 @@ export default {
 
     //选中的日期
     selectDate(item) {
-      let that = this;
-
-      if (that.selectYear == item.year && that.selectMonth == item.mth - 1) {
-        that.selectItem = item;
-      } else {
-        //如果选了上个月或下个月的话，就重新设置当前的日期
-        that.setDate(new Date(item.year, item.mth - 1, item.date));
-      }
+      let li0 = document.getElementById("li0");
+      li0.click();
+      let date =
+        item.year +
+        "-" +
+        (item.mth < 10 ? "0" + item.mth : item.mth) +
+        "-" +
+        (item.date < 10 ? "0" + item.date : item.date);
+      
+      this.$store.commit('updateChooseDate',date);
+        this.$api.appointment
+        .getTodayAppointment({ date})
+        .then(res => {
+          if (res.code == 200) {
+            this.$emit('OnUpdateYuyueRes',res.data)
+          }
+        });
+      
+      // console.log(item);
+      //  this.$nextTick(function() {
+      //   let self = this;
+      //   this.navBar.forEach(function(item) {
+      //     self.$set(item, "active", false);
+      //   });
+      //   this.$set({ select: "天", active: false }, "active", true);
+      // });
+      // let that = this;
+      // if (that.selectYear == item.year && that.selectMonth == item.mth - 1) {
+      //   that.selectItem = item;
+      // } else {
+      //   //如果选了上个月或下个月的话，就重新设置当前的日期
+      //   that.setDate(new Date(item.year, item.mth - 1, item.date));
+      // }
     },
 
     resizeCalendar() {
@@ -316,7 +356,7 @@ export default {
 <style lang="less">
 //导入全局的颜色
 @import "~@css/var";
-.month{
+.month {
   background-color: #ffffff;
 }
 .transition-2 {
@@ -329,18 +369,16 @@ export default {
   right: 0;
   left: 0;
   // bottom: 0;
-  // padding-bottom:36px; 
- 
+  // padding-bottom:36px;
+
   background-color: #ffffff;
- 
+
   height: 100%;
   box-sizing: border-box;
 
   .recon-head {
     padding: 10px;
     border-bottom: 1px solid #e3e3e3;
-    
-
 
     .current,
     .pre-mth,
@@ -381,7 +419,7 @@ export default {
 
     box-sizing: border-box;
     width: 100%;
- 
+
     table {
       width: 100%;
       border-color: #ffffff;
@@ -437,12 +475,16 @@ export default {
               left: 0;
               right: 0;
               z-index: 1000;
-              height: 52px;
+              // height: 2px;
               overflow: hidden;
               background-color: #fff0e6;
-              p{
-                  padding: 0;
-                  margin: 0;
+              div {
+                border: 1px solid #000;
+                margin-bottom: 1px;
+              }
+              p {
+                padding: 0;
+                margin: 0;
               }
             }
           }

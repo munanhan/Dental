@@ -1,6 +1,9 @@
 .red {
     color: red;
   }
+.bg0#6bb15e{
+  background-color: #6bb15e;
+}
   
   .yuyue-right {
     background-color: #fff;
@@ -226,6 +229,7 @@
                     }
                   }
                   &.day-blue {
+                     
                       font-size: 12px;
                       position: relative;
                       // display: flex;
@@ -239,18 +243,32 @@
                         display: flex;
                         >div{
                           flex: auto;
+                          display: flex;
                           margin-right:2px;
                           background-color: rgba(151, 189, 214, 1);
+                          .inner{
+                            display: flex;
+                            margin-right:10px; 
+                            .left{
+                              width: 18px;
+                              height: 52px;
+                              .bg0#6bb15e;
+                              text-align: center;
+                              // background-color: #f40;
+                            }
+                          }
                         }
                         p {
                             margin: 0;
+                            padding-bottom:2px; 
+                            color: #000 !important;
                           }
                           p:first-of-type {
                             span {
                               margin-right: 10px;
                             }
                             span:nth-of-type(1) {
-                              color: red;
+                              // color: red;
                               font-size: 14px;
                             }
                             span:nth-of-type(2) {

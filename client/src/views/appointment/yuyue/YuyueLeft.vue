@@ -12,10 +12,7 @@
      
                   <MyCalender ref="myCalender" ></MyCalender>
                    
-                    <div class="clear">
-                        <span>预约回收站</span>
-                        <div>清空</div>
-                    </div>
+                  
                  
                 </div>
             </el-col>

@@ -119,24 +119,26 @@ export default {
 
     del(row, index) {
       let that = this;
-      that.tableData.splice(index, 1);
+      let id = row.id;
+      that.$api.resource.delResource({id})
+              .then(res=>{
+                 if(res.data){
+                   that.tableData.splice(index, 1);
+                 }
+              })
+              .catch(res=>{
+                console.log(res);
+              })
+
     },
 
-    addItem(item) {
-      let that = this;
-
-      console.log(item);
-
-      that.closeDialog();
-    },
     add_source() {
-
       this.addpatsour_show = true;
     },
-    flush(data){
+
+    flush(data){ 
       let that=this;
       that.tableData.push(data);
-      console.log(data);
     }
   }
 };

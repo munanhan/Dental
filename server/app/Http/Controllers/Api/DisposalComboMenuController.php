@@ -7,18 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Model\Disposal;
 use App\Model\DisposalComboMenu;
 use App\Model\DisposalCombo;
+use App\Http\Controllers\Api\BaseController;
 
-class DisposalComboMenuController extends Controller
+class DisposalComboMenuController extends BaseController
 {
-            public function index(Request $request){
+            public function index(){
                 //主页
                 $data = DisposalComboMenu::all();
                 return message('成功',getTree($data),200);
             }
 
-            public function getById(Request $request){
+            public function getById(){
                 //get by id
-                $id = $request->input('id') != ''?$request->input('id'):0;
+                $id = $parms['id'] != ''?$parms['id']:0;
                 if (!$id) {
                     return message('缺少id',[],404);
                 }
@@ -26,9 +27,9 @@ class DisposalComboMenuController extends Controller
                 return message('成功',$data,200);
             }
 
-            public function addCombo(Request $request){
+            public function addData(){
                 //添加
-                $parms = getParms($request->input())['parms'];
+                $parms = $this->parms;
                 $fields = [//必填项
                              'combo_name' => '组合名'
                           ];
@@ -47,9 +48,9 @@ class DisposalComboMenuController extends Controller
                 }
             }
 
-            public function update(Request $request){
+            public function update(){
                 //改
-                $parms = getParms($request->input())['parms'];
+                $parms = $this->parms;
                 $fields = [//必填项
                              'id' => 'id值',
                              'combo_name' => '组合名字'

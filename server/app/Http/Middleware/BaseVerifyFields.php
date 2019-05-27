@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Middleware;
+use App\Model\OperationLog;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -21,7 +23,7 @@ class BaseVerifyFields
         $parms = getParms($request->all())['parms'];
         //参数
         $res = checkParms($fields,$parms);
-
+        //更新时间判断部分
         if(isset($parms['id']) && isset($parms['updated_at'])){
             $where = [
                         'table' => $request->attributes->get('table'),
@@ -32,14 +34,15 @@ class BaseVerifyFields
             if(checkUpdateTime($where)){
 
                 return message('该数据已被修改，请刷新.',[],500);
-                
+
             }
 
         }
-        //字段验证
+        //字段验证部分
         if ($res) {
             return message($res,[],404);
         }
+
 
         return $next($request);
     }

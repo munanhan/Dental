@@ -72,21 +72,6 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::put('users/{user}', 'UserController@update');
 
-    Route::get('user/user_list','UserController@userList');//员工列表
-
-    Route::get('user/get_role','UserController@getRole');//获取下拉职位
-
-    Route::post('user/add', 'UserController@addUser');//添加用户
-
-    Route::delete('user/{id}', 'UserController@delete');//删除用户
-
-    Route::post('user/update_password', 'UserController@updatePassword');//修改密码
-
-    Route::put('user', 'UserController@update');//修改用户信息
-
-    Route::get('user/get_by_id','UserController@getById');//根据id获取
-
-
 
     /*
      * Route Patient Api
@@ -234,62 +219,6 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
 
-    /*
-     * Route PatientRecyclingBin Api 
-     * created for yu
-     */
-    Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');//患者回收列表
-
-    Route::put('patient_recycling_bin/{id}', 'PatientRecyclingBinController@reduction');//修改
-
-    Route::delete('patient_recycling_bin/{id}', 'PatientRecyclingBinController@delete');//删除
-
-    Route::post('patient_recycling_bin', 'PatientRecyclingBinController@deleteAll');//批量删除
-
-    /*
-     * Route Disposal Api
-     * created for yu
-     */
-    Route::get('disposal','DisposalController@index');//处置列表
-
-    Route::post('disposal', 'DisposalController@addDisposal');//添加
-
-    Route::get('disposal/get_by_id','DisposalController@getById');//根据id获取
-
-    Route::put('disposal', 'DisposalController@update');//修改
-
-    Route::delete('disposal/{id}', 'DisposalController@delete');//删除
-
-    /*
-     * Route CostCategory Api
-     * created for yu
-     */
-    Route::get('cost_category','CostCategoryController@index');//费用类型列表
-
-    Route::post('cost_category', 'CostCategoryController@addCategory');//添加
-
-    Route::put('cost_category', 'CostCategoryController@update');//修改
-
-    Route::delete('cost_category/{id}', 'CostCategoryController@delete');//删除
-
-    /*
-     * Route DiisposalComboMenu Api
-     * created for yu
-     */
-    Route::get('disposal_combo_menu','DisposalComboMenuController@index');//处置组合菜单列表
-
-    Route::get('disposal_combo_menu/get_by_id','DisposalComboMenuController@getById');//处置组合id菜单列表
-
-    Route::post('disposal_combo_menu', 'DisposalComboMenuController@addCombo');//添加
-
-    Route::put('disposal_combo_menu', 'DisposalComboMenuController@update');//修改
-
-    Route::delete('disposal_combo_menu/{id}', 'DisposalComboMenuController@delete');//删除
-    
-    
-
-
-
 
     // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
     //lw
@@ -305,6 +234,51 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 });
 
 
+
+Route::group(['namespace'=>'Api'],function (){
+
+    Route::post('login','LoginController@login');
+
+    Route::post('registration','RegisterController@register');
+
+    Route::post('refreshment','LoginController@refreshToken');
+
+    Route::get('message','UserController@getMessage');
+
+    Route::get('password',function (){
+        return \Illuminate\Support\Facades\Hash::make(request('password'));
+    });
+
+    /*
+     * 获取地区省
+     */
+    Route::get('areas/province','AreaController@getProvince');
+
+    /*
+     * 获取地区城市或区
+     */
+    Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
+
+    // Route::get('publish', function () {
+    //     // Route logic...
+
+    //     Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+    // });
+   
+
+
+    Route::post('appointment/getWeekAppointment','AppointmentController@getWeekAppointment');
+
+    Route::post('appointment/getMonthAppointment','AppointmentController@getMonthAppointment');
+
+    Route::post('appointment/changeAppointmentStatus','AppointmentController@changeAppointmentStatus');
+
+});
+
+/*
+ * Route for yu api,middleware => ['auth:api','check']
+ *
+ */
 
 Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function(){
     /*
@@ -347,41 +321,79 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::put('member', 'MemberController@update');//修改
 
+    /*
+     * Route PatientRecyclingBin Api 
+     * created for yu
+     */
+    Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');//患者回收列表
 
+    Route::put('patient_recycling_bin/{id}', 'PatientRecyclingBinController@update');//修改
 
-});
+    Route::delete('patient_recycling_bin/{id}', 'PatientRecyclingBinController@delete');//删除
 
-
-Route::group(['namespace'=>'Api'],function (){
-
-    Route::post('login','LoginController@login');
-
-    Route::post('registration','RegisterController@register');
-
-    Route::post('refreshment','LoginController@refreshToken');
-
-    Route::get('message','UserController@getMessage');
-
-    Route::get('password',function (){
-        return \Illuminate\Support\Facades\Hash::make(request('password'));
-    });
+    Route::post('patient_recycling_bin', 'PatientRecyclingBinController@deleteAll');//批量删除
 
     /*
-     * 获取地区省
+     * Route Disposal Api
+     * created for yu
      */
-    Route::get('areas/province','AreaController@getProvince');
+    Route::get('disposal','DisposalController@index');//处置列表
+
+    Route::post('disposal', 'DisposalController@addData');//添加
+
+    Route::get('disposal/get_by_id','DisposalController@getById');//根据id获取
+
+    Route::put('disposal', 'DisposalController@update');//修改
+
+    Route::delete('disposal/{id}', 'DisposalController@delete');//删除
 
     /*
-     * 获取地区城市或区
+     * Route CostCategory Api
+     * created for yu
      */
-    Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
+    Route::get('cost_category','CostCategoryController@index');//费用类型列表
 
-    // Route::get('publish', function () {
-    //     // Route logic...
+    Route::post('cost_category', 'CostCategoryController@addData');//添加
 
-    //     Redis::publish('test-channel', json_encode(['foo' => 'bar']));
-    // });
-   
+    Route::put('cost_category', 'CostCategoryController@update');//修改
+
+    Route::delete('cost_category/{id}', 'CostCategoryController@delete');//删除
+
+    /*
+     * Route DiisposalComboMenu Api
+     * created for yu
+     */
+    Route::get('disposal_combo_menu','DisposalComboMenuController@index');//处置组合菜单列表
+
+    Route::get('disposal_combo_menu/get_by_id','DisposalComboMenuController@getById');//处置组合id菜单列表
+
+    Route::post('disposal_combo_menu', 'DisposalComboMenuController@addData');//添加
+
+    Route::put('disposal_combo_menu', 'DisposalComboMenuController@update');//修改
+
+    Route::delete('disposal_combo_menu/{id}', 'DisposalComboMenuController@delete');//删除
+
+    /*
+     * Route User APi
+     * created for yu
+     */
+    Route::get('staff/user_list','StaffController@userList');//员工列表
+
+    Route::get('staff/get_role','StaffController@getRole');//获取下拉职位
+
+    Route::post('staff/add', 'StaffController@addData');//添加用户
+
+    Route::delete('staff/{id}', 'StaffController@delete');//删除用户
+
+    Route::post('staff/update_password', 'StaffController@updatePassword');//修改密码
+
+    Route::put('staff', 'StaffController@update');//修改用户信息
+
+    Route::get('staff/get_by_id','StaffController@getById');//根据id获取
+
+
+
+
 
 });
 

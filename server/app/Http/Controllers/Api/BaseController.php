@@ -32,6 +32,12 @@ class BaseController extends Controller
         //替换字段
         protected $having = '';
         //having条件
+        protected $controller = '';
+        //控制器
+        protected $action = '';
+        //方法
+        protected $fail = false;
+        //执行是否的方法
 
         public function __construct(Request $request){
 
@@ -44,12 +50,11 @@ class BaseController extends Controller
             $this->pager = $input['pager'];
             $this->date = $input['date'];
 
-            if ($this->table == '') {
-                if(preg_match("/\w+Controller/",$action[0],$preg)){
-                    //匹配控制器
-                    request()->attributes->set('config_load','verify_fields.'.$preg[0].'.'.$action[1]);//设置验证参数
+            if(preg_match("/\w+Controller/",$action[0],$preg)){
+                //匹配控制器
+                request()->attributes->set('config_load','verify_fields.'.$preg[0].'.'.$action[1]);//设置验证参数
 
-                    $table = str_replace('Controller','s',$preg[0]);
+                $this->controller = $table = str_replace('Controller','s',$preg[0]);
 
                 if (preg_match_all("/\S[A-Z]/",$table,$preg)) {
                     //按照laravel的匹配方式处理模型
@@ -58,30 +63,41 @@ class BaseController extends Controller
                     }
                 }
 
-                    $table = strtolower($table);
+                $table = strtolower($table);
 
-                }
 
-                $this->table = $table;
+                $this->table = $this->table == ''?$table:$this->table;
+                $this->action = $action[1];
+
             }
             request()->attributes->set('table',$this->table);//表
-            
+
             $this->model = new BaseModel($this->table);
             //实例化
 
-            $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
-            $module = config('config.module'.$this->table);
-            //模块
-            if ($module && array_key_exists($action[1], $_log) ) {
-                //日志
-                $log = [ 'operation_type' => $_log[$action[1]],
-                         'operation_content' => Auth::user()['name'].$_log[$action[1]].'了一条'.$module.'数据',
-                         'module' => $module
-                       ];
+        }
 
-                OperationLog::insert($log);
+        public function __destruct(){
+            //销毁事件,自动写入日志
+            if (!$this->fail) {
+                //判断写入是否失败，成功则插入日志
+                //日志写入部分
+                $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
+                $module = config('config.module.'.$this->table);
+                //模块
+
+                if ($module && array_key_exists($this->action, $_log) ) {
+                    //日志
+                    $log = [ 'operation_type' => $_log[$this->action],
+                             'operation_content' => Auth::user()['name'].$_log[$this->action].'了一条'.$module.'数据',
+                             'module' => $module,
+                             'created_by' => Auth::user()['name'],
+                             'created_at' => date('Y-m-d H:i:s')
+                           ];
+
+                    OperationLog::insert($log);
+                }
             }
-
         }
 
         public function index(){
@@ -158,7 +174,8 @@ class BaseController extends Controller
 
         public function getById(){
             //get by id
-            $data = empty($this->join)?$this->model->getById(['id' => $this->parms['id']]):$this->getBySelect()['data'][0];
+            // $data = empty($this->join)?$this->model->getById(['id' => $this->parms['id']]):$this->getBySelect()['data'][0];
+            $data = $this->model->getById(['id' => $this->parms['id']]);
             return message('成功',$data,200);
         }
 
@@ -171,6 +188,7 @@ class BaseController extends Controller
                 return message('新增成功',$this->model->getById(['id' => $res]),200);
             }
             else{
+                $this->fail = true;
                 return message('新增失败',[],500);
             }
         }
@@ -195,6 +213,7 @@ class BaseController extends Controller
 
             }
             else{
+                $this->fail = true;
                 return message('修改失败',[],500);
             }
         }
@@ -207,6 +226,7 @@ class BaseController extends Controller
                 return message('删除成功',null, 200);
             }
             else{
+                $this->fail = true;
                 return message('删除失败',null, 500);
             }
         }

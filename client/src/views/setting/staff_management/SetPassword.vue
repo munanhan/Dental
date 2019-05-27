@@ -112,7 +112,7 @@ export default {
           that.ruleForm.id = that.id;
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              that.$api.user.changePassword(that.ruleForm)
+              that.$api.staff.changePassword(that.ruleForm)
                 .then(res => {
                   if(res.code == 200){
                     this.$message({

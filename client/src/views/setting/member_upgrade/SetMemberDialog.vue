@@ -29,8 +29,8 @@
               ></el-option>
           </el-select>
           </el-form-item>
-          <el-form-item label="会员卡号" prop="phone" readonly>
-            <el-input v-model="form.phone"></el-input>
+          <el-form-item label="会员卡号" prop="phone">
+            <el-input v-model="form.phone" disabled></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">确定</el-button>
@@ -90,12 +90,6 @@ export default {
                     message:'请选择会员等级.',
                     trigger: "blur"
                 }],
-              phone: 
-                  [{
-                      required: true,
-                      message:'请输入会员卡号.',
-                      trigger: "blur"
-                  }],
 
           },
           //         //要检查的字段
