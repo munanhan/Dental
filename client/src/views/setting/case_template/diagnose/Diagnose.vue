@@ -1,16 +1,16 @@
 <template>
-    <div class="medical-history">
+    <div class="diagnose">
         <div class="table-container">
 
             <div class="block-item">
                 <div class="block">
                     <el-table
-                        :data="partData"
+                        :data="diagnoseData"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="部位"
+                            label="诊断"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -21,7 +21,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
+                              <el-tooltip
                                     effect="dark"
                                     content="修改"
                                     placement="bottom"
@@ -31,7 +31,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('部位', scope.row)"
+                                        @click.stop="showEditDialog('诊断', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -44,7 +44,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="del('diagnoseData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -69,7 +69,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
+                              <el-tooltip
                                     effect="dark"
                                     content="修改"
                                     placement="bottom"
@@ -100,154 +100,51 @@
                     </el-table>
                 </div>
             </div>
-
-            <div class="block-item">
-                <div class="block">
-                    <el-table
-                        :data="timeData"
-                        :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-                    >
-                        <el-table-column
-                            prop="attend_type"
-                            label="时间"
-                            align="center"
-                            show-overflow-tooltip
-                        >
-                        </el-table-column>
-                        <el-table-column
-                            label="操作"
-                            align="center"
-                            width="100px"
-                        >
-                            <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('时间', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
-                                <el-tooltip
-                                    effect="dark"
-                                    content="删除"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="danger"
-                                        size="mini"
-                                        icon="el-icon-delete"
-                                        circle
-                                        @click.stop="del('timeData', scope.row, scope.$index)"
-                                    ></el-button>
-                                </el-tooltip>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-
-                <div class="block">
-                    <el-table
-                        :data="otherData"
-                        :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-                    >
-                        <el-table-column
-                            prop="attend_type"
-                            label="其他"
-                            align="center"
-                            show-overflow-tooltip
-                        >
-                        </el-table-column>
-                        <el-table-column
-                            label="操作"
-                            align="center"
-                            width="100px"
-                        >
-                            <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('其他', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
-                                <el-tooltip
-                                    effect="dark"
-                                    content="删除"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="danger"
-                                        size="mini"
-                                        icon="el-icon-delete"
-                                        circle
-                                        @click.stop="del('otherData', scope.row, scope.$index)"
-                                    ></el-button>
-                                </el-tooltip>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </div>
         </div>
 
         <div class="bottom-btn">
             <el-button
                 type="primary"
                 class="btn"
-                @click="addMedicalDialog = true"
+                @click="addDiagnoseDialog = true"
             >新增</el-button>
 
         </div>
 
-        <add-medical
-            :show.sync="addMedicalDialog"
-            @add-item="addMedicalItem"
-        ></add-medical>
+        <add-diagnose
+            :show.sync="addDiagnoseDialog"
+            @add-item="addDiagnoseItem"
+        ></add-diagnose>
 
-        <edit-medical
-            :show.sync="editMedicalDialog"
+        <edit-diagnose
+            :show.sync="editDiagnoseDialog"
             :edit-item="currentEditItem"
             :type="editType"
             @edit-item="editItem"
         >
-        </edit-medical>
+        </edit-diagnose>
 
     </div>
 </template>
 
 <script>
-import AddMedical from "./AddMedical";
-import EditMedical from "./EditMedical";
+import AddDiagnose from "./AddDiagnose";
+import EditDiagnose from "./EditDiagnose";
 
 export default {
-    name: "MedicalHistory",
-    components: { AddMedical, EditMedical },
+    name: "Diagnose",
+    components: { AddDiagnose, EditDiagnose },
     props: {},
     data() {
         return {
-            partData: [],
+            diagnoseData: [],
             propertiesData: [],
-            timeData: [],
-            otherData: [],
 
-            addMedicalDialog: false,
-            editMedicalDialog: false,
+            addDiagnoseDialog: false,
+            editDiagnoseDialog: false,
 
             currentEditItem: {},
-            editType: ''
-
+            editType: ""
         };
     },
     created() {},
@@ -255,7 +152,7 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        addMedicalItem() {
+        addDiagnoseItem() {
             let that = this;
         },
 
@@ -273,11 +170,11 @@ export default {
                     //根据定义getbyid的field来获取数据
                     [that.getByIDField]: row[that.getByIDField]
                 };
-                
-                that.editType = type;
-                that.selectItem = row;
 
-                that.editMedicalDialog = true;
+            that.editType = type;
+            that.selectItem = row;
+
+            that.editDiagnoseDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -294,21 +191,20 @@ export default {
             //     });
         },
 
-        editItem(data){
+        editItem(data) {
             let that = this;
 
             //设置数据, TODO
             that.selectItem.text = data.aaa;
 
             that.currentEditItem = null;
-            that.editType = '';
-
+            that.editType = "";
         }
     }
 };
 </script>
 <style lang="less" scoped>
-.medical-history {
+.diagnose {
     height: 100%;
     box-sizing: border-box;
     position: relative;

@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增病史"
+        title="新增检查"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-medical"
+        class="custom-dialog add-inspect"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -15,11 +15,11 @@
         >
 
             <el-form-item
-                label="病史名称"
-                prop="medical_name"
+                label="检查名称"
+                prop="inspect_name"
             >
                 <el-input
-                    v-model.trim="form.medical_name"
+                    v-model.trim="form.inspect_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -30,8 +30,8 @@
             >
                 <el-radio-group v-model="form.type">
                     <el-radio :label="0">部位</el-radio>
-                    <el-radio :label="1">性质</el-radio>
-                    <el-radio :label="2">时间</el-radio>
+                    <el-radio :label="1">症状</el-radio>
+                    <el-radio :label="2">诊法</el-radio>
                     <el-radio :label="3">其他</el-radio>
                 </el-radio-group>
             </el-form-item>
@@ -60,23 +60,24 @@
 import AddDialogForm from "../../../base/AddDialogForm";
 
 export default {
-    name: "AddMedical",
+    name: "AddInspect",
     mixins: [AddDialogForm],
 
     components: {},
     props: {},
     data() {
         return {
+            commitLoading: false,
 
             form: {
-                medical_name: "",
+                inspect_name: "",
                 type: 0
             },
             formRules: {
-                medical_name: [
+                inspect_name: [
                     {
                         required: true,
-                        message: "请输入病史名称",
+                        message: "请输入检查名称",
                         trigger: "blur"
                     }
                 ]
@@ -91,7 +92,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.add-medical {
+.add-inspect {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

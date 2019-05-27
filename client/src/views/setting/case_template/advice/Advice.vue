@@ -1,16 +1,16 @@
 <template>
-    <div class="medical-history">
-        <div class="table-container">
+    <div class="advice">
+       <div class="table-container">
 
             <div class="block-item">
                 <div class="block">
                     <el-table
-                        :data="partData"
+                        :data="preparationData"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="部位"
+                            label="备牙"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -21,19 +21,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('部位', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
+
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -44,7 +32,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="del('preparationData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -53,12 +41,12 @@
                 </div>
                 <div class="block">
                     <el-table
-                        :data="propertiesData"
+                        :data="investData"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="性质"
+                            label="充值"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -69,19 +57,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('性质', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
+
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -92,7 +68,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('propertiesData',  scope.row, scope.$index)"
+                                        @click.stop="del('investData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -104,12 +80,12 @@
             <div class="block-item">
                 <div class="block">
                     <el-table
-                        :data="timeData"
+                        :data="medicinalData"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="时间"
+                            label="药物"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -120,19 +96,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('时间', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
+
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -143,7 +107,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('timeData', scope.row, scope.$index)"
+                                        @click.stop="del('medicinalData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -169,19 +133,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                                <el-tooltip
-                                    effect="dark"
-                                    content="修改"
-                                    placement="bottom"
-                                >
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        icon="el-icon-edit"
-                                        circle
-                                        @click.stop="showEditDialog('其他', scope.row)"
-                                    ></el-button>
-                                </el-tooltip>
+
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -206,56 +158,40 @@
             <el-button
                 type="primary"
                 class="btn"
-                @click="addMedicalDialog = true"
+                @click="AddAdviceDialog = true"
             >新增</el-button>
-
         </div>
 
-        <add-medical
-            :show.sync="addMedicalDialog"
-            @add-item="addMedicalItem"
-        ></add-medical>
 
-        <edit-medical
-            :show.sync="editMedicalDialog"
-            :edit-item="currentEditItem"
-            :type="editType"
-            @edit-item="editItem"
-        >
-        </edit-medical>
-
+        <add-advice
+            :show.sync="AddAdviceDialog"
+            @add-item="addAdvice"
+        ></add-advice>
     </div>
 </template>
 
 <script>
-import AddMedical from "./AddMedical";
-import EditMedical from "./EditMedical";
-
+import AddAdvice from "./AddAdvice";
 export default {
-    name: "MedicalHistory",
-    components: { AddMedical, EditMedical },
-    props: {},
-    data() {
-        return {
-            partData: [],
-            propertiesData: [],
-            timeData: [],
+    name: 'Advice',
+    components:{AddAdvice},
+    props:{},
+    data(){
+      return {
+			preparationData: [],
+            investData: [],
+            medicinalData: [],
             otherData: [],
 
-            addMedicalDialog: false,
-            editMedicalDialog: false,
-
-            currentEditItem: {},
-            editType: ''
-
-        };
+            AddAdviceDialog: false
+      }
     },
-    created() {},
-    mounted() {},
-    watch: {},
-    computed: {},
-    methods: {
-        addMedicalItem() {
+    created(){},
+    mounted(){},
+    watch:{},
+    computed:{},
+    methods:{
+        addAdvice() {
             let that = this;
         },
 
@@ -265,50 +201,13 @@ export default {
 
             //删除
             that[type].splice(idx, 1);
-        },
-
-        showEditDialog(type, row) {
-            let that = this,
-                params = {
-                    //根据定义getbyid的field来获取数据
-                    [that.getByIDField]: row[that.getByIDField]
-                };
-                
-                that.editType = type;
-                that.selectItem = row;
-
-                that.editMedicalDialog = true;
-
-            // that.$api[that.apiType]
-            //     [that.getByIDMethod](params)
-            //     .then(res => {
-            //         if (res.code == 200) {
-            //             that.currentEditItem = res.data;
-            //             that.editDialog = true;
-            //         } else {
-            //             that.$message.error(res.msg || "获取数据失败，请重试.");
-            //         }
-            //     })
-            //     .catch(res => {
-            //         that.$message.error("获取数据失败，请重试.");
-            //     });
-        },
-
-        editItem(data){
-            let that = this;
-
-            //设置数据, TODO
-            that.selectItem.text = data.aaa;
-
-            that.currentEditItem = null;
-            that.editType = '';
-
         }
-    }
-};
+
+	},
+}
 </script>
 <style lang="less" scoped>
-.medical-history {
+.advice {
     height: 100%;
     box-sizing: border-box;
     position: relative;

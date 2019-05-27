@@ -82,8 +82,20 @@
                 ></medical-history>
                 <inspect
                     v-if="selectType == 2"
-                    :data="medicalData"
+                    :data="inspectData"
                 ></inspect>
+
+                <diagnose
+                    v-if="selectType == 3"
+                    :data="diagnoseData"
+                >
+                </diagnose>
+
+                <advice
+                    v-if="selectType == 4"
+                    :data="adviceData"
+                >
+                </advice>
             </div>
         </div>
 
@@ -105,7 +117,9 @@ import AddTreeNode from "./AddTreeNode";
 import EditTreeNode from "./EditTreeNode";
 import CaseTemplate from "./template/CaseTemplate";
 import MedicalHistory from "./mediacal_history/MedicalHistory";
-import Inspect from "./Inspect/Inspect";
+import Inspect from "./inspect/Inspect";
+import Diagnose from "./diagnose/Diagnose";
+import Advice from "./advice/Advice";
 
 export default {
     name: "CaseTemplateIndex",
@@ -114,7 +128,9 @@ export default {
         EditTreeNode,
         CaseTemplate, //病历模板
         MedicalHistory, //主诉、现病史、既往病史
-        Inspect //检查
+        Inspect, //检查
+        Diagnose, //诊断
+        Advice //治疗、治疗方案
     },
     props: {
         refresh: {
@@ -150,7 +166,10 @@ export default {
             rightContentHeight: "500px",
 
             caseData: {}, //模板
-            medicalData: {} //病历
+            medicalData: {}, //病历
+            inspectData: {}, //检查
+            diagnoseData: {}, //诊断
+            adviceData: {}, //治疗、治疗方案
         };
     },
     created() {},
