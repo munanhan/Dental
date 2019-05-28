@@ -13,9 +13,9 @@ class PatientAllergyController extends Controller
         return message('',PatientAllergy::all());
     }
 
-    public function show(PatientAllergy $allergy)
+    public function show(PatientAllergy $patientAllergy)
     {
-        return message('',$allergy);
+        return message('',$patientAllergy);
     }
 
     public function store(Request $request)
@@ -26,16 +26,16 @@ class PatientAllergyController extends Controller
         return message('',$allergy);
     }
 
-    public function update(Request $request ,PatientAllergy $allergy)
+    public function update(Request $request ,PatientAllergy $patientAllergy)
     {
-        $allergy->update($request->all());
+        $patientAllergy->update($request->all());
 
-        return message('',$allergy, 200);
+        return message('',$patientAllergy, 200);
     }
 
-    public function delete(PatientAllergy $allergy)
+    public function delete(PatientAllergy $patientAllergy)
     {
-        $allergy->delete();
+        $patientAllergy->delete();
 
         return message('',null, 200);
     }

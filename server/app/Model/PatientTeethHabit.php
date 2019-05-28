@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientTeethHabit extends Model
 {
-    //
+    protected $guarded=[
+        'id',
+    ];
 }

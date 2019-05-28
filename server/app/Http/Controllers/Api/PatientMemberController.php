@@ -11,4 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class PatientMemberController extends BaseController
 {
 
+    // public function deleteMember($id)
+    // {
+
+ 
+    //     $member=PatientMember::find($id);
+
+    //     $member->delete();
+
+    //     return message('',$member);
+    // }
 }
