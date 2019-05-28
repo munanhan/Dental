@@ -44,6 +44,17 @@ class PatientController extends Controller
         return message('',null, 200);
     }
 
+    public function intraday()
+    {
+        $patients=Patient::withCount('appointments')->get();
+
+        dd($patients);
+        foreach ($patients as $patient) {
+            echo $patient->appointments_count;
+        }
+    }
+
+
     protected  function getToday()
     {
         return now()->format('Ymd');
