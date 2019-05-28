@@ -3,9 +3,16 @@
         <div class="table-container">
 
             <div class="block-item">
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="partData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -51,9 +58,16 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="propertiesData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -102,9 +116,16 @@
             </div>
 
             <div class="block-item">
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="timeData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -151,9 +172,16 @@
                     </el-table>
                 </div>
 
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="otherData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -202,7 +230,10 @@
             </div>
         </div>
 
-        <div class="bottom-btn">
+        <div
+            class="bottom-btn"
+            ref="bottom"
+        >
             <el-button
                 type="primary"
                 class="btn"
@@ -234,7 +265,19 @@ import EditMedical from "./EditMedical";
 export default {
     name: "MedicalHistory",
     components: { AddMedical, EditMedical },
-    props: {},
+    props: {
+        show: {
+            required: true
+        },
+
+        height: {
+            required: true
+        },
+
+        width: {
+            required: true
+        }
+    },
     data() {
         return {
             partData: [],
@@ -246,15 +289,48 @@ export default {
             editMedicalDialog: false,
 
             currentEditItem: {},
-            editType: ''
+            editType: "",
 
+            blockHeight: 100,
+            blockWidth: 100
         };
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.resizeContent();
+
+                that.$emit("update:show", false);
+            }
+        },
+
+        height(newValue, oldValue) {
+            let that = this;
+
+            that.resizeContent();
+        },
+
+        width(newValue, oldValue) {
+            let that = this;
+
+            that.resizeContent();
+        }
+    },
     computed: {},
     methods: {
+        //计算表格的高度
+        resizeContent() {
+            let that = this;
+            that.blockHeight =
+                (that.height - that.$refs.bottom.clientHeight - 20) / 2;
+
+            that.blockWidth = (that.width - 20) / 2;
+        },
+
         addMedicalItem() {
             let that = this;
         },
@@ -273,11 +349,11 @@ export default {
                     //根据定义getbyid的field来获取数据
                     [that.getByIDField]: row[that.getByIDField]
                 };
-                
-                that.editType = type;
-                that.selectItem = row;
 
-                that.editMedicalDialog = true;
+            that.editType = type;
+            that.selectItem = row;
+
+            that.editMedicalDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -294,15 +370,14 @@ export default {
             //     });
         },
 
-        editItem(data){
+        editItem(data) {
             let that = this;
 
             //设置数据, TODO
             that.selectItem.text = data.aaa;
 
             that.currentEditItem = null;
-            that.editType = '';
-
+            that.editType = "";
         }
     }
 };
@@ -310,8 +385,10 @@ export default {
 <style lang="less" scoped>
 .medical-history {
     height: 100%;
+    width: 100%;
     box-sizing: border-box;
     position: relative;
+    overflow: hidden;
 
     .table-container {
         display: flex;
@@ -338,7 +415,7 @@ export default {
 
             .block {
                 flex: 1;
-                border: 1px solid #e3e3e3;
+                // border: 1px solid #e3e3e3;
 
                 &:nth-child(odd) {
                     margin-right: 5px;

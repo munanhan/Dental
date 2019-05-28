@@ -3,7 +3,7 @@
         :title="title"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog edit-inspect"
+        class="custom-dialog edit-advice"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -13,13 +13,12 @@
             label-width="100px"
             ref="form"
         >
-
             <el-form-item
                 :label="type"
-                prop="inspect_name"
+                prop="advice_name"
             >
                 <el-input
-                    v-model.trim="form.inspect_name"
+                    v-model.trim="form.advice_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -47,7 +46,7 @@
 import EditDialogForm from "../../../base/EditDialogForm";
 
 export default {
-    name: "EditInspect",
+    name: "EditAdvice",
     mixins: [EditDialogForm],
 
     components: {},
@@ -60,10 +59,10 @@ export default {
     data() {
         return {
             form: {
-                inspect_name: "",
+                advice_name: "",
             },
             formRules: {
-                inspect_name: [
+                advice_name: [
                     {
                         required: true,
                         message: "请输入" + this.type,
@@ -86,7 +85,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.edit-inspect {
+.edit-advice {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增医嘱性质"
+        title="新增治疗"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-advice"
+        class="custom-dialog add-treat"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -15,13 +15,25 @@
         >
 
             <el-form-item
-                label="医嘱性质"
-                prop="advice_name"
+                label="治疗名称"
+                prop="treat_name"
             >
                 <el-input
-                    v-model.trim="form.advice_name"
+                    v-model.trim="form.treat_name"
                     autocomplete="off"
                 ></el-input>
+            </el-form-item>
+
+            <el-form-item
+                label="类型"
+                prop="type"
+            >
+                <el-radio-group v-model="form.type">
+                    <el-radio :label="0">备牙</el-radio>
+                    <el-radio :label="1">充值</el-radio>
+                    <el-radio :label="2">药物</el-radio>
+                    <el-radio :label="3">其他</el-radio>
+                </el-radio-group>
             </el-form-item>
         </el-form>
 
@@ -48,7 +60,7 @@
 import AddDialogForm from "../../../base/AddDialogForm";
 
 export default {
-    name: "AddAdvice",
+    name: "AddTreat",
     mixins: [AddDialogForm],
 
     components: {},
@@ -56,13 +68,14 @@ export default {
     data() {
         return {
             form: {
-                advice_name: "",
+                treat_name: "",
+                type: 0
             },
             formRules: {
-                advice_name: [
+                treat_name: [
                     {
                         required: true,
-                        message: "请输入治疗性质",
+                        message: "请输入治疗名称",
                         trigger: "blur"
                     }
                 ]
@@ -77,7 +90,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.add-advice {
+.add-treat {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

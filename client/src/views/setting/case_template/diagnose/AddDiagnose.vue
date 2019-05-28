@@ -65,7 +65,6 @@ export default {
     props: {},
     data() {
         return {
-            commitLoading: false,
 
             form: {
                 diagnose_name: "",

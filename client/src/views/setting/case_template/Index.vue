@@ -69,31 +69,57 @@
             </div>
 
             <div :style="{
-                    height: rightContentHeight
-                }">
+                    height: `${rightContentHeight}px`
+                }"
+                class="content"
+                >
                 <case-template
-                    v-if="selectType == 0"
+                    v-show="selectType == 0"
                     :data="caseData"
+                    :show.sync="caseShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
                 ></case-template>
 
                 <medical-history
-                    v-if="selectType == 1"
+                    v-show="selectType == 1"
                     :data="medicalData"
+                    :show.sync="medicalShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
                 ></medical-history>
                 <inspect
-                    v-if="selectType == 2"
+                    v-show="selectType == 2"
                     :data="inspectData"
+                    :show.sync="inspectShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
                 ></inspect>
 
                 <diagnose
-                    v-if="selectType == 3"
+                    v-show="selectType == 3"
                     :data="diagnoseData"
+                    :show.sync="diagnoseShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
                 >
                 </diagnose>
 
+                <treat
+                    v-show="selectType == 4"
+                    :data="treatData"
+                    :show.sync="treatShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
+                >
+                </treat>
+
                 <advice
-                    v-if="selectType == 4"
+                    v-show="selectType == 5"
                     :data="adviceData"
+                    :show.sync="adviceShow"
+                    :height="rightContentHeight"
+                    :width="rightContentWidth"
                 >
                 </advice>
             </div>
@@ -119,6 +145,7 @@ import CaseTemplate from "./template/CaseTemplate";
 import MedicalHistory from "./mediacal_history/MedicalHistory";
 import Inspect from "./inspect/Inspect";
 import Diagnose from "./diagnose/Diagnose";
+import Treat from "./treat/Treat";
 import Advice from "./advice/Advice";
 
 export default {
@@ -130,7 +157,8 @@ export default {
         MedicalHistory, //主诉、现病史、既往病史
         Inspect, //检查
         Diagnose, //诊断
-        Advice //治疗、治疗方案
+        Treat, //治疗、治疗方案
+        Advice //医嘱
     },
     props: {
         refresh: {
@@ -163,13 +191,23 @@ export default {
 
             selectType: 0,
 
-            rightContentHeight: "500px",
+            rightContentHeight: 500,
+            rightContentWidth: 400,
 
             caseData: {}, //模板
             medicalData: {}, //病历
             inspectData: {}, //检查
             diagnoseData: {}, //诊断
-            adviceData: {}, //治疗、治疗方案
+            treatData: {}, //治疗、治疗方案
+            adviceData: {}, //医嘱咐
+
+            //用户处理每个模块里面表格的高度
+            caseShow: false,
+            medicalShow: false,
+            inspectShow: false,
+            diagnoseShow: false,
+            treatShow: false,
+            adviceShow: false
         };
     },
     created() {},
@@ -195,6 +233,31 @@ export default {
             if (newValue) {
                 that.resizeContent();
             }
+        },
+
+        selectType(newValue, oldValue) {
+            let that = this;
+
+            switch (newValue) {
+                case 0:
+                    that.caseShow = true;
+                    break;
+                case 1:
+                    that.medicalShow = true;
+                    break;
+                case 2:
+                    that.inspectShow = true;
+                    break;
+                case 3:
+                    that.diagnoseShow = true;
+                    break;
+                case 4:
+                    that.treatShow = true;
+                    break;
+                case 5:
+                    that.adviceShow = true;
+                    break;
+            }
         }
     },
     computed: {},
@@ -206,7 +269,8 @@ export default {
                     that.$refs.rightTitle.clientHeight -
                     20;
 
-            that.rightContentHeight = `${height}px`;
+            that.rightContentHeight = height;
+            that.rightContentWidth = that.$refs.right.clientWidth;
         },
 
         removeSelect() {
@@ -320,6 +384,11 @@ export default {
 
         .type-select-container {
             margin: 10px;
+        }
+
+        .content{
+            height: 100%;
+            overflow: hidden;
         }
     }
 }

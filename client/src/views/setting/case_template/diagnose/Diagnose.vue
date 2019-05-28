@@ -3,9 +3,16 @@
         <div class="table-container">
 
             <div class="block-item">
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="diagnoseData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -21,7 +28,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                              <el-tooltip
+                                <el-tooltip
                                     effect="dark"
                                     content="修改"
                                     placement="bottom"
@@ -51,9 +58,16 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="propertiesData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -69,7 +83,7 @@
                             width="100px"
                         >
                             <template slot-scope="scope">
-                              <el-tooltip
+                                <el-tooltip
                                     effect="dark"
                                     content="修改"
                                     placement="bottom"
@@ -102,7 +116,10 @@
             </div>
         </div>
 
-        <div class="bottom-btn">
+        <div
+            class="bottom-btn"
+            ref="bottom"
+        >
             <el-button
                 type="primary"
                 class="btn"
@@ -134,7 +151,19 @@ import EditDiagnose from "./EditDiagnose";
 export default {
     name: "Diagnose",
     components: { AddDiagnose, EditDiagnose },
-    props: {},
+    props: {
+        show: {
+            required: true
+        },
+
+        height: {
+            required: true
+        },
+
+        width: {
+            required: true
+        }
+    },
     data() {
         return {
             diagnoseData: [],
@@ -144,14 +173,49 @@ export default {
             editDiagnoseDialog: false,
 
             currentEditItem: {},
-            editType: ""
+            editType: "",
+
+            blockHeight: 100,
+            blockWidth: 100
         };
     },
     created() {},
-    mounted() {},
-    watch: {},
+    mounted() {
+        let that = this;
+
+        that.$nextTick(() => {
+            //监听事件,由layout那边的resize抛出的
+            window.addEventListener("bodyChange", that.resizeContent);
+        });
+    },
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.resizeContent();
+
+                that.$emit("update:show", false);
+            }
+        },
+
+        width(newValue, oldValue) {
+            let that = this;
+
+            that.resizeContent();
+        }
+    },
     computed: {},
     methods: {
+        //计算表格的高度
+        resizeContent() {
+            let that = this;
+            that.blockHeight =
+                that.height - that.$refs.bottom.clientHeight - 20;
+
+            that.blockWidth = (that.width - 20) / 2;
+        },
+
         addDiagnoseItem() {
             let that = this;
         },
@@ -234,7 +298,7 @@ export default {
 
             .block {
                 flex: 1;
-                border: 1px solid #e3e3e3;
+                // border: 1px solid #e3e3e3;
 
                 &:nth-child(odd) {
                     margin-right: 5px;

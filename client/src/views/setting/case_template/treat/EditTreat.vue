@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增医嘱性质"
+        :title="title"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-advice"
+        class="custom-dialog edit-treat"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -13,13 +13,12 @@
             label-width="100px"
             ref="form"
         >
-
             <el-form-item
-                label="医嘱性质"
-                prop="advice_name"
+                :label="type"
+                prop="treat_name"
             >
                 <el-input
-                    v-model.trim="form.advice_name"
+                    v-model.trim="form.treat_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -35,34 +34,38 @@
             >取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
                 :loading="commitLoading"
             >确 定</el-button>
-            <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
         </div>
 
     </el-dialog>
 </template>
 
 <script>
-import AddDialogForm from "../../../base/AddDialogForm";
+import EditDialogForm from "../../../base/EditDialogForm";
 
 export default {
-    name: "AddAdvice",
-    mixins: [AddDialogForm],
+    name: "EditTreat",
+    mixins: [EditDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        type: {
+            default: ''            
+        }
+
+    },
     data() {
         return {
             form: {
-                advice_name: "",
+                treat_name: "",
             },
             formRules: {
-                advice_name: [
+                treat_name: [
                     {
                         required: true,
-                        message: "请输入治疗性质",
+                        message: "请输入" + this.type,
                         trigger: "blur"
                     }
                 ]
@@ -72,12 +75,17 @@ export default {
     created() {},
     mounted() {},
     watch: {},
-    computed: {},
+    computed: {
+        title(){
+            return '修改' + this.type
+        }
+
+    },
     methods: {}
 };
 </script>
 <style lang="less" scoped>
-.add-advice {
+.edit-treat {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

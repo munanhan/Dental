@@ -67,7 +67,6 @@ export default {
     props: {},
     data() {
         return {
-            commitLoading: false,
 
             form: {
                 inspect_name: "",

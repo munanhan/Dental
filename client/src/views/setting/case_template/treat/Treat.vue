@@ -1,5 +1,5 @@
 <template>
-    <div class="inspect">
+    <div class="treat">
         <div class="table-container">
 
             <div class="block-item">
@@ -10,14 +10,14 @@
                     }"
                 >
                     <el-table
-                        :data="partData"
-                        border
+                        :data="preparationData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="部位"
+                            label="备牙"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -38,7 +38,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('部位', scope.row)"
+                                        @click.stop="showEditDialog('备牙', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="del('preparationData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -65,14 +65,14 @@
                     }"
                 >
                     <el-table
-                        :data="symptomData"
-                        border
+                        :data="investData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="症状"
+                            label="充值"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -93,7 +93,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('症状', scope.row)"
+                                        @click.stop="showEditDialog('充值', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -106,7 +106,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('symptomData',  scope.row, scope.$index)"
+                                        @click.stop="del('investData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -123,14 +123,14 @@
                     }"
                 >
                     <el-table
-                        :data="diagnosticData"
-                        border
+                        :data="medicinalData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="诊法"
+                            label="药物"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -151,7 +151,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('诊法', scope.row)"
+                                        @click.stop="showEditDialog('药物', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -164,7 +164,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('diagnosticData', scope.row, scope.$index)"
+                                        @click.stop="del('medicinalData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -179,9 +179,9 @@
                     }"
                 >
                     <el-table
-                        :data="levelData"
-                        border
+                        :data="otherData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -212,7 +212,7 @@
                                 </el-tooltip>
                                 <el-tooltip
                                     effect="dark"
-                                    content="操作"
+                                    content="删除"
                                     placement="bottom"
                                 >
                                     <el-button
@@ -220,7 +220,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('levelData', scope.row, scope.$index)"
+                                        @click.stop="del('otherData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -237,32 +237,32 @@
             <el-button
                 type="primary"
                 class="btn"
-                @click="AddInspectDialog = true"
+                @click="AddTreatDialog = true"
             >新增</el-button>
-
         </div>
-        <add-inspect
-            :show.sync="AddInspectDialog"
-            @add-item="addInspect"
-        ></add-inspect>
 
-        <edit-inspect
-            :show.sync="editInspectDialog"
+        <add-treat
+            :show.sync="AddTreatDialog"
+            @add-item="addTreat"
+        ></add-treat>
+
+        <edit-treat
+            :show.sync="editTreatDialog"
             :edit-item="currentEditItem"
             :type="editType"
             @edit-item="editItem"
         >
-        </edit-inspect>
+        </edit-treat>
     </div>
 </template>
 
 <script>
-import AddInspect from "./AddInspect";
-import EditInspect from "./EditInspect";
+import AddTreat from "./AddTreat";
+import EditTreat from "./EditTreat";
 
 export default {
-    name: "Inspect",
-    components: { AddInspect, EditInspect },
+    name: "Treat",
+    components: { AddTreat, EditTreat },
     props: {
         show: {
             required: true
@@ -278,13 +278,13 @@ export default {
     },
     data() {
         return {
-            partData: [],
-            symptomData: [],
-            diagnosticData: [],
-            levelData: [],
+            preparationData: [],
+            investData: [],
+            medicinalData: [],
+            otherData: [],
 
-            AddInspectDialog: false,
-            editInspectDialog: false,
+            AddTreatDialog: false,
+            editTreatDialog: false,
 
             currentEditItem: {},
             editType: "",
@@ -294,7 +294,14 @@ export default {
         };
     },
     created() {},
-    mounted() {},
+    mounted() {
+        let that = this;
+
+        that.$nextTick(() => {
+            //监听事件,由layout那边的resize抛出的
+            window.addEventListener("bodyChange", that.resizeContent);
+        });
+    },
     watch: {
         show(newValue, oldValue) {
             let that = this;
@@ -329,7 +336,7 @@ export default {
             that.blockWidth = (that.width - 20) / 2;
         },
 
-        addInspect() {
+        addTreat() {
             let that = this;
         },
 
@@ -351,7 +358,7 @@ export default {
             that.editType = type;
             that.selectItem = row;
 
-            that.editInspectDialog = true;
+            that.editTreatDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -381,7 +388,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.inspect {
+.treat {
     height: 100%;
     box-sizing: border-box;
     position: relative;
