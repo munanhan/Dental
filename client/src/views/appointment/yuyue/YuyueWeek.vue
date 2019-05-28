@@ -38,6 +38,7 @@
             :class="[targetArr[1].indexOf(`${item} : 00`) != -1 && 
             targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == i[Object.keys(i)[0]]
             ?'week-blue':'']"
+            @click="addYuyue"
           ></div>
           <div
             v-for="(i,n) in weekArr"
@@ -47,6 +48,7 @@
             :class="[targetArr[1].indexOf(`${item} : 30`) != -1 && 
             targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == i[Object.keys(i)[0]]
             ?'week-blue':'']"
+            @click="addYuyue"
           ></div>
         </template>
       </div>
@@ -60,11 +62,34 @@
         </div>
       </div>
     </el-row>
+    <!-- 错误提示 -->
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+      <span>预约日期不能小于今天</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 错误提示 -->
+    <status-dialog :show.sync="statusDialog" :yuyue_id="data_id"></status-dialog>`
+    <!-- 新增预约 start -->
+    <add-yuyue
+      :show.sync="addYuyueShow"
+      :dayTime="dayTime"
+      :weekStart="weekStart"
+      :weekEnd="weekEnd"
+      :yuyue_time.sync="data_y"
+      :yuyue_date.sync="data_x"
+      :yuyue_id="data_id"
+    ></add-yuyue>
+    <!-- 新增预约  end-->
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import StatusDialog from "./StatusDialog.vue";
+import AddYuyue from "./AddYuyue.vue";
 import { formatDate, addClass, inArray } from "@/common/util.js";
 export default {
   name: "",
@@ -85,6 +110,10 @@ export default {
           });
       }, 1000);
     });
+  },
+  components: {
+    StatusDialog,
+    AddYuyue
   },
   data() {
     return {
@@ -158,7 +187,15 @@ export default {
           phone: "13538048392",
           content: "gh"
         }
-      ]
+      ],
+      target: null,
+      status: null,
+      data_id: null,
+      data_x: null,
+      data_y: null,
+      statusDialog: false,
+      dialogVisible: false,
+      addYuyueShow: false
     };
   },
   computed: {
@@ -181,6 +218,56 @@ export default {
   methods: {
     inArray(arr, str) {
       return inArray(arr, str);
+    },
+    addYuyue() {
+      this.isAttrDataTime(event.target);
+      if (this.data_x) {
+        let date = formatDate(new Date(), "MM.dd");
+        if (this.data_x < date) {
+          this.dialogVisible = true;
+        } else {
+           this.addYuyueShow = true;
+        }
+      }
+      //修改状态
+      if (this.status && this.data_id) {
+        this.statusDialog = true;
+      }
+      //修改预约数据
+      if (!this.status && this.data_id) {
+        this.addYuyueShow = true;
+      }
+    },
+    isAttrDataTime(dom) {
+      if (dom.hasAttribute("class") && dom.getAttribute("class") == "left") {
+        this.target = dom;
+        this.status = true;
+        this.data_x = null;
+        this.data_y = null;
+        this.data_id = dom.getAttribute("id");
+        return;
+      }
+      if (dom.hasAttribute("data-id")) {
+        this.data_x = null;
+        this.data_y = null;
+        this.status = false;
+        this.data_id = dom.getAttribute("data-id");
+        this.data_y = dom.getAttribute("data-h");
+        this.target = dom;
+        return;
+      }
+      if (dom.hasAttribute("data-y")) {
+        this.data_id = null;
+        this.status = false;
+        this.target = dom;
+        let year = new Date().getFullYear() + "-";
+        this.data_x =year + dom.getAttribute("data-x").replace('.','-');
+        this.data_y = dom.getAttribute("data-y");
+        return;
+      }
+
+      dom = dom.parentNode;
+      this.isAttrDataTime(dom);
     }
   },
   mounted() {},
@@ -198,11 +285,11 @@ export default {
           strhtml += `<div data-id="${item.id}" data-h="${item.start_time}">
             <div class="inner">`;
           strhtml += this.statusIcon(item.status, item.id);
-          strhtml += `<div class="right"><p><span>${item.name}</span><span>${
+          strhtml += `<div class="right"><p><span>${item.patient_name}</span><span>${
             item.type == 1 ? "复" : "初"
           }
-          </span><span>${item.age}</span></p>
-                                <p><span>${item.phone}</span></p>
+          </span><span>${item.patient_age}</span></p>
+                                <p><span>${item.patient_phone}</span></p>
                                 <p><span>${item.items}</span></p>
                               </div></div>`;
         }
@@ -219,7 +306,7 @@ export default {
   width: 100%;
   position: relative;
 }
-.bg0#6bb15e{
+.bg0#6bb15e {
   background-color: #6bb15e;
 }
 .yuyue-week {
@@ -335,7 +422,7 @@ export default {
             }
             p {
               margin: 0;
-               color: #000 !important;
+              color: #000 !important;
             }
             p:first-of-type {
               span {

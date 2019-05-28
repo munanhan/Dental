@@ -29,7 +29,7 @@
         </div>
         <div class="item" ref="item4" @click="changeStatus(4)">
           <div>
-            <i class="el-icon-delete" ></i>
+            <i class="el-icon-delete"></i>
           </div>
           <div>删除</div>
         </div>
@@ -49,7 +49,7 @@ export default {
   name: "StatusDialog",
   mixins: [DialogForm],
   props: ["yuyue_id"],
-  inject: ['getTodayAppointment'],
+  inject: ["getTodayAppointment"],
   created() {},
   computed: {},
   data() {
@@ -67,8 +67,8 @@ export default {
           .then(res => {
             if (res.code == 200) {
               this.status = res.data.status;
+              console.log(this.status);
               this.name = "更换预约状态: " + res.data.name;
-              
             }
           });
       }
@@ -76,39 +76,52 @@ export default {
   },
   methods: {
     submitFrom() {
-      let data ={ id: this.yuyue_id,status:this.status }
-      this.$api.appointment.changeAppointmentStatus(data).then(res=>{
-        if(res.code == 200){
+      let data = { id: this.yuyue_id, status: this.status };
+      this.$api.appointment.changeAppointmentStatus(data).then(res => {
+        if (res.code == 200) {
           this.getTodayAppointment();
+          this.$api.appointment
+            .getWeekAppointment({
+              weekStart: this.$parent.weekStart,
+              weekEnd: this.$parent.weekEnd
+            })
+            .then(res => {
+              if (res.code == 200) {
+                this.$parent.yuyue_week_res = res.data;
+              }
+            });
           this.closeDialog();
         }
-      })
+      });
     },
-    changeStatus(sv){
-      sv = sv.toString(); 
-      let items = document.getElementsByClassName('item');
+    changeStatus(sv) {
+      sv = sv.toString();
+      if (this.status == 3 && sv == 1) {
+        return;
+      }
+      let items = document.getElementsByClassName("item");
       items = Array.from(items);
       items.forEach(ele => {
-        ele.style.backgroundColor = '';
+        ele.style.backgroundColor = "";
       });
-      this.$refs['item'+sv].style.backgroundColor = this.changeBg(sv);
+      this.$refs["item" + sv].style.backgroundColor = this.changeBg(sv);
+
       this.status = sv;
-      
     },
-    changeBg(sv){
+    changeBg(sv) {
       var bgv;
-      switch(sv){
-        case '1':
-          bgv='rgb(160, 101, 238)';
+      switch (sv) {
+        case "1":
+          bgv = "rgb(160, 101, 238)";
           break;
-        case '2':
-          bgv='rgb(50, 17, 233)';
+        case "2":
+          bgv = "rgb(50, 17, 233)";
           break;
-        case '3':
-          bgv='#f40';
+        case "3":
+          bgv = "#f40";
           break;
-        case '4':
-          bgv='rgb(226, 45, 14)';
+        case "4":
+          bgv = "rgb(226, 45, 14)";
           break;
       }
       return bgv;

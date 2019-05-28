@@ -19,9 +19,10 @@ class AppointmentController extends Controller
     //添加预约和修改预约
     public function addAppointment(Request $request){
         $data=$request->all();
-        $patientArray = ['name'=>'','age'=>'','sex'=>'','phone'=>'','case_id'=>'','content'=>''];
+        $patientArray = ['patient_name'=>'','patient_age'=>'','patient_sex'=>'','patient_phone'=>'','case_id'=>'','patient_content'=>'','patient_source'=>''];
         $patientData = array_intersect_key($data,$patientArray);
         $data = array_diff_key($data,$patientArray);
+        $patientData['patient_type'] = '1';
         // $data['id'] 存在即修改
         if(isset($data['id'])){
             $id = $data['id'];
@@ -38,7 +39,7 @@ class AppointmentController extends Controller
         $data['patient_id'] = $patient->id;
         $data['over_time'] = str_replace(substr($data['start_time'],0,2),
             (substr($data['start_time'],0,2)+1),$data['start_time']);
-        $this->createAppointment($patient,$data);
+       Appointment::create($data);
 
        return message('预约成功','',200);
     }
@@ -48,7 +49,7 @@ class AppointmentController extends Controller
         $where =  \request('date')?request('date'):date('Y-m-d');
        $appoinment =new Appointment();
        $res =$appoinment->where('appointment_date',$where)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-       get(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
+       get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
 
@@ -64,7 +65,7 @@ class AppointmentController extends Controller
         $weekEnd = preg_replace('/-(\d)-/','-0$1-',$weekEnd);
         $appoinment =new Appointment();
         $res =$appoinment->where('appointment_date','>=',$weekStart)->where('appointment_date','<=',$weekEnd)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-        get(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
     }
@@ -79,7 +80,7 @@ class AppointmentController extends Controller
         Appointment::where('status','0')->where('appointment_date','<',$now[0])->update(['status'=>3]);
         Appointment::where('status','0')->where('appointment_date','=',$now[0])->where('over_time','<=',$now[1])->update(['status'=>3]);
         $res =$appoinment->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-        get(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
     }
@@ -87,7 +88,7 @@ class AppointmentController extends Controller
 //        $res =Appointment::find(\request('id'));
         $appoinment =new Appointment();
         $res =$appoinment->where('appointments.id',\request('id'))->leftJoin('patients','appointments.patient_id','=','patients.id')->
-        first(['appointments.*','patients.name','patients.age','patients.case_id','patients.sex','patients.phone','patients.content']);
+        first(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
     }
@@ -100,10 +101,7 @@ class AppointmentController extends Controller
 //       $this->createAppointment($patient,$data);
 
     }
-     public function createAppointment(Patient $patient,array $data)
-     {
-         return $patient->appointment()->create($data);
-     }
+
 
      public function createPatient(array $data)
      {

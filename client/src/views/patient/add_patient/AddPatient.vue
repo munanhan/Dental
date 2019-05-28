@@ -83,11 +83,14 @@
                         label="出生年月"
                         prop="birthday"
                         style="width:300px"
+                        @input="birthday"
+                        
                     >
                         <el-date-picker
                             v-model="form.birthday"
                             type="date"
                             placeholder="选择日期"
+                           
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -482,6 +485,10 @@ export default {
     },
 
     methods: {
+        birthday(){
+            // console.log(this.form.birthday)
+            console.log(111)
+        },
         submitFrom() {
             let that = this;
             // that.getCaseNo();
