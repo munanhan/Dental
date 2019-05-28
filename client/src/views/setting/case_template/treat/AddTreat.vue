@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增病史"
+        title="新增治疗"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-medical"
+        class="custom-dialog add-treat"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -15,11 +15,11 @@
         >
 
             <el-form-item
-                label="病史名称"
-                prop="medical_name"
+                label="治疗名称"
+                prop="treat_name"
             >
                 <el-input
-                    v-model.trim="form.medical_name"
+                    v-model.trim="form.treat_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -29,9 +29,9 @@
                 prop="type"
             >
                 <el-radio-group v-model="form.type">
-                    <el-radio :label="0">部位</el-radio>
-                    <el-radio :label="1">性质</el-radio>
-                    <el-radio :label="2">时间</el-radio>
+                    <el-radio :label="0">备牙</el-radio>
+                    <el-radio :label="1">充值</el-radio>
+                    <el-radio :label="2">药物</el-radio>
                     <el-radio :label="3">其他</el-radio>
                 </el-radio-group>
             </el-form-item>
@@ -60,23 +60,22 @@
 import AddDialogForm from "../../../base/AddDialogForm";
 
 export default {
-    name: "AddMedical",
+    name: "AddTreat",
     mixins: [AddDialogForm],
 
     components: {},
     props: {},
     data() {
         return {
-
             form: {
-                medical_name: "",
+                treat_name: "",
                 type: 0
             },
             formRules: {
-                medical_name: [
+                treat_name: [
                     {
                         required: true,
-                        message: "请输入病史名称",
+                        message: "请输入治疗名称",
                         trigger: "blur"
                     }
                 ]
@@ -91,7 +90,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.add-medical {
+.add-treat {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

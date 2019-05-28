@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增病史"
+        :title="title"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-medical"
+        class="custom-dialog edit-treat"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -13,27 +13,14 @@
             label-width="100px"
             ref="form"
         >
-
             <el-form-item
-                label="病史名称"
-                prop="medical_name"
+                :label="type"
+                prop="treat_name"
             >
                 <el-input
-                    v-model.trim="form.medical_name"
+                    v-model.trim="form.treat_name"
                     autocomplete="off"
                 ></el-input>
-            </el-form-item>
-
-            <el-form-item
-                label="类型"
-                prop="type"
-            >
-                <el-radio-group v-model="form.type">
-                    <el-radio :label="0">部位</el-radio>
-                    <el-radio :label="1">性质</el-radio>
-                    <el-radio :label="2">时间</el-radio>
-                    <el-radio :label="3">其他</el-radio>
-                </el-radio-group>
             </el-form-item>
         </el-form>
 
@@ -47,36 +34,38 @@
             >取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
                 :loading="commitLoading"
             >确 定</el-button>
-            <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
         </div>
 
     </el-dialog>
 </template>
 
 <script>
-import AddDialogForm from "../../../base/AddDialogForm";
+import EditDialogForm from "../../../base/EditDialogForm";
 
 export default {
-    name: "AddMedical",
-    mixins: [AddDialogForm],
+    name: "EditTreat",
+    mixins: [EditDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        type: {
+            default: ''            
+        }
+
+    },
     data() {
         return {
-
             form: {
-                medical_name: "",
-                type: 0
+                treat_name: "",
             },
             formRules: {
-                medical_name: [
+                treat_name: [
                     {
                         required: true,
-                        message: "请输入病史名称",
+                        message: "请输入" + this.type,
                         trigger: "blur"
                     }
                 ]
@@ -86,12 +75,17 @@ export default {
     created() {},
     mounted() {},
     watch: {},
-    computed: {},
+    computed: {
+        title(){
+            return '修改' + this.type
+        }
+
+    },
     methods: {}
 };
 </script>
 <style lang="less" scoped>
-.add-medical {
+.edit-treat {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

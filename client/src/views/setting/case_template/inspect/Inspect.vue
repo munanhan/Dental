@@ -1,11 +1,18 @@
 <template>
     <div class="inspect">
-       <div class="table-container">
+        <div class="table-container">
 
             <div class="block-item">
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="partData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -16,12 +23,24 @@
                         >
                         </el-table-column>
                         <el-table-column
-                            label="删除"
+                            label="操作"
                             align="center"
                             width="100px"
                         >
                             <template slot-scope="scope">
-
+                                <el-tooltip
+                                    effect="dark"
+                                    content="修改"
+                                    placement="bottom"
+                                >
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        icon="el-icon-edit"
+                                        circle
+                                        @click.stop="showEditDialog('部位', scope.row)"
+                                    ></el-button>
+                                </el-tooltip>
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -39,9 +58,16 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="symptomData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -52,12 +78,24 @@
                         >
                         </el-table-column>
                         <el-table-column
-                            label="删除"
+                            label="操作"
                             align="center"
                             width="100px"
                         >
                             <template slot-scope="scope">
-
+                                <el-tooltip
+                                    effect="dark"
+                                    content="修改"
+                                    placement="bottom"
+                                >
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        icon="el-icon-edit"
+                                        circle
+                                        @click.stop="showEditDialog('症状', scope.row)"
+                                    ></el-button>
+                                </el-tooltip>
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -78,9 +116,16 @@
             </div>
 
             <div class="block-item">
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="diagnosticData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -91,12 +136,24 @@
                         >
                         </el-table-column>
                         <el-table-column
-                            label="删除"
+                            label="操作"
                             align="center"
                             width="100px"
                         >
                             <template slot-scope="scope">
-
+                                <el-tooltip
+                                    effect="dark"
+                                    content="修改"
+                                    placement="bottom"
+                                >
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        icon="el-icon-edit"
+                                        circle
+                                        @click.stop="showEditDialog('诊法', scope.row)"
+                                    ></el-button>
+                                </el-tooltip>
                                 <el-tooltip
                                     effect="dark"
                                     content="删除"
@@ -115,9 +172,16 @@
                     </el-table>
                 </div>
 
-                <div class="block">
+                <div
+                    class="block"
+                    :style="{
+                        width: `${blockWidth}px`
+                    }"
+                >
                     <el-table
                         :data="levelData"
+                        border
+                        :height="blockHeight"
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -128,15 +192,27 @@
                         >
                         </el-table-column>
                         <el-table-column
-                            label="删除"
+                            label="操作"
                             align="center"
                             width="100px"
                         >
                             <template slot-scope="scope">
-
                                 <el-tooltip
                                     effect="dark"
-                                    content="删除"
+                                    content="修改"
+                                    placement="bottom"
+                                >
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        icon="el-icon-edit"
+                                        circle
+                                        @click.stop="showEditDialog('其他', scope.row)"
+                                    ></el-button>
+                                </el-tooltip>
+                                <el-tooltip
+                                    effect="dark"
+                                    content="操作"
                                     placement="bottom"
                                 >
                                     <el-button
@@ -154,7 +230,10 @@
             </div>
         </div>
 
-        <div class="bottom-btn">
+        <div
+            class="bottom-btn"
+            ref="bottom"
+        >
             <el-button
                 type="primary"
                 class="btn"
@@ -162,31 +241,94 @@
             >新增</el-button>
 
         </div>
+        <add-inspect
+            :show.sync="AddInspectDialog"
+            @add-item="addInspect"
+        ></add-inspect>
 
+        <edit-inspect
+            :show.sync="editInspectDialog"
+            :edit-item="currentEditItem"
+            :type="editType"
+            @edit-item="editItem"
+        >
+        </edit-inspect>
     </div>
 </template>
 
 <script>
 import AddInspect from "./AddInspect";
+import EditInspect from "./EditInspect";
+
 export default {
-    name: 'Inspect',
-    components:{},
-    props:{},
-    data(){
-      return {
-			partData: [],
-            propertiesData: [],
+    name: "Inspect",
+    components: { AddInspect, EditInspect },
+    props: {
+        show: {
+            required: true
+        },
+
+        height: {
+            required: true
+        },
+
+        width: {
+            required: true
+        }
+    },
+    data() {
+        return {
+            partData: [],
+            symptomData: [],
             diagnosticData: [],
             levelData: [],
 
-            AddInspectDialog: false
-      }
+            AddInspectDialog: false,
+            editInspectDialog: false,
+
+            currentEditItem: {},
+            editType: "",
+
+            blockHeight: 100,
+            blockWidth: 100
+        };
     },
-    created(){},
-    mounted(){},
-    watch:{},
-    computed:{},
-    methods:{
+    created() {},
+    mounted() {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.resizeContent();
+
+                that.$emit("update:show", false);
+            }
+        },
+
+        height(newValue, oldValue) {
+            let that = this;
+
+            that.resizeContent();
+        },
+
+        width(newValue, oldValue) {
+            let that = this;
+
+            that.resizeContent();
+        }
+    },
+    computed: {},
+    methods: {
+        //计算表格的高度
+        resizeContent() {
+            let that = this;
+            that.blockHeight =
+                (that.height - that.$refs.bottom.clientHeight - 20) / 2;
+
+            that.blockWidth = (that.width - 20) / 2;
+        },
+
         addInspect() {
             let that = this;
         },
@@ -197,10 +339,46 @@ export default {
 
             //删除
             that[type].splice(idx, 1);
-        }
+        },
 
-	},
-}
+        showEditDialog(type, row) {
+            let that = this,
+                params = {
+                    //根据定义getbyid的field来获取数据
+                    [that.getByIDField]: row[that.getByIDField]
+                };
+
+            that.editType = type;
+            that.selectItem = row;
+
+            that.editInspectDialog = true;
+
+            // that.$api[that.apiType]
+            //     [that.getByIDMethod](params)
+            //     .then(res => {
+            //         if (res.code == 200) {
+            //             that.currentEditItem = res.data;
+            //             that.editDialog = true;
+            //         } else {
+            //             that.$message.error(res.msg || "获取数据失败，请重试.");
+            //         }
+            //     })
+            //     .catch(res => {
+            //         that.$message.error("获取数据失败，请重试.");
+            //     });
+        },
+
+        editItem(data) {
+            let that = this;
+
+            //设置数据, TODO
+            that.selectItem.text = data.aaa;
+
+            that.currentEditItem = null;
+            that.editType = "";
+        }
+    }
+};
 </script>
 <style lang="less" scoped>
 .inspect {
@@ -233,7 +411,7 @@ export default {
 
             .block {
                 flex: 1;
-                border: 1px solid #e3e3e3;
+                // border: 1px solid #e3e3e3;
 
                 &:nth-child(odd) {
                     margin-right: 5px;

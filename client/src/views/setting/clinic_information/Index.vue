@@ -6,7 +6,7 @@
                 <span>连锁机构</span>
             </div>
             <div class="org-content clearfix">
-                机构名称： <span class="tip">诊所1</span>
+                机构名称： <span class="tip">{{tableData.company_name}}</span>
 
                 <div class="pull-right">
                     <el-button type="primary" @click.stop="chainStoreDialog = true">连锁店管理</el-button>
@@ -21,31 +21,31 @@
             </div>
 
             <div class="hsp-content clearfix">
-                <span class="hsp-msg">剩余短信数： <span class="tip">500</span> </span>
+                <!-- <span class="hsp-msg">剩余短信数： <span class="tip">500</span> </span> -->
                 <div class="info">
                     <div class="info-item">
                         <div class="info-left clinic">诊所名称*：</div>
-                        <div class="info-right">测试</div>
+                        <div class="info-right">{{tableData.clinic_name}}</div>
                     </div>
-                    <div class="info-item">
+<!--                     <div class="info-item">
                         <div class="info-left">QQ号：</div>
                         <div class="info-right">123456789</div>
-                    </div>
+                    </div> -->
                     <div class="info-item">
                         <div class="info-left">联系人：</div>
-                        <div class="info-right">root</div>
+                        <div class="info-right">{{tableData.contact}}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-left">联系电话：</div>
-                        <div class="info-right">13456789</div>
+                        <div class="info-right">{{tableData.phone}}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-left">邮箱：</div>
-                        <div class="info-right">13131313</div>
+                        <div class="info-right">{{tableData.email}}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-left">地址：</div>
-                        <div class="info-right">4556024</div>
+                        <div class="info-right">{{tableData.address}}</div>
                     </div>
                 </div>
             </div>
@@ -68,32 +68,47 @@ export default {
     },
     data() {
         return {
-			chainStoreDialog: false
+			chainStoreDialog: false,
+            tableData:{
+                company_name:'',
+                clinic_name:'',
+                contact:'',
+                phone:undefined,
+                email:'',
+                address:''
+            }
 		};
     },
     created() {},
-    mounted() {},
+    mounted() {
+        let that = this;
+        that.getData();
+    },
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
 
             if (newValue) {
-                that.getPatientInfo();
+                that.getData();
             }
         }
     },
     computed: {},
     methods: {
-        getPatientInfo() {
-            let that = this;
 
-            that.$api.aaaa.aaaa
-                .then(res => {
-                    that.getDataDone();
-                })
-                .catch(res => {
-                    that.getDataDone();
-                });
+
+        /***处理数据***/
+
+        getData(){
+            //获取数据
+            let that = this;
+            that.$api.clinic.getClinic()
+            .then(res => {
+               that.tableData = res.data;
+            })
+            .catch(res => {
+
+            });
         },
 
         getDataDone() {

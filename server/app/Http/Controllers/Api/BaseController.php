@@ -62,9 +62,9 @@ class BaseController extends Controller
                        $table = str_replace($v,$v[0].'_'.$v[1],$table);
                     }
                 }
-
-                $table = strtolower($table);
-
+                
+                $table = strtolower(preg_replace("/y$/",'ies',$table));
+                //y变成ies
 
                 $this->table = $this->table == ''?$table:$this->table;
                 $this->action = $action[1];
@@ -254,5 +254,10 @@ class BaseController extends Controller
             }
 
             return getData($sql,['id' => $this->parms['id']]);
+        }
+
+        public function upload(){
+            //上传
+            return $this->parms;
         }
 }

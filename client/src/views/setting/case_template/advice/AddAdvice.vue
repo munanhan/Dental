@@ -1,9 +1,9 @@
 <template>
     <el-dialog
-        title="新增检查"
+        title="新增医嘱性质"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog add-inspect"
+        class="custom-dialog add-advice"
         :close-on-click-modal="false"
         v-dialog-drag
     >
@@ -15,25 +15,13 @@
         >
 
             <el-form-item
-                label="病史名称"
-                prop="inspect_name"
+                label="医嘱性质"
+                prop="advice_name"
             >
                 <el-input
-                    v-model.trim="form.inspect_name"
+                    v-model.trim="form.advice_name"
                     autocomplete="off"
                 ></el-input>
-            </el-form-item>
-
-            <el-form-item
-                label="类型"
-                prop="type"
-            >
-                <el-radio-group v-model="form.type">
-                    <el-radio :label="0">部位</el-radio>
-                    <el-radio :label="1">症状</el-radio>
-                    <el-radio :label="2">诊法</el-radio>
-                    <el-radio :label="3">其他</el-radio>
-                </el-radio-group>
             </el-form-item>
         </el-form>
 
@@ -60,24 +48,21 @@
 import AddDialogForm from "../../../base/AddDialogForm";
 
 export default {
-    name: "AddInspect",
+    name: "AddAdvice",
     mixins: [AddDialogForm],
 
     components: {},
     props: {},
     data() {
         return {
-            commitLoading: false,
-
             form: {
-                inspect_name: "",
-                type: 0
+                advice_name: "",
             },
             formRules: {
-                inspect_name: [
+                advice_name: [
                     {
                         required: true,
-                        message: "请输入检查名称",
+                        message: "请输入治疗性质",
                         trigger: "blur"
                     }
                 ]
@@ -92,7 +77,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.add-inspect {
+.add-advice {
     /deep/ .el-dialog__body {
         padding-bottom: 0;
     }

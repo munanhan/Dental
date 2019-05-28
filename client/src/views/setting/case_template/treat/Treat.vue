@@ -1,5 +1,5 @@
 <template>
-    <div class="medical-history">
+    <div class="treat">
         <div class="table-container">
 
             <div class="block-item">
@@ -10,14 +10,14 @@
                     }"
                 >
                     <el-table
-                        :data="partData"
-                        border
+                        :data="preparationData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="部位"
+                            label="备牙"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -38,7 +38,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('部位', scope.row)"
+                                        @click.stop="showEditDialog('备牙', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="del('preparationData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -65,14 +65,14 @@
                     }"
                 >
                     <el-table
-                        :data="propertiesData"
-                        border
+                        :data="investData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="性质"
+                            label="充值"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -93,7 +93,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('性质', scope.row)"
+                                        @click.stop="showEditDialog('充值', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -106,7 +106,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('propertiesData',  scope.row, scope.$index)"
+                                        @click.stop="del('investData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -123,14 +123,14 @@
                     }"
                 >
                     <el-table
-                        :data="timeData"
-                        border
+                        :data="medicinalData"
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
                             prop="attend_type"
-                            label="时间"
+                            label="药物"
                             align="center"
                             show-overflow-tooltip
                         >
@@ -151,7 +151,7 @@
                                         size="mini"
                                         icon="el-icon-edit"
                                         circle
-                                        @click.stop="showEditDialog('时间', scope.row)"
+                                        @click.stop="showEditDialog('药物', scope.row)"
                                     ></el-button>
                                 </el-tooltip>
                                 <el-tooltip
@@ -164,7 +164,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('timeData', scope.row, scope.$index)"
+                                        @click.stop="del('medicinalData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -180,8 +180,8 @@
                 >
                     <el-table
                         :data="otherData"
-                        border
                         :height="blockHeight"
+                        border
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
@@ -237,34 +237,32 @@
             <el-button
                 type="primary"
                 class="btn"
-                @click="addMedicalDialog = true"
+                @click="AddTreatDialog = true"
             >新增</el-button>
-
         </div>
 
-        <add-medical
-            :show.sync="addMedicalDialog"
-            @add-item="addMedicalItem"
-        ></add-medical>
+        <add-treat
+            :show.sync="AddTreatDialog"
+            @add-item="addTreat"
+        ></add-treat>
 
-        <edit-medical
-            :show.sync="editMedicalDialog"
+        <edit-treat
+            :show.sync="editTreatDialog"
             :edit-item="currentEditItem"
             :type="editType"
             @edit-item="editItem"
         >
-        </edit-medical>
-
+        </edit-treat>
     </div>
 </template>
 
 <script>
-import AddMedical from "./AddMedical";
-import EditMedical from "./EditMedical";
+import AddTreat from "./AddTreat";
+import EditTreat from "./EditTreat";
 
 export default {
-    name: "MedicalHistory",
-    components: { AddMedical, EditMedical },
+    name: "Treat",
+    components: { AddTreat, EditTreat },
     props: {
         show: {
             required: true
@@ -280,13 +278,13 @@ export default {
     },
     data() {
         return {
-            partData: [],
-            propertiesData: [],
-            timeData: [],
+            preparationData: [],
+            investData: [],
+            medicinalData: [],
             otherData: [],
 
-            addMedicalDialog: false,
-            editMedicalDialog: false,
+            AddTreatDialog: false,
+            editTreatDialog: false,
 
             currentEditItem: {},
             editType: "",
@@ -296,7 +294,14 @@ export default {
         };
     },
     created() {},
-    mounted() {},
+    mounted() {
+        let that = this;
+
+        that.$nextTick(() => {
+            //监听事件,由layout那边的resize抛出的
+            window.addEventListener("bodyChange", that.resizeContent);
+        });
+    },
     watch: {
         show(newValue, oldValue) {
             let that = this;
@@ -331,7 +336,7 @@ export default {
             that.blockWidth = (that.width - 20) / 2;
         },
 
-        addMedicalItem() {
+        addTreat() {
             let that = this;
         },
 
@@ -353,7 +358,7 @@ export default {
             that.editType = type;
             that.selectItem = row;
 
-            that.editMedicalDialog = true;
+            that.editTreatDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -383,12 +388,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.medical-history {
+.treat {
     height: 100%;
-    width: 100%;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden;
 
     .table-container {
         display: flex;

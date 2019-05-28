@@ -18,6 +18,9 @@ import * as patient_allergy from "./patient_allergy";
 import * as patient_anamneses from "./patient_anamneses";
 import * as patient_teeth_habits from "./patient_teeth_habits";
 import * as patient_impressions from "./patient_impressions";
+import * as clinic from './clinic'
+import * as area from './area'
+
 
 const apis = {
     base,
@@ -35,6 +38,8 @@ const apis = {
     member,
     staff,
     resource,
+    clinic,
+    area,
     category,
     patient_allergy,
     patient_anamneses,
