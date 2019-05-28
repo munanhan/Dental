@@ -292,7 +292,7 @@ const genRoute = async (router, store) => {
                 // },
                 {
                     id: 9,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/return_visit",
                     p_type: 0,
                     p_name: "回访",
@@ -312,7 +312,7 @@ const genRoute = async (router, store) => {
                 // },
                 {
                     id: 11,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/inquiry",
                     p_type: 0,
                     p_name: "问诊",
@@ -332,7 +332,7 @@ const genRoute = async (router, store) => {
                 // },
                 {
                     id: 13,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/expenditure",
                     p_type: 0,
                     p_name: "支出",
@@ -342,7 +342,7 @@ const genRoute = async (router, store) => {
                 },
                 {
                     id: 14,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/disinfect",
                     p_type: 0,
                     p_name: "消毒",
@@ -352,7 +352,7 @@ const genRoute = async (router, store) => {
                 },
                 {
                     id: 15,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/attendance",
                     p_type: 0,
                     p_name: "考勤",
@@ -362,7 +362,7 @@ const genRoute = async (router, store) => {
                 },
                 {
                     id: 16,
-                    parent_id: 6,
+                    parent_id: 7,
                     url: "/recovery",
                     p_type: 0,
                     p_name: "回收",
