@@ -103,17 +103,17 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
 
     /*
-     * Route PatientAddress Api
+     * Route patientCategory Api
      */
-    Route::get('patient_addresses', 'PatientAddressController@index');
+    Route::get('patient_categories', 'PatientCategoryController@index');
 
-    Route::get('patient_addresses/{patientAddress}', 'PatientAddressController@show');
+    Route::get('patient_categories/{patientCategory}', 'PatientCategoryController@show');
 
-    Route::post('patient_addresses', 'PatientAddressController@store');
+    Route::post('patient_categories', 'PatientCategoryController@store');
 
-    Route::put('patient_addresses/{patientAddress}', 'PatientAddressController@update');
+    Route::put('patient_categories/{patientCategory}', 'PatientCategoryController@update');
 
-    Route::delete('patient_addresses/{patientAddress}', 'PatientAddressController@delete');
+    Route::delete('patient_categories/{patientCategory}', 'PatientCategoryController@delete');
 
     /*
      * Route PatientCase Api
@@ -153,6 +153,19 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::put('patient_groups/{patientGroup}', 'PatientCategoryController@update');
 
     Route::delete('patient_groups/{patientGroup}', 'PatientCategoryController@delete');
+
+     /*
+     * Route PatientTeethHabit Api
+     */
+    Route::get('patient_teeth_habits', 'PatientTeethHabitController@index');
+
+    Route::get('patient_teeth_habits/{patientTeethHabit}', 'PatientTeethHabitController@show');
+
+    Route::post('patient_teeth_habits', 'PatientTeethHabitController@store');
+
+    Route::put('patient_teeth_habits/{patientTeethHabit}', 'PatientTeethHabitController@update');
+
+    Route::delete('patient_teeth_habits/{patientTeethHabit}', 'PatientTeethHabitController@delete');
 
     /*
      * Route PatientImpression Api
@@ -218,6 +231,33 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::put('patient_visits/{patientVisit}', 'PatientVisitController@update');
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
+
+    /*
+     * Route PatientAllergy Api
+     */
+    Route::get('patient_Allergies', 'PatientAllergyController@index');
+
+    Route::get('patient_Allergies/{patientAllergy}', 'PatientAllergyController@show');
+
+    Route::post('patient_Allergies', 'PatientAllergyController@store');
+
+    Route::put('patient_Allergies/{patientAllergy}', 'PatientAllergyController@update');
+
+    Route::delete('patient_Allergies/{patientAllergy}', 'PatientAllergyController@delete');
+
+      
+    /*
+     * Route PatientAnamnesis Api
+     */
+    Route::get('patient_anamnesis', 'PatientAnamnesisController@index');
+
+    Route::get('patient_anamnesis/{patientAnamnesis}', 'PatientAnamnesisController@show');
+
+    Route::post('patient_anamnesis', 'PatientAnamnesisController@store');
+
+    Route::put('patient_anamnesis/{patientAnamnesis}', 'PatientAnamnesisController@update');
+
+    Route::delete('patient_anamnesis/{patientAnamnesis}', 'PatientAnamnesisController@delete');
 
 
     // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
@@ -311,6 +351,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::put('patient_member', 'PatientMemberController@update');//修改
 
     Route::delete('patient_member/{id}', 'PatientMemberController@delete');//删除
+
+    Route::delete('members/{id}','PatientMemberController@deleteMember');
 
      /*
      * Route Member Api

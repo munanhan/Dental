@@ -100,29 +100,28 @@ export default {
         return {
             addclasspat_show: false,
             tableHeight: "340px",
-            tableData: [],
+            tableData: []
 
             // addExpendDialog: false
         };
     },
-    created() {
-        
-    },
+    created() {},
     mounted() {},
     watch: {
-       show(newValue,oldValue){
-          let that = this;
-          if(newValue){
-            that.$api.category.getCategory()
-            .then(res => {
-                // console.log(res.data)
-                that.tableData = res.data;
-            })
-            .catch(res => {
-                console.log(res);
-            });
-          }
-       }
+        show(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.$api.category
+                    .getCategory()
+                    .then(res => {
+                        // console.log(res.data)
+                        that.tableData = res.data;
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            }
+        }
     },
     computed: {},
     methods: {
@@ -143,16 +142,20 @@ export default {
         del(row, index) {
             let that = this;
             let id = row.id;
-            that.$api.patient_class
-                .delClass({ id })
-                .then(res => {
-                    if (res.data) {
-                        that.tableData.splice(index, 1);
-                    }
-                })
-                .catch(res => {
-                    console.log(res);
-                });
+            if (confirm("确定删除当前行吗？")) {
+                that.$api.category
+                    .delCategory({ id })
+                    .then(res => {
+                        if (res.data) {
+                            that.tableData.splice(index, 1);
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log("Cencel");
+            }
         },
 
         commit() {},
@@ -169,7 +172,6 @@ export default {
         },
         flush(data) {
             let that = this;
-            // console.log(that.tableData)
             that.tableData.push(data);
         }
     }

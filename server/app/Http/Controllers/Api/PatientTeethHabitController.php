@@ -13,9 +13,9 @@ class PatientTeethHabitController extends Controller
         return message('',PatientTeethHabit::all());
     }
 
-    public function show(PatientTeethHabit $habit)
+    public function show(PatientTeethHabit $patientTeethHabit)
     {
-        return message('',$habit);
+        return message('',$patientTeethHabit);
     }
 
     public function store(Request $request)
@@ -26,16 +26,16 @@ class PatientTeethHabitController extends Controller
         return message('',$habit);
     }
 
-    public function update(Request $request , PatientTeethHabit $habit)
+    public function update(Request $request , PatientTeethHabit $patientTeethHabit)
     {
-        $habit->update($request->all());
+        $patientTeethHabit->update($request->all());
 
-        return message('',$habit, 200);
+        return message('',$patientTeethHabit, 200);
     }
 
-    public function delete(PatientTeethHabit $habit)
+    public function delete(PatientTeethHabit $patientTeethHabit)
     {
-        $habit->delete();
+        $patientTeethHabit->delete();
 
         return message('',null, 200);
     }

@@ -32,7 +32,30 @@
                         </tr>
                         <tr>
                             <td align="center"> 基本需求</td>
-                            <input style="width:620px">
+                            <!-- <input style="width:620px"> -->
+                            <el-select
+                                v-model="type"
+                                style="width:620px"
+                            >
+                                <el-option
+                                    label="区域二"
+                                    value="beijing"
+                                >
+                                    <el-checkbox v-model="checked1">备选项</el-checkbox>
+                                </el-option>
+                                <el-option
+                                    label="区域三"
+                                    value="231231"
+                                >
+                                    <el-checkbox v-model="checked2">备选项</el-checkbox>
+                                </el-option>
+                                <el-option
+                                    label="区域四"
+                                    value="54545"
+                                >
+                                    <el-checkbox v-model="checked3">备选项</el-checkbox>
+                                </el-option>
+                            </el-select>
                             <i
                                 class="fa fa-cog"
                                 style="
@@ -41,12 +64,6 @@
                                      cursor:pointer"
                             ></i>
                         </tr>
-                        <!-- <i
-              class="el el-icon-question"
-              style="
-                 font-size:20px;
-                 cursor:pointer"
-            ></i> -->
                         <tr>
                             <td align="center">潜在需求</td>
                             <div>
@@ -114,6 +131,10 @@ export default {
 
     data() {
         return {
+            type: [],
+            checked1: false,
+            checked2: false,
+            checked3: false,
             changePwd: {
                 oldPass: "",
                 newPass: "",

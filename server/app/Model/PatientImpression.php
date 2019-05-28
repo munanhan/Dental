@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientImpression extends Model
 {
-    protected $fillable=[
-
+    protected $guarded=[
+        'id',
     ];
 }

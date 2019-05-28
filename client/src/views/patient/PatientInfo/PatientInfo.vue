@@ -39,7 +39,7 @@
                         <el-col :span="6">
                             <div>介 绍 人：</div>
                         </el-col>
-                     <el-col :span="6">
+                        <el-col :span="6">
                             <div>职 业：</div>
                         </el-col>
                     </el-row>
@@ -53,7 +53,7 @@
                         <el-col :span="6">
                             <div>年 龄：</div>
                         </el-col>
-                           <el-col :span="6">
+                        <el-col :span="6">
                             <div>社 保 号：</div>
                         </el-col>
                     </el-row>
@@ -67,7 +67,7 @@
                         <el-col :span="6">
                             <div>会员卡号：</div>
                         </el-col>
-                    
+
                     </el-row>
                     <el-row
                         :gutter="24"
@@ -234,6 +234,7 @@ export default {
     },
     data() {
         return {
+            patient_id: "",
             sex: "0",
             activeNames: ["1"],
             value2: null,
@@ -301,7 +302,6 @@ export default {
                 width: 850px;
             }
             .patient-right {
-                
                 margin-left: 10px;
                 margin-right: 30px;
                 margin-left: -40px;

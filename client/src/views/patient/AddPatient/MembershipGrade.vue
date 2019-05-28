@@ -20,14 +20,14 @@
                     :height="tableHeight"
                 >
                     <el-table-column
-                        prop="aaaa"
+                        prop="name"
                         label="会员等级"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="bbbb"
+                        prop="discount"
                         label="会员折扣"
                         align="center"
                         show-overflow-tooltip
@@ -39,34 +39,6 @@
                         show-overflow-tooltip
                     >
                         <template slot-scope="scope">
-
-                            <!-- <el-tooltip
-                                effect="dark"
-                                content="上移"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="primary"
-                                    size="mini"
-                                    icon="el-icon-arrow-up"
-                                    circle
-                                    @click.stop="move(-1, scope.$index)"
-                                ></el-button>
-                            </el-tooltip>
-
-                            <el-tooltip
-                                effect="dark"
-                                content="下移"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="primary"
-                                    size="mini"
-                                    icon="el-icon-arrow-down"
-                                    circle
-                                    @click.stop="move(1, scope.$index)"
-                                ></el-button>
-                            </el-tooltip> -->
                             <el-tooltip
                                 effect="dark"
                                 content="删除"
@@ -113,7 +85,10 @@
             </div>
         </el-dialog>
 
-        <add-membership-grade :show.sync="addgrade_show"></add-membership-grade>
+        <add-membership-grade
+            :show.sync="addgrade_show"
+            @flush="flush"
+        ></add-membership-grade>
     </div>
 </template>
 
@@ -133,20 +108,28 @@ export default {
         return {
             addgrade_show: false,
             tableHeight: "340px",
-            tableData: [
-                { aaaa: "网络咨询" },
-                { aaaa: "朋友介绍" },
-                { aaaa: "家住附近" },
-                { aaaa: "诊所网站" }
-            ]
-            // tableData: []
+            tableData: []
 
             // addExpendDialog: false
         };
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.$api.patient_member
+                    .get()
+                    .then(res => {
+                        that.tableData = res.data;
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            }
+        }
+    },
     computed: {},
     methods: {
         //交换位置
@@ -165,7 +148,26 @@ export default {
 
         del(row, index) {
             let that = this;
-            that.tableData.splice(index, 1);
+            let id = row.id;
+            if (confirm("确定删除当前行吗？")) {
+                that.$api.patient_member
+                    .del({ id })
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.tableData.splice(index, 1);
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log("Cancel");
+            }
+        },
+        flush(data) {
+            let that = this;
+            console.log(that.tableData);
+            that.tableData.push(data);
         },
 
         commit() {},

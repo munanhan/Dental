@@ -2,10 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4942e3a4-376c-4cd9-8c63-bbe7953973d0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/server/app/Events/RecordEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Listeners/RecordListener.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/api/patient_allergy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/api/patient_anamneses.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/api/patient_impressions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/api/patient_teeth_habits.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/UserImage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/api/patient_category.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/patient_category.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/api/patient_member.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/patient_member.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddConsulting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddConsulting.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddAllergy.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddAllergy.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddClassificationPatients.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddClassificationPatients.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddMembershipGrade.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddMembershipGrade.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPastMedicalhistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPastMedicalhistory.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatient.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatient.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatientsImpression.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatientsImpression.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddTeethcleaningHabits.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/AddTeethcleaningHabits.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/Allergy.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/Allergy.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/ClassificationPatients.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/ClassificationPatients.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/MembershipGrade.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/MembershipGrade.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PastMedicalhistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PastMedicalhistory.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PatientsImpression.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PatientsImpression.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PatientsSource.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/PatientsSource.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/AddPatient/TeethcleaningHabits.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/AddPatient/TeethcleaningHabits.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/patient/PatientInfo/PatientInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/patient/PatientInfo/PatientInfo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientAllergyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientAllergyController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientAnamnesisController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientAnamnesisController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientCategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientCategoryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientMemberController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientMemberController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientTeethHabitController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientTeethHabitController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Model/PatientAllergy.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Model/PatientAllergy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Model/PatientAnamnesis.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Model/PatientAnamnesis.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Model/PatientImpression.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Model/PatientImpression.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Model/PatientTeethHabit.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Model/PatientTeethHabit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +61,7 @@
         <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
               <folding>
                 <element signature="e#44#66#0#PHP" expanded="true" />
               </folding>
@@ -96,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/client/src/api/patient_category.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+              <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -104,24 +134,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatient.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="626" column="22" selection-start-line="626" selection-start-column="22" selection-end-line="626" selection-end-column="22" />
+            <state relative-caret-position="180">
+              <caret line="630" column="29" lean-forward="true" selection-start-line="630" selection-start-column="29" selection-end-line="630" selection-end-column="29" />
               <folding>
+                <element signature="n#style#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-form-item#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-button#0;n#div#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-form-item#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#2532#2538#0" expanded="true" />
-                <element signature="e#2538#2544#0" expanded="true" />
-                <element signature="e#2544#2550#0" expanded="true" />
-                <element signature="e#2550#2556#0" expanded="true" />
-                <element signature="e#2556#2562#0" expanded="true" />
-                <element signature="e#2562#2568#0" expanded="true" />
-                <element signature="e#2568#2574#0" expanded="true" />
-                <element signature="e#2574#2580#0" expanded="true" />
-                <element signature="e#2602#2608#0" expanded="true" />
-                <element signature="e#2608#2614#0" expanded="true" />
-                <element signature="e#2614#2620#0" expanded="true" />
-                <element signature="e#2620#2626#0" expanded="true" />
-                <element signature="e#2626#2632#0" expanded="true" />
-                <element signature="e#2632#2638#0" expanded="true" />
+                <element signature="e#2533#2539#0" expanded="true" />
+                <element signature="e#2539#2545#0" expanded="true" />
+                <element signature="e#2545#2551#0" expanded="true" />
+                <element signature="e#2551#2557#0" expanded="true" />
+                <element signature="e#2557#2563#0" expanded="true" />
+                <element signature="e#2563#2569#0" expanded="true" />
+                <element signature="e#2569#2575#0" expanded="true" />
+                <element signature="e#2575#2581#0" expanded="true" />
+                <element signature="e#2603#2609#0" expanded="true" />
+                <element signature="e#2609#2615#0" expanded="true" />
+                <element signature="e#2615#2621#0" expanded="true" />
+                <element signature="e#2621#2627#0" expanded="true" />
+                <element signature="e#2627#2633#0" expanded="true" />
+                <element signature="e#2633#2639#0" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-form-item#0;n#div#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -131,22 +166,21 @@
                 <element signature="n#style#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#6028#6034#0" expanded="true" />
-                <element signature="e#6034#6040#0" expanded="true" />
-                <element signature="e#6040#6046#0" expanded="true" />
-                <element signature="e#6046#6052#0" expanded="true" />
-                <element signature="e#6052#6058#0" expanded="true" />
-                <element signature="e#6058#6064#0" expanded="true" />
-                <element signature="e#6064#6070#0" expanded="true" />
-                <element signature="e#6070#6076#0" expanded="true" />
-                <element signature="e#6102#6108#0" expanded="true" />
-                <element signature="e#6108#6114#0" expanded="true" />
-                <element signature="e#6114#6120#0" expanded="true" />
-                <element signature="e#6120#6126#0" expanded="true" />
-                <element signature="e#6126#6132#0" expanded="true" />
-                <element signature="e#6132#6138#0" expanded="true" />
+                <element signature="e#5874#5880#0" expanded="true" />
+                <element signature="e#5880#5886#0" expanded="true" />
+                <element signature="e#5886#5892#0" expanded="true" />
+                <element signature="e#5892#5898#0" expanded="true" />
+                <element signature="e#5898#5904#0" expanded="true" />
+                <element signature="e#5904#5910#0" expanded="true" />
+                <element signature="e#5910#5916#0" expanded="true" />
+                <element signature="e#5916#5922#0" expanded="true" />
+                <element signature="e#5948#5954#0" expanded="true" />
+                <element signature="e#5954#5960#0" expanded="true" />
+                <element signature="e#5960#5966#0" expanded="true" />
+                <element signature="e#5966#5972#0" expanded="true" />
+                <element signature="e#5972#5978#0" expanded="true" />
+                <element signature="e#5978#5984#0" expanded="true" />
                 <element signature="n#style#0;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-form-item#1;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#4;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -162,7 +196,7 @@
                 <element signature="n#style#0;n#el-input#0;n#el-form-item#0;n#div#9;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-form-item#1;n#div#9;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-input#0;n#el-form-item#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-form-item#1;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#11;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-form-item#0;n#div#11;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -180,6 +214,8 @@
                 <element signature="n#style#0;n#el-input#0;n#div#0;n#el-form-item#1;n#div#12;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#el-form-item#1;n#div#12;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#13;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#21368#21423#0" expanded="true" />
+                <element signature="e#21633#21665#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -737,7 +773,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="484931000" />
+    <option name="totallyTimeSpent" value="485185000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1195,7 +1231,7 @@
     <entry file="file://$PROJECT_DIR$/server/app/Http/Controllers/Api/PatientController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
           <folding>
             <element signature="e#44#66#0#PHP" expanded="true" />
           </folding>
@@ -1212,30 +1248,35 @@
     <entry file="file://$PROJECT_DIR$/client/src/api/patient_category.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/views/patient/AddPatient/AddPatient.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="626" column="22" selection-start-line="626" selection-start-column="22" selection-end-line="626" selection-end-column="22" />
+        <state relative-caret-position="180">
+          <caret line="630" column="29" lean-forward="true" selection-start-line="630" selection-start-column="29" selection-end-line="630" selection-end-column="29" />
           <folding>
+            <element signature="n#style#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-form-item#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#div#0;n#div#0;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-form-item#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#1;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2532#2538#0" expanded="true" />
-            <element signature="e#2538#2544#0" expanded="true" />
-            <element signature="e#2544#2550#0" expanded="true" />
-            <element signature="e#2550#2556#0" expanded="true" />
-            <element signature="e#2556#2562#0" expanded="true" />
-            <element signature="e#2562#2568#0" expanded="true" />
-            <element signature="e#2568#2574#0" expanded="true" />
-            <element signature="e#2574#2580#0" expanded="true" />
-            <element signature="e#2602#2608#0" expanded="true" />
-            <element signature="e#2608#2614#0" expanded="true" />
-            <element signature="e#2614#2620#0" expanded="true" />
-            <element signature="e#2620#2626#0" expanded="true" />
-            <element signature="e#2626#2632#0" expanded="true" />
-            <element signature="e#2632#2638#0" expanded="true" />
+            <element signature="e#2533#2539#0" expanded="true" />
+            <element signature="e#2539#2545#0" expanded="true" />
+            <element signature="e#2545#2551#0" expanded="true" />
+            <element signature="e#2551#2557#0" expanded="true" />
+            <element signature="e#2557#2563#0" expanded="true" />
+            <element signature="e#2563#2569#0" expanded="true" />
+            <element signature="e#2569#2575#0" expanded="true" />
+            <element signature="e#2575#2581#0" expanded="true" />
+            <element signature="e#2603#2609#0" expanded="true" />
+            <element signature="e#2609#2615#0" expanded="true" />
+            <element signature="e#2615#2621#0" expanded="true" />
+            <element signature="e#2621#2627#0" expanded="true" />
+            <element signature="e#2627#2633#0" expanded="true" />
+            <element signature="e#2633#2639#0" expanded="true" />
             <element signature="n#style#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-form-item#0;n#div#0;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -1245,22 +1286,21 @@
             <element signature="n#style#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#2;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#6028#6034#0" expanded="true" />
-            <element signature="e#6034#6040#0" expanded="true" />
-            <element signature="e#6040#6046#0" expanded="true" />
-            <element signature="e#6046#6052#0" expanded="true" />
-            <element signature="e#6052#6058#0" expanded="true" />
-            <element signature="e#6058#6064#0" expanded="true" />
-            <element signature="e#6064#6070#0" expanded="true" />
-            <element signature="e#6070#6076#0" expanded="true" />
-            <element signature="e#6102#6108#0" expanded="true" />
-            <element signature="e#6108#6114#0" expanded="true" />
-            <element signature="e#6114#6120#0" expanded="true" />
-            <element signature="e#6120#6126#0" expanded="true" />
-            <element signature="e#6126#6132#0" expanded="true" />
-            <element signature="e#6132#6138#0" expanded="true" />
+            <element signature="e#5874#5880#0" expanded="true" />
+            <element signature="e#5880#5886#0" expanded="true" />
+            <element signature="e#5886#5892#0" expanded="true" />
+            <element signature="e#5892#5898#0" expanded="true" />
+            <element signature="e#5898#5904#0" expanded="true" />
+            <element signature="e#5904#5910#0" expanded="true" />
+            <element signature="e#5910#5916#0" expanded="true" />
+            <element signature="e#5916#5922#0" expanded="true" />
+            <element signature="e#5948#5954#0" expanded="true" />
+            <element signature="e#5954#5960#0" expanded="true" />
+            <element signature="e#5960#5966#0" expanded="true" />
+            <element signature="e#5966#5972#0" expanded="true" />
+            <element signature="e#5972#5978#0" expanded="true" />
+            <element signature="e#5978#5984#0" expanded="true" />
             <element signature="n#style#0;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-form-item#1;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#div#3;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#4;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -1276,7 +1316,7 @@
             <element signature="n#style#0;n#el-input#0;n#el-form-item#0;n#div#9;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-form-item#1;n#div#9;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-form-item#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#el-form-item#0;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-form-item#1;n#div#10;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#11;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-form-item#0;n#div#11;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
@@ -1294,6 +1334,8 @@
             <element signature="n#style#0;n#el-input#0;n#div#0;n#el-form-item#1;n#div#12;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#el-form-item#1;n#div#12;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#13;n#div#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#21368#21423#0" expanded="true" />
+            <element signature="e#21633#21665#0" expanded="true" />
           </folding>
         </state>
       </provider>

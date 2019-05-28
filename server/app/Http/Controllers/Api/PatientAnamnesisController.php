@@ -13,9 +13,9 @@ class PatientAnamnesisController extends Controller
         return message('',PatientAnamnesis::all());
     }
 
-    public function show(PatientAnamnesis $anamnesis)
+    public function show(PatientAnamnesis $patientAnamnesis)
     {
-        return message('',$anamnesis);
+        return message('',$patientAnamnesis);
     }
 
     public function store(Request $request)
@@ -26,16 +26,16 @@ class PatientAnamnesisController extends Controller
         return message('',$anamnesis);
     }
 
-    public function update(Request $request , PatientAnamnesis $anamnesis)
+    public function update(Request $request , PatientAnamnesis $patientAnamnesis)
     {
-        $anamnesis->update($request->all());
+        $patientAnamnesis->update($request->all());
 
-        return message('',$anamnesis, 200);
+        return message('',$patientAnamnesis, 200);
     }
 
-    public function delete(PatientAnamnesis $anamnesis)
+    public function delete(PatientAnamnesis $patientAnamnesis)
     {
-        $anamnesis->delete();
+        $patientAnamnesis->delete();
 
         return message('',null, 200);
     }

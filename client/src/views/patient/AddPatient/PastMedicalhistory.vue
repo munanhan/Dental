@@ -20,7 +20,7 @@
                     :height="tableHeight"
                 >
                     <el-table-column
-                        prop="aaaa"
+                        prop="name"
                         label="既往史"
                         align="center"
                         show-overflow-tooltip
@@ -106,7 +106,10 @@
             </div>
         </el-dialog>
 
-        <add-past-medicalhistory :show.sync="addmed_show"></add-past-medicalhistory>
+        <add-past-medicalhistory
+            :show.sync="addmed_show"
+            @flush="flush"
+        ></add-past-medicalhistory>
     </div>
 </template>
 
@@ -127,12 +130,7 @@ export default {
         return {
             addmed_show: false,
             tableHeight: "340px",
-            tableData: [
-                { aaaa: "网络咨询" },
-                { aaaa: "朋友介绍" },
-                { aaaa: "家住附近" },
-                { aaaa: "诊所网站" }
-            ]
+            tableData: []
             // tableData: []
 
             // addExpendDialog: false
@@ -140,7 +138,22 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.$api.patient_anamneses
+                    .getAnamneses()
+                    .then(res => {
+                        // console.log(res.data)
+                        that.tableData = res.data;
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            }
+        }
+    },
     computed: {},
     methods: {
         //交换位置
@@ -157,9 +170,37 @@ export default {
             }
         },
 
+        // del(row, index) {
+        //     let that = this;
+        //     let id = row.id;
+        //     that.$api.patient_anamneses
+        //         .delAnamneses({ id })
+        //         .then(res => {
+        //             if (res.data) {
+        //                 that.tableData.splice(index, 1);
+        //             }
+        //         })
+        //         .catch(res => {
+        //             console.log(res);
+        //         });
+        // },
         del(row, index) {
             let that = this;
-            that.tableData.splice(index, 1);
+            let id = row.id;
+            if (confirm("确定删除当前行吗？")) {
+                that.$api.patient_anamneses
+                    .delAnamneses({ id })
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.tableData.splice(index, 1);
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log("Cancel");
+            }
         },
 
         commit() {},
@@ -173,6 +214,10 @@ export default {
         },
         add_med() {
             this.addmed_show = true;
+        },
+        flush(data) {
+            let that = this;
+            that.tableData.push(data);
         }
     }
 };

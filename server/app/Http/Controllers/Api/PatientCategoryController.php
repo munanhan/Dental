@@ -13,30 +13,30 @@ class PatientCategoryController extends Controller
         return message('',PatientCategory::all());
     }
 
-    public function show(PatientCategory $category)
+    public function show(PatientCategory $patientCategory)
     {
-        return message('',$category);
+        return message('',$patientCategory);
     }
 
     public function store(Request $request)
     {
 
-        $category=PatientCategory::create($request->all());
+        $patientCategory=PatientCategory::create($request->all());
 
-        return message('',$category);
+        return message('',$patientCategory);
     }
 
-    public function update(Request $request , PatientCategory $category)
+    public function update(Request $request , PatientCategory $patientCategory)
     {
-        $category->update($request->all());
+        $patientCategory->update($request->all());
 
-        return message('',$category, 200);
+        return message('',$patientCategory, 200);
     }
 
-    public function delete(PatientCategory $category)
+    public function delete(PatientCategory $patientCategory)
     {
-        $category->delete();
+        $patientCategory->delete();
 
-        return message('',null, 200);
+        return message('',$patientCategory, 200);
     }
 }
