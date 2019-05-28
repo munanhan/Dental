@@ -1,89 +1,6 @@
 <?php
 use Illuminate\Support\Facades\DB;
 
-// /***
-// * @param $parms
-// * @return array(sql+parms)
-// * @sql
-// */
-//     function getSql($parms,$table = '',$field = '*'){
-//         //处理参数获取sql语句
-//         $parms = array_filter($parms);//去除空
-
-//         $unset_keys = function($keys = []) use ($parms){
-//             //清除不需要的字段
-//             foreach ($keys as $a => $b) {
-//                 unset($parms[$b]);
-//             }
-//             return $parms;
-//         };
-
-//         $parms = isset($parms['_d'])?$unset_keys(['_d']):$parms;//得到最终参数集合
-
-//         if (empty($parms) || $table == '') {
-//             if ($field == '*') {
-//                 return false;
-//             }
-//         }
-
-//         $sql = 'select '.$field.' from '.$table.' where ';//组合sql语句
-
-//         $end = count($parms);//结尾，用于判断不加and
-//         $n = 0;//记录当前的所在的key位置
-//         $m = 0;//in数据个数
-//         foreach ($parms as $k => $v) {
-//             //删除空和_d
-//             $n++;
-//             if ($k == 'dtfm') {
-//                 $sql.=" `created_at` >= :dtfm";//时间
-//             }
-//             else if ($k == 'dtto') {
-//                 $parms['dtto'] = $v.' 23:59:59';//把时间设置为当天最大
-//                 $sql.=" `created_at` <= :dtto";
-//             }
-//             else if ($k == 'empty'){
-//                 $sql.=" '1=1'";//空参数
-//             }
-//             else if (is_array($v)) {
-//                 //处理特殊符号
-//                 $type = key($v);
-//                 switch ($type) {
-//                     case 'in':
-//                         // $parms[$k] = $v[$type];
-//                         $in_str = '';
-//                         $length = count($v['in'])-1;
-//                         foreach ($v['in'] as $key => $value) {
-//                             $in_str.= ":v$m";
-//                             if ($key < $length) {
-//                                 $in_str.=',';
-//                             }
-//                             $parms['v'.$m] = $value;
-//                             $m++;
-//                         }
-//                         $sql.=" `$k` in($in_str)";
-//                         // $sql.=" `$k` in(:$k)";
-
-//                     break;
-//                     case 'like':
-//                         $parms[$k] = $v[$type];
-//                         $sql.=" `$k` like :$k";
-//                     break;
-                    
-//                 }
-//                 // $sql.=" `$k` ".key($v).' '.$v[key($v)];
-//                 // unset($parms[$k]);
-//             }
-//             else{
-//                 $sql.=" `$k` = :$k";//其余普通字段处理
-//             }
-//             if ($n < $end) {
-//                 //表示还没结尾，需要用and链接
-//                 $sql.=" and ";
-//             }
-//         }
-//         return ['sql' => $sql,'parms' => $parms];
-//     }
-
 /***
  * 处理参数
  * 获取类型(数组) 即为前端传过来的参数集合
@@ -476,3 +393,52 @@ use Illuminate\Support\Facades\DB;
                 return false;
             }
 
+/**
+ * 上传方法
+ */
+            function upload($file){
+                //上传
+                $key = key($file);//获取key
+
+                $name = $file[$key]['name'];//文件名
+
+                $ext = substr(strrchr($name, '.'), 1);//获取文件后缀
+
+                $check = checkExt($ext);
+                if ($check) {
+                    return $check; 
+                }
+
+                $tmp_file = $file[$key]['tmp_name'];//零时文件
+
+                $size = $file[$key]['size'];//文件大小
+
+                $path = '/uploads/temp/';
+
+                $temp_dir = $_SERVER['DOCUMENT_ROOT'].$path;//临时目录
+
+                if (!is_dir($temp_dir)) {
+                    mkdir($temp_dir,0777,true);
+                }
+
+                $a = explode(' ', microtime());
+                $t = $a[1].($a[0]*1000000);
+                $new_name = $t.'.'.($ext);//新的文件名，随机名字
+
+                if(move_uploaded_file($tmp_file,$temp_dir.$new_name)){
+                    return [ $key => $path.$new_name ];
+                }
+                return '上传失败';      
+            }
+
+/*
+ * 检测后缀名
+ */
+            function checkExt($ext){
+                //检测后缀
+                $ext_arr = ['jpg','jpeg','png'];
+                if (in_array($ext, $ext_arr)) {
+                    return false;
+                }
+                return '图片后缀名必须为jpg,jpeg,png的任一种.';
+            }

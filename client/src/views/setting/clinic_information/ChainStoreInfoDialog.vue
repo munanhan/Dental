@@ -41,21 +41,25 @@
                     class="hospInfo"
                 >
                     <el-form
-                        :model="formHosp"
-                        :rules="formRulesHosp"
+                        :model="form"
+                        :rules="formRule"
                         label-width="100px"
                     >
                         <div>
                             <el-upload
                                 class="company-uploader"
-                                action="http://www.laravel.com/clinic/upload?type=1"
+                                :action="`${uploadUrl}/api/clinic/upload`"
                                 :show-file-list="false"
-                                :on-success="handleSuccess"
+                                :on-success="(res, file) => handleSuccess('logo', res, file)"
                                 :before-upload="beforeUpload"
+                                :headers="headers"
+                                :with-credentials="true"
+                                name="logo"
+
                             >
                                 <img
-                                    v-if="formHosp.logo"
-                                    :src="formHosp.logo"
+                                    v-if="form.logo"
+                                    :src="form.logo"
                                     class="company"
                                 >
                                 <span
@@ -78,7 +82,7 @@
                             prop="clinic_name"
                         >
                             <el-input
-                                v-model.trim="formHosp.clinic_name"
+                                v-model.trim="form.clinic_name"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -87,7 +91,7 @@
                             prop="contact"
                         >
                             <el-input
-                                v-model.trim="formHosp.contact"
+                                v-model.trim="form.contact"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -96,7 +100,7 @@
                             prop="phone"
                         >
                             <el-input
-                                v-model.trim="formHosp.phone"
+                                v-model.trim="form.phone"
                                 autocomplete="off"
                                 :disabled="true"
                             ></el-input>
@@ -109,7 +113,7 @@
                             <div class="address">
                                 <div>
                                     <el-select
-                                        v-model="formHosp.province_id"
+                                        v-model="form.province_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="省份"
@@ -125,7 +129,7 @@
                                 </div>
                                 <div>
                                     <el-select
-                                        v-model="formHosp.city_id"
+                                        v-model="form.city_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="城市"
@@ -142,7 +146,7 @@
                                 </div>
                                 <div>
                                     <el-select
-                                        v-model="formHosp.region_id"
+                                        v-model="form.region_id"
                                         collapse-tags
                                         class="width100"
                                         placeholder="地区"
@@ -161,7 +165,7 @@
 
                             <div>
                                 <el-input
-                                    v-model.trim="formHosp.address"
+                                    v-model.trim="form.address"
                                     autocomplete="off"
                                     placeholder="详细地址"
                                 ></el-input>
@@ -174,14 +178,14 @@
                             prop="introduction"
                         >
                             <el-input
-                                v-model.trim="formHosp.introduction"
+                                v-model.trim="form.introduction"
                                 autocomplete="off"
                                 type="textarea"
                             ></el-input>
                         </el-form-item>
                     </el-form>
 
-                    <div class="pull-right">
+<!--                     <div class="pull-right">
                         <el-button
                             @click="closeDialog"
                             :disabled="commitLoading"
@@ -191,7 +195,7 @@
                             @click="editCommit('hosp')"
                             :loading="commitLoading"
                         >确 定</el-button>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- ----------------------------------- -->
 
@@ -201,8 +205,8 @@
                     class="intelligence"
                 >
                     <el-form
-                        :model="formIntell"
-                        :rules="formRulesformIntell"
+                        :model="form"
+                        :rules="formRule"
                         label-width="130px"
                     >
                         <el-form-item
@@ -210,7 +214,7 @@
                             prop="industry_name"
                         >
                             <el-input
-                                v-model.trim="formIntell.industry_name"
+                                v-model.trim="form.industry_name"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -219,7 +223,7 @@
                             prop="license_no"
                         >
                             <el-input
-                                v-model.trim="formIntell.license_no"
+                                v-model.trim="form.license_no"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -231,14 +235,17 @@
                             <div class="image-upload">
                                 <el-upload
                                     class="image-uploader"
-                                    action="/clinic"
+                                    :action="`${uploadUrl}/api/clinic/upload`"
                                     :show-file-list="false"
-                                    :on-success="handleSuccess"
+                                    :on-success="(res, file) => handleSuccess('license_image_url', res, file)"
+                                    :headers="headers"
+                                    :with-credentials="true"
                                     :before-upload="beforeUpload"
+                                    name="license_image_url"
                                 >
                                     <img
-                                        v-if="formIntell.license_image_url"
-                                        :src="formIntell.license_image_url"
+                                        v-if="form.license_image_url"
+                                        :src="form.license_image_url"
                                         class="image"
                                     >
                                     <span
@@ -263,14 +270,17 @@
                             <div class="image-upload">
                                 <el-upload
                                     class="image-uploader"
-                                    action="/upload"
+                                    :action="`${uploadUrl}/api/clinic/upload`"
                                     :show-file-list="false"
-                                    :on-success="handleSuccess"
+                                    :headers="headers"
+                                    :with-credentials="true"
+                                    :on-success="(res, file) => handleSuccess('card_image_url', res, file)"
                                     :before-upload="beforeUpload"
+                                    name="card_image_url"
                                 >
                                     <img
-                                        v-if="formIntell.card_image_url"
-                                        :src="formIntell.card_image_url"
+                                        v-if="form.card_image_url"
+                                        :src="form.card_image_url"
                                         class="image"
                                     >
                                     <span
@@ -292,7 +302,7 @@
                             prop="operate_year"
                         >
                             <el-input
-                                v-model.trim="formIntell.operate_year"
+                                v-model.trim="form.operate_year"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -301,7 +311,7 @@
                             prop="chair"
                         >
                             <el-input
-                                v-model.trim="formIntell.chair"
+                                v-model.trim="form.chair"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -310,12 +320,12 @@
                             prop="store_area"
                         >
                             <el-input
-                                v-model.trim="formIntell.store_area"
+                                v-model.trim="form.store_area"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
                     </el-form>
-                    <div class="pull-right">
+<!--                     <div class="pull-right">
                         <el-button
                             @click="closeDialog"
                             :disabled="commitLoading"
@@ -325,8 +335,19 @@
                             @click="editCommit('license')"
                             :loading="commitLoading"
                         >确 定</el-button>
-                    </div>
+                    </div> -->
                 </div>
+                    <div class="pull-right">
+                        <el-button
+                            @click="closeDialog"
+                            :disabled="commitLoading"
+                        >取 消</el-button>
+                        <el-button
+                            type="primary"
+                            @click="editCommit"
+                            :loading="commitLoading"
+                        >确 定</el-button>
+                    </div>
                 <!-- ----------------------------------- -->
             </div>
         </div>
@@ -335,6 +356,7 @@
 
 <script>
 import DialogForm from "../../base/DialogForm";
+import { setCookie,getCookie } from "../../../common/util";
 export default {
     name: "ChainStoreInfoDialog",
 
@@ -350,13 +372,21 @@ export default {
     data() {
         return {
             activeName: "hospInfo",
-
+            uploadUrl:'',
+            //上传url
+            thisLogo:'',
+            //logo
+            thisLicense:'',
+            //营业执照
+            thisCard:'',
+            //身份证
             //诊所
             commitLoading: false,
+            headers:{},
 
             contentHeight: "590px",
 
-            formHosp: {
+            form: {
                 clinic_name: "",
                 contact: "",
                 phone: "",
@@ -365,9 +395,17 @@ export default {
                 region_id: undefined,
                 address: "",
                 logo: "",
-                introduction:""
+                introduction:"",
+                headers:"",
+                industry_name: "",
+                license_no: "",
+                license_image_url: "",
+                card_image_url: "",
+                operate_year: "",
+                chair: "",
+                store_area: ""
             },
-            formRulesHosp: {
+            formRule: {
                 clinic_name: [
                     {
                         required: true,
@@ -388,26 +426,7 @@ export default {
                         message: "请输入诊所电话",
                         trigger: "blur"
                     }
-                ]
-            },
-
-            provinceList: [],
-            cityList: [],
-            areaList: [],
-
-            //---------------------------
-
-            //资质
-            formIntell: {
-                industry_name: "",
-                license_no: "",
-                license_image_url: "",
-                card_image_url: "",
-                operate_year: "",
-                chair: "",
-                store_area: ""
-            },
-            formRulesformIntell: {
+                ],
                 industry_name: [
                     {
                         required: true,
@@ -422,7 +441,16 @@ export default {
                         trigger: "blur"
                     }
                 ]
-            }
+            },
+
+            provinceList: [],
+            cityList: [],
+            areaList: [],
+
+            //---------------------------
+
+            //资质
+
         };
     },
     created() {},
@@ -447,9 +475,14 @@ export default {
             let that = this;
 
             if (newValue) {
-                that.formHosp = that.editItem;
-                that.formIntell = that.editItem;
+                that.form = that.editItem;
+                that.form = that.editItem;
                 that.getAreas();
+                that.uploadUrl = (window.HOSTNAME || '');
+                let token = getCookie("token");
+                that.headers = {'Authorization':token};
+                // that.headers = getCookie("token");
+
 
             }
 
@@ -459,8 +492,25 @@ export default {
     computed: {},
     methods: {
         //诊所信息
-        handleSuccess(res, file) {
-            this.formHosp.image_url = URL.createObjectURL(file.raw);
+        handleSuccess(type, res, file) {
+            switch(type){
+                case 'logo':
+                    this.thisLogo = res.data.logo;
+                    this.form.logo = (window.HOSTNAME || '')+res.data.logo;
+                    break;
+
+                case 'license_image_url':
+                    this.thisLicense = res.data.license_image_url;
+                    this.form.license_image_url = (window.HOSTNAME || '')+res.data.license_image_url;
+                    break;
+
+                case 'card_image_url':
+                    this.thisCard = res.data.card_image_url;
+                    this.form.card_image_url = (window.HOSTNAME || '')+res.data.card_image_url;
+                    break;
+            }
+            
+            // this.form.logo = URL.createObjectURL(file.raw);
             // this.imageUrl = URL.createObjectURL(file.raw);
         },
         beforeUpload(file) {
@@ -475,18 +525,18 @@ export default {
             // return isJPG && isLt2M;
         },
 
-        editCommit(type) {
+        editCommit() {
             let that = this;
+            console.log(that.form);
+            // switch (type) {
+            //     case "hosp":
+            //     console.log(that.form);
+            //         break;
 
-            switch (type) {
-                case "hosp":
-                console.log(that.formHosp);
-                    break;
-
-                case "license":
-                console.log(that.formIntell);
-                    break;
-            }
+            //     case "license":
+            //     console.log(that.form);
+            //         break;
+            // }
         },
         getAreas(){
             //获取省市区
@@ -556,11 +606,19 @@ export default {
                 .company-uploader {
                     position: relative;
                     display: inline-block;
+                    width: 100px;
+                    height: 100px;
+                    margin-bottom: 10px;
+
+                    /deep/ .el-upload{
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
 
                 .company {
-                    width: 100px;
-                    height: 100px;
+                    width: 100%;
+                    height: 100%;
                     display: block;
                 }
 
@@ -607,8 +665,7 @@ export default {
                     width: 100px;
                     height: 100px;
                     line-height: 60px;
-                    text-align: center;
-                    border: 3px dotted #e3e3e3;
+                    text-align: center;                    
                     display: inline-block;
                     box-sizing: border-box;
                     margin-right: 10px;
@@ -616,15 +673,27 @@ export default {
                     /deep/ .el-upload {
                         width: 100%;
                         height: 100%;
-                        padding-top: 18px;
+                        /*padding-top: 18px;*/
                         box-sizing: border-box;
                     }
                 }
 
                 .image {
-                    width: 100px;
-                    height: 100px;
+                    width: 100%;
+                    height: 100%;
                     display: block;
+                }
+
+                .image-uploader-icon{
+                    border: 3px dotted #e3e3e3;
+                    width: 100%;
+                    height: 100%;
+                    display: inline-block;
+                    box-sizing: border-box;
+
+                    i{
+                        line-height: 94px;
+                    }
                 }
 
                 .image-upload-tip {

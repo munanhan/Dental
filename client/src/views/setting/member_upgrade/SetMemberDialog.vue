@@ -107,8 +107,8 @@ export default {
         
       },
       mounted() {
-        let that = this;
-        that.getMember();
+        //let that = this;
+        //that.getMember();
       },
       watch: {
         refresh(newValue, oldValue) {

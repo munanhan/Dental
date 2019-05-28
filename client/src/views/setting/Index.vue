@@ -9,7 +9,7 @@
                 label="诊所信息"
                 name="ClinicInformation"
             >
-                <clinic-information :refresh.sync="ClinicInformation"></clinic-information>
+                <clinic-information v-if="ClinicInformation" :refresh.sync="ClinicInformationUpdate"></clinic-information>
 
             </el-tab-pane>
 
@@ -17,56 +17,56 @@
                 label="权限设置"
                 name="PermissionSettings"
             >
-                <permission-settings :refresh.sync="PermissionSettings"></permission-settings>
+                <permission-settings v-if="PermissionSettings" :refresh.sync="PermissionSettingsUpdate"></permission-settings>
             </el-tab-pane>
 
             <el-tab-pane
                 label="员工管理"
                 name="StaffManagement"
             >
-                <staff-management :refresh.sync="StaffManagement"></staff-management>
+                <staff-management v-if="StaffManagement" :refresh.sync="StaffManagementUpdate"></staff-management>
             </el-tab-pane>
 
             <el-tab-pane
                 label="处置与收费"
                 name="DisposalCharging"
             >
-                <disposal-charging :refresh.sync="DisposalCharging"></disposal-charging>
+                <disposal-charging v-if="DisposalCharging" :refresh.sync="DisposalChargingUpdate"></disposal-charging>
             </el-tab-pane>
 
             <el-tab-pane
                 label="处置组和"
                 name="DisposalCombination"
             >
-                <disposal-combination :refresh.sync="DisposalCombination"></disposal-combination>
+                <disposal-combination v-if="DisposalCombination" :refresh.sync="DisposalCombinationUpdate"></disposal-combination>
             </el-tab-pane>
 
             <el-tab-pane
                 label="病例模板"
                 name="CaseTemplate"
             >
-                <case-template :refresh.sync="CaseTemplate"></case-template>
+                <case-template v-if="CaseTemplate" :refresh.sync="CaseTemplateUpdate"></case-template>
             </el-tab-pane>
 
             <el-tab-pane
                 label="会员升级"
                 name="MemberUpgrade"
             >
-                <member-upgrade :refresh.sync="MemberUpgrade"></member-upgrade>
+                <member-upgrade v-if="MemberUpgrade" :refresh.sync="MemberUpgradeUpdate"></member-upgrade>
             </el-tab-pane>
 
             <el-tab-pane
                 label="患者回收站"
                 name="PatientRecyclingBin"
             >
-                <patient-recycling-bin :refresh.sync="PatientRecyclingBin"></patient-recycling-bin>
+                <patient-recycling-bin v-if="PatientRecyclingBin" :refresh.sync="PatientRecyclingBinUpdate"></patient-recycling-bin>
             </el-tab-pane>
 
             <el-tab-pane
                 label="操作记录"
                 name="OperationRecord"
             >
-                <operation-record :refresh.sync="OperationRecord"></operation-record>
+                <operation-record v-if="OperationRecord" :refresh.sync="OperationRecordUpdate"></operation-record>
             </el-tab-pane>
         </el-tabs>
 
@@ -109,19 +109,82 @@ export default {
             CaseTemplate: false,
             MemberUpgrade: false,
             PatientRecyclingBin: false,
-            OperationRecord: false
+            OperationRecord: false,
+
+            ClinicInformationUpdate: false,
+            PermissionSettingsUpdate: false,
+            StaffManagementUpdate: false,
+            DisposalChargingUpdate: false,
+            DisposalCombinationUpdate: false,
+            CaseTemplateUpdate: false,
+            MemberUpgradeUpdate: false,
+            PatientRecyclingBinUpdate: false,
+            OperationRecordUpdate: false,
+
         };
     },
     created() {},
     mounted() {},
     watch: {
-        curTab(newValue, oldValue) {
-            let that = this;
-            that[newValue] = true;
+        curTab: {
+            handler(newValue, oldValue) {
+                let that = this;
+                that[newValue] = true;
+                that[newValue + 'Update'] = true;
+            },
+
+            immediate: true
         }
+        // curTab(newValue, oldValue) {
+        //     let that = this;
+        //     that[newValue] = true;
+        // }
     },
     computed: {},
     methods: {}
+
+    // ,
+    // data() {
+    //     return {
+    //         activeName: "clinicOperation",
+
+    //         advancedPatientInquiry: false,
+    //         chainStoreStatistics: false,
+    //         chargingReconciliation: false,
+    //         clinicOperation: false,
+    //         employeePerformance: false,
+    //         externalProcessing: false,
+    //         passengerFlowAnalysis: false,
+    //         wechatOperation: false,
+
+    //         advancedPatientInquiryUpdate: false,
+    //         chainStoreStatisticsUpdate: false,
+    //         chargingReconciliationUpdate: false,
+    //         clinicOperationUpdate: false,
+    //         employeePerformanceUpdate: false,
+    //         externalProcessingUpdate: false,
+    //         passengerFlowAnalysisUpdate: false,
+    //         wechatOperationUpdate: false
+    //     };
+    // },
+    // created() {},
+    // mounted() {},
+    // watch: {
+    //     activeName: {
+    //         handler(newValue, oldValue) {
+    //             let that = this;
+    //             that[newValue] = true;
+    //             that[newValue + 'Update'] = true;
+    //         },
+
+    //         immediate: true
+    //     }
+    // },
+    // computed: {},
+    // methods: {
+    // }
+
+
 };
 </script>
 <style lang="less" scoped>

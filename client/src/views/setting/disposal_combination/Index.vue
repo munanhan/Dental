@@ -384,7 +384,7 @@ export default {
     },
     mounted() {
         let that = this;
-        that.getMenu();
+        // that.getMenu();
         that.$nextTick(() => {
             that.resizeTable();
         });

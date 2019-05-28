@@ -134,8 +134,8 @@ export default {
         
       },
       mounted() {
-        let that = this;
-        this.getData();
+        //let that = this;
+        //this.getData();
       },
       watch: {
         // refresh(newValue, oldValue) {
