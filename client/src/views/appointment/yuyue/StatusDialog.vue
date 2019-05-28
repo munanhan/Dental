@@ -96,16 +96,15 @@ export default {
     },
     changeStatus(sv) {
       sv = sv.toString();
-      if (this.status == 3 && sv == 1) {
-        return;
-      }
       let items = document.getElementsByClassName("item");
       items = Array.from(items);
       items.forEach(ele => {
         ele.style.backgroundColor = "";
       });
       this.$refs["item" + sv].style.backgroundColor = this.changeBg(sv);
-
+      if (this.status == 3 && sv == 1) {
+        return;
+      }
       this.status = sv;
     },
     changeBg(sv) {
