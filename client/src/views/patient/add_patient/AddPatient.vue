@@ -429,7 +429,7 @@
                             style="width:220px"
                             multiple
                             filterable
-                            allow-create
+                            allow-create 
                             default-first-option
                             placeholder="请选择"
                         >
