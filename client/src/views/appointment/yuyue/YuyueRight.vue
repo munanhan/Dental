@@ -359,12 +359,13 @@ export default {
     },
 
     addYuyue(item) {
+      
       let date = formatDate(new Date(), "yyyy-MM-dd");
-      if (this.chooseDate < date) {
+      this.isAttrDataTime(event.target);
+      if (this.chooseDate < date && !this.target.hasAttribute("data-id") && !this.target.hasAttribute("id") ) {
         this.dialogVisible = true;
         return;
       }
-      this.isAttrDataTime(event.target);
       if (
         this.target.hasAttribute("class") &&
         this.target.getAttribute("class") == "left"
@@ -509,8 +510,7 @@ export default {
         ) {
           strhtml += `<div data-id="${item.id}" data-h="${
             item.start_time
-          }"><div class="inner">
-             
+          }"><div class="inner">    
                   `;
           //-------------------------------------------------------
         
@@ -518,10 +518,10 @@ export default {
 
           strhtml += `
               <div class="right">
-                <p><span>${item.name}</span><span>${
+                <p><span>${item.patient_name}</span><span>${
             item.type == 1 ? "复" : "初"
-          }</span><span>${item.age}</span></p>
-                                <p><span>${item.phone}</span></p>
+          }</span><span>${item.patient_age}</span></p>
+                                <p><span>${item.patient_phone}</span></p>
                                 <p><span>${item.items}</span></p>
               </div>
                             </div>`;

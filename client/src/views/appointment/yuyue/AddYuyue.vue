@@ -36,26 +36,26 @@
         <el-form-item label="病历号" prop="case_id">
           <el-input v-model="formData.case_id" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="name" required>
-          <el-input v-model="formData.name" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="姓名" prop="patient_name" required>
+          <el-input v-model="formData.patient_name" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="电话" prop="phone" required>
-          <el-input v-model="formData.phone" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="电话" prop="patient_phone" required>
+          <el-input v-model="formData.patient_phone" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
-        <el-form-item label="性别" prop="sex" required>
-          <el-radio-group v-model="formData.sex">
+        <el-form-item label="性别" prop="patient_sex" required>
+          <el-radio-group v-model="formData.patient_sex">
             <el-radio label="男"></el-radio>
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item prop="age" label="年龄" required>
-          <el-input v-model="formData.age" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item prop="patient_age" label="年龄" required>
+          <el-input v-model="formData.patient_age" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
-        <el-form-item prop="source" label="患者来源">
-          <el-select v-model="formData.source" placeholder="请选择">
+        <el-form-item prop="patient_source" label="患者来源">
+          <el-select v-model="formData.patient_source" placeholder="请选择">
             <el-option label value></el-option>
             <el-option label="网络咨询" value="网络咨询"></el-option>
             <el-option label="朋友介绍" value="朋友介绍"></el-option>
@@ -78,8 +78,8 @@
             <el-radio label="1">复诊</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="患者备注" prop="content">
-          <el-input v-model="formData.content" type="text" autocomplete="off" placeholder></el-input>
+        <el-form-item label="患者备注" prop="patient_content">
+          <el-input v-model="formData.patient_content" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
         <el-form-item label="预约备注" prop="appointment_comment">
           <el-input
@@ -191,7 +191,14 @@ import DialogForm from "@/views/base/DialogForm";
 export default {
   name: "ChangePassword",
   mixins: [DialogForm],
-  props: ["dayTime", "yuyue_time", "yuyue_id"],
+  props: [
+    "dayTime",
+    "yuyue_time",
+    "yuyue_id",
+    "yuyue_date",
+    "weekStart",
+    "weekEnd"
+  ],
   inject: ["getTodayAppointment"],
   created() {
     this.$api.appointment.getCaseNumber().then(res => {
@@ -210,7 +217,7 @@ export default {
       formData: {
         case_id: "190418001",
         appointment_date: "",
-        source: "",
+        patient_source: "",
         items: ""
         // start_time:this.yuyue_time,
       },
@@ -258,7 +265,9 @@ export default {
         }
       }
 
-      this.formData.appointment_date = this.chooseDate;
+      this.formData.appointment_date = this.yuyue_date
+        ? this.yuyue_date
+        : this.chooseDate;
       if (!this.yuyue_time) {
         return;
       }
@@ -325,11 +334,24 @@ export default {
             .then(res => {
               if (res.code == 200) {
                 that.$message({
-                  message: "新增成功.",
+                  message: res.msg,
                   type: "success",
                   duration: 800
                 });
                 that.getTodayAppointment();
+                if (this.weekStart) {
+                  this.$api.appointment
+                    .getWeekAppointment({
+                      weekStart: this.weekStart,
+                      weekEnd: this.weekEnd
+                    })
+                    .then(res => {
+                      if (res.code == 200) {
+                        this.$parent.yuyue_week_res = res.data;
+                      }
+                    });
+                }
+
                 that.closeDialog();
               } else {
                 that.$message.error(res.message);
