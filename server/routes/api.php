@@ -259,6 +259,7 @@ Route::group(['namespace'=>'Api'],function (){
      */
     Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
 
+
     // Route::get('publish', function () {
     //     // Route logic...
 
@@ -391,7 +392,29 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('staff/get_by_id','StaffController@getById');//根据id获取
 
+    /*
+     * Route ClinicController Api
+     * created for yu
+     */
+    Route::get('clinic/get_clinic','ClinicController@getClinic');//当前诊所
 
+    Route::get('clinic','ClinicController@index');//诊所列表
+
+    Route::get('clinic/get_by_id','ClinicController@getById');//根据id获取
+
+    Route::post('clinic', 'ClinicController@addData');//添加
+
+    Route::put('clinic', 'ClinicController@update');//修改
+
+    Route::delete('clinic/{id}', 'ClinicController@delete');//删除
+
+    Route::post('clinic/upload','ClinicController@upload');//上传
+
+    /*
+     * Route AreaController Api
+     * created for yu
+     */
+    Route::get('areas/get_by_id','AreaController@getById');//根据id获取
 
 
 

@@ -27,106 +27,18 @@
                             >新增分店</el-button>
                         </div>
 
-                        <div class="store-item">
+                        <div class="store-item" v-for="item in clinicList">
                             <div
                                 class="content"
-                                @click="showInfo('1')"
+                                @click="showInfo(item.id)"
                             >
                                 <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
+                                <div class="info">{{item.clinic_name}}</div>
+                                <div class="info">{{item.phone}}</div>
+                                <div class="info">{{item.contact}}</div>
                             </div>
                         </div>
 
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
-                        <div class="store-item">
-                            <div class="content">
-                                <div class="title">分店信息</div>
-                                <div class="info">测试</div>
-                                <div class="info">3116</div>
-                                <div class="info">root</div>
-                            </div>
-                        </div>
                     </div>
                 </el-tab-pane>
 
@@ -470,7 +382,11 @@
             </el-tabs>
         </el-dialog>
 
-        <chain-store-info-dialog :show.sync="showInfoDialog"></chain-store-info-dialog>
+        <chain-store-info-dialog 
+            :show.sync="showInfoDialog"
+            :editItem="editItem"
+        >    
+        </chain-store-info-dialog>
         <add-store-dialog :show.sync="addStoreDialog"></add-store-dialog>
     </div>
 </template>
@@ -495,6 +411,8 @@ export default {
             //员工管理
             tableHeight: 370,
             tableData: [{}],
+            clinicList:[],
+            //分店列表
             search: {
                 hospital: 0
             },
@@ -547,19 +465,32 @@ export default {
                 ]
             },
 
+            editItem:{},
+
             provinceList: [{ id: -1, label: "省份" }],
             cityList: [{ id: -1, label: "城市" }],
             areaList: [{ id: -1, label: "地区" }]
         };
     },
-    created() {},
+    created() {
+
+    },
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.getData();
+            }
+        }
+    },
     computed: {},
     methods: {
         showInfo(id) {
             let that = this;
-            that.showInfoDialog = true;
+            that.getById(id);
+
         },
 
         changePage(index) {
@@ -630,7 +561,29 @@ export default {
             }
 
             
-        }
+        },
+        getData(){
+            //获取列表数据
+            let that = this;
+                that.$api.clinic.get()
+                .then(res => {
+                   that.clinicList = res.data;
+                })
+                .catch(res => {
+
+                });
+        },
+        getById(id){
+            let that = this;
+            that.$api.clinic.getById({'id':id})
+            .then(res => {
+               that.editItem = res.data;
+               that.showInfoDialog = true;
+            })
+            .catch(res => {
+              // console.log(res)
+            });
+        },
     }
 };
 </script>
