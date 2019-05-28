@@ -129,7 +129,7 @@ export default {
         curTab: {
             handler(newValue, oldValue) {
                 let that = this;
-                that[newValue] = true;
+                that[newValue] = true;                
                 that[newValue + 'Update'] = true;
             },
 

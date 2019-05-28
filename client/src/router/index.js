@@ -95,27 +95,26 @@ const getMenuData = data => {
                 routerQuickTarget[item.id]["component"] = resolve =>
                     require.ensure([], () =>
                         resolve(require("@views/layout/Layout"))
-                    );                
+                    );
 
                 //如果父组件有个组件的话，直接注入当中
                 if (item.p_component) {
-
                     routerQuickTarget[item.id]["redirect"] = `${item.url}`;
 
-                    routerQuickTarget[item.id].path = '';
+                    routerQuickTarget[item.id].path = "";
 
                     var childItem = {
                         path: item.url,
-                        meta: [ {name: item.p_name} ],
+                        meta: [{ name: item.p_name }],
                         component: components[item.p_component]
                     };
 
                     routerQuickTarget[item.id].children = [childItem];
-
-                }else{
-                    routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
+                } else {
+                    routerQuickTarget[item.id]["redirect"] = `${
+                        item.url
+                    }/index`;
                 }
-
             } else {
                 //子
                 if (item.p_component) {
@@ -125,7 +124,6 @@ const getMenuData = data => {
                         components[item.p_component];
                 }
             }
-
         } else if (item.p_type == 1) {
             action[item["p_act_name"]] = true;
         }
@@ -241,45 +239,57 @@ const genRoute = async (router, store) => {
                     p_component: "/statistics/Index",
                     api: ""
                 },
-                {
-                    id: 5,
-                    parent_id: 0,
-                    url: "/shop",
-                    p_type: 0,
-                    p_name: "商城",
-                    p_icon: "fa fa-shopping-cart",
-                    p_component: "/shop/Index",
-                    api: ""
-                },
+                // {
+                //     id: 5,
+                //     parent_id: 0,
+                //     url: "/shop",
+                //     p_type: 0,
+                //     p_name: "商城",
+                //     p_icon: "fa fa-shopping-cart",
+                //     p_component: "/shop/Index",
+                //     api: ""
+                // },
                 {
                     id: 6,
+                    parent_id: 0,
+                    url: "/setting",
+                    p_type: 0,
+                    p_name: "管理",
+                    p_icon: "fa fa-user-cog",
+                    p_component: "/setting/Index",
+                    api: ""
+                },
+
+                {
+                    id: 7,
                     parent_id: 0,
                     p_name: "更多",
                     p_icon: "fa fa-window-restore",
                     api: "",
                     p_type: 0,
-                    url: "",
+                    url: ""
                 },
-                {
-                    id: 7,
-                    parent_id: 6,
-                    url: "/custom_service",
-                    p_type: 0,
-                    p_name: "客服",
-                    p_icon: "fa fa-user-clock",
-                    p_component: "/custom_service/Index",
-                    api: ""
-                },
-                {
-                    id: 8,
-                    parent_id: 6,
-                    url: "/warehouse",
-                    p_type: 0,
-                    p_name: "库房",
-                    p_icon: "fa fa-warehouse",
-                    p_component: "/warehouse/Index",
-                    api: ""
-                },
+
+                // {
+                //     id: 7,
+                //     parent_id: 6,
+                //     url: "/custom_service",
+                //     p_type: 0,
+                //     p_name: "客服",
+                //     p_icon: "fa fa-user-clock",
+                //     p_component: "/custom_service/Index",
+                //     api: ""
+                // },
+                // {
+                //     id: 8,
+                //     parent_id: 6,
+                //     url: "/warehouse",
+                //     p_type: 0,
+                //     p_name: "库房",
+                //     p_icon: "fa fa-warehouse",
+                //     p_component: "/warehouse/Index",
+                //     api: ""
+                // },
                 {
                     id: 9,
                     parent_id: 6,
@@ -290,16 +300,16 @@ const genRoute = async (router, store) => {
                     p_component: "/return_visit/Index",
                     api: ""
                 },
-                {
-                    id: 10,
-                    parent_id: 6,
-                    url: "/message",
-                    p_type: 0,
-                    p_name: "短信",
-                    p_icon: "fa fa-envelope",
-                    p_component: "/message/Index",
-                    api: ""
-                },
+                // {
+                //     id: 10,
+                //     parent_id: 6,
+                //     url: "/message",
+                //     p_type: 0,
+                //     p_name: "短信",
+                //     p_icon: "fa fa-envelope",
+                //     p_component: "/message/Index",
+                //     api: ""
+                // },
                 {
                     id: 11,
                     parent_id: 6,
@@ -310,16 +320,16 @@ const genRoute = async (router, store) => {
                     p_component: "/inquiry/Index",
                     api: ""
                 },
-                {
-                    id: 12,
-                    parent_id: 6,
-                    url: "/micro_website",
-                    p_type: 0,
-                    p_name: "微官网",
-                    p_icon: "fa fa-university",
-                    p_component: "/micro_website/Index",
-                    api: ""
-                },
+                // {
+                //     id: 12,
+                //     parent_id: 6,
+                //     url: "/micro_website",
+                //     p_type: 0,
+                //     p_name: "微官网",
+                //     p_icon: "fa fa-university",
+                //     p_component: "/micro_website/Index",
+                //     api: ""
+                // },
                 {
                     id: 13,
                     parent_id: 6,
@@ -359,27 +369,27 @@ const genRoute = async (router, store) => {
                     p_icon: "fa fa-box-open",
                     p_component: "/recovery/Index",
                     api: ""
-                },
-                {
-                    id: 17,
-                    parent_id: 6,
-                    url: "/marketing",
-                    p_type: 0,
-                    p_name: "营销",
-                    p_icon: "fa fa-pen-nib",
-                    p_component: "/marketing/Index",
-                    api: ""
-                },
-                {
-                    id: 18,
-                    parent_id: 6,
-                    url: "/setting",
-                    p_type: 0,
-                    p_name: "管理",
-                    p_icon: "fa fa-user-cog",
-                    p_component: "/setting/Index",
-                    api: ""
                 }
+                // {
+                //     id: 17,
+                //     parent_id: 6,
+                //     url: "/marketing",
+                //     p_type: 0,
+                //     p_name: "营销",
+                //     p_icon: "fa fa-pen-nib",
+                //     p_component: "/marketing/Index",
+                //     api: ""
+                // },
+                // {
+                //     id: 18,
+                //     parent_id: 6,
+                //     url: "/setting",
+                //     p_type: 0,
+                //     p_name: "管理",
+                //     p_icon: "fa fa-user-cog",
+                //     p_component: "/setting/Index",
+                //     api: ""
+                // }
             ];
 
         if (resp.code == 200) {
@@ -484,7 +494,7 @@ const router = new VueRouter({
     routes,
 
     //增加html5的history的模式
-    mode: 'history'
+    mode: "history"
 });
 
 //用于处理刷新后是否重新获取重新渲染页面
@@ -555,7 +565,7 @@ router.beforeEach(async (to, from, next) => {
             checkError = true;
         } finally {
             //关闭loading
-            loadingInstance && loadingInstance.close();            
+            loadingInstance && loadingInstance.close();
 
             if (checkError) {
                 router.push("/error");
@@ -588,7 +598,7 @@ router.beforeEach(async (to, from, next) => {
             }
 
             loadingInstance && loadingInstance.close();
-        } else if (/^\/login\/*/.test(toPath)){
+        } else if (/^\/login\/*/.test(toPath)) {
             // //TODO：暂时开放登录
             // next();
 
