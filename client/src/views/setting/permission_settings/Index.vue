@@ -580,13 +580,13 @@ export default {
           //保存权限
           let permissionPc = this.$refs.permissionPcTree.getCheckedNodes();
           let permissionPhone = this.$refs.permissionPhoneTree.getCheckedNodes();
-          console.log(permissionPc);
-          console.log(permissionPhone);
+          //console.log(permissionPc);
+          //console.log(permissionPhone);
         },
         openAllPermission(){
           //展开所有的权限
            let that = this;
-           console.log(that.openPermission);
+           //console.log(that.openPermission);
            that.openPermission = that.openPermission == true?false:true;
            for(var i=0;i<this.$refs.permissionPcTree.store._getAllNodes().length;i++){
             //展开与缩放

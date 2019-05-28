@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\BaseModel;
 use Illuminate\Support\Facades\Auth;
 use App\Model\OperationLog;
+use Illuminate\Support\Facades\Storage;
 
 class BaseController extends Controller
 {
@@ -256,8 +257,18 @@ class BaseController extends Controller
             return getData($sql,['id' => $this->parms['id']]);
         }
 
-        public function upload(){
+        public function upload(Request $request){
             //上传
-            return $this->parms;
+              $file = $_FILES;
+              //判断文件是否上传成功
+              if (!$file){
+                 return message('没有文件上传.',[],404);
+              }
+              $res = upload($file);
+              if (!is_array($res)) {
+                  return message($res,[],500);
+              }
+              return message('上传成功',$res,200);
+
         }
 }

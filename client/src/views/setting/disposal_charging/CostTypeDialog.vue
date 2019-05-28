@@ -178,8 +178,8 @@ export default {
       },
       created() {},
       mounted() {
-        let that = this;
-        that.getData();
+        // let that = this;
+        // that.getData();
       },
       watch: {
         refresh(newValue, oldValue) {

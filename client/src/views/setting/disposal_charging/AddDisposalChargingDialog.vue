@@ -224,8 +224,8 @@ export default {
         
       },
       mounted() {
-        let that = this;
-        that.getCategory();
+        //let that = this;
+        //that.getCategory();
       },
       watch: {
         // refresh(newValue, oldValue) {

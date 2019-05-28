@@ -230,8 +230,8 @@ export default {
 
       },
       mounted() {
-         let that = this;
-         that.getCategory();
+         //let that = this;
+         //that.getCategory();
          // that.getData();
       },
       watch: {

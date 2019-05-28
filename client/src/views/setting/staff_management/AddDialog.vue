@@ -134,8 +134,8 @@ export default {
 
       },
       mounted() {
-        let that = this;
-        that.getData();
+        // let that = this;
+        // that.getData();
       },
       watch: {
         refresh(newValue, oldValue) {
@@ -144,6 +144,12 @@ export default {
             // if (newValue) {
                 // that.getData();
             // }
+        },
+        show(newValue, oldValue){
+           if (newValue) {
+                let that = this;
+                that.getData();
+           }
         }
         
       },

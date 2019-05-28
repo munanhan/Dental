@@ -202,7 +202,7 @@
                 >取 消</el-button>
                 <el-button
                     type="primary"
-                    @click="addCommit"
+                    @click="editCommit"
                     :loading="commitLoading"
                 >确 定</el-button>
             </div>
