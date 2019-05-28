@@ -9,7 +9,7 @@
         width="750px"
     >
         <el-form
-            ref="changePwdForm"
+            ref="AddPatientForm"
             label-width="80px"
             :rules="form.rules"
             :model="form"
@@ -197,19 +197,12 @@
                         label="就诊日期"
                         prop="clinic_date"
                     >
-                        <el-select
+                        <el-date-picker
                             v-model="form.clinic_date"
-                            style="width:220px"
-                            placeholder="请选择"
+                            type="date"
+                            placeholder="选择日期"
                         >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select>
+                        </el-date-picker>
                     </el-form-item>
 
                     <el-form-item
@@ -237,7 +230,7 @@
                 <div style="display:flex">
                     <el-form-item
                         label="患者分类"
-                        prop="categoryList"
+                        prop="group"
                     >
                         <el-select
                             v-model="form.patient_category"
@@ -328,10 +321,27 @@
                         label="过 敏 史"
                         prop="allergie"
                     >
+                        <!-- <el-select
+                            v-model="form.allergie"
+                            style="width:570px"
+                            multiple
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in allergieList"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.name"
+                            >
+                            </el-option>
+                        </el-select> -->
                         <el-select
                             v-model="form.allergie"
                             style="width:570px"
                             multiple
+                            filterable
+                            allow-create
+                            default-first-option
                             placeholder="请选择"
                         >
                             <el-option
@@ -353,10 +363,27 @@
                         label="既 往 史"
                         prop="anamneses"
                     >
+                        <!-- <el-select
+                            v-model="form.anamneses"
+                            style="width:570px"
+                            multiple
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in anamnesesList"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.name"
+                            >
+                            </el-option>
+                        </el-select> -->
                         <el-select
                             v-model="form.anamneses"
                             style="width:570px"
                             multiple
+                            filterable
+                            allow-create
+                            default-first-option
                             placeholder="请选择"
                         >
                             <el-option
@@ -397,10 +424,23 @@
                         label="患者印象"
                         prop="impression_id"
                     >
-                        <el-input
+                        <el-select
+                            v-model="form.impressions"
                             style="width:220px"
-                            v-model="form.impression_id"
-                        ></el-input>
+                            multiple
+                            filterable
+                            allow-create
+                            default-first-option
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in impressionsList"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.name"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -530,6 +570,7 @@
         <past-medicalhistory :show.sync="pastmed_show"></past-medicalhistory>
         <patients-impression :show.sync="patimpre_show"></patients-impression>
         <teethcleaning-habits :show.sync="teehabit_show"></teethcleaning-habits>
+        <!-- <user-image :show.sync="userimage_show"></user-image> -->
     </el-dialog>
 </template>
 
@@ -544,6 +585,7 @@ import Allergy from "./Allergy";
 import PastMedicalhistory from "./PastMedicalhistory";
 import PatientsImpression from "./PatientsImpression";
 import TeethcleaningHabits from "./TeethcleaningHabits";
+// import UserImage from "./UserImage";
 
 export default {
     name: "AddPatient",
@@ -559,6 +601,7 @@ export default {
         PastMedicalhistory,
         PatientsImpression,
         TeethcleaningHabits
+        // UserImage
     },
 
     data() {
@@ -571,67 +614,26 @@ export default {
             pastmed_show: false,
             patimpre_show: false,
             teehabit_show: false,
+            userimage_show: false,
             sourceList: [],
             attend: [],
             categoryList: [],
             memberList: [],
             allergieList: [],
             anamnesesList: [],
+            impressionsList: [],
             teethList: [],
 
             form: {
                 value1: "",
-                // options: [
-                //     {
-                //         value: "选项1",
-                //         label: "爸爸"
-                //     },
-                //     {
-                //         value: "选项2",
-                //         label: "双皮奶"
-                //     },
-                //     {
-                //         value: "选项3",
-                //         label: "蚵仔煎"
-                //     },
-                //     {
-                //         value: "选项4",
-                //         label: "龙须面"
-                //     },
-                //     {
-                //         value: "选项5",
-                //         label: "北京烤鸭"
-                //     }
-                // ],
-                value5: "",
-                value6: "",
+                category: "1",
                 teeth_cleaning_habits: "",
-                // patients_source: "guiling",
-                // birthday: "",
-                // tel_one: "",
-                // phone_one: "",
-                // value: "",
-                // value1: null,
-                // sex: "1",
-                // category: "1",
-                // mem_card_number: "",
-                // social_security: "",
-                // email: "",
-                // smoking: "",
-                // patients_impression: "",
-                // patient_note: "",
-                // grid_consulting: "",
-                // brush_teeth_Timeday: "",
-                // brush_teeth_minutestime: "",
-                // teeth_cleaning_habits: "",
-                // name: "",
-                // attendingphysician: "",
-                // anamnesis: "",
+                clinic_date: "",
                 brush_day: "",
                 brush_minutes: "",
                 case_id: "",
                 name: "",
-                sex: "",
+                sex: "2",
                 phone: "",
                 birthday: "",
                 age: "",
@@ -733,6 +735,9 @@ export default {
         teeth_habit() {
             this.teehabit_show = true;
         },
+        // user_image() {
+        //     this.userimage_show = true;
+        // },
         // 病历号获取数据
         getCaseNo() {
             let that = this;
@@ -759,12 +764,16 @@ export default {
                     that.allergieList = res.data.patient_allergies;
                     that.anamnesesList = res.data.patient_anamneses;
                     that.teethList = res.data.patient_teeth_habits;
+                    that.impressionsList = res.data.patient_impressions;
                     console.log(res.data);
                     // that.form.case_id = res.data;
                 })
                 .catch(res => {
                     console.log(res);
                 });
+        },
+        afterClose() {
+            this.$refs["AddPatientForm"].resetFields();
         }
     }
 };

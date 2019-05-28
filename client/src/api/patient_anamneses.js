@@ -1,8 +1,8 @@
 import request from "../common/request";
 
-const prefix = "/patient_categories";
-//患者分类
-export function getCategory(data) {
+const prefix = "/patient_anamnesis";
+//既往史
+export function getAnamneses(data) {
     return request({
         url: `${prefix}`,
         method: "get",
@@ -10,7 +10,7 @@ export function getCategory(data) {
     });
 }
 
-export function addCategory(data) {
+export function addAnamneses(data) {
     return request({
         url: `${prefix}`,
         method: "post",
@@ -18,7 +18,7 @@ export function addCategory(data) {
     });
 }
 
-export function delCategory(data) {
+export function delAnamneses(data) {
     return request({
         url: `${prefix}/:id`,
         method: "delete",

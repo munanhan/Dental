@@ -1,7 +1,7 @@
 import request from '../common/request';
 
 const prefix = '/patient_member';
-
+//会员等级
 export function add(data){
     return request({
         url: `${prefix}`,
@@ -40,6 +40,14 @@ export function getById(data) {
         url: `${prefix}/get_by_id`,
         method: 'get',
         params: data
+    })
+}
+
+export function deleteMember(data){
+    return request({
+        url:'members/:id',
+        method:'delete',
+        params:data
     })
 }
 

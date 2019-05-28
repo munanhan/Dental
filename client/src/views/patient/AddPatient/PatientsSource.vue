@@ -46,6 +46,10 @@
                                     @click.stop="del(scope.row, scope.$index)"
                                 ></el-button>
                             </el-tooltip>
+                            <!-- <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)"
+                            >Edit</el-button> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -107,7 +111,6 @@ export default {
     watch: {
         show(newValue, oldValue) {
             let that = this;
-
             if (newValue) {
                 that.$api.resource
                     .resources()
@@ -122,19 +125,26 @@ export default {
     },
     computed: {},
     methods: {
+    //      handleEdit(index, row) {
+    //     console.log(index, row);
+    //   },
         del(row, index) {
             let that = this;
             let id = row.id;
-            that.$api.resource
-                .delResource({ id })
-                .then(res => {
-                    if (res.data) {
-                        that.tableData.splice(index, 1);
-                    }
-                })
-                .catch(res => {
-                    console.log(res);
-                });
+            if (confirm("确定删除当前行吗？")) {
+                that.$api.resource
+                    .delResource({ id })
+                    .then(res => {
+                        if (res.data) {
+                            that.tableData.splice(index, 1);
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log("Cancel");
+            }
         },
 
         add_source() {

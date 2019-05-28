@@ -16,10 +16,10 @@
         >
             <el-form-item
                 label="类型"
-                prop="type"
+                prop="name"
             >
                 <el-input
-                    v-model.trim="form.type"
+                    v-model.trim="form.name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -53,10 +53,10 @@ export default {
             commitLoading: false,
 
             form: {
-                expenditure: ""
+                name: ""
             },
             formRules: {
-                expenditure: [
+                name: [
                     {
                         required: true,
                         message: "请输入类型",
@@ -73,10 +73,15 @@ export default {
     methods: {
         addCommit() {
             let that = this;
-
-            that.$emit("add-item", that.form.expenditure);
-
-            that.closeDialog();
+            that.$api.patient_anamneses
+                .addAnamneses(that.form)
+                .then(res => {
+                    that.$emit("flush", res.data);
+                    that.closeDialog();
+                })
+                .catch(res => {
+                    console.log(res);
+                });
         }
     }
 };
