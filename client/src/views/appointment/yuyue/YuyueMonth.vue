@@ -163,7 +163,7 @@ export default {
         if (ele.getAttribute("data") == item.appointment_date) {
           strhtml += `<div data-id="${item.appointment_date}" data-h="${
             item.start_time
-          }"><p><span>${item.name}</span> : <span>${item.items}</span>
+          }"><p><span>${item.patient_name}</span> : <span>${item.items}</span>
                               </div>`;
         }
       });

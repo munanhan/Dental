@@ -89,6 +89,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{patient}', 'PatientController@delete');
 
+    Route::get('patient/intraday','PatientController@intraday');
+
 
     /*
      * Route OperationLog Api

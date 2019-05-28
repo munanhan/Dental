@@ -257,15 +257,16 @@
 </template>
 
 <script>
-import PatientInfo from "@/views/patient/PatientInfo/PatientInfo";
-import DisposalRecords from "@/views/patient/DisposalRecords/DisposalRecords";
-import ChargeInfo from "@/views/patient/ChargeInfo/ChargeInfo";
+import PatientInfo from "@/views/patient/patient_info/PatientInfo";
+import DisposalRecords from "@/views/patient/disposal_records/DisposalRecords";
+import ChargeInfo from "@/views/patient/charge_info/ChargeInfo";
 // import ImageInfo from "./ImageInfo";
-import MedicalRecordsInfo from "@/views/patient/MedicalRecordsInfo/MedicalRecordsInfo";
+import MedicalRecordsInfo from "@/views/patient/medical_recordsInfo/MedicalRecordsInfo";
 // import OutsideProcessing from "./OutsideProcessing";
 import ReturnVisitInfo from "@/views/patient/ReturnVisitInfo/ReturnVisitInfo";
-import ConsultingInfo from "./ConsultingInfo";
-import AddPatient from "@/views/patient/AddPatient/AddPatient";
+// import ConsultingInfo from "./ConsultingInfo";
+import AddPatient from "@/views/patient/add_patient/AddPatient";
+import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 
 export default {
@@ -279,9 +280,10 @@ export default {
         MedicalRecordsInfo,
         // OutsideProcessing,
         ReturnVisitInfo,
-        ConsultingInfo,
+        // ConsultingInfo,
         AddPatient,
-        AppointmentVisit
+        AppointmentVisit,
+        ConsultingInfo
     },
 
     props: {},
