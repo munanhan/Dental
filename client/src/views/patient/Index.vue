@@ -263,7 +263,7 @@ import ChargeInfo from "@/views/patient/charge_info/ChargeInfo";
 // import ImageInfo from "./ImageInfo";
 import MedicalRecordsInfo from "@/views/patient/medical_recordsInfo/MedicalRecordsInfo";
 // import OutsideProcessing from "./OutsideProcessing";
-import ReturnVisitInfo from "@/views/patient/return_visit_info/ReturnVisitInfo";
+import ReturnVisitInfo from "@/views/patient/ReturnVisitInfo/ReturnVisitInfo";
 // import ConsultingInfo from "./ConsultingInfo";
 import AddPatient from "@/views/patient/add_patient/AddPatient";
 import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";

@@ -108,7 +108,6 @@
         </el-form-item>
       </div> -->
             <div style="height:300px;overflow: auto">
-
                 <div style="display:flex">
                     <el-form-item
                         label="电话"
@@ -122,11 +121,12 @@
          
         ></i> -->
                     <el-form-item
-                        style="margin-left:30px;width:300px"
-                        label="年 龄"
-                        prop="age"
+                        style="margin-left:50px;width:300px"
+                        label="电子邮箱"
+                        prop="email"
                     >
-                        <el-input v-model="form.age"></el-input>
+                        <el-input v-model="form.email"></el-input>
+
                     </el-form-item>
                 </div>
 
@@ -136,70 +136,25 @@
                         prop="birthday"
                         style="width:300px"
                     >
-                        <!-- <el-input
-                            autocomplete="off"
+                        <el-date-picker
                             v-model="form.birthday"
-                        ></el-input> -->
-                        <el-date-picker
-                            v-model="form.value1"
                             type="date"
                             placeholder="选择日期"
                         >
                         </el-date-picker>
                     </el-form-item>
-
-                </div>
-
-                <div style="display:flex">
-                    <el-form-item
-                        label="患者来源"
-                        prop="source"
-                    >
-                        <el-select
-                            v-model="form.source"
-                            style="width:220px"
-                        >
-                            <el-option
-                                v-for="item in sourceList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                            >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <i
-                        class="el-icon-setting form-setting"
-                        @click="Patient_source"
-                    ></i>
-                    <div style="margin-top:10px;margin-left:20px">
-                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <el-radio
-                            v-model="form.category"
-                            label="1"
-                        >初诊</el-radio>
-                        <el-radio
-                            v-model="form.category"
-                            label="2"
-                        >复诊</el-radio>
-                    </div>
-                </div>
-                <div style="display:flex">
-                    <el-form-item
-                        label="就诊日期"
-                        prop="clinic_date"
-                    >
-                        <el-date-picker
-                            v-model="form.clinic_date"
-                            type="date"
-                            placeholder="选择日期"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-
                     <el-form-item
                         style="margin-left:50px;width:300px"
+                        label="年 龄"
+                        prop="age"
+                    >
+                        <el-input v-model="form.age"></el-input>
+                    </el-form-item>
+
+                </div>
+                <div style="display:flex">
+                    <el-form-item
+                        style="width:300px"
                         label="主治医生"
                         prop="attendingphysician"
                     >
@@ -217,22 +172,18 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-
-                </div>
-
-                <div style="display:flex">
                     <el-form-item
-                        label="患者分类"
-                        prop="group"
+                        label="患者来源"
+                        prop="source"
+                        style="margin-left:50px;"
                     >
                         <el-select
-                            v-model="form.patient_category"
-                            style="width:220px"
-                            placeholder="请选择"
+                            v-model="form.source"
+                            style="width:220px;"
                         >
                             <el-option
-                                v-for="item in categoryList"
-                                :key="item.value"
+                                v-for="item in sourceList"
+                                :key="item.id"
                                 :label="item.name"
                                 :value="item.name"
                             >
@@ -241,15 +192,8 @@
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
-                        @click="class_pat"
+                        @click="Patient_source"
                     ></i>
-                    <el-form-item
-                        style="margin-left:20px;width:300px"
-                        prop="content"
-                        label="患者备注"
-                    >
-                        <el-input v-model="form.content"></el-input>
-                    </el-form-item>
 
                 </div>
                 <div style="display:flex">
@@ -284,6 +228,68 @@
                         <el-input v-model="form.mem_card"></el-input>
                     </el-form-item>
                 </div>
+                
+                <div style="display:flex">
+                    <el-form-item
+                        label="就诊日期"
+                        prop="clinic_date"
+                    >
+                        <el-date-picker
+                            v-model="form.clinic_date"
+                            type="date"
+                            placeholder="选择日期"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <div style="margin-top:10px;margin-left:60px">
+                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <el-radio
+                            v-model="form.category"
+                            label="1"
+                        >初诊</el-radio>
+                        <el-radio
+                            v-model="form.category"
+                            label="2"
+                        >复诊</el-radio>
+                    </div>
+
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
+                        label="患者分类"
+                        prop="patient_category"
+                    >
+                        <el-select
+                            v-model="form.patient_category"
+                            style="width:220px"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in categoryList"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.name"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <i
+                        class="el-icon-setting form-setting"
+                        @click="class_pat"
+                    ></i>
+                    <el-form-item
+                        style="margin-left:20px;width:300px"
+                        prop="content"
+                        label="患者备注"
+                    >
+                        <el-input v-model="form.content"></el-input>
+                    </el-form-item>
+
+                </div>
+
                 <div>
                     <el-form-item
                         autocomplete="off"
@@ -356,20 +362,6 @@
                         label="既 往 史"
                         prop="anamneses"
                     >
-                        <!-- <el-select
-                            v-model="form.anamneses"
-                            style="width:570px"
-                            multiple
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in anamnesesList"
-                                :key="item.value"
-                                :label="item.name"
-                                :value="item.name"
-                            >
-                            </el-option>
-                        </el-select> -->
                         <el-select
                             v-model="form.anamneses"
                             style="width:570px"
@@ -395,7 +387,7 @@
                 </div>
                 <div style="display:flex">
                     <el-form-item
-                        label="社保号"
+                        label="社 保 号"
                         prop="society_no"
                     >
                         <el-input
@@ -405,12 +397,20 @@
 
                     </el-form-item>
                     <el-form-item
-                        style="margin-left:60px;width:300px"
+                        style="margin-left:50px;width:300px"
+                        label="电网咨询"
+                        prop="grid_consulting"
+                    >
+                        <el-input v-model="form.grid_consulting"></el-input>
+                    </el-form-item>
+
+                    <!-- <el-form-item
+                        style="margin-left:50px;width:300px"
                         label="电子邮箱"
                         porp="email"
                     >
                         <el-input v-model="form.email"></el-input>
-                    </el-form-item>
+                    </el-form-item> -->
                 </div>
                 <div style="display:flex">
                     <el-form-item
@@ -418,11 +418,11 @@
                         prop="impression_id"
                     >
                         <el-select
-                            v-model="form.impressions"
+                            v-model="form.impression_id"
                             style="width:220px"
                             multiple
                             filterable
-                            allow-create 
+                            allow-create
                             default-first-option
                             placeholder="请选择"
                         >
@@ -440,25 +440,9 @@
                         @click="pat_impre"
                     ></i>
                     <el-form-item
-                        style="margin-left:30px;width:300px"
-                        label="电网咨询"
-                        prop="grid_consulting"
-                    >
-                        <el-input v-model="form.grid_consulting"></el-input>
-                    </el-form-item>
-                </div>
-                <div style="display:flex">
-                    <el-form-item
-                        label="民族"
-                        prop=""
-                        style="width:300px"
-                    >
-                        <el-input></el-input>
-                    </el-form-item>
-                    <el-form-item
                         label="洁牙习惯"
                         prop="teeth_cleaning_habits"
-                        style="margin-left:60px;width:300px"
+                        style="margin-left:20px;width:300px"
                     >
                         <el-select
                             v-model="form.teeth_cleaning_habits"
@@ -475,11 +459,9 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <i
-                        class="el-icon-setting form-setting"
-                        @click="teeth_habit"
-                    ></i>
+
                 </div>
+                
                 <div style="display:flex">
                     <!-- <el-form-item
             label="民族"
@@ -523,7 +505,7 @@
                     </div>
                     <el-form-item
                         label="吸烟"
-                        style="margin-left:30px"
+                        style="margin-left:38px"
                         prop="smoking"
                     >
                         <div style="display:flex">
@@ -534,6 +516,20 @@
                             <div style="margin-left:10px">次/天</div>
                         </div>
                     </el-form-item>
+                </div>
+                <div style="display:flex">
+                    <el-form-item
+                        label="民族"
+                        prop="nation"
+                        style="width:300px"
+                    >
+                        <el-input v-model="form.nation"></el-input>
+                    </el-form-item>
+
+                    <i
+                        class="el-icon-setting form-setting"
+                        @click="teeth_habit"
+                    ></i>
                 </div>
                 <div style="display:flex">
 
@@ -618,17 +614,22 @@ export default {
             teethList: [],
 
             form: {
-                value1: "",
+                birthday: "",
+                content: "",
                 category: "1",
+                smoking: "",
                 teeth_cleaning_habits: "",
+                impressions: "",
+                patient_category: "",
                 clinic_date: "",
                 brush_day: "",
                 brush_minutes: "",
                 case_id: "",
                 name: "",
+                nation: "",
                 sex: 2,
                 phone: "",
-                birthday: "",
+                attendingphysician: "",
                 age: "",
                 source: "",
                 group: "",
@@ -637,7 +638,6 @@ export default {
                 patient_addresses: "",
                 society_no: "",
                 email: "",
-                impression_id: "",
                 grid_consulting: "",
                 rules: {
                     attendingphysician: [
@@ -665,6 +665,26 @@ export default {
                         {
                             required: true,
                             message: "请输入手机号",
+                            trigger: "blur"
+                        }
+                    ],
+                    email: [
+                        {
+                            required: true,
+                            message: "请输入邮箱",
+                            trigger: "blur"
+                        }
+                    ],
+                    birthday: [
+                        {
+                            required: true,
+                            message: "请输入邮箱",
+                            trigger: "blur"
+                        }
+                    ],
+                    age: [
+                        {
+                            required: true,
                             trigger: "blur"
                         }
                     ]
