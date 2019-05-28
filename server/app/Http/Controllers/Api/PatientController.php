@@ -49,6 +49,10 @@ class PatientController extends Controller
         return now()->format('Ymd');
     }
 
+
+    
+
+
     protected  function getCaseNumber()
     {
 
