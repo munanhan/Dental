@@ -19,7 +19,7 @@ class DisposalComboMenuController extends BaseController
 
             public function getById(){
                 //get by id
-                $id = $parms['id'] != ''?$parms['id']:0;
+                $id = $this->parms['id'] != ''?$this->parms['id']:0;
                 if (!$id) {
                     return message('缺少id',[],404);
                 }

@@ -27,7 +27,7 @@
                             >新增分店</el-button>
                         </div>
 
-                        <div class="store-item" v-for="item in clinicList">
+                        <div class="store-item" v-for="(item,key) in clinicList" :key="key">
                             <div
                                 class="content"
                                 @click="showInfo(item.id)"
