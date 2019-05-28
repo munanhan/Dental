@@ -83,18 +83,11 @@
                 <div style="margin-top:10px;margin-left:50px">
                     性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <el-radio
-                        v-model="form.sex"
-                        label="0"
-                    >男</el-radio>
-                    <el-radio
-                        v-model="form.sex"
-                        label="1"
-                    >女</el-radio>
-                    <el-radio
-                        v-model="form.sex"
-                        label="2"
-                    >未填</el-radio>
+                    <el-radio-group v-model="form.sex">
+                        <el-radio :label="0">男</el-radio>
+                        <el-radio :label="1">女</el-radio>
+                        <el-radio :label="2">未填</el-radio>
+                    </el-radio-group>
                 </div>
 
             </div>
@@ -631,7 +624,7 @@ export default {
                 brush_minutes: "",
                 case_id: "",
                 name: "",
-                sex: "",
+                sex: 2,
                 phone: "",
                 birthday: "",
                 age: "",
