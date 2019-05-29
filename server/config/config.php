@@ -22,7 +22,9 @@ return [
                     'disposal_combos' => '处置组合管理',
                     'patients' => '会员管理',
                     'users' => '员工管理',
-                    'patient_recycling_bin' => '患者回收管理'
+                    'patient_recycling_bin' => '患者回收管理',
+                    'clinics' => '诊所管理',
+                    'companies' => '公司管理'
                 ],
 
     'patient_group' => [

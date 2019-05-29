@@ -90,6 +90,7 @@ export default {
 
             if (newValue) {
                 that.getData();
+
             }
         }
     },

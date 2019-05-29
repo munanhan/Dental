@@ -39,6 +39,8 @@ class BaseController extends Controller
         //方法
         protected $fail = false;
         //执行是否的方法
+        protected $upload = [];
+        //用于判断是否有上传文件
 
         public function __construct(Request $request){
 
@@ -63,8 +65,8 @@ class BaseController extends Controller
                        $table = str_replace($v,$v[0].'_'.$v[1],$table);
                     }
                 }
-                
-                $table = strtolower(preg_replace("/y$/",'ies',$table));
+
+                $table = strtolower(preg_replace("/ys$/",'ies',$table));
                 //y变成ies
 
                 $this->table = $this->table == ''?$table:$this->table;
@@ -83,6 +85,7 @@ class BaseController extends Controller
             if (!$this->fail) {
                 //判断写入是否失败，成功则插入日志
                 //日志写入部分
+                //要是用这个功能需要去config文件里面添加对应的模块以及名称，模块key为对应的表名，value为模块名称
                 $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
                 $module = config('config.module.'.$this->table);
                 //模块
@@ -177,7 +180,11 @@ class BaseController extends Controller
             //get by id
             // $data = empty($this->join)?$this->model->getById(['id' => $this->parms['id']]):$this->getBySelect()['data'][0];
             $data = $this->model->getById(['id' => $this->parms['id']]);
-            return message('成功',$data,200);
+            if ($data) {
+                return message('获取成功',$data,200);
+            }
+            return message('获取失败',[],500);
+            
         }
 
         public function addData(){
@@ -195,28 +202,15 @@ class BaseController extends Controller
         }
 
         public function update(){
-            //改
-            $parms = $this->parms;
-            $where['where'] = ['id' => $parms['id']];
-            unset($parms['id']);
-            $where['update'] = $parms;
-
-            $res = $this->model->updateData($where);
-
-            if ($res) {
-
-                if (empty($this->join)) {
-
-                    return message('修改成功',$this->model->getById(['id' => $this->parms['id']]),200);
-                }
-
-                return message('修改成功',$this->getBySelect()['data'][0],200);
-
+            //改,分两种情况，普通修改和带有上传文件的修改,用是否设置上传文件来判断
+            if(empty($this->upload)){
+                $res = $this->updateNormal();
+                return message($res['msg'],$res['data'],$res['code']);
             }
-            else{
-                $this->fail = true;
-                return message('修改失败',[],500);
-            }
+
+            $res = $this->updateHasUpload();
+            return message($res['msg'],$res['data'],$res['code']);
+
         }
 
         public function delete($id){
@@ -271,4 +265,95 @@ class BaseController extends Controller
               return message('上传成功',$res,200);
 
         }
+
+        public function updateHasUpload(){
+            //修改，包含有上传文件的情况
+            $parms = $this->parms;
+            $where['where'] = ['id' => $parms['id']];
+
+            $image_url_keys = $this->upload;
+            //处理上传图片
+            foreach ($parms as $k => $v) {
+                if (in_array($k,$image_url_keys) && $v != '') {
+                        if(preg_match("/\/uploads\/temp\/.+/", $v,$preg)){
+
+                            $path = '/uploads/'.$k.'/';
+
+                            $dir = $_SERVER['DOCUMENT_ROOT'].$path;//目录
+
+                            if (!is_dir($dir)) {
+                                mkdir($dir,0777,true);
+                            }
+
+                            $temp_file = $_SERVER['DOCUMENT_ROOT'].$preg[0];
+
+                            $a = explode(' ', microtime());
+                            $t = $a[1].($a[0]*1000000);//生成新的随机名字
+
+                            $new_file = Auth::user()['id'].$t.'.'.explode('.', $preg[0])[1];//带上用户id防止重复并且更好识别
+
+                            $old_file = $this->model->getValue(['id' => $parms['id']],$k);
+                            if ($old_file) {
+                                //说明存在旧文件
+                                $old_file = $_SERVER['DOCUMENT_ROOT'].$old_file;
+                                //需要先删除掉旧文件
+                                @unlink($old_file);
+                            }
+                            copy($temp_file, ($dir.$new_file));//复制临时文件到新目录
+                            @unlink($temp_file);//删除临时文件
+
+                            $parms[$k] = $path.$new_file;
+
+                        }
+                        else{
+                            unset($parms[$k]);
+                        }
+                }
+            }
+            unset($parms['id']);
+            $where['update'] = $parms;
+
+            $res = $this->model->updateData($where);
+
+            if ($res) {
+
+                if (empty($this->join)) {
+
+                    return [ 'msg' => '修改成功.','data' => $this->model->getById(['id' => $this->parms['id']]),'code' => 200 ];
+                }
+
+                return [ 'msg' => '修改成功.','data' => $this->getBySelect()['data'][0],'code' => 200 ];
+
+            }
+            else{
+                $this->fail = true;
+                return [  'msg' => '修改失败.','data' => [],'code' => 500 ];
+            }
+        }
+
+        public function updateNormal(){
+            //改,没有上传文件的时候
+            $parms = $this->parms;
+            $where['where'] = ['id' => $parms['id']];
+            unset($parms['id']);
+            $where['update'] = $parms;
+
+            $res = $this->model->updateData($where);
+
+            if ($res) {
+
+                if (empty($this->join)) {
+
+                    return [ 'msg' => '修改成功.','data' => $this->model->getById(['id' => $this->parms['id']]),'code' => 200 ];
+                }
+
+                return [ 'msg' => '修改成功.','data' => $this->getBySelect()['data'][0],'code' => 200 ];
+
+            }
+            else{
+                $this->fail = true;
+                return [  'msg' => '修改失败.','data' => [],'code' => 500 ];
+            }
+        }
+
 }
