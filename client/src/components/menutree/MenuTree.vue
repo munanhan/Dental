@@ -30,7 +30,42 @@
                                 class="sub-content"
                             >
                                 <ul class="sub-menu theme-nav">
-                                    <router-link
+
+                                    <template v-for="(citem, index) in item.children">
+                                        <li
+                                            v-if="citem.isDialog"
+                                            :key="citem.name + index + citem.url"
+                                            class="sub-menu-item"
+                                            @click="showDialog('_' + citem.parent_id + citem.name)"
+                                        >
+                                            <div class="menu-content">
+                                                <i
+                                                    class="menu-icon"
+                                                    :class="citem.icon"
+                                                ></i>
+                                                <div class="menu-text">{{citem.name}}</div>
+                                            </div>
+                                        </li>
+
+                                        <router-link
+                                            v-else
+                                            :key="citem.name + index + citem.url"
+                                            tag="li"
+                                            :to="citem.url"
+                                            class="sub-menu-item"
+                                            exact-active-class="active theme-nav-active-font-color"
+                                        >
+                                            <div class="menu-content">
+                                                <i
+                                                    class="menu-icon"
+                                                    :class="citem.icon"
+                                                ></i>
+                                                <div class="menu-text">{{citem.name}}</div>
+                                            </div>
+                                        </router-link>
+                                    </template>
+
+                                    <!-- <router-link
                                         v-for="(citem, index) in item.children"
                                         :key="citem.name + index + citem.url"
                                         tag="li"
@@ -45,7 +80,7 @@
                                             ></i>
                                             <div class="menu-text">{{citem.name}}</div>
                                         </div>
-                                    </router-link>
+                                    </router-link> -->
                                 </ul>
                             </div>
                         </transition>
@@ -53,9 +88,26 @@
                     </div>
                 </li>
 
+                <!-- 弹窗 -->
+                <li
+                    v-if="item.isDialog"
+                    class="menu-item"
+                    :key="item.name + index + item.url"
+                    @click="showDialog('_' + item.parent_id +  + item.name)"
+                >
+                    <div class="menu-content">
+                        <i
+                            class="menu-icon"
+                            :class="item.icon"
+                        ></i>
+                        <div class="menu-text">{{item.name}}</div>
+                    </div>
+                </li>
+
+                <!-- 非弹窗 -->
                 <router-link
                     tag="li"
-                    v-if="item.url"
+                    v-if="item.url && !item.isDialog"
                     :key="item.name + index + item.url"
                     :to="item.url"
                     class="menu-item"
@@ -71,6 +123,15 @@
                 </router-link>
             </template>
         </ul>
+
+        <!-- 注入所有的弹窗 -->
+        <template v-for="(item) in dialogComponent">
+            <div
+                :key="item.name"
+                :is="item.component"
+                :show.sync="dialogShowFlag[item.name]"
+            ></div>
+        </template>
     </div>
 </template>
 
@@ -87,7 +148,11 @@ export default {
 
     data() {
         return {
-            menuData: []
+            menuData: [],
+
+            //弹窗的组件
+            dialogComponent: [],
+            dialogShowFlag: {}
         };
     },
 
@@ -122,9 +187,21 @@ export default {
                             item.childTop = "0px";
                             item.childLeft = "-100%";
                             item.zIndex = 3616;
+
+                            //因为层次只有两层，不用处理那么多
+                            for(var j = 0; j < item.children.length; j++){
+                                var citem = item.children[j];
+
+                                if(citem.isDialog){
+                                    that.setDialogFlag(citem);
+                                }
+                            }
                         }
 
-                        // item.showChild = true;
+                        //处理dialog
+                        if (item.isDialog) {
+                            that.setDialogFlag(item);
+                        }
                     }
                 }
 
@@ -136,6 +213,28 @@ export default {
     },
 
     methods: {
+        
+        //动态注入弹窗
+        setDialogFlag(item) {
+            let that = this,
+                dialogName = "_" + item.parent_id + item.name;
+
+            that.dialogComponent.push({
+                name: dialogName,
+                component: item.component
+            });
+
+            //设置弹窗的标志
+            that.$set(that.dialogShowFlag, dialogName, false);
+        },
+
+        //设置弹窗的标志，自动弹出窗口
+        showDialog(flag) {
+            let that = this;
+
+            that.$set(that.dialogShowFlag, flag, true);
+        },
+
         subShowHandler(sub, flag) {
             let that = this;
 
