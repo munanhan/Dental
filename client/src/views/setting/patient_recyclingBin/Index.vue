@@ -4,12 +4,12 @@
       <div class="search">
         <el-col :span="3">
               <span class="mr10">
-                  <el-input v-model="search.name" placeholder="姓名"></el-input>
+                  <el-input v-model="search.patient_name" placeholder="姓名"></el-input>
               </span>
         </el-col>
         <el-col :span="3">
               <span class="mr10">
-                  <el-input v-model="search.phone" placeholder="电话"></el-input>
+                  <el-input v-model="search.patient_phone" placeholder="电话"></el-input>
               </span>
         </el-col>
         <el-col :span="2">
@@ -42,28 +42,28 @@
               >
               </el-table-column>
               <el-table-column
-                prop="name"
+                prop="patient_name"
                 label="患者姓名"
               >
               </el-table-column>
               <el-table-column
-                prop="age"
+                prop="patient_age"
                 label="年龄">
               </el-table-column>
               <el-table-column
-                prop="sex"
+                prop="patient_sex"
                 label="性别">
               </el-table-column>
               <el-table-column
-                prop="phone"
+                prop="patient_phone"
                 label="电话">
               </el-table-column>
               <el-table-column
-                prop="source"
+                prop="patient_source"
                 label="患者来源">
               </el-table-column>
               <el-table-column
-                prop="content"
+                prop="patient_content"
                 label="患者备注">
               </el-table-column>
               <el-table-column
@@ -254,6 +254,7 @@ export default {
         let that = this;
 
         that.$nextTick(() => {
+            that.getData();
             that.resizeTable();
         });
 

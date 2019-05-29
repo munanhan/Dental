@@ -354,9 +354,11 @@ export default {
       created() {},
       mounted() {
         let that = this;
+        
 
         that.$nextTick(() => {
             that.resizeTable();
+            that.getMenu();
         });
 
         //监听事件,由layout那边的resize抛出的

@@ -18,7 +18,7 @@ class MemberController extends BaseController
         //连表
         $this->group = ['patients.id'];
         //分组group
-        $this->field = 'patients.id,patients.name,case_id,age,sex,phone,patient_members.name as member_level,sum(receipts) as receipts,patients.updated_at,member_id';
+        $this->field = 'patients.id,patients.patient_name,case_id,patient_age,patient_sex,patient_phone,patient_members.name as member_level,sum(receipts) as receipts,patients.updated_at,member_id';
         //表字段
         $this->replace_field = ['name' => 'patients.name','start_money' => '','end_money' => ''];
         //过滤字段
