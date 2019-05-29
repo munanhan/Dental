@@ -25,7 +25,7 @@
                     </div>
                     <div class="background-right">
                         <div class="right-top">
-                            <div>初诊 &nbsp; 1212</div>
+                            <div style="">初诊 &nbsp; 1212</div>
                             <div class="right-i-content">
                                 <i
                                     class="el-icon-printer right-i"
@@ -188,7 +188,7 @@ export default {
                 }
                 .background-left {
                     // border:1px solid red;
-                    width: 250px;
+                    width: 220px;
                     .left-top {
                         // border:1px solid red;
                         font-weight: bold;
@@ -206,7 +206,7 @@ export default {
                         // border: 1px solid red;
                         cursor: pointer;
                         .diagnose-detail {
-                            // border: 1px solid red;
+                            border: 1px solid #f8f8f8;
                             display: flex;
                             margin-top: 15px;
 
@@ -249,6 +249,10 @@ export default {
                                     }
                                 }
                             }
+                            &:hover{
+                                color: #1d1d1d;
+                                border: 1px solid #cfcfcf;
+                            }
                         }
                     }
                 }
@@ -257,11 +261,12 @@ export default {
                     .right-top {
                         // border: 1px solid red;
                         font-weight: bold;
-                        margin-top: 5px;
+                        margin-left:20px;
+                        margin-top: 3px;
                         display: flex;
                         font-size: 20px;
                         .right-i-content {
-                            border: 1px solid red;
+                            // border: 1px solid red;
                             margin-left: 620px;
                             .right-i {
                                 // border: 1px solid red;
@@ -278,7 +283,7 @@ export default {
                             width: 100px;
                             height: 20px;
                             background-color: #f8f8f8;
-                            border: 0;
+                            border: 1px solid #f8f8f8;
                             margin: 0 5px;
                             &:focus {
                                 background: white;
@@ -303,7 +308,7 @@ export default {
                         background-color: #f8f8f8;
                         margin-top: 10px;
                         width: 900px;
-                        border: 0;
+                        border: 1px solid #f8f8f8;
                         &:focus {
                             background: white;
                         }

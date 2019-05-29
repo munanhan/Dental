@@ -167,7 +167,7 @@ export default {
             cursor: pointer;
             border: 1px solid #c4c4c4;
             margin: 10px 20px;
-            height: 300px;
+            height: 200px;
             border-left-width: 10px;
             &:hover {
                 color: @color;
@@ -179,7 +179,7 @@ export default {
                 font-size: 20px;
                 font-weight: bold;
                 margin: 10px 0;
-            color: #000;
+                color: #000;
 
                 // border: 1px solid red;
             }
@@ -201,9 +201,7 @@ export default {
                         color: #000;
                     }
                 }
-               
             }
-            
         }
     }
     .con-bottom {

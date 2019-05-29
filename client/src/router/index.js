@@ -158,38 +158,41 @@ const getMenuData = data => {
                     quickTarget[parent_id].children || [];
                 quickTarget[parent_id].children.push(item);
             }
-        } else if (item.parent_id == 0) {
-            menu.push(item);
+        } else {
+            //处理普通的菜单
+            if (item.parent_id == 0) {
+                menu.push(item);
 
-            //追加父路由
-            routerArr.push(routerItem);
-        } else if (parent_id != 0 && quickTarget[parent_id]) {
-            //处理菜单关联的子
-            quickTarget[parent_id].children =
-                quickTarget[parent_id].children || [];
-            quickTarget[parent_id].children.push(item);
+                //追加父路由
+                routerArr.push(routerItem);
+            } else if (parent_id != 0 && quickTarget[parent_id]) {
+                //处理菜单关联的子
+                quickTarget[parent_id].children =
+                    quickTarget[parent_id].children || [];
+                quickTarget[parent_id].children.push(item);
 
-            //路由------------------------------------------
-            routerQuickTarget[parent_id].children =
-                routerQuickTarget[parent_id].children || [];
-            routerQuickTarget[parent_id].children.push(routerItem);
-
-            //处理子路由
-            if (parent_id != 0) {
-                //处理面包屑
-                var parentItem = routerQuickTarget[parent_id];
-                routerItem.meta.paths = [
-                    ...(parentItem.meta.paths || []),
-                    {
-                        name: parentItem.meta.name
-                    }
-                ];
+                //路由------------------------------------------
+                routerQuickTarget[parent_id].children =
+                    routerQuickTarget[parent_id].children || [];
+                routerQuickTarget[parent_id].children.push(routerItem);
 
                 //处理子路由
-                routerItem.path = routerItem.path.replace(
-                    parentItem.path + "/",
-                    ""
-                );
+                if (parent_id != 0) {
+                    //处理面包屑
+                    var parentItem = routerQuickTarget[parent_id];
+                    routerItem.meta.paths = [
+                        ...(parentItem.meta.paths || []),
+                        {
+                            name: parentItem.meta.name
+                        }
+                    ];
+
+                    //处理子路由
+                    routerItem.path = routerItem.path.replace(
+                        parentItem.path + "/",
+                        ""
+                    );
+                }
             }
 
             //---------------------------------------------

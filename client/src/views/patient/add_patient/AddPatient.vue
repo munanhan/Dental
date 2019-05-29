@@ -84,13 +84,11 @@
                         prop="birthday"
                         style="width:300px"
                         @input="birthday"
-                        
                     >
                         <el-date-picker
                             v-model="form.birthday"
                             type="date"
                             placeholder="选择日期"
-                           
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -134,6 +132,34 @@
                     >
                         <el-input v-model="form.mem_card"></el-input>
                     </el-form-item>
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
+                        label="就诊日期"
+                        prop="clinic_date"
+                    >
+                        <el-date-picker
+                            v-model="form.clinic_date"
+                            type="date"
+                            placeholder="选择日期"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <div style="margin-top:10px;margin-left:60px">
+                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <el-radio
+                            v-model="form.category"
+                            label="1"
+                        >初诊</el-radio>
+                        <el-radio
+                            v-model="form.category"
+                            label="2"
+                        >复诊</el-radio>
+                    </div>
+
                 </div>
 
                 <div style="display:flex">
@@ -303,6 +329,39 @@
 
 
 
+                </div>
+
+                <div style="display:flex">
+                    <!-- <el-form-item
+            label="民族"
+            porp="national"
+          >
+            <el-select
+              style="width:220px"
+              v-model="form.national"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in form.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item> -->
+                    <el-form-item
+                        label="刷牙"
+                        prop="brush_teeth"
+                    >
+                        <div style="display:flex">
+                            <el-input
+                                style="width:60px"
+                                v-model="form.brush_day"
+                            ></el-input>
+                            <div style="margin-left:10px">次/天</div>
+                        </div>
+                    </el-form-item>
 
 
 
@@ -485,9 +544,9 @@ export default {
     },
 
     methods: {
-        birthday(){
+        birthday() {
             // console.log(this.form.birthday)
-            console.log(111)
+            console.log(111);
         },
         submitFrom() {
             let that = this;

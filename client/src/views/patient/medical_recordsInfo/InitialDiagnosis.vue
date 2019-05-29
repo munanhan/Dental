@@ -176,6 +176,12 @@
                                     <td align="center">主页检查</td>
                                     <input class="middle-input">
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <input class="middle-input">
+                                    <i class="el-icon-delete-solid middle-i"></i>
+                                    <input class="middle-input">
+                                    <i class="el-icon-delete-solid middle-i"></i>
+                                    <input class="middle-input">
+                                    <i class="el-icon-delete-solid middle-i"></i>
                                 </tr>
                                 <tr>
                                     <td align="center">诊 断</td>
@@ -197,6 +203,11 @@
                                     <input style="height:35px">
                                 </tr>
                             </table>
+                            <div style="margin-top:30px;
+                            background-color:white;
+                            border:1px solid red;
+                            height:50px:width:100%">添加患者影像</div>
+                            <div></div>
                         </div>
                     </div>
                     <div class="right-bottom">
@@ -386,8 +397,9 @@ export default {
                 margin-left: 450px;
             }
             .middle-table {
+                height: 360px;
+                overflow: auto;
                 margin-top: 5px;
-                margin-left: 2px;
                 .middle-input {
                     width: 490px;
                 }

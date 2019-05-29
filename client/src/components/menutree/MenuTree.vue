@@ -32,6 +32,7 @@
                                 <ul class="sub-menu theme-nav">
 
                                     <template v-for="(citem, index) in item.children">
+                                        <!-- 弹窗 -->
                                         <li
                                             v-if="citem.isDialog"
                                             :key="citem.name + index + citem.url"
@@ -47,6 +48,7 @@
                                             </div>
                                         </li>
 
+                                        <!-- （普通页面）非弹窗 -->
                                         <router-link
                                             v-else
                                             :key="citem.name + index + citem.url"
@@ -104,7 +106,7 @@
                     </div>
                 </li>
 
-                <!-- 非弹窗 -->
+                <!-- （普通页面）非弹窗 -->
                 <router-link
                     tag="li"
                     v-if="item.url && !item.isDialog"
@@ -125,9 +127,9 @@
         </ul>
 
         <!-- 注入所有的弹窗 -->
-        <template v-for="(item) in dialogComponent">
+        <template v-for="(item, index) in dialogComponent">
             <div
-                :key="item.name"
+                :key="index + item.name"
                 :is="item.component"
                 :show.sync="dialogShowFlag[item.name]"
             ></div>

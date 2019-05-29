@@ -179,9 +179,12 @@
                 </el-tab-pane>
                 <el-tab-pane
                     label="预约信息"
-                    name="12"
+                    name="bookingInformation"
                 >
-
+                    <booking-information 
+                         v-if="bookingInformation"
+                        :refresh.sync="bookingInformation"
+                    ></booking-information>
                 </el-tab-pane>
                 <el-tab-pane
                     label="处置记录"
@@ -268,6 +271,7 @@ import ReturnVisitInfo from "@/views/patient/ReturnVisitInfo/ReturnVisitInfo";
 import AddPatient from "@/views/patient/add_patient/AddPatient";
 import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
+import BookingInformation from "./BookingInformation";
 
 export default {
     name: "Patient",
@@ -283,7 +287,8 @@ export default {
         // ConsultingInfo,
         AddPatient,
         AppointmentVisit,
-        ConsultingInfo
+        ConsultingInfo,
+        BookingInformation
     },
 
     props: {},
@@ -336,6 +341,7 @@ export default {
             // outsideProcessing: false,
             returnVisitInfo: false,
             consultingInfo: false,
+            bookingInformation:false,
 
             data: [
                 {
