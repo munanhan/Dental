@@ -1,13 +1,13 @@
 <template>
     <el-dialog
-        title="新增消毒"
+        title="问诊"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog add-disinfect-dialog"
         :close-on-click-modal="false"
         v-dialog-drag
     >
-		1312312
+		123213123123123123213213
 
     </el-dialog>
 </template>

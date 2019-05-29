@@ -154,7 +154,9 @@ export default {
 
             //弹窗的组件
             dialogComponent: [],
-            dialogShowFlag: {}
+            dialogShowFlag: {},
+
+            currentSub: null
         };
     },
 
@@ -215,7 +217,7 @@ export default {
     },
 
     methods: {
-        
+
         //动态注入弹窗
         setDialogFlag(item) {
             let that = this,
@@ -233,12 +235,18 @@ export default {
         //设置弹窗的标志，自动弹出窗口
         showDialog(flag) {
             let that = this;
+            
+            //隐藏左边的菜单
+            that.currentSub && (that.currentSub.showChild = false);
 
             that.$set(that.dialogShowFlag, flag, true);
         },
 
         subShowHandler(sub, flag) {
             let that = this;
+            
+            //记录sub，用于点击弹窗后隐藏
+            that.currentSub = sub;
 
             if (flag != sub.showChild) {
                 sub.showChild = flag;
