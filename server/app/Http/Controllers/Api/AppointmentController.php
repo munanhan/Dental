@@ -69,6 +69,30 @@ class AppointmentController extends Controller
 
         return message('获取成功',$res,200);
     }
+    public function getListAppointment(Request $request){
+        $data=$request->all();
+        if($data['dtfm'] > $data['dtto']){
+            $start = $data['dtto'];
+            $end = $data['dtfm'];
+        }else{
+            $end = $data['dtto'];
+            $start = $data['dtfm'];
+        }
+        $appoinment =new Appointment();
+        if($data['statusRadio'] == '全部'){
+            $res =$appoinment->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+            get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+
+        }else{
+            $res =$appoinment->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->where('status',$data['statusRadio'])
+                ->leftJoin('patients','appointments.patient_id','=','patients.id')->
+                get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+
+        }
+
+
+        return message('获取成功',$res,200);
+    }
     //获取某个月的数据
     public function getMonthAppointment(Request $request){
         $data=$request->all();

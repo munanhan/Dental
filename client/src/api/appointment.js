@@ -53,3 +53,10 @@ export function getByIdAppointment(data){
         params:data,
     })
 }
+export function getListAppointment(data){
+    return request({
+        url:`${prefix}/getListAppointment`,
+        method:'get',
+        params:data,
+    })
+}

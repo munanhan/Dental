@@ -268,6 +268,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
 
+    Route::get('appointment/getListAppointment','AppointmentController@getListAppointment');
+
     Route::get('appointment/getByIdAppointment','AppointmentController@getByIdAppointment');
 
     Route::post('appointment/add_appointment','AppointmentController@addAppointment');

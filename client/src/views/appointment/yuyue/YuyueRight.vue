@@ -58,7 +58,10 @@
         </div>
       </div>
       <div v-show="navBar[2].active" class="header-month" style="color:#fff;">2</div>
-      <div v-show="navBar[3].active" class="header-list">3</div>
+      <div v-show="navBar[3].active" class="header-list">
+        <!-- ooooooooooooooooooooooooooooooooooooooooo -->
+        <el-row class="right_top">{{showTime.dtfm}} - {{showTime.dtto}}(共{{showTime.total_day}}天)</el-row>
+      </div>
     </div>
     <div class="date-body">
       <div v-show="navBar[0].active" class="day">
@@ -167,6 +170,7 @@
 
 <script>
 import { formatDate, addClass, inArray } from "@/common/util.js";
+import Bus from "@/assets/Bus.js";
 import AddYuyue from "./AddYuyue.vue";
 import StatusDialog from "./StatusDialog.vue";
 import YuyueWeek from "./YuyueWeek.vue";
@@ -192,13 +196,17 @@ export default {
       dayTime: this.dayTime,
       getWeekStartEnd: this.getWeekStartEnd,
       getTodayAppointment: this.getTodayAppointment,
-      statusIcon:this.statusIcon,
+      statusIcon: this.statusIcon
     };
   },
   created() {
     this.$nextTick(function() {
       this.getWeekStartEnd(this.chooseDate);
       this.getTodayAppointment();
+    });
+    let self = this;
+    Bus.$on("showTime", function(val) {
+      self.showTime = val;
     });
   },
   data() {
@@ -242,7 +250,13 @@ export default {
       yuyue_time: null,
       yuyue_res: [],
       yuyue_id: null,
-      target: null
+      target: null,
+      showTime: {
+        //显示计算总共时间
+        dtfm: "",
+        dtto: "",
+        total_day: 0
+      }
     };
   },
 
@@ -257,6 +271,7 @@ export default {
           self.$set(item, "active", false);
         });
         this.$set(item, "active", true);
+        Bus.$emit("send", this.navBar);
       });
     },
     search() {
@@ -359,10 +374,13 @@ export default {
     },
 
     addYuyue(item) {
-      
       let date = formatDate(new Date(), "yyyy-MM-dd");
       this.isAttrDataTime(event.target);
-      if (this.chooseDate < date && !this.target.hasAttribute("data-id") && !this.target.hasAttribute("id") ) {
+      if (
+        this.chooseDate < date &&
+        !this.target.hasAttribute("data-id") &&
+        !this.target.hasAttribute("id")
+      ) {
         this.dialogVisible = true;
         return;
       }
@@ -409,23 +427,23 @@ export default {
       this.isAttrDataTime(dom);
     },
     //根据状态值，处理icon
-    statusIcon(statusValue,id) {
+    statusIcon(statusValue, id) {
       let strhtml;
       switch (statusValue) {
-        case '0':
+        case "0":
           strhtml = ` <div class="left" id="${id}"><i class="far fa-clock" style="color:#fff;"></i></div>`;
           break;
-        case '1':
+        case "1":
           strhtml = `<div class="left" style="background-color:rgb(160, 101, 238)" id="${id}"><i class="far fa-thumbs-up" style="color:#fff;"></i></div>`;
           break;
-        case '2':
+        case "2":
           strhtml = `<div class="left" style="background-color:rgb(50, 17, 233)" id="${id}"><i class="fas fa-warehouse" style="color:#fff;"></i></div>`;
           break;
-        case '3':
+        case "3":
           strhtml = `<div class="left" style="background-color:#f40;" id="${id}"><i class="fas fa-exclamation-triangle" style="color:#fff;"></i></div>`;
           break;
-        case '4':
-        strhtml = `<div class="left" id="${id}"><i class="el-icon-delete"></i></div>`
+        case "4":
+          strhtml = `<div class="left" id="${id}"><i class="el-icon-delete"></i></div>`;
       }
       return strhtml;
     }
@@ -513,8 +531,8 @@ export default {
           }"><div class="inner">    
                   `;
           //-------------------------------------------------------
-        
-         strhtml += this.statusIcon(item.status,item.id);
+
+          strhtml += this.statusIcon(item.status, item.id);
 
           strhtml += `
               <div class="right">
