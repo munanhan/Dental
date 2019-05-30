@@ -51,3 +51,11 @@ export function deleteMember(data){
     })
 }
 
+export function updateOrInsert(data){
+    return request({
+        url: `${prefix}/update_store`,
+        method: 'post',
+        data: data
+    });
+}
+

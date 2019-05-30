@@ -10,15 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientMemberController extends BaseController
 {
-
-    // public function deleteMember($id)
-    // {
-
- 
-    //     $member=PatientMember::find($id);
-
-    //     $member->delete();
-
-    //     return message('',$member);
-    // }
+    public function store(Request $request)
+    {
+        PatientMember::updateOrInsert(['id'=>request('id')],$request->all());
+        return message('','','200');
+    }
 }

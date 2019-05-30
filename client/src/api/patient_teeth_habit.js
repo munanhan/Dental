@@ -1,8 +1,8 @@
 import request from "../common/request";
 
-const prefix = "/patient_anamnesis";
-//既往史
-export function getAnamneses(data) {
+const prefix = "/patient_teeth_habits";
+//洁牙习惯
+export function get(data) {
     return request({
         url: `${prefix}`,
         method: "get",
@@ -10,7 +10,7 @@ export function getAnamneses(data) {
     });
 }
 
-export function addAnamneses(data) {
+export function store(data) {
     return request({
         url: `${prefix}`,
         method: "post",
@@ -18,10 +18,18 @@ export function addAnamneses(data) {
     });
 }
 
-export function delAnamneses(data) {
+export function del(data) {
     return request({
         url: `${prefix}/:id`,
         method: "delete",
+        params: data
+    });
+}
+
+export function update(data) {
+    return request({
+        url: `${prefix}/:id`,
+        method: "post",
         params: data
     });
 }

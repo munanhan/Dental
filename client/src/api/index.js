@@ -12,12 +12,12 @@ import * as disposal_combo_menu from "./disposal_combo_menu";
 import * as patient_member from "./patient_member";
 import * as member from "./member";
 import * as staff from "./staff";
-import * as resource from "./patient_resource";
+import * as source from "./patient_source";
 import * as category from "./patient_category";
-import * as patient_allergy from "./patient_allergy";
-import * as patient_anamneses from "./patient_anamneses";
-import * as patient_teeth_habits from "./patient_teeth_habits";
-import * as patient_impressions from "./patient_impressions";
+import * as allergy from "./patient_allergy";
+import * as anamnesis from "./patient_anamnesis";
+import * as teethHabit from "./patient_teeth_habit";
+import * as impressions from "./patient_impression";
 import * as clinic from './clinic'
 import * as area from './area'
 
@@ -37,14 +37,14 @@ const apis = {
     patient_member,
     member,
     staff,
-    resource,
+    source,
     clinic,
     area,
     category,
-    patient_allergy,
-    patient_anamneses,
-    patient_teeth_habits,
-    patient_impressions
+    allergy,
+    anamnesis,
+    teethHabit,
+    impressions,
 };
 
 const install = function(Vue) {

@@ -2,7 +2,7 @@ import request from "../common/request";
 
 const prefix = "/patient_categories";
 //患者分类
-export function getCategory(data) {
+export function get(data) {
     return request({
         url: `${prefix}`,
         method: "get",
@@ -10,7 +10,7 @@ export function getCategory(data) {
     });
 }
 
-export function addCategory(data) {
+export function store(data) {
     return request({
         url: `${prefix}`,
         method: "post",
@@ -18,10 +18,14 @@ export function addCategory(data) {
     });
 }
 
-export function delCategory(data) {
+export function del(data) {
     return request({
         url: `${prefix}/:id`,
         method: "delete",
         params: data
     });
+}
+
+export function update(data) {
+
 }
