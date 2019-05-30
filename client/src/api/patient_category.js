@@ -26,6 +26,5 @@ export function del(data) {
     });
 }
 
-export function update(data) {
 
-}
+

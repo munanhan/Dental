@@ -47,6 +47,25 @@ return [
                                            'license_image_url' => 'unique:营业执照照片',
                                            'card_image_url' => 'unique:身份证照片'
                                          ]
-                          ]
+                          ],
+
+    'PatientMemberController'=>[
+        'store'=>[
+            'name'=>'unique:会员等级|type:string',
+            'discount'=>'unique:折扣|type:int|min:1|max:100',
+        ]
+    ],
+
+    'PatientCategoryController'=>[
+      'store'=>[
+          'name'=>'unique:患者分类|type:string',
+      ]
+    ],
+
+    'PatientTeethHabitController'=>[
+        'store'=>[
+            'name'=>'unique:洁牙习惯|type:string',
+        ]
+    ],
 
 ];

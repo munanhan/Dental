@@ -13,8 +13,15 @@ class PatientMemberController extends BaseController
 
     public function store(Request $request)
     {
-        PatientMember::updateOrInsert(['id'=>request('id')],$request->all());
-        return message('','','200');
+        $member= PatientMember::find(request('id'));
+        if($member){
+            $member->name=request('name');
+            $member->discount=request('discount');
+            $member->save();
+        }else{
+            $member=PatientMember::create($request->all());
+        }
+        return message('',$member,'200');
     }
 
 }

@@ -99,7 +99,6 @@
 
         <add-membership-grade
                 :show.sync="add_grade_show"
-                @flush="flush"
         ></add-membership-grade>
     </div>
 </template>
@@ -122,7 +121,6 @@
                 add_grade_show: false,
                 tableHeight: "340px",
                 tableData: [],
-
                 member_menu: {
                     sel: null,
                     columns: [
@@ -138,7 +136,6 @@
                     ],
                     data:[],
                 },
-
             };
         },
         created() {
@@ -186,6 +183,8 @@
 
             del(row, index) {
                 let that = this;
+
+                console.log(row.id);
                 let id = row.id;
 
                 that.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
@@ -213,19 +212,10 @@
                     });
             },
 
-            flush(data) {
-                let that = this;
-                that.tableData.push(data);
-            },
-
-            add_grade() {
-                this.add_grade_show = true;
-            },
-
             store(row,index){
                 let that=this;
                 let data = JSON.parse(JSON.stringify(that.member_menu.sel));
-                let showdata = JSON.parse(JSON.stringify(that.member_menu.sel));
+
 
                 if(data.name=='' ||data.discount==''){
                     that.$message.warning("请填写完成信息");
@@ -237,13 +227,17 @@
                 that.$api.patient_member.updateOrInsert(data)
                         .then(res=>{
                             if(res.code==200){
-                                for (let k in showdata) row[k] = showdata[k];
+                                for (let k in res.data) row[k] = res.data[k];
+                                row.isSet = false;
                                 that.$message({
                                     type: 'success',
                                     message: "保存成功!"
                                 });
-
-                                row.isSet = false;
+                            }else {
+                                that.$message({
+                                    type: 'warning',
+                                    message: res.msg,
+                                });
                             }
                         })
                         .catch(res=>{

@@ -537,7 +537,6 @@ export default {
             this.member_show = true;
         },
 
-
         allergy_manage() {
             this.allergy_show = true;
         },
@@ -571,17 +570,6 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
-
-// @color: '#aaaa';
-
-// .flex{
-//     display: flex;
-//     color: @color;
-// }
-
-// .sssss{
-//     .flex;
-// }
 
 .form-setting {
     text-align: right;

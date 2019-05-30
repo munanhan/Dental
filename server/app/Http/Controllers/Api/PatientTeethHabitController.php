@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PatientTeethHabit;
 
-class PatientTeethHabitController extends Controller
+class PatientTeethHabitController extends BaseController
 {
-    public function index()
-    {
-        return message('',PatientTeethHabit::all());
-    }
+//    public function index()
+//    {
+//        return message('',PatientTeethHabit::all());
+//    }
 
     public function show(PatientTeethHabit $patientTeethHabit)
     {
@@ -21,22 +21,29 @@ class PatientTeethHabitController extends Controller
     public function store(Request $request)
     {
 
-        $habit=PatientTeethHabit::create($request->all());
+        $habit=PatientTeethHabit::find(request('id'));
+
+        if($habit){
+            $habit->name=request('name');
+            $habit->save();
+        }else{
+            $habit=PatientTeethHabit::create($request->all());
+        }
 
         return message('',$habit);
     }
 
-    public function update(Request $request , PatientTeethHabit $patientTeethHabit)
-    {
-        $patientTeethHabit->update($request->all());
+//    public function update(Request $request , PatientTeethHabit $patientTeethHabit)
+//    {
+//        $patientTeethHabit->update($request->all());
+//
+//        return message('',$patientTeethHabit, 200);
+//    }
 
-        return message('',$patientTeethHabit, 200);
-    }
-
-    public function delete(PatientTeethHabit $patientTeethHabit)
-    {
-        $patientTeethHabit->delete();
-
-        return message('',null, 200);
-    }
+//    public function delete(PatientTeethHabit $patientTeethHabit)
+//    {
+//        $patientTeethHabit->delete();
+//
+//        return message('',null, 200);
+//    }
 }
