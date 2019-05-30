@@ -233,21 +233,25 @@
 
                             <el-form-item
                                 label="企业logo"
-                                prop="license_no"
+                                prop="company_logo"
                             >
                                 <div class="image-upload">
                                     <el-upload
                                         class="image-uploader"
-                                        action="/upload"
+                                        :action="`${uploadUrl}/api/company/upload`"
                                         :show-file-list="false"
-                                        :on-success="handleSuccess"
+                                        :on-success="(res, file) => handleSuccess('company_logo', res, file)"
+                                        :on-error="handleError"
+                                        :headers="headers"
+                                        :with-credentials="true"
                                         :before-upload="beforeUpload"
                                         :disabled="isDisabled"
                                         :class="{'disabled': isDisabled }"
+                                        name="company_logo"
                                     >
                                         <img
-                                            v-if="form.image_url"
-                                            :src="form.image_url"
+                                            v-if="form.company_logo"
+                                            :src="form.company_logo"
                                             class="image"
                                         >
                                         <span
@@ -267,11 +271,11 @@
 
                             <el-form-item
                                 label="企业名称"
-                                prop="name"
+                                prop="company_name"
                             >
                                 <el-input
                                     :disabled="isDisabled"
-                                    v-model.trim="form.name"
+                                    v-model.trim="form.company_name"
                                     autocomplete="off"
                                 ></el-input>
                             </el-form-item>
@@ -298,65 +302,66 @@
                                 label="企业地址"
                                 prop="addresss"
                             >
-                                <div class="address">
-                                    <div>
-                                        <el-select
-                                            v-model="form.province"
-                                            collapse-tags
-                                            class="width100"
-                                            placeholder="省份"
-                                            :disabled="isDisabled"
+                            <div class="address">
+                                <div>
+                                    <el-select
+                                        v-model="form.province_id"
+                                        collapse-tags
+                                        class="width100"
+                                        placeholder="省份"
+                                        @change="flushCity('city')"
+                                    >
+                                        <el-option
+                                            v-for="item in provinceList"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
                                         >
-                                            <el-option
-                                                v-for="item in provinceList"
-                                                :key="item.id"
-                                                :label="item.label"
-                                                :value="item.id"
-                                            >
-                                            </el-option>
-                                        </el-select>
-                                    </div>
-                                    <div>
-                                        <el-select
-                                            v-model="form.city"
-                                            collapse-tags
-                                            class="width100"
-                                            placeholder="城市"
-                                            :disabled="isDisabled"
-                                        >
-                                            <el-option
-                                                v-for="item in cityList"
-                                                :key="item.id"
-                                                :label="item.label"
-                                                :value="item.id"
-                                            >
-                                            </el-option>
-                                        </el-select>
-
-                                    </div>
-                                    <div>
-                                        <el-select
-                                            v-model="form.area"
-                                            collapse-tags
-                                            class="width100"
-                                            placeholder="地区"
-                                            :disabled="isDisabled"
-                                        >
-                                            <el-option
-                                                v-for="item in areaList"
-                                                :key="item.id"
-                                                :label="item.label"
-                                                :value="item.id"
-                                            >
-                                            </el-option>
-                                        </el-select>
-
-                                    </div>
+                                        </el-option>
+                                    </el-select>
                                 </div>
+                                <div>
+                                    <el-select
+                                        v-model="form.city_id"
+                                        collapse-tags
+                                        class="width100"
+                                        placeholder="城市"
+                                        @change="flushCity('country')"
+
+                                    >
+                                        <el-option
+                                            v-for="item in cityList"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
+                                        >
+                                        </el-option>
+                                    </el-select>
+
+                                </div>
+                                <div>
+                                    <el-select
+                                        v-model="form.region_id"
+                                        collapse-tags
+                                        class="width100"
+                                        placeholder="地区"
+                                        
+                                    >
+                                        <el-option
+                                            v-for="item in areaList"
+                                            :key="item.area_code"
+                                            :label="item.area_name"
+                                            :value="item.area_code"
+                                        >
+                                        </el-option>
+                                    </el-select>
+
+                                </div>
+                            </div>
 
                                 <div>
                                     <el-input
-                                        v-model.trim="form.addresss"
+                                        v-model.trim="form.address"
                                         autocomplete="off"
                                         placeholder="详细地址"
                                         :disabled="isDisabled"
@@ -369,7 +374,7 @@
                                 prop="desc"
                             >
                                 <el-input
-                                    v-model.trim="form.desc"
+                                    v-model.trim="form.introduction"
                                     autocomplete="off"
                                     type="textarea"
                                     :disabled="isDisabled"
@@ -395,6 +400,7 @@
 import DialogForm from "../../base/DialogForm";
 import ChainStoreInfoDialog from "./ChainStoreInfoDialog";
 import AddStoreDialog from "./AddStoreDialog";
+import { setCookie,getCookie } from "../../../common/util";
 export default {
     name: "ChainStore",
     mixins: [DialogForm],
@@ -428,17 +434,21 @@ export default {
             //企业信息
             commitLoading: false,
             isDisabled: true,
+            //头信息
+            headers:{},
+            //上传url
+            uploadUrl:'',
 
             form: {
-                name: "",
+                company_name: "",
                 contact: "",
-                phone: "",
-                province: -1,
-                city: -1,
-                area: -1,
-                addresss: "",
-                desc: "",
-                image_url: ""
+                company_phone: "",
+                province_id: -1,
+                city_id: -1,
+                region_id: -1,
+                address: "",
+                introduction: "",
+                company_logo: ""
             },
 
             formRules: {
@@ -467,9 +477,9 @@ export default {
 
             editItem:{},
 
-            provinceList: [{ id: -1, label: "省份" }],
-            cityList: [{ id: -1, label: "城市" }],
-            areaList: [{ id: -1, label: "地区" }]
+            provinceList: [],
+            cityList: [],
+            areaList: []
         };
     },
     created() {
@@ -482,14 +492,33 @@ export default {
 
             if (newValue) {
                 that.getData();
+                that.uploadUrl = (window.HOSTNAME || '');
+                let token = getCookie("token");
+                that.headers = {'Authorization':token};
             }
+        },
+        activeName(newValue,oldValue){
+            let that = this;
+            if (newValue) {
+                switch(newValue){
+                    case 'StaffManagement':
+                    break;
+                    case 'chainInformation':
+                    that.getCompanyById();
+                    break;
+                    case 'chainStoreManagement':
+                    that.getData();
+                    break;
+                }
+            }
+
         }
     },
     computed: {},
     methods: {
         showInfo(id) {
             let that = this;
-            that.getById(id);
+            that.getClinicById(id);
 
         },
 
@@ -523,9 +552,18 @@ export default {
         changeType(row, type, value) {},
 
         //诊所信息
-        handleSuccess(res, file) {
-            this.formHosp.image_url = URL.createObjectURL(file.raw);
-            // this.imageUrl = URL.createObjectURL(file.raw);
+        handleSuccess(type, res, file) {
+
+            this.form.company_logo = (window.HOSTNAME || '')+res.data.company_logo;
+
+        },
+        handleError(err, file, fileLis){
+            //上传失败
+            let that = this;
+            let data = JSON.parse(err.message);
+               that.$message.error(
+                    data.msg || "upload error."
+                );
         },
         beforeUpload(file) {
             // const isJPG = file.type === "image/jpeg";
@@ -542,13 +580,16 @@ export default {
         editChain(){
             let that = this;
             
-            //设置转转
-            that.commitLoading = true;
+            // //设置转转
+            // that.commitLoading = true;
 
-            //拿数据---
-            that.commitLoading = false;
+            // //拿数据---
+            // that.commitLoading = false;
 
-            that.cancelEditChain(false);
+            // that.cancelEditChain(false);
+
+            that.updateData();
+
         },
 
         cancelEditChain(refresh){
@@ -557,11 +598,13 @@ export default {
             
             //重新拿数据，还原原来的数据
             if(refresh){
+                console.log(refresh);
 
             }
 
             
         },
+        /***数据***/
         getData(){
             //获取列表数据
             let that = this;
@@ -573,10 +616,13 @@ export default {
 
                 });
         },
-        getById(id){
+        getClinicById(id){
             let that = this;
             that.$api.clinic.getById({'id':id})
             .then(res => {
+               res.data.logo = res.data.logo != ''?(window.HOSTNAME || '')+res.data.logo:'';
+               res.data.license_image_url = res.data.license_image_url != ''?(window.HOSTNAME || '')+res.data.license_image_url:'';
+               res.data.card_image_url = res.data.card_image_url != ''?(window.HOSTNAME || '')+res.data.card_image_url:'';
                that.editItem = res.data;
                that.showInfoDialog = true;
             })
@@ -584,6 +630,102 @@ export default {
               // console.log(res)
             });
         },
+        getCompanyById(){
+            let that = this;
+                that.$api.company.getById()
+                .then(res => {
+                   res.data.company_logo = res.data.company_logo != ''?(window.HOSTNAME || '')+res.data.company_logo:'';
+                   that.form = res.data;
+                   that.getAreas();
+                })
+                .catch(res => {
+
+                });
+        },
+        updateData(){
+            //更新数据
+            let that = this;
+            that.$api.company.update(that.form)
+                .then(res => {
+                  if(res.code == 200){
+                    res.data.company_logo = res.data.company_logo != ''?(window.HOSTNAME || '')+res.data.company_logo:'';
+                    that.form = res.data;
+                    that.getAreas();
+                    //设置转转
+                    that.commitLoading = true;
+                    //拿数据---
+                    that.commitLoading = false;
+
+                    that.cancelEditChain(false);
+
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    // console.log(res.data);
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "edit error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
+        },
+        getAreas(){
+            //获取省市区
+            let that = this;
+            let city_id = that.form.city_id;
+            let province_id = that.form.province_id;
+            that.$api.area.getById({'province_id':province_id,'city_id':city_id})
+            .then(res => {
+               that.provinceList = res.data.province;
+               that.cityList = res.data.city;
+               that.areaList = res.data.country;
+            })
+            .catch(res => {
+
+            });
+        },
+        flushCity(option){
+            //刷新城市
+            let that = this;
+            let params = {};
+            switch(option){
+                case 'city':
+                let province_id = that.form.province_id;
+                params = { 'area_code':province_id };
+                break;
+                case 'country':
+                let city_id = that.form.city_id;
+                params = { 'area_code':city_id };
+                break;
+            }
+
+            that.$api.area.getCity(params)
+            .then(res => {
+               switch(option){
+                    case 'city':
+                    that.form.city_id = undefined;
+                    that.form.region_id = undefined;
+                    that.cityList = res.data;
+                    that.areaList = [];
+                    break;
+                    case 'country':
+                    that.form.region_id = undefined;
+                    that.areaList = res.data;
+                    break;
+               }
+
+               
+            })
+            .catch(res => {
+
+            });
+        }
     }
 };
 </script>
@@ -680,45 +822,51 @@ export default {
             }
         }
 
-        .image-upload {
-            display: flex;
-        }
+                .image-upload {
+                    display: flex;
+                }
 
-        .image-uploader {
-            font-size: 28px;
-            color: #8c939d;
-            width: 100px;
-            height: 100px;
-            line-height: 60px;
-            text-align: center;
-            border: 3px dotted #e3e3e3;
-            display: inline-block;
-            box-sizing: border-box;
-            margin-right: 10px;
+                .image-uploader {
+                    font-size: 28px;
+                    color: #8c939d;
+                    width: 100px;
+                    height: 100px;
+                    line-height: 60px;
+                    text-align: center;                    
+                    display: inline-block;
+                    box-sizing: border-box;
+                    margin-right: 10px;
 
-            &.disabled {
-                background-color: #e3e3e3;
-                opacity: 0.6;
-            }
+                    /deep/ .el-upload {
+                        width: 100%;
+                        height: 100%;
+                        /*padding-top: 18px;*/
+                        box-sizing: border-box;
+                    }
+                }
 
-            /deep/ .el-upload {
-                width: 100%;
-                height: 100%;
-                padding-top: 18px;
-                box-sizing: border-box;
-            }
-        }
+                .image {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
 
-        .image {
-            width: 100px;
-            height: 100px;
-            display: block;
-        }
+                .image-uploader-icon{
+                    border: 3px dotted #e3e3e3;
+                    width: 100%;
+                    height: 100%;
+                    display: inline-block;
+                    box-sizing: border-box;
 
-        .image-upload-tip {
-            flex: 1;
-            line-height: 30px;
-        }
+                    i{
+                        line-height: 94px;
+                    }
+                }
+
+                .image-upload-tip {
+                    flex: 1;
+                    line-height: 30px;
+                }
     }
 }
 </style>

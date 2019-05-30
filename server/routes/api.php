@@ -237,15 +237,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route PatientAllergy Api
      */
-    Route::get('patient_Allergies', 'PatientAllergyController@index');
+    Route::get('patient_allergies', 'PatientAllergyController@index');
 
-    Route::get('patient_Allergies/{patientAllergy}', 'PatientAllergyController@show');
+    Route::get('patient_allergies/{patientAllergy}', 'PatientAllergyController@show');
 
-    Route::post('patient_Allergies', 'PatientAllergyController@store');
+    Route::post('patient_allergies', 'PatientAllergyController@store');
 
-    Route::put('patient_Allergies/{patientAllergy}', 'PatientAllergyController@update');
+    Route::put('patient_allergies/{patientAllergy}', 'PatientAllergyController@update');
 
-    Route::delete('patient_Allergies/{patientAllergy}', 'PatientAllergyController@delete');
+    Route::delete('patient_allergies/{patientAllergy}', 'PatientAllergyController@delete');
 
       
     /*
@@ -295,11 +295,6 @@ Route::group(['namespace'=>'Api'],function (){
      * 获取地区省
      */
     Route::get('areas/province','AreaController@getProvince');
-
-    /*
-     * 获取地区城市或区
-     */
-    Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
 
 
     // Route::get('publish', function () {
@@ -355,6 +350,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('patient_member/{id}', 'PatientMemberController@delete');//删除
 
     Route::delete('members/{id}','PatientMemberController@deleteMember');
+
+    Route::post('patient_member/update_store','PatientMemberController@store');
 
      /*
      * Route Member Api
@@ -459,6 +456,25 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
     Route::get('areas/get_by_id','AreaController@getById');//根据id获取
+
+    Route::get('areas/city','AreaController@getCityOrCountry');
+
+    /*
+     * Route CompanyController Api
+     * created for yu
+     */
+
+    Route::get('company','CompanyController@index');//公司列表
+
+    Route::get('company/get_by_id','CompanyController@getById');//根据id获取
+
+    Route::post('company', 'CompanyController@addData');//添加
+
+    Route::put('company', 'CompanyController@update');//修改
+
+    Route::delete('company/{id}', 'CompanyController@delete');//删除
+
+    Route::post('company/upload','CompanyController@upload');//上传
 
 
 

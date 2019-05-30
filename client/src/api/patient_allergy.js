@@ -1,8 +1,8 @@
 import request from "../common/request";
 
-const prefix = "/patient_Allergies";
+const prefix = "/patient_allergies";
 //过敏史
-export function getAllergy(data) {
+export function get(data) {
     return request({
         url: `${prefix}`,
         method: "get",
@@ -10,7 +10,7 @@ export function getAllergy(data) {
     });
 }
 
-export function addAllergy(data) {
+export function store(data) {
     return request({
         url: `${prefix}`,
         method: "post",
@@ -18,10 +18,18 @@ export function addAllergy(data) {
     });
 }
 
-export function delAllergy(data) {
+export function del(data) {
     return request({
         url: `${prefix}/:id`,
         method: "delete",
+        params: data
+    });
+}
+
+export function update(data) {
+    return request({
+        url: `${prefix}/:id`,
+        method: "post",
         params: data
     });
 }
