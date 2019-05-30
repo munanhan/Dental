@@ -3,7 +3,7 @@
         title="会员等级设置"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog"
+        class="custom-dialog "
         :close-on-click-modal="false"
         :append-to-body="true"
         v-dialog-drag
@@ -11,17 +11,21 @@
         <el-form
             :model="form"
             :rules="formRules"
-            label-width="60px"
+            label-width="80px"
             ref="form"
         >
             <el-form-item
-                label="类型"
+                label="会员等级"
                 prop="name"
             >
                 <el-input
                     v-model.trim="form.name"
                     autocomplete="off"
                 ></el-input>
+            </el-form-item>
+
+            <el-form-item label="会员折扣"  prop="discount">
+                <el-input v-model="form.discount"></el-input>
             </el-form-item>
         </el-form>
         <div
@@ -53,13 +57,22 @@ export default {
             commitLoading: false,
 
             form: {
-                name: ""
+                name: "",
+                discount:"",
             },
             formRules: {
                 name: [
                     {
                         required: true,
-                        message: "请输入类型",
+                        message: "请输入会员等级",
+                        trigger: "blur"
+                    }
+                ],
+
+                discount:[
+                    {
+                        required: true,
+                        message: "请输入会员折扣",
                         trigger: "blur"
                     }
                 ]

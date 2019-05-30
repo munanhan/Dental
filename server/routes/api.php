@@ -237,15 +237,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route PatientAllergy Api
      */
-    Route::get('patient_Allergies', 'PatientAllergyController@index');
+    Route::get('patient_allergies', 'PatientAllergyController@index');
 
-    Route::get('patient_Allergies/{patientAllergy}', 'PatientAllergyController@show');
+    Route::get('patient_allergies/{patientAllergy}', 'PatientAllergyController@show');
 
-    Route::post('patient_Allergies', 'PatientAllergyController@store');
+    Route::post('patient_allergies', 'PatientAllergyController@store');
 
-    Route::put('patient_Allergies/{patientAllergy}', 'PatientAllergyController@update');
+    Route::put('patient_allergies/{patientAllergy}', 'PatientAllergyController@update');
 
-    Route::delete('patient_Allergies/{patientAllergy}', 'PatientAllergyController@delete');
+    Route::delete('patient_allergies/{patientAllergy}', 'PatientAllergyController@delete');
 
       
     /*
@@ -350,6 +350,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('patient_member/{id}', 'PatientMemberController@delete');//删除
 
     Route::delete('members/{id}','PatientMemberController@deleteMember');
+
+    Route::post('patient_member/update_store','PatientMemberController@store');
 
      /*
      * Route Member Api

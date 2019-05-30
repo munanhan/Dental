@@ -11,5 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class PatientMemberController extends BaseController
 {
 
+    public function store(Request $request)
+    {
+        PatientMember::updateOrInsert(['id'=>request('id')],$request->all());
+        return message('','','200');
+    }
 
 }

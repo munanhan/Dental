@@ -15,8 +15,8 @@
                     医云智能
                 </el-col>
                 <el-col class="header-right">
-                    <i class="head-icon fa fa-user"></i>
-                    <i class="head-icon fa fa-chevron-circle-down"></i>
+                    <i class="head-icon fa fa-comment" @click.stop.prevent="inquiryDialog = true"></i>
+                    <i class="head-icon fa fa-sign-out-alt"></i>
                 </el-col>
             </el-row>
 
@@ -58,6 +58,10 @@
             :avatar="userInfo.avatar"
         ></user-image>
 
+        <inquiry
+            :show.sync="inquiryDialog"
+        ></inquiry>
+
     </el-container>
 </template>
 
@@ -65,6 +69,8 @@
 import MenuTree from "@components/menutree/MenuTree";
 import ChangePassword from "./ChangePassword";
 import UserImage from "./UserImage";
+import Inquiry from '../inquiry/Index';
+
 import { mapGetters } from "vuex";
 
 export default {
@@ -72,12 +78,14 @@ export default {
     components: {
         MenuTree,
         ChangePassword,
-        UserImage
+        UserImage,
+        Inquiry
     },
 
     data() {
         return {
             bodyHeight: 500,
+            inquiryDialog: false,
 
             // menu: [
             //     {
@@ -281,6 +289,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+//导入全局的颜色
+@import "~@css/var";
+
+.transition-2 {
+    transition: all 0.2s;
+}
+
 .content {
     position: absolute;
     top: 0;
@@ -297,9 +312,16 @@ export default {
         width: 100%;
         box-sizing: border-box;
         border-bottom: 1px solid #cacaca;
+        z-index: 101;
 
         .head-icon{
             margin-right: 10px;
+            cursor: pointer;
+            .transition-2;
+
+            &:hover{
+                opacity: .6;
+            }
         }
 
         .header-left {
