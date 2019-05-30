@@ -16,7 +16,7 @@
                 </el-col>
                 <el-col class="header-right">
                     <i class="head-icon fa fa-comment" @click.stop.prevent="inquiryDialog = true"></i>
-                    <i class="head-icon fa fa-chevron-circle-down"></i>
+                    <i class="head-icon fa fa-sign-out-alt"></i>
                 </el-col>
             </el-row>
 

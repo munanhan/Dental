@@ -15,10 +15,10 @@
         >
             <el-form-item
                 label="节点名称"
-                prop="nodeName"
+                prop="outline_name"
             >
                 <el-input
-                    v-model.trim="form.nodeName"
+                    v-model.trim="form.outline_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -50,9 +50,20 @@ export default {
 
     components:{},
     props:{},
+
     data(){
       return {
-          apiType: ""
+          apiType: "",
+          formRules:{
+                 outline_name: [
+                                    {
+                                      required: true,
+                                      message:'请输入目录名称.',
+                                      trigger: "blur"
+                                    }
+                                ],
+
+            },
       }
     },
     created(){},

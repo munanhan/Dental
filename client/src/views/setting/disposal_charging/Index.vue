@@ -416,14 +416,14 @@ export default {
           //删除框
           let that = this;
 
-          this.$confirm('删除不可恢复，是否确定删除？', '提示', {
+          that.$confirm('删除不可恢复，是否确定删除？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             that.del(id);
           }).catch(() => {
-            this.$message({
+            that.$message({
               type: 'info',
               message: '已取消删除'
             });          
@@ -452,7 +452,7 @@ export default {
                         type: "success",
                         duration: 800
                     });
-                    that.is_del = false;
+
                 }
                 else{
                      that.$message.error(
