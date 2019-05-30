@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PatientAnamnesis;
 
-class PatientAnamnesisController extends Controller
+class PatientAnamnesisController extends BaseController
 {
     public function index()
     {
@@ -21,22 +21,29 @@ class PatientAnamnesisController extends Controller
     public function store(Request $request)
     {
 
-        $anamnesis=PatientAnamnesis::create($request->all());
+        $patientAnamnesis= PatientAnamnesis::find(request('id'));
 
-        return message('',$anamnesis);
+        if($patientAnamnesis){
+            $patientAnamnesis->name=request('name');
+            $patientAnamnesis->save();
+        }else{
+            $patientAnamnesis=PatientAnamnesis::create($request->all());
+        }
+
+        return message('',$patientAnamnesis);
     }
 
-    public function update(Request $request , PatientAnamnesis $patientAnamnesis)
-    {
-        $patientAnamnesis->update($request->all());
-
-        return message('',$patientAnamnesis, 200);
-    }
-
-    public function delete(PatientAnamnesis $patientAnamnesis)
-    {
-        $patientAnamnesis->delete();
-
-        return message('',null, 200);
-    }
+//    public function update(Request $request , PatientAnamnesis $patientAnamnesis)
+//    {
+//        $patientAnamnesis->update($request->all());
+//
+//        return message('',$patientAnamnesis, 200);
+//    }
+//
+//    public function delete(PatientAnamnesis $patientAnamnesis)
+//    {
+//        $patientAnamnesis->delete();
+//
+//        return message('',null, 200);
+//    }
 }

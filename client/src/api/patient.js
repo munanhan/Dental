@@ -21,16 +21,16 @@ export function store(data) {
 
 export function del(data) {
     return request({
-        url: `${prefix}`,
-        method: 'delete',
-        data: data
-    })
-};
+        url: `${prefix}/:id`,
+        method: "delete",
+        params: data
+    });
+}
 
 export function update(data) {
     return request({
         url: `${prefix}`,
-        method: 'post',
+        method: 'put',
         data: data
     })
 };

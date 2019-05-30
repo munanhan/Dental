@@ -26,5 +26,13 @@ export function del(data) {
     });
 }
 
+export function update(data) {
+    return request({
+        url: `${prefix}`,
+        method: "put",
+        params: data
+    });
+}
+
 
 
