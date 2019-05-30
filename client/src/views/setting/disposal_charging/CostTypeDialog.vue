@@ -178,15 +178,16 @@ export default {
       },
       created() {},
       mounted() {
-        // let that = this;
-        // that.getData();
+        //let that = this;
+        //that.getData();
       },
       watch: {
-        refresh(newValue, oldValue) {
+        show(newValue, oldValue) {
           let that = this;
 
           if (newValue) {
-            // that.getData();
+            let that = this;
+            that.getData();
           }
         }
       },

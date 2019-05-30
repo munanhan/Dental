@@ -68,11 +68,12 @@
                 </el-radio-group>
             </div>
 
-            <div :style="{
+            <div
+                :style="{
                     height: `${rightContentHeight}px`
                 }"
                 class="content"
-                >
+            >
                 <case-template
                     v-show="selectType == 0"
                     :data="caseData"
@@ -215,6 +216,8 @@ export default {
         let that = this;
 
         that.$nextTick(() => {
+            that.resizeContent();
+
             window.addEventListener("click", that.removeSelect);
 
             //监听事件,由layout那边的resize抛出的
@@ -386,7 +389,7 @@ export default {
             margin: 10px;
         }
 
-        .content{
+        .content {
             height: 100%;
             overflow: hidden;
         }

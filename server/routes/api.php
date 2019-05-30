@@ -296,11 +296,6 @@ Route::group(['namespace'=>'Api'],function (){
      */
     Route::get('areas/province','AreaController@getProvince');
 
-    /*
-     * 获取地区城市或区
-     */
-    Route::get('areas/city/{area_code}','AreaController@getCityOrCountry');
-
 
     // Route::get('publish', function () {
     //     // Route logic...
@@ -461,6 +456,25 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
     Route::get('areas/get_by_id','AreaController@getById');//根据id获取
+
+    Route::get('areas/city','AreaController@getCityOrCountry');
+
+    /*
+     * Route CompanyController Api
+     * created for yu
+     */
+
+    Route::get('company','CompanyController@index');//公司列表
+
+    Route::get('company/get_by_id','CompanyController@getById');//根据id获取
+
+    Route::post('company', 'CompanyController@addData');//添加
+
+    Route::put('company', 'CompanyController@update');//修改
+
+    Route::delete('company/{id}', 'CompanyController@delete');//删除
+
+    Route::post('company/upload','CompanyController@upload');//上传
 
 
 

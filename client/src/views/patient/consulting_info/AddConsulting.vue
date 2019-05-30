@@ -57,24 +57,15 @@
                                 </el-option>
                             </el-select>
                             <i
-                                class="fa fa-cog"
-                                style="
-                                     margin-left:10px;
-                                     font-size:22px;
-                                     cursor:pointer"
+                                @click="basice_need"
+                                class="el-icon-setting form-setting"
                             ></i>
                         </tr>
                         <tr>
                             <td align="center">潜在需求</td>
                             <div>
-                                <input style="width:620px">
-                                <i
-                                    class="fa fa-cog"
-                                    style="
-                                           margin-left:10px;
-                                           font-size:22px;
-                                           cursor:pointer"
-                                ></i>
+                                <input style="width:616px">
+                                <i @click="potential_dem" class="el-icon-setting form-setting"></i>
                             </div>
                         </tr>
                         <tr>
@@ -119,18 +110,29 @@
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
+        <basic-needs :show.sync="basneed_show"></basic-needs>
+        <potential-demand :show.sync="potentdeman_show"></potential-demand>
     </el-dialog>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import BasicNeeds from "./BasicNeeds";
+import PotentialDemand from "./PotentialDemand";
 export default {
     name: "AddConsulting",
+
+    components: {
+        BasicNeeds,
+        PotentialDemand
+    },
 
     mixins: [DialogForm],
 
     data() {
         return {
+            basneed_show: false,
+            potentdeman_show: false,
             type: [],
             checked1: false,
             checked2: false,
@@ -147,10 +149,18 @@ export default {
         };
     },
 
-    methods: {}
+    methods: {
+        basice_need() {
+            this.basneed_show = true;
+        },
+        potential_dem() {
+            this.potentdeman_show = true;
+        }
+    }
 };
 </script>
 <style lang="less" scoped>
+@import "~@css/var";
 .Advan-content {
     .Advan-top {
         display: flex;
@@ -190,6 +200,17 @@ export default {
         select {
             width: 664px;
             height: 40px;
+        }
+    }
+    .form-setting {
+        text-align: right;
+        width: 30px;
+        font-size: 22px;
+        margin-top: 10px;
+        cursor: pointer;
+
+        &:hover {
+            color: @color;
         }
     }
 }

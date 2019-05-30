@@ -84,13 +84,11 @@
                         prop="patient_birthday"
                         style="width:300px"
                         @input="birthday"
-                        
                     >
                         <el-date-picker
                             v-model="form.patient_birthday"
                             type="date"
                             placeholder="选择日期"
-                           
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -136,6 +134,34 @@
                     >
                         <el-input v-model="form.member_card"></el-input>
                     </el-form-item>
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
+                        label="就诊日期"
+                        prop="clinic_date"
+                    >
+                        <el-date-picker
+                            v-model="form.clinic_date"
+                            type="date"
+                            placeholder="选择日期"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <div style="margin-top:10px;margin-left:60px">
+                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <el-radio
+                            v-model="form.category"
+                            label="1"
+                        >初诊</el-radio>
+                        <el-radio
+                            v-model="form.category"
+                            label="2"
+                        >复诊</el-radio>
+                    </div>
+
                 </div>
 
                 <div style="display:flex">

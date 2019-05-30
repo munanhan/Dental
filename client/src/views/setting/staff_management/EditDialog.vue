@@ -145,6 +145,14 @@ export default {
         //     that.getPatientInfo();
         //   }
         // }
+        show(newValue, oldValue) {
+          let that = this;
+
+          if (newValue) {
+            let that = this;
+            that.getData();
+          }
+        }
         
       },
       computed: {

@@ -20,6 +20,7 @@ import * as teethHabit from "./patient_teeth_habit";
 import * as impressions from "./patient_impression";
 import * as clinic from './clinic'
 import * as area from './area'
+import * as company from './company'
 
 
 const apis = {
@@ -45,6 +46,8 @@ const apis = {
     anamnesis,
     teethHabit,
     impressions,
+    company,
+
 };
 
 const install = function(Vue) {

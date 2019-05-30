@@ -10,7 +10,7 @@
         top="1vh"
     >
         <el-form
-            ref="form"
+            ref="Modifyform"
             :model="form"
             label-width="80px"
             :rules="rules"
@@ -28,18 +28,22 @@
                     </div>
                 </div>
                 <div style="border:1px solid red;
-                    position: absolute;
-                    right:0;    
-                    margin-right: 244px;
-                    width: 300px;
-                    height: 350px;">
+                            position: absolute;
+                            right:0;    
+                            margin-right: 244px;
+                            width: 300px;
+                            height: 350px;">
                 </div>
                 <el-form-item
                     label="病历号"
                     class="left-width"
                     prop="medical_record"
                 >
-                    <el-input></el-input>
+                    <el-input
+                        :disabled="true"
+                        v-model="form.case_id"
+                        disable
+                    ></el-input>
                 </el-form-item>
 
                 <el-form-item
@@ -51,26 +55,23 @@
                 </el-form-item>
                 <el-form-item
                     label="性别"
-                    class="left-width"
                 >
-                    <el-radio
-                        v-model="form.radio"
-                        label="1"
-                    >男</el-radio>
-                    <el-radio
-                        v-model="form.radio"
-                        label="2"
-                    >女</el-radio>
-                    <el-radio
-                        v-model="form.radio"
-                        label="3"
-                    >未填</el-radio>
+                    <el-radio-group v-model="form.sex">
+                        <el-radio :label="0">男</el-radio>
+                        <el-radio :label="1">女</el-radio>
+                        <el-radio :label="2">未填</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item
                     label="出生年月"
-                    class="left-width"
                 >
-                    <el-input></el-input>
+                    <el-date-picker
+                        style="width:260px"
+                        v-model="form.birthday"
+                        type="date"
+                        placeholder="选择日期"
+                    >
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item
                     label="年龄(岁)"
@@ -78,8 +79,6 @@
                 >
                     <el-input></el-input>
                 </el-form-item>
-
-                <!-- </div> -->
 
                 <div style="display:flex">
                     <el-form-item
@@ -89,49 +88,22 @@
                     >
                         <el-input v-model="form.phone_one"></el-input>
                     </el-form-item>
-                    <!-- <el-select
-            v-model="form.one"
-            style="width:110px"
-          >
-
-            <el-option
-              v-for="item in form.tel_one"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select> -->
-                    <!-- <el-form-item
-            label="电话1"
-            prop="phone_one"
-            style="width:230px"
-          >
-            <el-input
-              placeholder="请输入内容"
-              v-model="form.phone_one"
-            ></el-input>
-          </el-form-item> -->
-                    <!-- <el-select
-            v-model="form.tel_one"
-            style="width:110px"
-          >
-
-           <el-option
-              v-for="item in form.phone"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select> -->
                 </div>
                 <div style="display:flex">
-                    <el-form-item
-                        label="会员等级"
-                        class="left-width"
-                    >
-                        <el-input></el-input>
+                    <el-form-item label="会员等级">
+                        <el-select
+                            style="width:260px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -147,9 +119,20 @@
                 <div style="display:flex">
                     <el-form-item
                         label="职业"
-                        class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            v-model="form.value"
+                            placeholder="请选择"
+                            style="width:260px"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -195,15 +178,36 @@
                         class="right-width"
                         style="margin-left:30px"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
-                    <el-form-item
-                        label="联系地址"
-                        style="width:700px"
-                    >
-                        <el-input></el-input>
+                    <el-form-item label="联系地址">
+                        <el-select
+                            style="width:620px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -217,11 +221,20 @@
                         class="el-icon-setting form-setting"
                         @click="pat_impre"
                     ></i>
-                    <el-form-item
-                        label="电网咨询"
-                        class="right-width"
-                    >
-                        <el-input></el-input>
+                    <el-form-item label="电网咨询">
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
 
@@ -245,11 +258,20 @@
                         class="el-icon-setting form-setting"
                         @click="pat_sour"
                     ></i>
-                    <el-form-item
-                        label="患者分类"
-                        class="right-width"
-                    >
-                        <el-input></el-input>
+                    <el-form-item label="患者分类">
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -281,20 +303,6 @@
                     ></i>
                 </div>
                 <!-- <div style="display:flex">
-          <el-form-item
-            label="患者来源"
-            class="left-width"
-          >
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item
-            label="患者分类"
-            class="right-width"
-          >
-            <el-input></el-input>
-          </el-form-item>
-        </div> -->
-                <div style="display:flex">
                     <el-form-item
                         label="刷牙"
                         prop="brush_teeth"
@@ -310,10 +318,10 @@
                     <el-input
                         v-model="form.brush_teeth_minutestime"
                         style="width:80px;
-                   margin-left:10px"
+                               margin-left:10px"
                     ></el-input>
                     <div style="margin-left:10px;
-                      margin-top:13px">分钟/次</div>
+                                margin-top:13px">分钟/次</div>
 
                     <el-form-item
                         label="吸烟"
@@ -328,7 +336,7 @@
                             <div style="margin-left:10px">次/天</div>
                         </div>
                     </el-form-item>
-                </div>
+                </div> -->
                 <div style="display:flex">
                     <el-form-item
                         label="洁牙习惯"
@@ -346,14 +354,38 @@
                         label="初诊医生"
                         class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:260px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item
                         label="初诊日期"
                         class="right-width"
                         style="margin-left:30px"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -361,14 +393,38 @@
                         label="复诊医生"
                         class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:260px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item
                         label="复诊日期"
                         class="right-width"
                         style="margin-left:30px"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <!-- ----------------亲友关系----------- -->
@@ -508,9 +564,9 @@ export default {
             allergy_show: false,
             pastmed_show: false,
             teethhab_show: false,
-            newrelat_show:false,
+            newrelat_show: false,
             form: {
-                phone: [
+                options: [
                     {
                         value: "选项1",
                         label: "黄金糕"
@@ -532,13 +588,14 @@ export default {
                         label: "北京烤鸭"
                     }
                 ],
-                // tel_one:'',
+                birthday:"",
+                value: "",
+                case_id: "",
                 one: "",
-                radio: "1",
+                sex: "0",
                 name: "",
                 medical_record: "",
                 participant_name: ""
-                // options:"",
             },
             rules: {
                 name: [
@@ -552,7 +609,14 @@ export default {
             }
         };
     },
-
+    watch: {
+        // show(newValue, oldValue) {
+        //     if (newValue) {
+        //         let that = this;
+        //         that.getCaseNo();
+        //     }
+        // }
+    },
     methods: {
         mem_grade() {
             this.memgrade_show = true;
@@ -584,6 +648,22 @@ export default {
         new_relat() {
             this.newrelat_show = true;
         },
+        afterClose() {
+            this.$refs["Modifyform"].resetFields();
+        }
+        //病历号获取
+        // getCaseNo() {
+        //     let that = this;
+        //     that.$api.patient
+        //         .caseNo()
+        //         .then(res => {
+        //             console.log(res.data);
+        //             // that.form.case_id = res.data.case_id;
+        //         })
+        //         .catch(res => {
+        //             console.log(res);
+        //         });
+        // }
     }
 };
 </script>

@@ -56,4 +56,8 @@ class BaseModel extends Model
             $parms['created_by'] = Auth::user()['name'];
 			return $this->insertGetId($parms);
 		}
+
+		public function getValue($parms = [],$value = 'id'){
+			return $this->where($parms)->value($value);
+		}
 }

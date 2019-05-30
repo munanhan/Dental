@@ -18,12 +18,12 @@
       <div class="search">
         <el-col :span="3">
               <span class="mr10">
-                  <el-input v-model="search.name" placeholder="姓名"></el-input>
+                  <el-input v-model="search.patient_name" placeholder="姓名"></el-input>
               </span>
         </el-col>
         <el-col :span="3">
               <span class="mr10">
-                  <el-input v-model="search.phone" placeholder="电话"></el-input>
+                  <el-input v-model="search.patient_phone" placeholder="电话"></el-input>
               </span>
         </el-col>
         <el-col :span="6">
@@ -70,20 +70,20 @@
                 >
               </el-table-column>
               <el-table-column
-                prop="name"
+                prop="patient_name"
                 label="患者姓名"
               >
               </el-table-column>
               <el-table-column
-                prop="age"
+                prop="patient_age"
                 label="年龄">
               </el-table-column>
               <el-table-column
-                prop="sex"
+                prop="patient_sex"
                 label="性别">
               </el-table-column>
               <el-table-column
-                prop="phone"
+                prop="patient_phone"
                 label="电话">
               </el-table-column>
               <el-table-column
@@ -95,7 +95,7 @@
                 label="会员级别">
               </el-table-column>
               <el-table-column
-                prop="phone"
+                prop="patient_phone"
                 label="会员卡号">
               </el-table-column>
               <el-table-column
@@ -175,8 +175,8 @@ export default {
             search:{
               current_page:1,
               page_size:15,
-              name:'',
-              phone:'',
+              patient_name:'',
+              patient_phone:'',
               dtfm:'',
               dtto:'',
               start_money:undefined,
@@ -190,6 +190,7 @@ export default {
         let that = this;
 
         that.$nextTick(() => {
+            that.getData();
             that.resizeTable();
         });
 

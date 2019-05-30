@@ -4,7 +4,6 @@ import store from "../store";
 //组件模块登记
 import components from "./components";
 import { Loading } from "element-ui";
-import { setCookie, getCookie } from "../common/util";
 
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
 import { getUserInfo, getUserPermission } from "../api/user";
@@ -79,7 +78,8 @@ const getMenuData = data => {
                 url: item.url,
                 name: item.p_name,
                 icon: item.p_icon,
-                parent_id: item.parent_id
+                parent_id: item.parent_id,
+                isDialog: false //不是弹窗
             };
 
             //处理路由的 -------------------------------------
@@ -90,6 +90,7 @@ const getMenuData = data => {
                 }
             };
 
+            //普通菜单
             if (item.parent_id == 0) {
                 //父
                 routerQuickTarget[item.id]["component"] = resolve =>
@@ -125,6 +126,19 @@ const getMenuData = data => {
                 }
             }
         } else if (item.p_type == 1) {
+            //弹窗的菜单
+
+            //菜单
+            quickTarget[item.id] = {
+                url: item.url,
+                name: item.p_name,
+                icon: item.p_icon,
+                parent_id: item.parent_id,
+                component: components[item.p_component],
+                isDialog: true //是弹窗
+            };
+        } else if (item.p_type == 2) {
+            //功能
             action[item["p_act_name"]] = true;
         }
     }
@@ -134,37 +148,51 @@ const getMenuData = data => {
             parent_id = item.parent_id,
             routerItem = routerQuickTarget[key];
 
-        if (item.parent_id == 0) {
-            menu.push(item);
+        if (item.isDialog) {
+            if (parent_id == 0) {
+                //处理dialog
+                menu.push(item);
+            } else {
+                //处理菜单关联的子
+                quickTarget[parent_id].children =
+                    quickTarget[parent_id].children || [];
+                quickTarget[parent_id].children.push(item);
+            }
+        } else {
+            //处理普通的菜单
+            if (item.parent_id == 0) {
+                menu.push(item);
 
-            //追加父路由
-            routerArr.push(routerItem);
-        } else if (parent_id != 0 && quickTarget[parent_id]) {
-            quickTarget[parent_id].children =
-                quickTarget[parent_id].children || [];
-            quickTarget[parent_id].children.push(item);
+                //追加父路由
+                routerArr.push(routerItem);
+            } else if (parent_id != 0 && quickTarget[parent_id]) {
+                //处理菜单关联的子
+                quickTarget[parent_id].children =
+                    quickTarget[parent_id].children || [];
+                quickTarget[parent_id].children.push(item);
 
-            //路由------------------------------------------
-            routerQuickTarget[parent_id].children =
-                routerQuickTarget[parent_id].children || [];
-            routerQuickTarget[parent_id].children.push(routerItem);
-
-            //处理子路由
-            if (parent_id != 0) {
-                //处理面包屑
-                var parentItem = routerQuickTarget[parent_id];
-                routerItem.meta.paths = [
-                    ...(parentItem.meta.paths || []),
-                    {
-                        name: parentItem.meta.name
-                    }
-                ];
+                //路由------------------------------------------
+                routerQuickTarget[parent_id].children =
+                    routerQuickTarget[parent_id].children || [];
+                routerQuickTarget[parent_id].children.push(routerItem);
 
                 //处理子路由
-                routerItem.path = routerItem.path.replace(
-                    parentItem.path + "/",
-                    ""
-                );
+                if (parent_id != 0) {
+                    //处理面包屑
+                    var parentItem = routerQuickTarget[parent_id];
+                    routerItem.meta.paths = [
+                        ...(parentItem.meta.paths || []),
+                        {
+                            name: parentItem.meta.name
+                        }
+                    ];
+
+                    //处理子路由
+                    routerItem.path = routerItem.path.replace(
+                        parentItem.path + "/",
+                        ""
+                    );
+                }
             }
 
             //---------------------------------------------
@@ -314,7 +342,7 @@ const genRoute = async (router, store) => {
                     id: 11,
                     parent_id: 7,
                     url: "/inquiry",
-                    p_type: 0,
+                    p_type: 1,
                     p_name: "问诊",
                     p_icon: "fa fa-stethoscope",
                     p_component: "/inquiry/Index",
