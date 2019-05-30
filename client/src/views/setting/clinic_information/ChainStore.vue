@@ -51,13 +51,13 @@
                             <div class="search-item">
                                 <span class="mr-10">所属诊所</span>
                                 <el-select
-                                    v-model="search.hospital"
+                                    v-model="search.clinic_id"
                                     collapse-tags
                                 >
                                     <el-option
-                                        v-for="item in hospitalList"
+                                        v-for="item in clinicList"
                                         :key="item.id"
-                                        :label="item.label"
+                                        :label="item.clinic_name"
                                         :value="item.id"
                                     >
                                     </el-option>
@@ -80,47 +80,56 @@
                             :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                         >
                             <el-table-column
-                                prop="aaaa"
+                                prop="name"
                                 label="姓名"
                                 align="center"
                                 show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="aaaa"
+                                prop="clinic_name"
                                 label="所属门店"
                                 align="center"
                                 show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="aaaa"
+                                prop="role"
                                 label="职位"
                                 align="center"
                                 show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="aaaa"
+                                prop="phone"
                                 label="联系电话"
                                 align="center"
                                 show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="aaaa"
+                                prop="is_admin"
                                 label="连锁管理员"
                                 align="center"
                                 show-overflow-tooltip
                             >
                                 <template slot-scope="scope">
-                                    <el-radio
+<!--                                     <el-radio
                                         v-model="scope.row.id"
                                         @change="(value) => changeType(scope.row, 'type', vlaue)"
-                                    ></el-radio>
+                                    ></el-radio> -->
+                                    <el-checkbox 
+                                        @change="changeAdmin(scope.row)"
+                                        v-if="scope.row.is_admin == 1"
+                                        checked
+                                    ></el-checkbox>
+                                    <el-checkbox 
+                                        @change="changeAdmin(scope.row)"
+                                        v-if="scope.row.is_admin != 1"
+                                    ></el-checkbox>
                                 </template>
                             </el-table-column>
-                            <el-table-column
+<!--                             <el-table-column
                                 prop="aaaa"
                                 label="连锁查看权限"
                                 align="center"
@@ -172,7 +181,7 @@
                                         @change="(value) => changeType(scope.row, 'type', vlaue)"
                                     ></el-checkbox>
                                 </template>
-                            </el-table-column>
+                            </el-table-column> -->
                         </el-table>
                         <el-row
                             class="pager"
@@ -416,11 +425,11 @@ export default {
 
             //员工管理
             tableHeight: 370,
-            tableData: [{}],
+            tableData: [],
             clinicList:[],
             //分店列表
             search: {
-                hospital: 0
+                clinic_id: undefined
             },
 
             hospitalList: [{ id: 0, label: "全部" }],
@@ -502,6 +511,7 @@ export default {
             if (newValue) {
                 switch(newValue){
                     case 'StaffManagement':
+                    that.getStaffData();
                     break;
                     case 'chainInformation':
                     that.getCompanyById();
@@ -542,8 +552,11 @@ export default {
                 params = {},
                 searchData = JSON.parse(JSON.stringify(that.search));
 
-            params["pageIndex"] = that.pager.current;
-            params["pageSize"] = that.pager.size;
+            params["current_page"] = that.pager.current;
+            params["page_size"] = that.pager.size;
+            params['clinic_id'] = searchData.clinic_id;
+            that.getChainStore(params);
+
 
             //获取数据
         },
@@ -721,6 +734,39 @@ export default {
                }
 
                
+            })
+            .catch(res => {
+
+            });
+        },
+        changeAdmin(row){
+            //改变管理员状态
+            let that = this;
+            row.is_admin = -(row.is_admin);
+            let item = {};
+            item.id = row.id;
+            item.is_admin = row.is_admin;
+            that.$api.chain_store.update(item)
+            .then(res => {
+                if (res.code == 200) {
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                }
+            })
+            .catch(res => {
+
+            });
+        },
+        getChainStore(params){
+            //连锁店员工信息
+            let that = this;
+            that.$api.chain_store.get(params)
+            .then(res => {
+               that.tableData = res.data.row;
+               that.pager.total = res.data.total;
             })
             .catch(res => {
 

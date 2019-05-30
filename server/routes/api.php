@@ -474,6 +474,34 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::post('company/upload','CompanyController@upload');//上传
 
+    /*
+     * Route ChainStoreController Api
+     * created for yu
+     */
+
+    Route::get('chain_store','ChainStoreController@index');//连锁店管理的员工列表
+
+    Route::put('chain_store', 'ChainStoreController@update');//修改
+
+    /*
+     * Route CaseTemplateMenuController Api
+     * created for yu
+     */
+
+    Route::get('case_template_menu','CaseTemplateMenuController@index');//病历模板的菜单列表
+
+    Route::get('case_template_menu/get_by_id','CaseTemplateMenuController@getById');//根据id获取
+
+    Route::post('case_template_menu', 'CaseTemplateMenuController@addData');//添加
+
+    Route::put('case_template_menu', 'CaseTemplateMenuController@update');//修改
+
+    Route::delete('case_template_menu/{id}', 'CaseTemplateMenuController@delete');//删除
+
+
+
+
+
 
 
 });

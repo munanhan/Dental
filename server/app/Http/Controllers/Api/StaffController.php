@@ -34,12 +34,16 @@ class StaffController extends BaseController
                     'role_users' => 'role_users.user_id = users.id',
                     'roles' => 'roles.id = role_users.role_id'
                 ];
-        $where = isset($parms['name'])?['users.name' => $parms['name']]:[];//where
+        $where = [];
+        $where[] = [ 'clinic_id','=','clinic_id' ];
+        isset($parms['name'])?$where[] = ['users.name','=','name']:'';//where
         $order = [//order
                     'id' => 'desc'
                  ];
 
-        $sql = MySelect($select).MyJoin($join).MyWhere($where).MyOrder($order);//sql
+        $parms['clinic_id'] = Auth::user()['clinic_id'];
+
+        $sql = MySelect($select).MyJoin($join).MyWheres($where).MyOrder($order);//sql
 
         $res = getData($sql,$parms);
 
