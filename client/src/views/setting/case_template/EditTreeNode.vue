@@ -44,6 +44,7 @@
 
 <script>
 import EditDialogForm from "../../base/EditDialogForm";
+import { deepClone } from "@common/util";
 export default {
     name: 'EditTreeNode',
     mixins: [EditDialogForm],
