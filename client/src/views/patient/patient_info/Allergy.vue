@@ -4,12 +4,11 @@
             title="过敏史设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog expenditure-category"
+            class="custom-dialog allergy"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
             v-dialog-drag
-            center
         >
             <div class="content">
                 <!-- <div class="letf-content"> -->
@@ -92,7 +91,7 @@
 
                 <!-- <div>
                 </div> -->
-                <div class="pull-right" >
+                <div>
                     <el-button
                         @click="closeDialog"
                         :disabled="commitLoading"
@@ -186,5 +185,9 @@ export default {
 //     visibility: both;
 //     clear: both;
 // }
-
+.allergy {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>

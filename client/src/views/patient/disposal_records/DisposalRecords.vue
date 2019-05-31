@@ -51,7 +51,7 @@
                                     @click="dis_choice"
                                 ></i>
                                 <input
-                                    style="margin-left:30px"
+                                    style="margin-left:20px"
                                     class="middle-input"
                                     placeholder="单价"
                                     type="text"

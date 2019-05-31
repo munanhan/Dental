@@ -4,7 +4,7 @@
             title="患者职业设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog expenditure-category"
+            class="custom-dialog professional"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
@@ -178,4 +178,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.professional {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
+}
 </style>

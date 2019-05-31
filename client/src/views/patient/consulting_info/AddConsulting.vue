@@ -33,7 +33,7 @@
                         <tr>
                             <td align="center"> 基本需求</td>
                             <!-- <input style="width:620px"> -->
-                            <el-select
+                            <!-- <el-select
                                 v-model="type"
                                 style="width:620px"
                             >
@@ -55,7 +55,7 @@
                                 >
                                     <el-checkbox v-model="checked3">备选项</el-checkbox>
                                 </el-option>
-                            </el-select>
+                            </el-select> -->
                             <i
                                 @click="basice_need"
                                 class="el-icon-setting form-setting"
