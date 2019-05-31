@@ -20,7 +20,7 @@
                 >
                     <el-table-column type="index"></el-table-column>
                     <el-table-column
-                            v-for="(item,index) in allergy_menu.columns"
+                            v-for="(item) in allergy_menu.columns"
                             :prop="item.field"
                             :label="item.title"
                     >
