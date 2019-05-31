@@ -56,16 +56,16 @@ export default {
       return {
           apiType: "",
           formRules:{
-                 outline_name: [
-                                    {
-                                      required: true,
-                                      message:'请输入目录名称.',
-                                      trigger: "blur"
-                                    }
-                                ],
+           outline_name:[
+                           {
+                              required: true,
+                              message:'请输入目录名称.',
+                              trigger: "blur"
+                           }
+                        ],
 
-            },
-      }
+                    },
+        }
     },
     created(){},
     mounted(){},
