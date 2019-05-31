@@ -89,6 +89,7 @@
                             v-model="form.patient_birthday"
                             type="date"
                             placeholder="选择日期"
+                            value-format="timestamp"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -450,7 +451,13 @@ export default {
 
         age(){
           let that =this;
-          that.form.patient_birthday=='';
+          let current=new Date();
+          let birthday=that.form.patient_birthday;
+
+          console.log(birthday);
+          console.log(current.getTime());
+          return;
+
         },
 
         anamnesis(){
