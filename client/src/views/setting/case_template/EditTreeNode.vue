@@ -1,5 +1,5 @@
 <template>
-        <el-dialog
+    <el-dialog
         title="修改节点"
         :visible.sync="show"
         :before-close="closeDialog"
@@ -44,39 +44,41 @@
 
 <script>
 import EditDialogForm from "../../base/EditDialogForm";
+import { deepClone } from "@common/util";
 export default {
-    name: 'EditTreeNode',
+    name: "EditTreeNode",
     mixins: [EditDialogForm],
 
-    components:{},
-    props:{},
+    components: {},
+    props: {},
 
-    data(){
-      return {
-          apiType: "",
-          formRules:{
-                 outline_name: [
-                                    {
-                                      required: true,
-                                      message:'请输入目录名称.',
-                                      trigger: "blur"
-                                    }
-                                ],
-
+    data() {
+        return {
+            apiType: "",
+            form:{
+                outline_name: ''
             },
-      }
+            formRules: {
+                outline_name: [
+                    {
+                        required: true,
+                        message: "请输入目录名称.",
+                        trigger: "blur"
+                    }
+                ]
+            }
+        };
     },
-    created(){},
-    mounted(){},
-    watch:{},
-    computed:{},
-    methods:{
-    },
-}
+    created() {},
+    mounted() {},
+    watch: {},
+    computed: {},
+    methods: {}
+};
 </script>
 <style lang="less" scoped>
-.edit-tree-node{
-    /deep/ .el-dialog__body{
+.edit-tree-node {
+    /deep/ .el-dialog__body {
         padding-bottom: 0;
     }
 }
