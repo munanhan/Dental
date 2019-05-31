@@ -97,7 +97,7 @@
                         label="年 龄"
                         prop="patient_age"
                     >
-                        <el-input v-model="form.patient_age"></el-input>
+                        <el-input v-model="form.patient_age" @focus="age"></el-input>
                     </el-form-item>
 
                 </div>
@@ -447,6 +447,11 @@ export default {
     },
 
     methods: {
+
+        age(){
+          let that =this;
+          that.form.patient_birthday=='';
+        },
 
         anamnesis(){
             let that=this;
