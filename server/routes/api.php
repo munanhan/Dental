@@ -503,6 +503,37 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('case_template_menu/{id}', 'CaseTemplateMenuController@delete');//删除
 
 
+    /*
+     * Route CaseTemplateController Api
+     * created for yu
+     */
+
+    Route::get('case_template','CaseTemplateController@index');//病历模板的菜单列表
+
+    Route::get('case_template/get_by_id','CaseTemplateController@getById');//根据id获取
+
+    Route::post('case_template', 'CaseTemplateController@addData');//添加
+
+    Route::put('case_template', 'CaseTemplateController@update');//修改
+
+    Route::delete('case_template/{id}', 'CaseTemplateController@delete');//删除
+
+    /*
+     * Route MedicalController Api
+     * created for yu
+     */
+
+    Route::get('medical','MedicalController@index');//病例模板的菜单列表
+
+    Route::get('medical/get_by_id','MedicalController@getById');//根据id获取
+
+    Route::post('medical', 'MedicalController@addData');//添加
+
+    Route::put('medical', 'MedicalController@update');//修改
+
+    Route::delete('medical/{id}', 'MedicalController@delete');//删除
+
+
 
 
 
