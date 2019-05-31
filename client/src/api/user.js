@@ -20,15 +20,15 @@ const prefix = '/user';
  *          data: 可以不返回
  *      }
  */
-export function login(data) {
-    return request({
-        url: `${prefix}/login`,
-        method: 'post',
-        data: data,
-        //跳过自动刷新token
-        skipAuth: true
-    })
-}
+// export function login(data) {
+//     return request({
+//         url: `${prefix}/login`,
+//         method: 'post',
+//         data: data,
+//         //跳过自动刷新token
+//         skipAuth: true
+//     })
+// }
 
 /** 
  * 登出
@@ -41,15 +41,15 @@ export function login(data) {
  *      data: 可以不返回
  * }
  */
-export function logout(data) {
-    return request({
-        url: `${prefix}/logout`,
-        method: 'post',
-        data: data,
-        //跳过自动刷新token
-        skipAuth: true
-    })
-}
+// export function logout(data) {
+//     return request({
+//         url: `${prefix}/logout`,
+//         method: 'post',
+//         data: data,
+//         //跳过自动刷新token
+//         skipAuth: true
+//     })
+// }
 
 /** 
  * 当前登录的用户
