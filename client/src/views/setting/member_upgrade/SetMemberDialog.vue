@@ -29,8 +29,8 @@
               ></el-option>
           </el-select>
           </el-form-item>
-          <el-form-item label="会员卡号" prop="phone">
-            <el-input v-model="form.phone" disabled></el-input>
+          <el-form-item label="会员卡号" prop="patient_phone">
+            <el-input v-model="form.patient_phone" disabled></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">确定</el-button>
@@ -80,7 +80,7 @@ export default {
           setMemberLevelDialog:false,
           form:{
             member_id:'',
-            phone:''
+            patient_phone:''
           },
           member:[],
 
@@ -111,7 +111,18 @@ export default {
         //that.getMember();
       },
       watch: {
-        refresh(newValue, oldValue) {
+        // refresh(newValue, oldValue) {
+        //     let that = this;
+        //     if (newValue) {
+        //         // that.resizeTable();
+
+        //         //更新原来的refresh, 防止下次点击时不通知更新
+        //         // that.$emit("update:refresh", false);
+        //         that.getMember();
+        //         // that.getData();
+        //     }
+        // }
+        show(newValue, oldValue) {
             let that = this;
             if (newValue) {
                 // that.resizeTable();

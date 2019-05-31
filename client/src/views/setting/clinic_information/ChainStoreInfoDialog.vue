@@ -44,6 +44,7 @@
                         :model="form"
                         :rules="formRule"
                         label-width="100px"
+                        ref="form"
                     >
                         <div>
                             <el-upload
@@ -51,6 +52,7 @@
                                 :action="`${uploadUrl}/api/clinic/upload`"
                                 :show-file-list="false"
                                 :on-success="(res, file) => handleSuccess('logo', res, file)"
+                                :on-error="handleError"
                                 :before-upload="beforeUpload"
                                 :headers="headers"
                                 :with-credentials="true"
@@ -117,12 +119,14 @@
                                         collapse-tags
                                         class="width100"
                                         placeholder="省份"
+                                        @change="flushCity('city')"
                                     >
                                         <el-option
                                             v-for="item in provinceList"
                                             :key="item.area_code"
                                             :label="item.area_name"
                                             :value="item.area_code"
+                                            
                                         >
                                         </el-option>
                                     </el-select>
@@ -133,12 +137,14 @@
                                         collapse-tags
                                         class="width100"
                                         placeholder="城市"
+                                        @change="flushCity('country')"
                                     >
                                         <el-option
                                             v-for="item in cityList"
                                             :key="item.area_code"
                                             :label="item.area_name"
                                             :value="item.area_code"
+                                            
                                         >
                                         </el-option>
                                     </el-select>
@@ -238,6 +244,7 @@
                                     :action="`${uploadUrl}/api/clinic/upload`"
                                     :show-file-list="false"
                                     :on-success="(res, file) => handleSuccess('license_image_url', res, file)"
+                                    :on-error="handleError"
                                     :headers="headers"
                                     :with-credentials="true"
                                     :before-upload="beforeUpload"
@@ -275,6 +282,7 @@
                                     :headers="headers"
                                     :with-credentials="true"
                                     :on-success="(res, file) => handleSuccess('card_image_url', res, file)"
+                                    :on-error="handleError"
                                     :before-upload="beforeUpload"
                                     name="card_image_url"
                                 >
@@ -374,12 +382,6 @@ export default {
             activeName: "hospInfo",
             uploadUrl:'',
             //上传url
-            thisLogo:'',
-            //logo
-            thisLicense:'',
-            //营业执照
-            thisCard:'',
-            //身份证
             //诊所
             commitLoading: false,
             headers:{},
@@ -476,7 +478,6 @@ export default {
 
             if (newValue) {
                 that.form = that.editItem;
-                that.form = that.editItem;
                 that.getAreas();
                 that.uploadUrl = (window.HOSTNAME || '');
                 let token = getCookie("token");
@@ -495,23 +496,28 @@ export default {
         handleSuccess(type, res, file) {
             switch(type){
                 case 'logo':
-                    this.thisLogo = res.data.logo;
                     this.form.logo = (window.HOSTNAME || '')+res.data.logo;
                     break;
 
                 case 'license_image_url':
-                    this.thisLicense = res.data.license_image_url;
                     this.form.license_image_url = (window.HOSTNAME || '')+res.data.license_image_url;
                     break;
 
                 case 'card_image_url':
-                    this.thisCard = res.data.card_image_url;
                     this.form.card_image_url = (window.HOSTNAME || '')+res.data.card_image_url;
                     break;
             }
             
             // this.form.logo = URL.createObjectURL(file.raw);
             // this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        handleError(err, file, fileLis){
+            //上传失败
+            let that = this;
+            let data = JSON.parse(err.message);
+               that.$message.error(
+                    data.msg || "upload error."
+                );
         },
         beforeUpload(file) {
             // const isJPG = file.type === "image/jpeg";
@@ -527,16 +533,30 @@ export default {
 
         editCommit() {
             let that = this;
-            console.log(that.form);
-            // switch (type) {
-            //     case "hosp":
-            //     console.log(that.form);
-            //         break;
+            // console.log(that.form);
+                // console.log(this.form);
+            that.$api.clinic.update(that.form)
+                .then(res => {
+                  if(res.code == 200){
+                    that.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 800
+                    });
+                    // console.log(res.data);
+                    that.closeDialog();
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "edit error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
 
-            //     case "license":
-            //     console.log(that.form);
-            //         break;
-            // }
+
         },
         getAreas(){
             //获取省市区
@@ -548,6 +568,43 @@ export default {
                that.provinceList = res.data.province;
                that.cityList = res.data.city;
                that.areaList = res.data.country;
+            })
+            .catch(res => {
+
+            });
+        },
+        flushCity(option){
+            //刷新城市
+            console.log(option);
+            let that = this;
+            let params = {};
+            switch(option){
+                case 'city':
+                let province_id = that.form.province_id;
+                params = { 'area_code':province_id };
+                break;
+                case 'country':
+                let city_id = that.form.city_id;
+                params = { 'area_code':city_id };
+                break;
+            }
+
+            that.$api.area.getCity(params)
+            .then(res => {
+               switch(option){
+                    case 'city':
+                    that.form.city_id = undefined;
+                    that.form.region_id = undefined;
+                    that.cityList = res.data;
+                    that.areaList = [];
+                    break;
+                    case 'country':
+                    that.form.region_id = undefined;
+                    that.areaList = res.data;
+                    break;
+               }
+
+               
             })
             .catch(res => {
 

@@ -1,7 +1,7 @@
 import request from '../common/request';
 
-const prefix = '/patient_member';
-//会员等级
+const prefix = '/company';
+
 export function add(data){
     return request({
         url: `${prefix}`,
@@ -41,21 +41,5 @@ export function getById(data) {
         method: 'get',
         params: data
     })
-}
-
-export function deleteMember(data){
-    return request({
-        url:'members/:id',
-        method:'delete',
-        params:data
-    })
-}
-
-export function updateOrInsert(data){
-    return request({
-        url: `${prefix}/update_store`,
-        method: 'post',
-        data: data
-    });
 }
 

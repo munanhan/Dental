@@ -18,7 +18,10 @@ class AreaController extends BaseController
 
     public function getCityOrCountry()
     {
-        return message('成功',Area::select('id','area_code','area_name','parent_id','rank')->where('parent_id',request('area_code'))->get());
+
+        // return message('成功',Area::select('id','area_code','area_name','parent_id','rank')->where('parent_id',$this->parms['area_code'])->get());
+
+        return message('成功',$this->model->getData(['parent_id' => $this->parms['area_code']]),200);
     }
 
     public function getById(){
@@ -26,9 +29,9 @@ class AreaController extends BaseController
 
     	$data['province'] = $this->model->getData(['rank' => 1]);
 
-    	$data['city'] = $this->model->getData(['parent_id' => $this->parms['province_id']]);
+    	$data['city'] = isset($this->parms['province_id'])?$this->model->getData(['parent_id' => $this->parms['province_id']]):[];
 
-    	$data['country'] = $this->model->getData(['parent_id' => $this->parms['city_id']]);
+    	$data['country'] = isset($this->parms['city_id'])?$this->model->getData(['parent_id' => $this->parms['city_id']]):[];
 
     	return message('成功',$data,200);
 

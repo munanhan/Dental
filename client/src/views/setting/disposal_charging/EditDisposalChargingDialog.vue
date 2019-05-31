@@ -232,7 +232,7 @@ export default {
       mounted() {
          //let that = this;
          //that.getCategory();
-         // that.getData();
+         //that.getData();
       },
       watch: {
         // refresh(newValue, oldValue) {
@@ -246,8 +246,8 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                // that.getCategory();
-                // that.getData();
+                that.getCategory();
+                that.getData();
             }
         }
 

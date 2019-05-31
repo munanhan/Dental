@@ -384,9 +384,10 @@ export default {
     },
     mounted() {
         let that = this;
-        // that.getMenu();
+        
         that.$nextTick(() => {
             that.resizeTable();
+            that.getMenu();
         });
 
         //监听事件,由layout那边的resize抛出的
@@ -479,7 +480,7 @@ export default {
         },
         resizeTable() {
             let that = this;
-            console.log(that.$refs.menuContent.clientHeight);
+            // console.log(that.$refs.menuContent.clientHeight);
             // if (that.$refs.menuContent.clientHeight != 0) {
                 let tableHeight = that.$refs.menuContent.clientHeight - 70;
                 that.tableHeight = tableHeight;

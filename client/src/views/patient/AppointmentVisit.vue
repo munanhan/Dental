@@ -39,9 +39,10 @@
         >
             <div style="border:1px solid #e0e0e0;width:500px;height:550px">
 
-                <div style="border:1px solid red;height:400px">
-                    <!-- <el-calendar v-model="formData.value">
-          </el-calendar> -->
+                <div style="overflow:auto;border:1px solid #e3e3e3;height:400px;margin:10px;">
+                    <el-calendar :range="['2019-05-06', '2019-05-26']">
+                    </el-calendar>
+
                 </div>
                 <div>
                     <el-form-item
@@ -215,6 +216,7 @@ export default {
     //   },
     data() {
         return {
+            dataad: new Date(),
             options: [
                 {
                     value: "选项1",

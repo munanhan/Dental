@@ -1,31 +1,22 @@
 <template>
     <el-dialog
-        title="会员等级设置"
+        title="基本需求设置"
         :visible.sync="show"
         :before-close="closeDialog"
-        class="custom-dialog "
+        class="custom-dialog"
         :close-on-click-modal="false"
         :append-to-body="true"
         v-dialog-drag
     >
-        <el-form
-            :model="form"
-            :rules="formRules"
-            label-width="80px"
-            ref="form"
-        >
+        <el-form>
             <el-form-item
-                label="会员等级"
+                label="类型"
                 prop="name"
             >
                 <el-input
                     v-model.trim="form.name"
                     autocomplete="off"
                 ></el-input>
-            </el-form-item>
-
-            <el-form-item label="会员折扣"  prop="discount">
-                <el-input v-model="form.discount"></el-input>
             </el-form-item>
         </el-form>
         <div
@@ -48,7 +39,7 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 export default {
-    name: "AddMembershipGrade",
+    name: "AddBasicneeds",
     mixins: [DialogForm],
     components: {},
     props: {},
@@ -57,22 +48,13 @@ export default {
             commitLoading: false,
 
             form: {
-                name: "",
-                discount:"",
+                name: ""
             },
             formRules: {
-                name: [
+                expenditure: [
                     {
                         required: true,
-                        message: "请输入会员等级",
-                        trigger: "blur"
-                    }
-                ],
-
-                discount:[
-                    {
-                        required: true,
-                        message: "请输入会员折扣",
+                        message: "请输入类型",
                         trigger: "blur"
                     }
                 ]
@@ -86,8 +68,8 @@ export default {
     methods: {
         addCommit() {
             let that = this;
-            that.$api.patient_member
-                .add(that.form)
+            that.$api.resource
+                .addResource(that.form)
                 .then(res => {
                     that.$emit("flush", res.data);
                     that.closeDialog();

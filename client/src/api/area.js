@@ -19,3 +19,12 @@ export function getById(data) {
         params: data
     })
 }
+
+//根据id获取
+export function getCity(data) {
+    return request({
+        url: `${prefix}/city`,
+        method: 'get',
+        params: data
+    })
+}

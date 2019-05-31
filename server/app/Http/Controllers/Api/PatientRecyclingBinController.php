@@ -31,18 +31,18 @@ class PatientRecyclingBinController extends Controller
     public function index(Request $request){
     	//获取患者回收站数据
     	$input = $request->input();
-    	$input['status'] = 0;
+
     	$input = getParms($input);//参数获取
     	$parms = $input['parms'];
     	$pager = $input['pager'];
 
     	//顺序，获取case->select->case->join(后面补充)->where->limit;
     	$patient_group = config('config.patient_group');//类型转换,设置case
-    	$caseGroup = ['data' => $patient_group,'table' => 'patients','field' => 'group'];
+    	$caseGroup = ['data' => $patient_group,'table' => 'patients','field' => 'patient_group'];
     	$case = caseThen($caseGroup);//case
 
     	$select = [ 
-    				'field' => ['id','name','sex','age','phone','content','source',$case],
+    				'field' => ['id','patient_name','patient_sex','patient_age','patient_phone','patient_content','patient_source',$case],
     				'table' => 'patients',
     			  ];//设置字段
 
@@ -51,9 +51,17 @@ class PatientRecyclingBinController extends Controller
     				'page_size' => $pager['page_size']
     			 ];
 
-    	$sql = MySelect($select).MyWhere($parms).MyLimit($limit);
+        $where[] = [ 'deleted_at','<>','' ];
 
-    	$total = Patient::where('status',0)->count();
+        foreach ($parms as $k => $v) {
+            $where[] = [ $k,'=',$v ];
+        }
+
+        $parms['deleted_at'] = '';
+
+    	$sql = MySelect($select).MyWhere($where).MyLimit($limit);
+
+    	$total = Patient::where('deleted_at','<>','')->count();
 
     	$res = getData($sql,$parms,1);//处理
     	$res['data']['total'] = $total;
@@ -67,7 +75,7 @@ class PatientRecyclingBinController extends Controller
     	if ($id == 0) {
     		return message('缺少id',[],404);
     	}
-    	$res = Patient::where('id',$id)->update(['status' => 1 ]);
+    	$res = Patient::where('id',$id)->update(['deleted_at' => '' ]);
     	if ($res) {
     		return message('成功',[],200);
     	}

@@ -159,6 +159,7 @@ use Illuminate\Support\Facades\DB;
                 // $select.= '`'.$field.'`'.' from '.$parms['table'];
                 // $select = str_replace('`(','(',$select);//case then 处理`
                 // $select = str_replace("'`","'",$select);
+
                 $field = is_array($parms['field'])?implode(',',$parms['field']):$parms['field'];
 
                 $select.= $field.' from '.$parms['table'];

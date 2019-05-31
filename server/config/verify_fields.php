@@ -36,10 +36,17 @@ return [
                                            ] 
                           ], 
 
-    'AreaController' => [
-                            'getById' => [ 'province_id' => 'unique:省份id|type:int',
-                                           'city_id' => 'unique:城市id|type:int',
-                                         ] 
-                        ]
+    'ClinicController' => [
+                             'getById' =>  [ 'id' => 'unique:id|type:int' ],
+                             'update' => [ 'id' => 'unique:id|type:int',
+                                           'clinic_name' => 'unique:诊所名|type:string',
+                                           'contact' =>  'unique:联系人|type:string',
+                                           'phone' => 'unique:电话|type:int',
+                                           'industry_name' => 'unique:工商祖册名|type:string',
+                                           'license_no' => 'unique:营业执照号',
+                                           'license_image_url' => 'unique:营业执照照片',
+                                           'card_image_url' => 'unique:身份证照片'
+                                         ]
+                          ]
 
 ];

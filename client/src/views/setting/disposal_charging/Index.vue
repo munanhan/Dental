@@ -230,14 +230,6 @@
     >
     </edit-disposal-charging>
 
-    <!-- 删除提示框 -->
-    <el-dialog title="提示" :visible.sync="is_del" width="300px" center>
-       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div> 
-       <span slot="footer" class="dialog-footer">
-          <el-button @click="is_del = false">取 消</el-button>
-          <el-button type="primary" @click="del" >确 定</el-button>
-      </span>
-    </el-dialog>
 
     </div>
 </template>
@@ -261,9 +253,6 @@ export default {
       },
       data() {
         return {
-          is_del:false,//删除窗口
-          
-          del_id:0,
 
           menu_id:0,//当前菜单id
                    
@@ -355,8 +344,10 @@ export default {
       mounted() {
         let that = this;
 
+
         that.$nextTick(() => {
             that.resizeTable();
+            that.getMenu();
         });
 
         //监听事件,由layout那边的resize抛出的
@@ -424,13 +415,24 @@ export default {
         showDel(id){
           //删除框
           let that = this;
-          that.del_id = id;
-          that.is_del = true;
+
+          this.$confirm('删除不可恢复，是否确定删除？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            that.del(id);
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });          
+          });
+
         },
-        del(){
+        del(id){
           //删除
           let that = this;
-          let id = that.del_id;
            
           that.$api.disposal.del({id})
           .then(res => {
