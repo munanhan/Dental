@@ -89,6 +89,8 @@
                             v-model="form.patient_birthday"
                             type="date"
                             placeholder="选择日期"
+                            :picker-options="pickerOptions"
+                            value-format="timestamp"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -97,7 +99,7 @@
                         label="年 龄"
                         prop="patient_age"
                     >
-                        <el-input v-model="form.patient_age"></el-input>
+                        <el-input v-model="form.patient_age" ></el-input>
                     </el-form-item>
 
                 </div>
@@ -136,33 +138,6 @@
                     </el-form-item>
                 </div>
 
-                <div style="display:flex">
-                    <el-form-item
-                        label="就诊日期"
-                        prop="clinic_date"
-                    >
-                        <el-date-picker
-                            v-model="form.clinic_date"
-                            type="date"
-                            placeholder="选择日期"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-
-                    <div style="margin-top:10px;margin-left:60px">
-                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <el-radio
-                            v-model="form.category"
-                            label="1"
-                        >初诊</el-radio>
-                        <el-radio
-                            v-model="form.category"
-                            label="2"
-                        >复诊</el-radio>
-                    </div>
-
-                </div>
 
                 <div style="display:flex">
                     <el-form-item
@@ -372,7 +347,11 @@ export default {
             anamnesis_show: false,
             teeth_habit_show: false,
             userimage_show: false,
-
+            pickerOptions:{
+                disabledDate: time=>{
+                    return time.getTime() > Date.now();
+                }
+            },
             categoryList: [],
             memberList: [],
             allergyList: [],
@@ -443,10 +422,35 @@ export default {
                 let that = this;
                 that.getCaseNo();
             }
-        }
+        },
+        'form.patient_birthday':{
+            handler(newName, oldName) {
+                if(newName){
+                    let that=this;
+                    that.age();
+                }
+            },
+        },
     },
 
     methods: {
+
+        age(){
+          let that =this,
+              age='',
+              currentTime = new Date(),
+              birthTime = new Date(that.form.patient_birthday);
+
+          age=currentTime.getFullYear() -
+              birthTime.getFullYear() -
+              (currentTime.getMonth()<birthTime.getMonth() ||
+              (currentTime.getMonth()==birthTime.getMonth()
+                  && currentTime.getDate() < birthTime.getDate())
+                  ? 1
+                  :0);
+          that.form.patient_age=age;
+
+        },
 
         anamnesis(){
             let that=this;

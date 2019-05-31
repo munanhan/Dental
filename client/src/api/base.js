@@ -11,3 +11,13 @@ export function login(data) {
         skipAuth: true
     });
 }
+
+export function logout(data) {
+    return request({
+        url: `${prefix}logout`,
+        method: 'put',
+        data: data,
+        //跳过自动刷新token
+        skipAuth: true
+    })
+}

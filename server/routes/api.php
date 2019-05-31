@@ -283,6 +283,8 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::post('login','LoginController@login');
 
+    Route::put('logout','LoginController@logout');
+
     Route::post('registration','RegisterController@register');
 
     Route::post('refreshment','LoginController@refreshToken');
