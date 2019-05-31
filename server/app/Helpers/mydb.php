@@ -137,7 +137,7 @@ use Illuminate\Support\Facades\DB;
                         $where.= ' '.$v[0].' '.$v[1].' :'.$v[2];
                     }
                     else{
-                        $where.= " $k = :".$v;
+                        $where.= " $k = :".$k;
                     }
                     
                     $n < $length?$where.=' and':'';

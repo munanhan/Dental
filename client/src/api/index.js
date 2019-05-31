@@ -21,6 +21,8 @@ import * as impressions from "./patient_impression";
 import * as clinic from './clinic'
 import * as area from './area'
 import * as company from './company'
+import * as chain_store from './chain_store'
+import * as case_template_menu from './case_template_menu'
 
 
 const apis = {
@@ -42,11 +44,14 @@ const apis = {
     clinic,
     area,
     category,
+    company,
+    chain_store,
+    case_template_menu,
     allergy,
     anamnesis,
     teethHabit,
     impressions,
-    company,
+
 
 };
 

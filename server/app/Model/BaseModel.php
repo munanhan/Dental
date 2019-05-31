@@ -14,10 +14,10 @@ class BaseModel extends Model
 	            'id',
 	        ];
 
-	    protected $dispatchesEvents = [
-	    		'creating' => CreatingEvent::class,
-	    		'updating' => UpdatingEvent::class,
-	    	];
+	    // protected $dispatchesEvents = [
+	    // 		'creating' => CreatingEvent::class,
+	    // 		'updating' => UpdatingEvent::class,
+	    // 	];
 
 
 		public function __construct($table){

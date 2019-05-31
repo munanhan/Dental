@@ -2,21 +2,26 @@
     <div class="case-template">
         <div class="left-container">
             <div class="actions">
-                <span class="mr-20">大纲目录</span>
+                <span class="mr-14">大纲目录</span>
                 <i
-                    class="el-icon-share mr-20"
+                    class="el-icon-circle-plus-outline mr-14"
+                    title="新增目录"
+                    @click.stop.prevent="addDirDialog = true"
+                ></i>
+                <i
+                    class="el-icon-share mr-14"
                     title="新增节点"
                     @click.stop.prevent="addTreeNodeDialog = true"
                 ></i>
                 <i
-                    class="el-icon-edit mr-20"
+                    class="el-icon-edit mr-14"
                     title="修改"
                     @click.stop.prevent="showEditNode"
                 ></i>
                 <i
                     class="el-icon-delete"
                     title="删除节点"
-                    @click.stop.prevent="removeNode"
+                    @click.stop.prevent="showDelNode"
                 ></i>
             </div>
             <div>
@@ -33,18 +38,18 @@
                         slot-scope="{node, data}"
                     >
                         <i
-                            v-if="!node.expanded && data.children && data.children.length"
+                            v-if="!node.expanded && data.type == 0"
                             class="fa fa-folder mr-10 dir"
                         ></i>
                         <i
-                            v-if="node.expanded && data.children && data.children.length"
+                            v-if="node.expanded && data.type == 0"
                             class="fa fa-folder-open mr-10 dir"
                         ></i>
                         <i
-                            v-if="!data.children"
+                            v-if="data.type == 1"
                             class="fa fa-file-alt mr-10 file"
                         ></i>
-                        <span>{{ node.label }}</span>
+                        <span>{{ data.outline_name }}</span>
                     </span>
                 </el-tree>
 
@@ -126,6 +131,11 @@
             </div>
         </div>
 
+        <add-dir
+            :show.sync="addDirDialog"
+            @add-item="addNode"
+        ></add-dir>
+
         <add-tree-node
             :show.sync="addTreeNodeDialog"
             @add-item="addNode"
@@ -140,6 +150,7 @@
 </template>
 
 <script>
+import AddDir from "./AddDir";
 import AddTreeNode from "./AddTreeNode";
 import EditTreeNode from "./EditTreeNode";
 import CaseTemplate from "./template/CaseTemplate";
@@ -152,6 +163,7 @@ import Advice from "./advice/Advice";
 export default {
     name: "CaseTemplateIndex",
     components: {
+        AddDir,
         AddTreeNode,
         EditTreeNode,
         CaseTemplate, //病历模板
@@ -185,6 +197,7 @@ export default {
 
             addTreeNodeDialog: false,
             editTreeNodeDialog: false,
+            addDirDialog: false,
 
             selectNode: null,
 
@@ -217,17 +230,17 @@ export default {
 
         that.$nextTick(() => {
             that.resizeContent();
-
-            window.addEventListener("click", that.removeSelect);
+            that.getMenu();
+            // window.addEventListener("click", that.removeSelect);
 
             //监听事件,由layout那边的resize抛出的
             window.addEventListener("bodyChange", that.resizeContent);
         });
     },
 
-    destroyed() {
-        window.removeEventListener("click", this.removeSelect);
-    },
+    // destroyed() {
+    //     window.removeEventListener("click", this.removeSelect);
+    // },
 
     watch: {
         refresh(newValue, oldValue) {
@@ -276,14 +289,14 @@ export default {
             that.rightContentWidth = that.$refs.right.clientWidth;
         },
 
-        removeSelect() {
-            let that = this;
-            that.selectNode = null;
-        },
+        // removeSelect() {
+        //     let that = this;
+        //     that.selectNode = null;
+        // },
 
         handleNodeClick(data) {
             let that = this;
-
+            console.log(data);
             that.selectNode = data;
             // //设置选中的id
             // that.selectID = data.id;
@@ -293,7 +306,7 @@ export default {
             let that = this;
 
             if (that.selectNode) {
-                that.editTreeNodeDialog = true;
+                that.getMenuById();
 
                 //获取数据, 然后弹窗
             } else {
@@ -306,20 +319,84 @@ export default {
             let that = this;
             console.log(that.selectNode);
             console.log(value);
+
+            if (value.p_id == 0) {
+                that.templateData.push(value);
+            }
+
         },
 
         eidtNode(value) {},
+        showDelNode(){
+            //显示删除节点提示
+          let that = this;
 
+          that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            that.removeNode();
+          }).catch(() => {
+            that.$message({
+              type: 'info',
+              message: '已取消删除'
+            });          
+          });
+
+        },
         //删除节点
         removeNode() {
             let that = this;
 
             if (that.selectNode) {
-                that.$refs.templateTree.remove(that.selectNode);
-                console.log(that.selectNode);
+                let id = that.selectNode.id;
+                that.$api.case_template_menu.del({id})
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.$message({
+                                message: res.msg,
+                                type: "success",
+                                duration: 800
+                            });
+                            that.$refs.templateTree.remove(that.selectNode);
+                            // console.log(that.selectNode);
+                        }
+
+                    })
+                    .catch(res => {
+                         that.$message.error(
+                              res.msg || "操作异常请重试."
+                          );
+                    });
+
             } else {
                 that.$message.error("请选择删除的节点");
             }
+        },
+        getMenu(){
+            //获取菜单
+            let that = this;
+            that.$api.case_template_menu.get()
+            .then(res => {
+                that.templateData = res.data;
+            })
+            .catch(res => {
+
+            });
+        },
+        getMenuById(){
+            //根据id获取菜单
+            let that = this;
+            let id = that.selectNode.id;
+            that.$api.case_template_menu.getById({'id':id})
+            .then(res => {
+                that.currentEditItem = res.data;
+                that.editTreeNodeDialog = true;
+            })
+            .catch(res => {
+
+            });
         }
     }
 };
@@ -353,6 +430,10 @@ export default {
                 &:hover {
                     color: @hover-color;
                 }
+            }
+
+            .mr-14 {
+                margin-right: 14px;
             }
         }
 

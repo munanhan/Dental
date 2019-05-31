@@ -165,7 +165,7 @@ class BaseController extends Controller
             if (!empty($this->pager['current_page']) &&  !empty($this->pager['page_size'])) {
             //分页
                 $sql.= MyLimit($this->pager);
-                $total = $this->model->getCount();
+                $total = $this->model->getCount($this->parms);
                 $res = getData($sql,$this->parms);
                 return message($res['msg'],[ 'row' => $res['data'],'total' => $total ],$res['code']);
             }
@@ -241,14 +241,14 @@ class BaseController extends Controller
                 $sql.= MyJoin($this->join,'left');
             }
 
-            $sql.= MyWheres([$this->table.'.id' => 'id']);
+            $sql.= MyWheres([ [$this->table.'.id' ,'=', 'id'] ]);
 
             if (!empty($this->group)) {
             //group 语句
                 $sql.= MyGroup($this->group);
             }
 
-            return getData($sql,['id' => $this->parms['id']]);
+            return getData($sql,[ 'id' => $this->parms['id']]);
         }
 
         public function upload(Request $request){
