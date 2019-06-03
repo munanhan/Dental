@@ -9,10 +9,10 @@
         width="800px"
     >
         <el-form
-            :model="changePwd"
-            ref="changePwdForm"
+            :model="form"
+            ref="ConsultForm"
             label-width="100px"
-            :rules="rules"
+            :rules="form.rules"
         >
             <div class="Advan-content">
                 <div class="Advan-top">
@@ -62,10 +62,19 @@
                             ></i>
                         </tr>
                         <tr>
-                            <td align="center">潜在需求</td>
+                            <td
+                                align="center"
+                                prop="sad"
+                            >潜在需求</td>
                             <div>
-                                <input style="width:616px">
-                                <i @click="potential_dem" class="el-icon-setting form-setting"></i>
+                                <input
+                                    v-model="form.sad"
+                                    style="width:616px"
+                                >
+                                <i
+                                    @click="potential_dem"
+                                    class="el-icon-setting form-setting"
+                                ></i>
                             </div>
                         </tr>
                         <tr>
@@ -133,18 +142,11 @@ export default {
         return {
             basneed_show: false,
             potentdeman_show: false,
-            type: [],
-            checked1: false,
-            checked2: false,
-            checked3: false,
-            changePwd: {
-                oldPass: "",
-                newPass: "",
-                newPassRe: ""
+            form: {
+                type: [],
+                sad: "",
+                rules: {}
             },
-
-            rules: {},
-
             commitLoading: false
         };
     },
@@ -155,6 +157,9 @@ export default {
         },
         potential_dem() {
             this.potentdeman_show = true;
+        },
+        afterClose() {
+            this.$refs["ConsultForm"].resetFields();
         }
     }
 };

@@ -110,19 +110,19 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        show(newValue, oldValue) {
-            let that = this;
-            if (newValue) {
-                that.$api.resource
-                    .resources()
-                    .then(res => {
-                        that.tableData = res.data;
-                    })
-                    .catch(res => {
-                        console.log(res);
-                    });
-            }
-        }
+        // show(newValue, oldValue) {
+        //     let that = this;
+        //     if (newValue) {
+        //         that.$api.resource
+        //             .resources()
+        //             .then(res => {
+        //                 that.tableData = res.data;
+        //             })
+        //             .catch(res => {
+        //                 console.log(res);
+        //             });
+        //     }
+        // }
     },
     computed: {},
     methods: {

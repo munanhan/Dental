@@ -78,6 +78,7 @@
                                         <el-table
                                             :data="tableData"
                                             border
+                                            highlight-current-row
                                             height="250"
                                             style="width: 100%;margin-left:10px;cursor: pointer;"
                                         >
@@ -168,9 +169,10 @@
                                         </div>
                                         <div class="upperight-table">
                                             <el-table
-                                                :data="tableData"
+                                                :data="tableData2"
                                                 border
                                                 height="230"
+                                                highlight-current-row
                                                 style="width:100%"
                                             >
                                                 <el-table-column
@@ -179,18 +181,21 @@
                                                     align="center"
                                                     width="60"
                                                 >
-                                                    <el-tooltip
-                                                        effect="dark"
-                                                        content="删除"
-                                                        placement="bottom"
-                                                    >
-                                                        <el-button
-                                                            type="danger"
-                                                            size="mini"
-                                                            icon="el-icon-delete"
-                                                            circle
-                                                        ></el-button>
-                                                    </el-tooltip>
+                                                    <template slot-scope="scope">
+                                                        <el-tooltip
+                                                            effect="dark"
+                                                            content="删除"
+                                                            placement="bottom"
+                                                        >
+                                                            <el-button
+                                                                type="danger"
+                                                                size="mini"
+                                                                icon="el-icon-delete"
+                                                                circle
+                                                                @click.stop="del(scope.row, scope.$index)"
+                                                            ></el-button>
+                                                        </el-tooltip>
+                                                    </template>
                                                 </el-table-column>
                                                 <el-table-column
                                                     prop="name"
@@ -363,7 +368,23 @@ export default {
     data() {
         return {
             dischargeShow: false,
-
+            tableData2: [
+                {
+                    date: "02",
+                    name: "王小虎",
+                    address: "上海"
+                },
+                {
+                    date: "22",
+                    name: "王小虎",
+                    address: "上海"
+                },
+                {
+                    date: "201",
+                    name: "王小虎",
+                    address: "上海"
+                }
+            ],
             tableData: [
                 {
                     date: "02",
@@ -418,7 +439,7 @@ export default {
         },
         del(row, index) {
             let that = this;
-            that.tableData.splice(index, 1);
+            that.tableData2.splice(index, 1);
         },
         getMenu() {
             //获取菜单

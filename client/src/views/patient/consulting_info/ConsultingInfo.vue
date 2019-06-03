@@ -33,7 +33,7 @@
                     >
                         <el-col
                             class="bottom-title-col"
-                            :span="24" 
+                            :span="24"
                         >
                             <div class="font-left"> 基本需要:</div>
                             <div class="font-right">asdsadsadsad</div>

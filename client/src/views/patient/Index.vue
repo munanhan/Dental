@@ -91,14 +91,40 @@
                                 ></i>
                             </div>
 
-                            <div>
+                            <!-- <div>
                                 <el-tree
                                     style="height:100%;
                                            font-weight:bold;
-                                           background-color:#efefef"
+                                           background-color:#efefef;"
                                     :data="data"
                                     :props="defaultProps"
                                 ></el-tree>
+                            </div> -->
+                            <div>
+                                <div class="item">
+                                    <div @click="downUp(pppp_expend)"> <i
+                                            class="el-icon-caret-right"
+                                          
+                                        ></i> 最近患者</div>
+                                    <!-- /// -->
+                                    <ul v-if="pppp_expend">
+                                        <li>列表1</li>
+                                        <li>列表2</li>
+                                    </ul>
+                                    <!-- // -->
+                                </div>
+                                <div class="item">
+                                    <div @click="downUp(pppp_expend)"> <i
+                                            class="el-icon-caret-right"
+                                          
+                                        ></i> 最近患者</div>
+                                    <!-- /// -->
+                                    <ul v-if="pppp_expend">
+                                        <li>列表1</li>
+                                        <li>列表2</li>
+                                    </ul>
+                                    <!-- // -->
+                                </div>
                             </div>
                         </div>
 
@@ -144,13 +170,6 @@
                             <el-button @click="app_visit">复诊预约</el-button>
                         </div>
                     </el-tab-pane>
-                    <!-- <div class="visit-bottom-content" >
-                       <el-button
-                        type="primary"
-                         @click="add_patient"
-                       >新增患者</el-button>
-                       <el-button>复诊预约</el-button>
-                    </div> -->
                 </el-tabs>
             </div>
         </div>
@@ -181,8 +200,8 @@
                     label="预约信息"
                     name="bookingInformation"
                 >
-                    <booking-information 
-                         v-if="bookingInformation"
+                    <booking-information
+                        v-if="bookingInformation"
                         :refresh.sync="bookingInformation"
                     ></booking-information>
                 </el-tab-pane>
@@ -257,6 +276,7 @@
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
     </el-container>
+
 </template>
 
 <script>
@@ -295,6 +315,7 @@ export default {
 
     data() {
         return {
+            pppp_expend:false,
             input: "",
             search: "",
             curTab: "pationInfo",
@@ -341,7 +362,7 @@ export default {
             // outsideProcessing: false,
             returnVisitInfo: false,
             consultingInfo: false,
-            bookingInformation:false,
+            bookingInformation: false,
 
             data: [
                 {
@@ -405,6 +426,16 @@ export default {
     },
     computed: {},
     methods: {
+        downUp(pppp_expend){
+          if(!pppp_expend){
+
+              this.pppp_expend = true;
+          }else{
+              this.pppp_expend = false;
+          }
+        
+        },
+
         //tab选中事件
         tabSelectHandler(tabInstance) {
             let that = this;
