@@ -16,7 +16,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="treat_name"
                             label="备牙"
                             align="center"
                             show-overflow-tooltip
@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('preparationData',scope.row, scope.$index)"
+                                        @click.stop="showDel('preparationData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -71,7 +71,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="treat_name"
                             label="充值"
                             align="center"
                             show-overflow-tooltip
@@ -106,7 +106,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('investData',  scope.row, scope.$index)"
+                                        @click.stop="showDel('investData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -129,7 +129,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="treat_name"
                             label="药物"
                             align="center"
                             show-overflow-tooltip
@@ -164,7 +164,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('medicinalData', scope.row, scope.$index)"
+                                        @click.stop="showDel('medicinalData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -185,7 +185,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="treat_name"
                             label="其他"
                             align="center"
                             show-overflow-tooltip
@@ -220,7 +220,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('otherData', scope.row, scope.$index)"
+                                        @click.stop="showDel('otherData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -245,6 +245,7 @@
         <add-treat
             :show.sync="AddTreatDialog"
             @add-item="addTreat"
+            :menu_id="menu_id"
         ></add-treat>
 
         <edit-treat
@@ -278,6 +279,12 @@ export default {
         },
         selectStatus:{
             type:String
+        },
+        menu_id:{
+
+        },
+        data:{
+
         }
     },
     data() {
@@ -311,6 +318,27 @@ export default {
             let that = this;
 
             if (newValue) {
+                that.preparationData = [];
+                that.investData = [];
+                that.medicinalData = [];
+                that.otherData = [];
+                for (var i = 0,len = that.data.length; i < len; i++) {
+                    switch(that.data[i].type){
+                        case 0:
+                        that.preparationData.push(that.data[i]);
+                        break;
+                        case 1:
+                        that.investData.push(that.data[i]);
+                        break;
+                        case 2:
+                        that.medicinalData.push(that.data[i]);
+                        break;
+                        case 3:
+                        that.otherData.push(that.data[i]);
+                        break;
+                    }
+                }
+
                 that.resizeContent();
 
                 that.$emit("update:show", false);
@@ -340,16 +368,40 @@ export default {
             that.blockWidth = (that.width - 20) / 2;
         },
 
-        addTreat() {
+        addTreat(value) {
             let that = this;
+
+            switch(value.type){
+                case 0:
+                that.preparationData.push(value);
+                break;
+                case 1:
+                that.investData.push(value);
+                break;
+                case 2:
+                that.medicinalData.push(value);
+                break;
+                case 3:
+                that.otherData.push(value);
+                break;
+            }
         },
 
         //删除
-        del(type, row, idx) {
+        showDel(type, row, idx) {
             let that = this;
-
-            //删除
-            that[type].splice(idx, 1);
+              that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                that.del(row.id,type,idx);
+              }).catch(() => {
+                that.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });          
+              });
         },
 
         showEditDialog(type, row) {
@@ -361,8 +413,9 @@ export default {
 
             that.editType = type;
             that.selectItem = row;
+            that.getById(row);
 
-            that.editTreatDialog = true;
+            // that.editTreatDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -378,12 +431,48 @@ export default {
             //         that.$message.error("获取数据失败，请重试.");
             //     });
         },
-
+        getById(row){
+            //根据id获取
+            let that = this;
+            let id = row.id
+            that.$api.treat.getById({'id':id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.currentEditItem = res.data;
+                        that.editTreatDialog = true;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请重试.");
+                });
+        },
+        del(id,type,idx){
+            let that = this;
+            that.$api.treat.del({id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        //删除
+                        that[type].splice(idx, 1);
+                    } else {
+                        that.$message.error(res.msg || "删除失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("删除失败.");
+                });
+        },
         editItem(data) {
             let that = this;
 
             //设置数据, TODO
-            that.selectItem.text = data.aaa;
+            that.selectItem.treat_name = data.treat_name;
 
             that.currentEditItem = null;
             that.editType = "";

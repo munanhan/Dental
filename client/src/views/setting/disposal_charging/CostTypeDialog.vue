@@ -239,7 +239,7 @@ export default {
           let that = this;
           for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
                if (that.tableData[i].id == data.id) {
-                   that.tableData[i] = data;
+                   that.tableData[i].category = data.category;
                    break;
                }
           }

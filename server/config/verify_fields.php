@@ -53,7 +53,16 @@ return [
         'store'=>[
             'name'=>'unique:会员等级|type:string',
             'discount'=>'unique:折扣|type:int|min:1|max:100',
-        ]
+        ],
+        'addData'=>[
+            'name'=>'unique:会员等级|type:string',
+            'discount'=>'unique:折扣|type:int|min:1|max:100',
+        ],
+        'update'=>[
+            'name'=>'unique:会员等级|type:string',
+            'discount'=>'unique:折扣|type:int|min:1|max:100',
+        ],
+
     ],
 
     'PatientCategoryController'=>[
@@ -67,5 +76,38 @@ return [
             'name'=>'unique:洁牙习惯|type:string',
         ]
     ],
+
+    'MedicalController' => [
+                              'addData' => [ 'medical_content' => 'unique:病史配置|type:string',
+                                             'type' => 'unique:类型|type:int' 
+                                           ],
+                              'update' => [ 'medical_content' => 'unique:病史配置|type:string' ]
+                           ],
+
+    'InspectController' => [
+                              'addData' => [ 'inspect_content' => 'unique:检查配置|type:string',
+                                             'type' => 'unique:类型|type:int' 
+                                           ],
+                              'update' => [ 'inspect_content' => 'unique:检查配置|type:string' ]
+                           ],
+
+    'DiagnoseController' => [
+                              'addData' => [ 'diagnose_content' => 'unique:诊断配置|type:string',
+                                             'type' => 'unique:类型|type:int' 
+                                           ],
+                              'update' => [ 'diagnose_content' => 'unique:诊断配置|type:string' ]
+                           ],
+
+    'TreatController' => [
+                              'addData' => [ 'treat_name' => 'unique:治疗配置|type:string',
+                                             'type' => 'unique:类型|type:int' 
+                                           ],
+                              'update' => [ 'treat_name' => 'unique:治疗配置|type:string' ]
+                           ],
+
+    'AdviceController' => [
+                              'addData' => [ 'advice_name' => 'unique:医嘱|type:string' ],
+                              'update' => [ 'advice_name' => 'unique:医嘱|type:string' ]
+                           ],
 
 ];

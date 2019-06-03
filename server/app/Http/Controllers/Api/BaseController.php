@@ -191,8 +191,8 @@ class BaseController extends Controller
             if ($data) {
                 return message('获取成功',$data,200);
             }
-            return message('获取失败',[],500);
-            
+            // return message('获取失败',[],500);
+            return message('获取成功',new \stdClass(),200);
         }
 
         public function addData(){
@@ -343,6 +343,7 @@ class BaseController extends Controller
             //改,没有上传文件的时候
             $parms = $this->parms;
             $where['where'] = ['id' => $parms['id']];
+
             unset($parms['id']);
             $where['update'] = $parms;
 

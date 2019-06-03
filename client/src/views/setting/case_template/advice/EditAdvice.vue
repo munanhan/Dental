@@ -58,6 +58,7 @@ export default {
     },
     data() {
         return {
+            apiType:'advice',
             form: {
                 advice_name: "",
             },
