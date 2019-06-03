@@ -17,7 +17,7 @@ export default {
             formRules: {},
             apiType: "",
 
-            editMethod: "edit"
+            editMethod: "update"
         };
     },
 

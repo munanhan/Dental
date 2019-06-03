@@ -23,6 +23,8 @@ import * as area from './area'
 import * as company from './company'
 import * as chain_store from './chain_store'
 import * as case_template_menu from './case_template_menu'
+import * as case_template from './case_template'
+import * as medical from './medical'
 
 
 const apis = {
@@ -47,6 +49,8 @@ const apis = {
     company,
     chain_store,
     case_template_menu,
+    case_template,
+    medical,
     allergy,
     anamnesis,
     teethHabit,

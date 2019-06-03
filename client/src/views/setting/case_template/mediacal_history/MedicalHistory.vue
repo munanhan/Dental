@@ -16,7 +16,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="medical_content"
                             label="部位"
                             align="center"
                             show-overflow-tooltip
@@ -71,7 +71,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="medical_content"
                             label="性质"
                             align="center"
                             show-overflow-tooltip
@@ -129,7 +129,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="medical_content"
                             label="时间"
                             align="center"
                             show-overflow-tooltip
@@ -185,7 +185,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="medical_content"
                             label="其他"
                             align="center"
                             show-overflow-tooltip
@@ -233,6 +233,7 @@
         <div
             class="bottom-btn"
             ref="bottom"
+            :style="{'display':selectStatus}"
         >
             <el-button
                 type="primary"
@@ -266,6 +267,9 @@ export default {
     name: "MedicalHistory",
     components: { AddMedical, EditMedical },
     props: {
+        data:{
+
+        },
         show: {
             required: true
         },
@@ -276,6 +280,9 @@ export default {
 
         width: {
             required: true
+        },
+        selectStatus:{
+            type:String
         }
     },
     data() {
@@ -302,6 +309,27 @@ export default {
             let that = this;
 
             if (newValue) {
+                that.partData = [];
+                that.propertiesData = [];
+                that.timeData = [];
+                that.otherData = [];
+                for (var i = 0,len = that.data.length; i < len; i++) {
+                    switch(that.data[i].type){
+                        case 0:
+                        that.partData.push(that.data[i]);
+                        break;
+                        case 1:
+                        that.propertiesData.push(that.data[i]);
+                        break;
+                        case 2:
+                        that.timeData.push(that.data[i]);
+                        break;
+                        case 3:
+                        that.otherData.push(that.data[i]);
+                        break;
+                    }
+                }
+
                 that.resizeContent();
 
                 that.$emit("update:show", false);

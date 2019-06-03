@@ -49,12 +49,13 @@ export default {
     name: "EditTreeNode",
     mixins: [EditDialogForm],
 
+
     components: {},
     props: {},
 
     data() {
         return {
-            apiType: "",
+            apiType: "case_template_menu",
             form:{
                 outline_name: ''
             },
@@ -68,6 +69,7 @@ export default {
                 ]
             }
         };
+
     },
     created() {},
     mounted() {},
