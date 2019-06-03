@@ -16,10 +16,10 @@
 
             <el-form-item
                 label="节点名称"
-                prop="nodeName"
+                prop="outline_name"
             >
                 <el-input
-                    v-model.trim="form.nodeName"
+                    v-model.trim="form.outline_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -61,17 +61,21 @@ export default {
     mixins: [AddDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        selectNode:{
+
+        }
+    },
     data() {
         return {
             commitLoading: false,
 
             form: {
-                nodeName: "",
+                outline_name: "",
                 type: 0
             },
             formRules: {
-                nodeName: [
+                outline_name: [
                     {
                         required: true,
                         message: "请输入节点名称",
@@ -83,13 +87,36 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+
+    },
     computed: {},
     methods: {
         addCommit(){
             let that = this;
+            let data = {};
+            data.type = that.form.type;
+            if (that.selectNode == null) {
+                //没有选中默认为顶级
+                data.p_id = 0;
+                data.outline_name = that.form.outline_name;
+            }
+            else if (that.selectNode.type == 0) {
+                //这是目录，取id作为p_id
+                that.form.p_id = that.selectNode.id;
+                data.p_id = that.selectNode.id;
+                data.outline_name = that.form.outline_name;
+            }
+            else if (that.selectNode.type == 1) {
+                //这是案例，取p_id作为p_id
+                data.p_id = that.selectNode.p_id;
+                data.outline_name = that.form.outline_name;
+                that.form.p_id = that.selectNode.p_id;
+            }
 
-            that.$emit('add-node', that.form);
+            console.log(that.form);
+            that.$emit('add-item', data);
+            that.closeDialog();
         }
 
     }
