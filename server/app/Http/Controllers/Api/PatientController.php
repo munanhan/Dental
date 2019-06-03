@@ -61,9 +61,6 @@ class PatientController extends Controller
     }
 
 
-    
-
-
     protected  function getCaseNumber()
     {
 

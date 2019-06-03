@@ -9,9 +9,9 @@
         width="750px"
     >
         <el-form
-            ref="AddPatientForm"
+            ref="form"
             label-width="80px"
-            :rules="form.rules"
+            :rules="rules"
             :model="form"
         >
             <div style="display:flex">
@@ -90,7 +90,7 @@
                             type="date"
                             placeholder="选择日期"
                             :picker-options="pickerOptions"
-                            value-format="timestamp"
+                            value-format="yyyy-MM-dd"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -107,7 +107,7 @@
                 <div style="display:flex">
                     <el-form-item
                         label="会员等级"
-                        prop="member_level"
+                        prop="member_id"
                     >
                         <el-select
                             v-model="form.member_id"
@@ -117,9 +117,9 @@
                         >
                             <el-option
                                 v-for="item in memberList"
-                                :key="item.value"
+                                :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -294,11 +294,11 @@
             class="dialog-footer"
         >
 
-            <el-button>清空</el-button>
+            <el-button @click="resetForm('form')">清空</el-button>
             <el-button
                 :loading="commitLoading"
                 type="primary"
-                @click="submitFrom"
+                @click="submitFrom('form')"
             >确 定</el-button>
             <el-button @click="closeDialog">取 消</el-button>
 
@@ -358,6 +358,40 @@ export default {
             anamnesisList: [],
             teethHabitList: [],
 
+            rules: {
+                patient_name: [
+                    {
+                        required: true,
+                        message: "请输入姓名",
+                        trigger: "blur"
+                    }
+                ],
+
+                patient_phone: [
+                    {
+                        required: true,
+                        message: "请输入手机号",
+                        trigger: "blur"
+                    }
+                ],
+
+                patient_email: [
+                    {
+                        required: true,
+                        message: "请输入邮箱",
+                        trigger: "blur"
+                    }
+                ],
+                patient_birthday: [
+                    {
+                        required: true,
+                        message: "请选择出生年月日",
+                        trigger: "blur"
+                    }
+                ],
+
+            },
+
             form: {
                 patient_birthday: "",
                 patient_content: "",
@@ -375,39 +409,7 @@ export default {
                 patient_email: "",
                 allergy:"",
                 anamnesis:"",
-                rules: {
-                    patient_name: [
-                        {
-                            required: true,
-                            message: "请输入姓名",
-                            trigger: "blur"
-                        }
-                    ],
 
-                    patient_phone: [
-                        {
-                            required: true,
-                            message: "请输入手机号",
-                            trigger: "blur"
-                        }
-                    ],
-
-                    patient_email: [
-                        {
-                            required: true,
-                            message: "请输入邮箱",
-                            trigger: "blur"
-                        }
-                    ],
-                    patient_birthday: [
-                        {
-                            required: true,
-                            message: "请选择出生年月日",
-                            trigger: "blur"
-                        }
-                    ],
-
-                }
             }
         };
     },
@@ -434,6 +436,11 @@ export default {
     },
 
     methods: {
+
+        resetForm(form){
+            let  that=this;
+            that.$refs[form].resetFields();
+        },
 
         age(){
           let that =this,
@@ -517,20 +524,30 @@ export default {
 
         },
 
-        submitFrom() {
+        submitFrom(form) {
             let that = this;
-            // that.getCaseNo();
-            console.log(that.form);
-            // this.$api.patient
-            //     .addPatient(this.form)
-            //     .then(function(response) {
-            //         console.log(response);
-            //     })
-            //     .catch(function(error) {
-            //         console.log(error);
-            //     });
+            that.$refs[form].validate((valid)=>{
+                if(valid){
+                    that.$api.patient.store(that.form)
+                        .then(res=>{
+                            if(res.code==200){
+                                that.$message({
+                                    type: 'success',
+                                    message: '添加成功!'
+                                });
+                                that.closeDialog();
+                            }else {
+                                that.$message.error('添加失败');
+                            }
+                        })
+                        .catch(res=>{
 
-            console.log();
+                            console.log(res.msg);
+                        })
+                }else {
+                    return false;
+                }
+            });
         },
 
         category_manage() {
@@ -565,9 +582,6 @@ export default {
                 });
         },
 
-        afterClose() {
-            this.$refs["AddPatientForm"].resetFields();
-        }
     }
 };
 </script>
