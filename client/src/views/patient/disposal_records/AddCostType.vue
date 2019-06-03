@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="潜在需求设置"
+        title="患者分类设置"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -8,7 +8,12 @@
         :append-to-body="true"
         v-dialog-drag
     >
-        <el-form>
+        <el-form
+            :model="form"
+            :rules="formRules"
+            label-width="60px"
+            ref="form"
+        >
             <el-form-item
                 label="类型"
                 prop="name"
@@ -39,7 +44,7 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 export default {
-    name: "AddBasicneeds",
+    name: "AddCostType",
     mixins: [DialogForm],
     components: {},
     props: {},
@@ -51,7 +56,7 @@ export default {
                 name: ""
             },
             formRules: {
-                expenditure: [
+                name: [
                     {
                         required: true,
                         message: "请输入类型",
@@ -68,8 +73,8 @@ export default {
     methods: {
         addCommit() {
             let that = this;
-            that.$api.resource
-                .addResource(that.form)
+            that.$api.category
+                .addCategory(that.form)
                 .then(res => {
                     that.$emit("flush", res.data);
                     that.closeDialog();

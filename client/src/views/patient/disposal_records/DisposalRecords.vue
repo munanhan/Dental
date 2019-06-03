@@ -51,7 +51,7 @@
                                     @click="dis_choice"
                                 ></i>
                                 <input
-                                    style="margin-left:30px"
+                                    style="margin-left:20px"
                                     class="middle-input"
                                     placeholder="单价"
                                     type="text"
@@ -249,7 +249,7 @@ export default {
                                     }
                                 }
                             }
-                            &:hover{
+                            &:hover {
                                 color: #1d1d1d;
                                 border: 1px solid #cfcfcf;
                             }
@@ -261,20 +261,10 @@ export default {
                     .right-top {
                         // border: 1px solid red;
                         font-weight: bold;
-                        margin-left:20px;
+                        margin-left: 20px;
                         margin-top: 3px;
                         display: flex;
                         font-size: 20px;
-                        .right-i-content {
-                            // border: 1px solid red;
-                            margin-left: 620px;
-                            .right-i {
-                                // border: 1px solid red;
-                                font-size: 20px;
-                                cursor: pointer;
-                                margin-right: 10px;
-                            }
-                        }
                     }
                     .right-middle {
                         // border: 1px solid red;
@@ -314,6 +304,20 @@ export default {
                         }
                         &:hover {
                             border: 1px solid #cfcfcf;
+                        }
+                    }
+                    .right-i-content {
+                        // border: 1px solid red;
+                        margin-left: 620px;
+                        .right-i {
+                            // border: 1px solid red;
+                            font-size: 20px;
+                            cursor: pointer;
+                            margin-right: 10px;
+                        }
+                        :hover {
+                            color: #494949;
+                            transition: all 0.3s;
                         }
                     }
                     // &:hover {

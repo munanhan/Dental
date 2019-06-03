@@ -12,13 +12,12 @@
                 >
                     <div class="medical-top-title">
                         <div>2019-05-14 &nbsp; 14:56 &nbsp; 初诊 &nbsp;&nbsp; &nbsp; 医生：1212</div>
-                        <i
-                            style="margin-left:560px;"
-                            class="fa fa-weixin medical-top-i"
-                        ></i>
-                        <i class="el-icon-edit medical-top-i"></i>
-                        <i class="fa fa-capsules medical-top-i"></i>
-                        <i class="el-icon-delete-solid medical-top-i"></i>
+                        <div style="margin-left:530px">
+                            <i class="el-icon-edit medical-top-i"></i>
+                            <i class="el-icon-edit medical-top-i"></i>
+                            <i class="fa fa-capsules medical-top-i"></i>
+                            <i class="el-icon-delete-solid medical-top-i"></i>
+                        </div>
                     </div>
 
                     <!-- 水水水水水水水水水水水水水水水水水水水 -->
@@ -373,7 +372,7 @@ export default {
             .medical-top-title {
                 font-size: 22px;
                 display: flex;
-                border: 1px solid red;
+                // border: 1px solid red;
                 width: 100%;
             }
             .patient-left {

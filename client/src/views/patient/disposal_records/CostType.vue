@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-dialog
-            title="既往史设置"
+            title="患者来源设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog past-medicalhistory"
+            class="custom-dialog expenditure-category"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
@@ -21,7 +21,7 @@
                 >
                     <el-table-column
                         prop="aaaa"
-                        label="既往史"
+                        label="患者来源"
                         align="center"
                         show-overflow-tooltip
                     >
@@ -84,7 +84,7 @@
                 <div class="pull-left">
                     <el-button
                         type="primary"
-                        @click="add_med"
+                        @click="addcost_type"
                         :disabled="commitLoading"
                     >新增</el-button>
                 </div>
@@ -106,26 +106,27 @@
             </div>
         </el-dialog>
 
-        <add-past-medicalhistory :show.sync="addmed_show"></add-past-medicalhistory>
+        <!-- <add-patients-source :show.sync="addpatsour_show"></add-patients-source> -->
+        <add-cost-type :show.sync="addcotype_show"></add-cost-type>
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddPastMedicalhistory from "./AddPastMedicalhistory";
+import AddCostType from "./AddCostType";
 
 export default {
     name: "ExpenditureCategory",
     mixins: [DialogForm],
 
     components: {
-        AddPastMedicalhistory
+        AddCostType
     },
     props: {},
 
     data() {
         return {
-            addmed_show: false,
+            addcotype_show: false,
             tableHeight: "340px",
             tableData: [
                 { aaaa: "网络咨询" },
@@ -171,16 +172,14 @@ export default {
 
             that.closeDialog();
         },
-        add_med() {
-            this.addmed_show = true;
+        addcost_type() {
+            this.addcotype_show = true;
         }
     }
 };
 </script>
 <style lang="less" scoped>
-.past-medicalhistory {
-    /deep/ .el-dialog__header {
-        text-align: center;
-    }
+/deep/ .el-dialog__header {
+    text-align: center;
 }
 </style>

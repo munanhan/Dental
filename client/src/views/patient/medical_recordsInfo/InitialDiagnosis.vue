@@ -203,11 +203,15 @@
                                     <input style="height:35px">
                                 </tr>
                             </table>
-                            <div style="margin-top:30px;
-                            background-color:white;
-                            border:1px solid red;
-                            height:50px:width:100%">添加患者影像</div>
-                            <div></div>
+                            <div class="bottom-image">
+                                <div style="margin-top:10px">添加患者影像（可添加6张）</div>
+                                <div class="add-image">
+                                    <div class="bottom-box">
+                                        <i class="fa fa-plus bottom-i"></i>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                     <div class="right-bottom">
@@ -434,6 +438,31 @@ export default {
             select {
                 width: 664px;
                 height: 40px;
+            }
+        }
+        .bottom-image {
+            // border: 1px solid red;
+            background-color: white;
+            height: 160px;
+            .add-image {
+                margin-bottom: 20px;
+                margin-top: 20px;
+                margin-left: 10px;
+                .bottom-box {
+                    border: 1px solid #afafaf;
+                    cursor: pointer;
+                    height: 100px;
+                    width: 100px;
+                    .bottom-i {
+                        color: #949494;
+                        font-size: 25px;
+                        padding-top: 35px;
+                        padding-left: 40px;
+                    }
+                }
+                :hover {
+                    background-color: #dbdbdb;
+                }
             }
         }
         .right-bottom {

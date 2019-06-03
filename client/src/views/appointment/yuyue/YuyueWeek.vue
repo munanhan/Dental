@@ -94,7 +94,7 @@ import AddYuyue from "./AddYuyue.vue";
 import { formatDate, addClass, inArray } from "@/common/util.js";
 export default {
   name: "",
-  inject: ["week", "navBar", "dayTime", "getWeekStartEnd", "statusIcon"],
+  inject: ["week", "navBar", "dayTime", "getWeekStartEnd", "statusIcon",'getWeekData'],
   props: ["weekStart", "weekEnd", "weekArr"],
   created() {
     this.$nextTick(function() {
@@ -199,6 +199,19 @@ export default {
       dialogVisible: false,
       addYuyueShow: false
     };
+  },
+  watch:{
+    navBar:{
+       handler: function(val, oldval) {
+        val.forEach((ele,index)=>{
+          if(ele.select == '周' && ele.active == true){
+             this.getWeekData()
+          }
+        })
+
+      },
+      deep: true //对象内部的属性监听，也叫深度监听
+    }
   },
   computed: {
     targetArr() {

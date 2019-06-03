@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增预约"
+    :title="title"
     :visible.sync="show"
     :before-close="closeDialog"
     class="custom-dialog"
@@ -221,7 +221,7 @@ export default {
         items: ""
         // start_time:this.yuyue_time,
       },
-
+      title:'新增预约',
       items_o: itemsOptions,
       checked_items: [],
       rules: {
@@ -260,11 +260,16 @@ export default {
             .then(res => {
               if (res.code == 200) {
                 this.formData = res.data;
+                this.title  = '修改预约'
               }
             });
         }
+      }else{
+        this.title  = '新增预约'
       }
-
+      if(old_show){
+        this.formData.id = null;
+      }
       this.formData.appointment_date = this.yuyue_date
         ? this.yuyue_date
         : this.chooseDate;
