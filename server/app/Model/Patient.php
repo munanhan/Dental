@@ -32,4 +32,24 @@ class Patient extends Model
         return $this->hasMany(PatientVisit::class);
     }
 
+    public function setAllergyAttribute($value)
+    {
+        $this->attributes['allergy']=implode(',',$value);
+    }
+
+    public function getAllergyAttribute($value)
+    {
+        return explode(',',$value);
+    }
+
+    public function getAnamnesisAttribute($value)
+    {
+        return explode(',',$value);
+    }
+
+    public function setAnamnesisAttribute($value)
+    {
+        $this->attributes['anamnesis']= implode(',',$value);
+    }
+
 }
