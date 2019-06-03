@@ -10,21 +10,21 @@
         </template>
         
       </el-table-column>
-      <el-table-column prop="appointment_date" label="预约日期" width="80"></el-table-column>
+      <el-table-column prop="appointment_date" label="预约日期" width="120"></el-table-column>
       <el-table-column prop="start_time" label="预约时间" width="80"></el-table-column>
       <el-table-column prop="over_time" label="结束时间" width="80"></el-table-column>
       <el-table-column prop="appointment_doctor" label="预约医生" width="80"></el-table-column>
       <el-table-column prop="type" label="就诊类型" width="80">
         <template slot-scope="scope">{{scope.row.type == "1"?"复诊":"初诊"}}</template>
       </el-table-column>
-      <el-table-column prop="patient_name" label="患者姓名" width="80"></el-table-column>
-      <el-table-column prop="case_id" label="病历号" width="80"></el-table-column>
-      <el-table-column prop="items" label="事项" width="80"></el-table-column>
+      <el-table-column prop="patient_name" label="患者姓名" width="100"></el-table-column>
+      <el-table-column prop="case_id" label="病历号" width="120"></el-table-column>
+      <el-table-column prop="items" label="事项" width="120"></el-table-column>
       <el-table-column prop="patient_sex" label="性别" width="80"></el-table-column>
       <el-table-column prop="patient_source" label="患者来源" width="80"></el-table-column>
-      <el-table-column prop="patient_phone" label="电话" width="90"></el-table-column>
+      <el-table-column prop="patient_phone" label="电话" width="120"></el-table-column>
       <el-table-column prop="created_by" label="创建人" width="90"></el-table-column>
-      <el-table-column prop="created_at" label="创建日期" width="90"></el-table-column>
+      <el-table-column prop="created_at" label="创建日期" ></el-table-column>
     </el-table>
   </div>
 </template>

@@ -51,7 +51,7 @@
             <td
               v-for="item in dateItem"
               :key="item.year + item.mth + item.date"
-              :data="item.year+'-'+(item.mth<10?'0'+item.mth:item.mth)+'-'+item.date"
+              :data="item.year+'-'+(item.mth<10?'0'+item.mth:item.mth)+'-'+(item.date<10?'0'+item.date:item.date)"
               class="calendar-day-cell"
               :class="{ 'not-current-mth': item.notCurr, 'active': item == selectItem, 
                                 'current-day': item.year == curYear && item.mth - 1 == curMonth && item.date == curDate,
@@ -77,7 +77,6 @@ export default {
   props: {
     update: {
       type: Boolean
-      // required: true
     }
   },
   data() {
@@ -122,12 +121,7 @@ export default {
     let year = d.getFullYear();
     let month = d.getMonth() + 1;
     let day = new Date(year, month, 0).getDate();
-    month = month < 10 ? "0" + month : month;
-    let end = `${year}-${month}-${day}`;
-    let start = `${year}-${month}-1`;
-    this.$api.appointment.getMonthAppointment({ start, end }).then(res => {
-      this.yuyue_month_res = res.data;
-    });
+    this.getMonthData(year,month);
   },
 
   mounted() {
@@ -157,6 +151,7 @@ export default {
     // }
     let grays = document.getElementsByClassName("month-blue");
     grays = Array.from(grays);
+
     grays.forEach((ele, key) => {
       let strhtml = ele.innerHTML + '<div class="add-month">';
       this.yuyue_month_res.forEach((item, index) => {
@@ -168,10 +163,28 @@ export default {
         }
       });
       strhtml += "</div>";
+
       ele.innerHTML = strhtml;
     });
   },
   watch: {
+    navBar: {
+      handler: function(val, oldval) {
+        val.forEach((ele, index) => {
+          if (ele.select == "月" && ele.active == true) {
+            if(this.selectMonth){
+              this.getMonthData(this.selectYear,this.selectMonth);
+            }
+            // this.$api.appointment
+            //   .getMonthAppointment({ start, end })
+            //   .then(res => {
+            //     this.yuyue_month_res = res.data;
+            //   });
+          }
+        });
+      },
+      deep: true //对象内部的属性监听，也叫深度监听
+    },
     update(newValue, oldValue) {
       let that = this;
       if (newValue) {
@@ -202,6 +215,17 @@ export default {
     }
   },
   methods: {
+    getMonthData(year,month) {
+      let lastMonth = month -1;
+      let nextMonth = month +1;
+      lastMonth = lastMonth < 10 ? "0" + lastMonth : lastMonth;
+      nextMonth = nextMonth < 10 ? "0" + nextMonth : nextMonth;
+      let end = `${year}-${nextMonth}-31`;
+      let start = `${year}-${lastMonth}-01`;
+      this.$api.appointment.getMonthAppointment({ start, end }).then(res => {
+        this.yuyue_month_res = res.data;
+      });
+    },
     setDate(selectDate) {
       let that = this,
         //总共42个日期
@@ -301,6 +325,7 @@ export default {
       }
 
       that.setDate(date);
+       this.getMonthData(this.selectYear,this.selectMonth);
     },
 
     //选中的日期
@@ -313,16 +338,14 @@ export default {
         (item.mth < 10 ? "0" + item.mth : item.mth) +
         "-" +
         (item.date < 10 ? "0" + item.date : item.date);
-      
-      this.$store.commit('updateChooseDate',date);
-        this.$api.appointment
-        .getTodayAppointment({ date})
-        .then(res => {
-          if (res.code == 200) {
-            this.$emit('OnUpdateYuyueRes',res.data)
-          }
-        });
-      
+
+      this.$store.commit("updateChooseDate", date);
+      this.$api.appointment.getTodayAppointment({ date }).then(res => {
+        if (res.code == 200) {
+          this.$emit("OnUpdateYuyueRes", res.data);
+        }
+      });
+
       // console.log(item);
       //  this.$nextTick(function() {
       //   let self = this;
