@@ -196,7 +196,8 @@ export default {
       dayTime: this.dayTime,
       getWeekStartEnd: this.getWeekStartEnd,
       getTodayAppointment: this.getTodayAppointment,
-      statusIcon: this.statusIcon
+      statusIcon: this.statusIcon,
+      getWeekData:this.getWeekData,
     };
   },
   created() {
@@ -307,7 +308,11 @@ export default {
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
       //获取一个星期的数据
-      this.$api.appointment
+      this.getWeekData();
+
+    },
+    getWeekData(){
+         this.$api.appointment
         .getWeekAppointment({
           weekStart: this.weekStart,
           weekEnd: this.weekEnd
@@ -317,7 +322,6 @@ export default {
             this.$refs.week.yuyue_week_res = res.data;
           }
         });
-      //  console.log(111);
     },
     handleNextWeek() {
       let endStr = this.weekEnd.split(/[年月日]/, 3).join("-"),
@@ -329,16 +333,7 @@ export default {
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
       //获取一个星期的数据
-      this.$api.appointment
-        .getWeekAppointment({
-          weekStart: this.weekStart,
-          weekEnd: this.weekEnd
-        })
-        .then(res => {
-          if (res.code == 200) {
-            this.$refs.week.yuyue_week_res = res.data;
-          }
-        });
+       this.getWeekData();
     },
     chooseToday() {
       this.myCalender.chooseToday();
@@ -506,7 +501,6 @@ export default {
       });
       return [xArr, yArr];
     },
-
     ...mapState({
       myCalender: state => state.myCalender,
       chooseDate: state => state.chooseDate,

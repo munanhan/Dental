@@ -111,6 +111,7 @@
             chooseDate(newDate,oldDate){
                 let arr = newDate.split('-');
                 arr.splice(1,1,arr[1].length == 1? '0'+arr[1]:arr[1]); 
+                arr.splice(2,1,arr[2].length == 1? '0'+arr[2]:arr[2]); 
                 this.$store.commit('updateChooseDate',arr.join('-'));
                 
             },
