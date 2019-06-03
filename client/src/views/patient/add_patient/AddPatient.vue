@@ -134,7 +134,7 @@
                         label="会员卡号"
                         prop="member_card"
                     >
-                        <el-input v-model="form.member_card"></el-input>
+                        <el-input placeholder="默认为手机号" v-model="form.member_card"></el-input>
                     </el-form-item>
                 </div>
 
@@ -372,6 +372,10 @@ export default {
                         required: true,
                         message: "请输入手机号",
                         trigger: "blur"
+                    },
+                    {
+                        pattern:/^1[3|4|5|7|8|6|9][0-9]{9}$/,
+                        message:'请输入正确的手机号'
                     }
                 ],
 
@@ -380,6 +384,10 @@ export default {
                         required: true,
                         message: "请输入邮箱",
                         trigger: "blur"
+                    },
+                    {
+                        pattern:/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+                        message:'请输入正确的邮箱格式'
                     }
                 ],
                 patient_birthday: [

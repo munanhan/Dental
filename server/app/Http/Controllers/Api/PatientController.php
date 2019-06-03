@@ -46,12 +46,19 @@ class PatientController extends Controller
 
     public function intraday()
     {
-        $patients=Patient::withCount('appointments')->get();
+        $where_time=now();
 
-        dd($patients);
-        foreach ($patients as $patient) {
-            echo $patient->appointments_count;
-        }
+        $patients=Patient::whereHas('appointments',function($query) use ($where_time){
+            $query->where('appointments.status','!=','2')
+                ->where('appointments.appointment_date',$where_time);
+        })->get();
+
+        dd($patients->count()) ;
+    }
+
+    public function aa()
+    {
+        return '222';
     }
 
 
