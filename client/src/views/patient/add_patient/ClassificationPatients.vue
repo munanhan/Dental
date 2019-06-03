@@ -22,7 +22,8 @@
                 >
                     <el-table-column type="index"></el-table-column>
                     <el-table-column
-                            v-for="(item,index) in category_menu.columns"
+                            v-for="(item,k) in category_menu.columns "
+                            :key="k"
                             :prop="item.field"
                             :label="item.title"
                     >

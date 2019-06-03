@@ -179,7 +179,15 @@ class BaseController extends Controller
         public function getById(){
             //get by id
             // $data = empty($this->join)?$this->model->getById(['id' => $this->parms['id']]):$this->getBySelect()['data'][0];
-            $data = $this->model->getById(['id' => $this->parms['id']]);
+            if (isset($this->parms['id'])) {
+                //默认取的id
+                $where['id'] = $this->parms['id'];
+            }
+            else{
+                //否则取条件
+                $where = $this->parms;
+            }
+            $data = $this->model->getById($where);
             if ($data) {
                 return message('获取成功',$data,200);
             }

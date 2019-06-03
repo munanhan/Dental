@@ -64,6 +64,7 @@
         <div
             class="bottom-btn"
             ref="bottom"
+            :style="{'display':selectStatus}"
         >
             <el-button
                 type="primary"
@@ -105,6 +106,9 @@ export default {
 
         width: {
             required: true
+        },
+        selectStatus:{
+            type:String
         }
     },
     data() {

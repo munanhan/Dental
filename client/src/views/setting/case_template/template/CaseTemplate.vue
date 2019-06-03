@@ -9,7 +9,7 @@
                     <td class="case-title">主诉</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.main_complain"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -19,7 +19,7 @@
                     <td class="case-title">现病史</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.now_history"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -29,7 +29,7 @@
                     <td class="case-title">既往史</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.previous_history"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -40,7 +40,7 @@
                     <td>
                         <el-input
                             type="textarea"
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.inspect"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -50,7 +50,7 @@
                     <td class="case-title">辅助检查</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.auxiliary"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -61,7 +61,7 @@
                     <td>
                         <el-input
                             type="textarea"
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.diagnosis"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -71,7 +71,7 @@
                     <td class="case-title">治疗方案</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.treatment_plan"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -82,7 +82,7 @@
                     <td>
                         <el-input
                             type="textarea"
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.treatment"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -92,7 +92,7 @@
                     <td class="case-title">医嘱</td>
                     <td>
                         <el-input
-                            v-model.trim="form.main_suit"
+                            v-model.trim="form.doctor_advice"
                             autocomplete="off"
                             :disabled="isDisabled"
                         ></el-input>
@@ -101,7 +101,7 @@
             </tbody>
         </table>
 
-        <div class="bottom-container">
+        <div class="bottom-container" :style="{'display':selectStatus}">
 
             <div v-if="isDisabled">
                 <el-button
@@ -135,23 +135,29 @@ export default {
 		data:{
 			type: Object,
 			required: true
-		}
+		},
+        selectStatus:{
+            type:String
+        }
 	},
     data() {
         return {
             form: {
-                main_suit: ""
+                
             },
 
-            isDisabled: true
+            isDisabled: true,
+
         };
     },
     created() {},
     mounted() {},
     watch: {
-		id(newValue, oldValue){
-			let that = this;
-			that.getData()
+		data(newValue, oldValue){
+            if (newValue) {
+                let that = this;
+                that.form = that.data;
+            }
 		}
 
 	},

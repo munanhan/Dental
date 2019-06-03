@@ -9,9 +9,9 @@
         width="750px"
     >
         <el-form
-            ref="AddPatientForm"
+            ref="form"
             label-width="80px"
-            :rules="form.rules"
+            :rules="rules"
             :model="form"
         >
             <div style="display:flex">
@@ -89,6 +89,8 @@
                             v-model="form.patient_birthday"
                             type="date"
                             placeholder="选择日期"
+                            :picker-options="pickerOptions"
+                            value-format="yyyy-MM-dd"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -97,7 +99,7 @@
                         label="年 龄"
                         prop="patient_age"
                     >
-                        <el-input v-model="form.patient_age"></el-input>
+                        <el-input v-model="form.patient_age" ></el-input>
                     </el-form-item>
 
                 </div>
@@ -105,7 +107,7 @@
                 <div style="display:flex">
                     <el-form-item
                         label="会员等级"
-                        prop="member_level"
+                        prop="member_id"
                     >
                         <el-select
                             v-model="form.member_id"
@@ -115,9 +117,9 @@
                         >
                             <el-option
                                 v-for="item in memberList"
-                                :key="item.value"
+                                :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -136,33 +138,6 @@
                     </el-form-item>
                 </div>
 
-                <div style="display:flex">
-                    <el-form-item
-                        label="就诊日期"
-                        prop="clinic_date"
-                    >
-                        <el-date-picker
-                            v-model="form.clinic_date"
-                            type="date"
-                            placeholder="选择日期"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-
-                    <div style="margin-top:10px;margin-left:60px">
-                        类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <el-radio
-                            v-model="form.category"
-                            label="1"
-                        >初诊</el-radio>
-                        <el-radio
-                            v-model="form.category"
-                            label="2"
-                        >复诊</el-radio>
-                    </div>
-
-                </div>
 
                 <div style="display:flex">
                     <el-form-item
@@ -319,11 +294,11 @@
             class="dialog-footer"
         >
 
-            <el-button>清空</el-button>
+            <el-button @click="resetForm('form')">清空</el-button>
             <el-button
                 :loading="commitLoading"
                 type="primary"
-                @click="submitFrom"
+                @click="submitFrom('form')"
             >确 定</el-button>
             <el-button @click="closeDialog">取 消</el-button>
 
@@ -372,12 +347,50 @@ export default {
             anamnesis_show: false,
             teeth_habit_show: false,
             userimage_show: false,
-
+            pickerOptions:{
+                disabledDate: time=>{
+                    return time.getTime() > Date.now();
+                }
+            },
             categoryList: [],
             memberList: [],
             allergyList: [],
             anamnesisList: [],
             teethHabitList: [],
+
+            rules: {
+                patient_name: [
+                    {
+                        required: true,
+                        message: "请输入姓名",
+                        trigger: "blur"
+                    }
+                ],
+
+                patient_phone: [
+                    {
+                        required: true,
+                        message: "请输入手机号",
+                        trigger: "blur"
+                    }
+                ],
+
+                patient_email: [
+                    {
+                        required: true,
+                        message: "请输入邮箱",
+                        trigger: "blur"
+                    }
+                ],
+                patient_birthday: [
+                    {
+                        required: true,
+                        message: "请选择出生年月日",
+                        trigger: "blur"
+                    }
+                ],
+
+            },
 
             form: {
                 patient_birthday: "",
@@ -396,39 +409,7 @@ export default {
                 patient_email: "",
                 allergy:"",
                 anamnesis:"",
-                rules: {
-                    patient_name: [
-                        {
-                            required: true,
-                            message: "请输入姓名",
-                            trigger: "blur"
-                        }
-                    ],
 
-                    patient_phone: [
-                        {
-                            required: true,
-                            message: "请输入手机号",
-                            trigger: "blur"
-                        }
-                    ],
-
-                    patient_email: [
-                        {
-                            required: true,
-                            message: "请输入邮箱",
-                            trigger: "blur"
-                        }
-                    ],
-                    patient_birthday: [
-                        {
-                            required: true,
-                            message: "请选择出生年月日",
-                            trigger: "blur"
-                        }
-                    ],
-
-                }
             }
         };
     },
@@ -443,10 +424,40 @@ export default {
                 let that = this;
                 that.getCaseNo();
             }
-        }
+        },
+        'form.patient_birthday':{
+            handler(newName, oldName) {
+                if(newName){
+                    let that=this;
+                    that.age();
+                }
+            },
+        },
     },
 
     methods: {
+
+        resetForm(form){
+            let  that=this;
+            that.$refs[form].resetFields();
+        },
+
+        age(){
+          let that =this,
+              age='',
+              currentTime = new Date(),
+              birthTime = new Date(that.form.patient_birthday);
+
+          age=currentTime.getFullYear() -
+              birthTime.getFullYear() -
+              (currentTime.getMonth()<birthTime.getMonth() ||
+              (currentTime.getMonth()==birthTime.getMonth()
+                  && currentTime.getDate() < birthTime.getDate())
+                  ? 1
+                  :0);
+          that.form.patient_age=age;
+
+        },
 
         anamnesis(){
             let that=this;
@@ -513,20 +524,30 @@ export default {
 
         },
 
-        submitFrom() {
+        submitFrom(form) {
             let that = this;
-            // that.getCaseNo();
-            console.log(that.form);
-            // this.$api.patient
-            //     .addPatient(this.form)
-            //     .then(function(response) {
-            //         console.log(response);
-            //     })
-            //     .catch(function(error) {
-            //         console.log(error);
-            //     });
+            that.$refs[form].validate((valid)=>{
+                if(valid){
+                    that.$api.patient.store(that.form)
+                        .then(res=>{
+                            if(res.code==200){
+                                that.$message({
+                                    type: 'success',
+                                    message: '添加成功!'
+                                });
+                                that.closeDialog();
+                            }else {
+                                that.$message.error('添加失败');
+                            }
+                        })
+                        .catch(res=>{
 
-            console.log();
+                            console.log(res.msg);
+                        })
+                }else {
+                    return false;
+                }
+            });
         },
 
         category_manage() {
@@ -561,9 +582,6 @@ export default {
                 });
         },
 
-        afterClose() {
-            this.$refs["AddPatientForm"].resetFields();
-        }
     }
 };
 </script>

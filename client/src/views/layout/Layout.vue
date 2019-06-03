@@ -15,8 +15,28 @@
                     医云智能
                 </el-col>
                 <el-col class="header-right">
-                    <i class="head-icon fa fa-comment" @click.stop.prevent="inquiryDialog = true"></i>
-                    <i class="head-icon fa fa-sign-out-alt"></i>
+                    <el-tooltip
+                        effect="dark"
+                        content="问诊"
+                        placement="bottom"
+                    >
+                        <i
+                            class="head-icon fa fa-comment"
+                            @click.stop.prevent="inquiryDialog = true"
+                        ></i>
+                    </el-tooltip>
+
+                    <el-tooltip
+                        effect="dark"
+                        content="退出登录"
+                        placement="bottom"
+                    >
+                        <i
+                            class="head-icon fa fa-sign-out-alt"
+                            @click.stop.prevent="logout"
+                        ></i>
+                    </el-tooltip>
+
                 </el-col>
             </el-row>
 
@@ -58,9 +78,7 @@
             :avatar="userInfo.avatar"
         ></user-image>
 
-        <inquiry
-            :show.sync="inquiryDialog"
-        ></inquiry>
+        <inquiry :show.sync="inquiryDialog"></inquiry>
 
     </el-container>
 </template>
@@ -69,7 +87,8 @@
 import MenuTree from "@components/menutree/MenuTree";
 import ChangePassword from "./ChangePassword";
 import UserImage from "./UserImage";
-import Inquiry from '../inquiry/Index';
+import Inquiry from "../inquiry/Index";
+import { delCookie } from "@common/util";
 
 import { mapGetters } from "vuex";
 
@@ -270,9 +289,12 @@ export default {
 
         logout() {
             let that = this;
-            that.$api.user
+            that.$api.base
                 .logout()
                 .then(res => {
+                    delCookie("token");
+                    delCookie("refresh_token");
+
                     // that.$store.commit("clearUserInfo");
 
                     //直接重刷页面，清除所有的router
@@ -281,7 +303,15 @@ export default {
                     // that.$router.replace("/login");
                 })
                 .catch(res => {
-                    that.$message.error("退出登录失败，请重试.");
+                    delCookie("token");
+                    delCookie("refresh_token");
+
+                    // that.$store.commit("clearUserInfo");
+
+                    //直接重刷页面，清除所有的router
+                    //因为vue-router不支持动态删除路由
+                    window.location.reload();
+                    // that.$router.replace("/login");
                 });
         }
     }
@@ -314,13 +344,13 @@ export default {
         border-bottom: 1px solid #cacaca;
         z-index: 101;
 
-        .head-icon{
+        .head-icon {
             margin-right: 10px;
             cursor: pointer;
             .transition-2;
 
-            &:hover{
-                opacity: .6;
+            &:hover {
+                opacity: 0.6;
             }
         }
 

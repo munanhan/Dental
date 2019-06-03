@@ -11,7 +11,7 @@
                 <i
                     class="el-icon-share mr-14"
                     title="新增节点"
-                    @click.stop.prevent="addTreeNodeDialog = true"
+                    @click.stop.prevent="showAddNode"
                 ></i>
                 <i
                     class="el-icon-edit mr-14"
@@ -85,6 +85,7 @@
                     :show.sync="caseShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 ></case-template>
 
                 <medical-history
@@ -93,6 +94,7 @@
                     :show.sync="medicalShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 ></medical-history>
                 <inspect
                     v-show="selectType == 2"
@@ -100,6 +102,7 @@
                     :show.sync="inspectShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 ></inspect>
 
                 <diagnose
@@ -108,6 +111,7 @@
                     :show.sync="diagnoseShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 >
                 </diagnose>
 
@@ -117,6 +121,7 @@
                     :show.sync="treatShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 >
                 </treat>
 
@@ -126,6 +131,7 @@
                     :show.sync="adviceShow"
                     :height="rightContentHeight"
                     :width="rightContentWidth"
+                    :selectStatus="selectStatus"
                 >
                 </advice>
             </div>
@@ -138,6 +144,7 @@
 
         <add-tree-node
             :show.sync="addTreeNodeDialog"
+            :selectNode="selectNode"
             @add-item="addNode"
         ></add-tree-node>
 
@@ -182,12 +189,7 @@ export default {
     data() {
         return {
             templateData: [
-                {
-                    id: 0,
-                    text: 1111,
-                    type: 1,
-                    children: [{ id: 1, text: 22222, type: 2 }]
-                }
+
             ],
 
             treeProps: {
@@ -199,6 +201,8 @@ export default {
             editTreeNodeDialog: false,
             addDirDialog: false,
 
+            selectStatus:'none',
+
             selectNode: null,
 
             currentEditItem: {},
@@ -209,7 +213,7 @@ export default {
             rightContentWidth: 400,
 
             caseData: {}, //模板
-            medicalData: {}, //病历
+            medicalData: [], //病历
             inspectData: {}, //检查
             diagnoseData: {}, //诊断
             treatData: {}, //治疗、治疗方案
@@ -253,28 +257,12 @@ export default {
 
         selectType(newValue, oldValue) {
             let that = this;
-
-            switch (newValue) {
-                case 0:
-                    that.caseShow = true;
-                    break;
-                case 1:
-                    that.medicalShow = true;
-                    break;
-                case 2:
-                    that.inspectShow = true;
-                    break;
-                case 3:
-                    that.diagnoseShow = true;
-                    break;
-                case 4:
-                    that.treatShow = true;
-                    break;
-                case 5:
-                    that.adviceShow = true;
-                    break;
+            if (newValue) {
+                that.selectGetData(newValue);
             }
-        }
+
+        },
+
     },
     computed: {},
     methods: {
@@ -296,12 +284,29 @@ export default {
 
         handleNodeClick(data) {
             let that = this;
-            console.log(data);
             that.selectNode = data;
+
+            if (data.type == 0) {
+                that.selectStatus = 'none';
+            }
+            else{
+                that.selectGetData(that.selectType);
+                that.selectStatus = 'block';
+            }
             // //设置选中的id
             // that.selectID = data.id;
         },
-
+        showAddNode(){
+            let that = this;
+            if (that.selectNode != null && that.selectNode.type == 1) {
+                //限制选中目录才能进行添加
+                that.$message.error("请选择目录进行添加.");
+            }
+            else{
+                that.addTreeNodeDialog = true;
+            }
+            
+        },
         showEditNode() {
             let that = this;
 
@@ -317,16 +322,29 @@ export default {
         //新增节点
         addNode(value) {
             let that = this;
-            console.log(that.selectNode);
-            console.log(value);
-
+            // console.log(that.selectNode);
+            // console.log(value);
+            value.children = [];
             if (value.p_id == 0) {
+                //p_id为0的时候 ，为顶级，直接添加数据即可
                 that.templateData.push(value);
             }
+            else if(that.selectNode.type == 0){
+                //当非顶级的时候，判断选中这条数据的大纲类型，如果是目录，则向下添加一条数据
+                that.selectNode.children.push(value);
+            }
+            // else if (that.selectNode.type == 1) {
+            //     //如果这条选中的大纲数据是个文件，则同级添加一条数据
+            //     that.selectNode.push(value);
+            // }
 
         },
 
-        eidtNode(value) {},
+        eidtNode(value) {
+            let that = this;
+            that.selectNode.outline_name = value.outline_name;
+
+        },
         showDelNode(){
             //显示删除节点提示
           let that = this;
@@ -374,6 +392,37 @@ export default {
                 that.$message.error("请选择删除的节点");
             }
         },
+        selectGetData(option){
+            let that = this;
+            if (that.selectNode != null && that.selectNode.type == 1) {
+                    switch (option) {
+                        case 0:
+                            that.getCaseData('case_template','caseData');
+                            that.caseShow = true;
+                            break;
+                        case 1:
+                            that.getData('medical','medicalData','medicalShow');
+                            break;
+                        case 2:
+                            that.getData('inspect','inspectData');
+                            that.inspectShow = true;
+                            break;
+                        case 3:
+                            that.getData('diagnose','diagnoseData');
+                            that.diagnoseShow = true;
+                            break;
+                        case 4:
+                            that.getData('treat','treatData');
+                            that.treatShow = true;
+                            break;
+                        case 5:
+                            that.getData('advice','adviceData');
+                            that.adviceShow = true;
+                            break;
+                    }
+                }
+
+            },
         getMenu(){
             //获取菜单
             let that = this;
@@ -397,7 +446,44 @@ export default {
             .catch(res => {
 
             });
-        }
+        },
+        getCaseData(apiType,dataType){
+            //主数据
+            let that = this;
+            let menu_id = that.selectNode.id;
+            that.$api[apiType].getById({'menu_id':menu_id})
+            .then(res => {
+                if (res.code == 200) {
+                    that[dataType] = res.data;
+                }
+                else{
+                       that.$message.error( res.msg || "数据获取失败." );
+                }
+                
+            })
+            .catch(res => {
+
+            });
+        },
+        getData(apiType,dataType,dialogShow){
+            //主数据
+            let that = this;
+            let menu_id = that.selectNode.id;
+            that.$api[apiType].get({'menu_id':menu_id})
+            .then(res => {
+                if (res.code == 200) {
+                    that[dataType] = res.data;
+                    that[dialogShow] = true;
+                }
+                else{
+                       that.$message.error( res.msg || "数据获取失败." );
+                }
+                
+            })
+            .catch(res => {
+
+            });
+        },
     }
 };
 </script>
