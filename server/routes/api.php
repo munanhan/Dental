@@ -596,7 +596,20 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('advice/{id}', 'AdviceController@delete');//删除
 
 
+    /*
+     * Route PrivilegeController Api
+     * created for yu
+     */
 
+    Route::get('privilege','PrivilegeController@index');//病例模板的菜单列表
+
+    Route::get('privilege/get_by_id','PrivilegeController@getById');//根据id获取
+
+    Route::post('privilege', 'PrivilegeController@addData');//添加
+
+    Route::put('privilege', 'PrivilegeController@update');//修改
+
+    Route::delete('privilege/{id}', 'PrivilegeController@delete');//删除
 
 
 
