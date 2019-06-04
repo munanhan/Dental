@@ -6,7 +6,8 @@
                 <div class="background">
                     <div class="background-left">
                         <div class="left-top">
-                            <div> &nbsp;&nbsp; 2019-05-17 &nbsp;&nbsp; 23:20</div>
+                            <div><span class="left-top1">2019-05-17</span>
+                                <span class="left-top2">23:20</span></div>
                         </div>
                         <div class="left-bottom">
                             <div class="diagnose-detail">
@@ -25,7 +26,9 @@
                     </div>
                     <div class="background-right">
                         <div class="right-top">
-                            <div style="">初诊 &nbsp; 1212</div>
+                            <div><span class="right-top1">初诊</span>
+                                <span class="right-top2">1212</span>
+                            </div>
                             <div class="right-i-content">
                                 <i
                                     class="el-icon-printer right-i"
@@ -34,7 +37,7 @@
                                     placement="bottom"
                                 ></i>
                                 <i class="fa fa-newspaper right-i"></i>
-                                <i class="el-icon-edit right-i"></i>
+                                <i class="fa fa-pen right-i"></i>
                                 <i class="fa fa-capsules right-i"></i>
                                 <i class="fa fa-comments right-i"></i>
                             </div>
@@ -174,7 +177,6 @@ export default {
                 margin-right: 15px;
                 .transition-2;
                 display: flex;
-                // width: 1145px;
                 margin-top: 5px;
                 margin-left: 20px;
                 background-color: #f8f8f8;
@@ -183,24 +185,34 @@ export default {
                 padding: 10px;
                 color: #989797;
                 &:hover {
-                    color: @color;
                     border-color: @color;
+                    color: @color;
                 }
                 .background-left {
                     // border:1px solid red;
                     width: 220px;
                     .left-top {
-                        // border:1px solid red;
                         font-weight: bold;
                         display: flex;
                         margin-top: 5px;
                         font-size: 20px;
-                        // .top-1 {
-                        //     margin-right: 30px;
-                        //     margin-left: 10px;
-                        // }
-                        // .top-2 {
-                        // }
+                        .left-top1 {
+                            cursor: pointer;
+                            margin: 0 20px;
+                            border: 1px solid #f8f8f8;
+                            &:hover {
+                                .transition-2;
+                                border: 1px solid #919191;
+                            }
+                        }
+                        .left-top2 {
+                            cursor: pointer;
+                            border: 1px solid #f8f8f8;
+                            &:hover {
+                                .transition-2;
+                                border: 1px solid #919191;
+                            }
+                        }
                     }
                     .left-bottom {
                         // border: 1px solid red;
@@ -209,6 +221,7 @@ export default {
                             border: 1px solid #f8f8f8;
                             display: flex;
                             margin-top: 15px;
+                            color: #1d1d1d;
 
                             .tooth {
                                 width: 220px;
@@ -250,7 +263,6 @@ export default {
                                 }
                             }
                             &:hover {
-                                color: #1d1d1d;
                                 border: 1px solid #cfcfcf;
                             }
                         }
@@ -265,6 +277,25 @@ export default {
                         margin-top: 3px;
                         display: flex;
                         font-size: 20px;
+                        .right-top1 {
+                            cursor: pointer;
+                            margin-right: 35px;
+                            border: 1px solid #f8f8f8;
+                            &:hover {
+                                .transition-2;
+                                border: 1px solid #919191;
+                                // color: #1d1d1d;
+                            }
+                        }
+                        .right-top2 {
+                            cursor: pointer;
+                            border: 1px solid #f8f8f8;
+                            &:hover {
+                                .transition-2;
+                                border: 1px solid #919191;
+                                // color: #1d1d1d;
+                            }
+                        }
                     }
                     .right-middle {
                         // border: 1px solid red;
@@ -316,7 +347,7 @@ export default {
                             margin-right: 10px;
                         }
                         :hover {
-                            color: #494949;
+                            color: #332222;
                             transition: all 0.3s;
                         }
                     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Model\Patient;
@@ -10,6 +9,14 @@ use App\Model\Appointment;
 
 class AppointmentController extends Controller
 {
+    public function getPatientByPhone(Request $request){
+        $data=$request->all();
+
+        $data = Patient::where('patient_phone',$data['patient_phone'])->first(['patient_name','patient_age','patient_sex','patient_source']);
+
+        return  message('修改成功',$data,200);
+
+    }
     //修改预约状态
     public function changeAppointmentStatus(Request $request){
         $data=$request->all();
@@ -21,8 +28,16 @@ class AppointmentController extends Controller
         $data=$request->all();
         $patientArray = ['patient_name'=>'','patient_age'=>'','patient_sex'=>'','patient_phone'=>'','case_id'=>'','patient_content'=>'','patient_source'=>''];
         $patientData = array_intersect_key($data,$patientArray);
+
         $data = array_diff_key($data,$patientArray);
-        $patientData['patient_type'] = '1';
+        //判断患者之前是否存在
+        $patient = Patient::where('patient_phone',$patientData['patient_phone'])->first();
+        if(!empty($patient)){
+             $patientData['patient_type'] = '1';
+        }else{
+            $patient=Patient::create($patientData);
+        }
+
         // $data['id'] 存在即修改
         if(isset($data['id'])){
             $id = $data['id'];
@@ -33,8 +48,8 @@ class AppointmentController extends Controller
             return  message('修改预约成功','',200);
         }
 
-//        $patient=$this->createPatient($patientData);
-        $patient=Patient::create($patientData);
+
+
 
         $data['patient_id'] = $patient->id;
         $data['over_time'] = str_replace(substr($data['start_time'],0,2),

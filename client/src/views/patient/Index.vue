@@ -9,11 +9,21 @@
                     <el-tab-pane
                         label="当天工作"
                         name="first"
-                        class="visit-content"
+                        class="work-content"
                     >
-                        <div class="visit-top-content">
+
+                        <div class="work-top-content">
+                            <div class="work-content-top1">
+                                <i class="fa fa-angle-left"></i>
+                            </div>
+
+                            <div class="work-content-top2">今</div>
+
+                            <div class="work-content-top3">
+                                <i class="fa fa-angle-right"></i>
+                            </div>
                             <el-date-picker
-                                style="margin-left:20px;width:300px"
+                                class="work-data"
                                 v-model="value1"
                                 type="date"
                                 placeholder="选择日期"
@@ -32,7 +42,7 @@
                                             class="el-icon-caret-right"
                                             :class="{'down': appointmentExpend}"
                                         ></i>
-                                        预约未到(0)</div>
+                                        预约未到(4)</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -67,7 +77,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': diagnosisExpend}"
-                                        ></i> 当天初诊(0)</div>
+                                        ></i> 当天初诊(1)</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -117,7 +127,7 @@
                                 <!-- // -->
                             </div>
                         </div>
-                        <div class="visit-bottom-content">
+                        <div class="work-bottom-content">
                             <el-button
                                 type="primary"
                                 @click="add_patient"
@@ -197,15 +207,9 @@
                                             <li>
                                                 <div class="patient-background">
                                                     <div class="patient-background-top">
-                                                        <span
-                                                            class="patient-top1"
-                                                            style=""
-                                                        >123213123</span>
-
-                                                        <span
-                                                            class="patient-top2"
-                                                            style=""
-                                                        >2019-05-17</span>
+                                                        <span class="patient-top1">123213123</span>
+                                                        <span class="patient-top2">史</span>
+                                                        <span class="patient-top3">2019-05-17</span>
                                                     </div>
                                                     <div class="patient-background-bottom">
                                                         <span class="patient-bottom">13925814457</span>
@@ -325,10 +329,14 @@
 
                 <el-tab-pane
                     label="就诊信息"
-                    name="11"
+                    name="medicalInformation"
                 >
-                    <div>asdasdas</div>
+                    <medical-information
+                        v-if="medicalInformation"
+                        :refresh.sync="medicalInformation"
+                    ></medical-information>
                 </el-tab-pane>
+
                 <el-tab-pane
                     label="预约信息"
                     name="bookingInformation"
@@ -338,6 +346,7 @@
                         :refresh.sync="bookingInformation"
                     ></booking-information>
                 </el-tab-pane>
+
                 <el-tab-pane
                     label="处置记录"
                     name="disposalRecords"
@@ -425,6 +434,7 @@ import AddPatient from "@/views/patient/add_patient/AddPatient";
 import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 import BookingInformation from "./BookingInformation";
+import medicalInformation from "./medicalInformation";
 
 export default {
     name: "Patient",
@@ -441,7 +451,8 @@ export default {
         AddPatient,
         AppointmentVisit,
         ConsultingInfo,
-        BookingInformation
+        BookingInformation,
+        medicalInformation
     },
 
     props: {},
@@ -497,6 +508,7 @@ export default {
             returnVisitInfo: false,
             consultingInfo: false,
             bookingInformation: false,
+            medicalInformation: false,
             appointment: [
                 {
                     case_id: "150301012",
@@ -514,12 +526,14 @@ export default {
                 },
                 {
                     case_id: "150301014",
+                    medical_history: "vip",
                     appointment_date: "2019-06-05",
                     patient_phone: "13925814457",
                     patient_doctor: "钟医生"
                 },
                 {
                     case_id: "150301015",
+                    medical_history: "史",
                     appointment_date: "2019-06-06",
                     patient_phone: "13925814457",
                     patient_doctor: "马医生"
@@ -528,7 +542,7 @@ export default {
             diagnosis: [
                 {
                     case_id: "131313131",
-                    medical_history: "史",
+                    medical_history: "初",
                     appointment_date: "上午 11:30",
                     patient_phone: "13925814457",
                     patient_doctor: "马医生",
@@ -719,7 +733,7 @@ export default {
                 .work-top2 {
                     margin-right: 120px;
                     margin-left: 10px;
-                    background-color: red;
+                    background-color: #d30f0f;
                     font-size: 10px;
                     color: white;
                 }
@@ -771,11 +785,17 @@ export default {
                 margin-bottom: 20px;
                 margin-left: 10px;
                 .patient-top1 {
-                    margin-right: 150px;
                     font-weight: bold;
                     color: #000;
                 }
                 .patient-top2 {
+                    margin-right: 120px;
+                    margin-left: 10px;
+                    background-color: #d30f0f;
+                    font-size: 10px;
+                    color: white;
+                }
+                .patient-top3 {
                     color: #747474;
                     font-size: 13px;
                 }
@@ -820,8 +840,12 @@ export default {
 .visit-content {
     .visit-top-content {
         border: 1px solid #e3e3e3;
+        display: flex;
         padding: 5px 0px;
         position: relative;
+        .visit-data {
+            width: 230px;
+        }
     }
     .visit-bottom-content {
         margin-top: 800px;
@@ -832,18 +856,46 @@ export default {
         background-color: white;
     }
 }
+.work-content {
+    .work-top-content {
+        border: 1px solid #e3e3e3;
+        display: flex;
+        padding: 5px 0px;
+        position: relative;
+        .work-content-top1 {
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+        .work-content-top2 {
+            cursor: pointer;
+            margin-top: 10px;
+            margin: 10px 20px;
+            font-size: 18px;
+            color: red;
+        }
+        .work-content-top3 {
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 15px;
+        }
 
-// .patient-content {
-// }
-
+        .work-data {
+            width: 230px;
+        }
+    }
+    .work-bottom-content {
+        margin-top: 800px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: white;
+    }
+}
 .el-button {
     margin-left: 40px;
     margin-top: 10px;
     width: 120px;
 }
-//  /deep/ .el-table{
-
-//        position: relative;
-//        height: 100%;
-// }
 </style>
