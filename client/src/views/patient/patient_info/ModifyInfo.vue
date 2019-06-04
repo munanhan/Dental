@@ -18,21 +18,12 @@
             <!----------------------- 基本资料 -->
 
             <div class="mod-1">
-                <div style="position: relative;">
-                    <div style="display:flex">
-                        <div
-                            class="number"
-                            style="background-color:#a6d2ff;margin-right:3px"
-                        >1</div>
-                        <div class="number">基本资料</div>
-                    </div>
+                <div style="display:flex">
+                    <div class="number-top">1</div>
+                    <div class="number">基本资料</div>
                 </div>
-                <div style="border:1px solid red;
-                            position: absolute;
-                            right:0;    
-                            margin-right: 244px;
-                            width: 300px;
-                            height: 350px;">
+                <div class="image">
+
                 </div>
                 <el-form-item
                     label="病历号"
@@ -53,18 +44,14 @@
                 >
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item
-                    label="性别"
-                >
+                <el-form-item label="性别">
                     <el-radio-group v-model="form.sex">
                         <el-radio :label="0">男</el-radio>
                         <el-radio :label="1">女</el-radio>
                         <el-radio :label="2">未填</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item
-                    label="出生年月"
-                >
+                <el-form-item label="出生年月">
                     <el-date-picker
                         style="width:260px"
                         v-model="form.birthday"
@@ -76,21 +63,25 @@
                 <el-form-item
                     label="年龄(岁)"
                     class="left-width"
+                    prop="age"
                 >
-                    <el-input></el-input>
+                    <el-input v-model="form.age"></el-input>
                 </el-form-item>
 
                 <div style="display:flex">
                     <el-form-item
                         label="电话"
-                        prop="phone_one"
+                        prop="phone"
                         style="width:340px"
                     >
-                        <el-input v-model="form.phone_one"></el-input>
+                        <el-input v-model="form.phone"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
-                    <el-form-item label="会员等级">
+                    <el-form-item
+                        label="会员等级"
+                        prop="value"
+                    >
                         <el-select
                             style="width:260px"
                             v-model="form.value"
@@ -112,14 +103,13 @@
                     <el-form-item
                         label="会员卡号"
                         class="right-width"
+                        prop="member_gard"
                     >
-                        <el-input></el-input>
+                        <el-input v-model="form.member_gard"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
-                    <el-form-item
-                        label="职业"
-                    >
+                    <el-form-item label="职业">
                         <el-select
                             v-model="form.value"
                             placeholder="请选择"
@@ -141,23 +131,26 @@
                     <el-form-item
                         label="社保号"
                         class="right-width"
+                        prop="society"
                     >
-                        <el-input></el-input>
+                        <el-input v-model="form.society"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
                     <el-form-item
                         label="电子邮箱"
                         class="left-width"
+                        prop="email"
                     >
-                        <el-input></el-input>
+                        <el-input v-model="form.email"></el-input>
                     </el-form-item>
                     <el-form-item
                         label="患者分组"
                         class="right-width"
                         style="margin-left:30px"
+                        prop="group"
                     >
-                        <el-input></el-input>
+                        <el-input v-model="form.group"></el-input>
                     </el-form-item>
                 </div>
                 <el-form-item
@@ -214,6 +207,7 @@
                     <el-form-item
                         label="患者印象"
                         class="left-width"
+                        prop=""
                     >
                         <el-input></el-input>
                     </el-form-item>
@@ -241,10 +235,7 @@
                 <!-------------------- 就诊信息  -->
 
                 <div style="display:flex">
-                    <div
-                        class="number"
-                        style="background-color:#a6d2ff;margin-right:3px"
-                    >2</div>
+                    <div class="number-top">2</div>
                     <div class="number">就诊信息</div>
                 </div>
                 <div style="display:flex">
@@ -280,10 +271,25 @@
                 </div>
                 <div style="display:flex">
                     <el-form-item
-                        label="过敏史"
-                        style="width:700px"
+                        label="过 敏 史"
+                        prop="allergy"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:620px"
+                            v-model="form.allergy"
+                            multiple
+                            filterable
+                            allow-create
+                            default-first-option
+                        >
+                            <el-option
+                                v-for="item in form.allergyList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -292,10 +298,25 @@
                 </div>
                 <div style="display:flex">
                     <el-form-item
-                        label="既往史"
-                        style="width:700px"
+                        label="既 往 史"
+                        prop="pastMedicalhistory"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:620px"
+                            v-model="form.pastMedicalhistory"
+                            multiple
+                            filterable
+                            allow-create
+                            default-first-option
+                        >
+                            <el-option
+                                v-for="item in form.pastMedicalhistoryList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -341,8 +362,24 @@
                     <el-form-item
                         label="洁牙习惯"
                         style="width:700px"
+                        prop="teeth"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:620px"
+                            v-model="form.teeth"
+                            multiple
+                            filterable
+                            allow-create
+                            default-first-option
+                        >
+                            <el-option
+                                v-for="item in form.teethList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -566,6 +603,24 @@ export default {
             teethhab_show: false,
             newrelat_show: false,
             form: {
+                teethList:[
+                    {
+                        value:"选项1",
+                        label:"不干净"
+                    }
+                ],
+                pastMedicalhistoryList: [
+                    {
+                        value: "选项1",
+                        label: "黄金糕"
+                    }
+                ],
+                allergyList: [
+                    {
+                        value: "选项1",
+                        label: "黄金糕"
+                    }
+                ],
                 options: [
                     {
                         value: "选项1",
@@ -588,14 +643,18 @@ export default {
                         label: "北京烤鸭"
                     }
                 ],
-                birthday:"",
+                birthday: "",
+                age: "",
                 value: "",
+                group:"",
                 case_id: "",
-                one: "",
-                sex: "0",
+                phone: "",
+                sex: 2,
                 name: "",
-                medical_record: "",
-                participant_name: ""
+                teeth:"",
+                member_gard:"",
+                email:"",
+                medical_record: ""
             },
             rules: {
                 name: [
@@ -604,6 +663,10 @@ export default {
                 ],
                 medical_record: [
                     { required: true, message: "请输入病历号", trigger: "blur" }
+                    // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                phone: [
+                    { required: true, message: "请输入手机号", trigger: "blur" }
                     // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
                 ]
             }
@@ -672,6 +735,23 @@ export default {
 //导入全局的颜色
 @import "~@css/var";
 .mod-1 {
+    .image {
+        border: 1px solid red;
+        position: absolute;
+        right: 0;
+        margin-right: 240px;
+        width: 320px;
+        height: 350px;
+        // background-image:none;
+        background-color: #000;
+    }
+    .number-top {
+        background-color: #a6d2ff;
+        margin-right: 3px;
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
     .number {
         font-size: 18px;
 

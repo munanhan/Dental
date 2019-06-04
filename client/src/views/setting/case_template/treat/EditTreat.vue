@@ -58,6 +58,7 @@ export default {
     },
     data() {
         return {
+            apiType: "treat",
             form: {
                 treat_name: "",
             },

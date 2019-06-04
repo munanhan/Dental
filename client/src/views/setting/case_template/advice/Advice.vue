@@ -16,7 +16,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="advice_name"
                             label="性质"
                             align="center"
                             show-overflow-tooltip
@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('propertiesData',scope.row, scope.$index)"
+                                        @click.stop="showDel('propertiesData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -76,6 +76,7 @@
         <add-advice
             :show.sync="AddAdviceDialog"
             @add-item="addAdvice"
+            :menu_id="menu_id"
         ></add-advice>
 
         <edit-advice
@@ -109,6 +110,12 @@ export default {
         },
         selectStatus:{
             type:String
+        },
+        menu_id:{
+
+        },
+        data:{
+
         }
     },
     data() {
@@ -139,12 +146,22 @@ export default {
             let that = this;
 
             if (newValue) {
+                that.propertiesData = [];
+
+                for (var i = 0,len = that.data.length; i < len; i++) {
+                    switch(that.data[i].type){
+                        case 0:
+                        that.propertiesData.push(that.data[i]);
+                        break;
+
+                    }
+                }
+
                 that.resizeContent();
 
                 that.$emit("update:show", false);
             }
         },
-
         height(newValue, oldValue) {
             let that = this;
 
@@ -168,16 +185,32 @@ export default {
             that.blockWidth = that.width - 20;
         },
 
-        addAdvice() {
+        addAdvice(value) {
             let that = this;
+
+            switch(value.type){
+                case 0:
+                that.propertiesData.push(value);
+                break;
+
+            }
         },
 
         //删除
-        del(type, row, idx) {
+        showDel(type, row, idx) {
             let that = this;
-
-            //删除
-            that[type].splice(idx, 1);
+              that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                that.del(row.id,type,idx);
+              }).catch(() => {
+                that.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });          
+              });
         },
 
         showEditDialog(type, row) {
@@ -189,8 +222,8 @@ export default {
 
             that.editType = type;
             that.selectItem = row;
-
-            that.editAdviceDialog = true;
+            that.getById(row);
+            // that.editAdviceDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -206,12 +239,48 @@ export default {
             //         that.$message.error("获取数据失败，请重试.");
             //     });
         },
-
+        getById(row){
+            //根据id获取
+            let that = this;
+            let id = row.id
+            that.$api.advice.getById({'id':id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.currentEditItem = res.data;
+                        that.editAdviceDialog = true;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请重试.");
+                });
+        },
+        del(id,type,idx){
+            let that = this;
+            that.$api.advice.del({id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        //删除
+                        that[type].splice(idx, 1);
+                    } else {
+                        that.$message.error(res.msg || "删除失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("删除失败.");
+                });
+        },
         editItem(data) {
             let that = this;
 
             //设置数据, TODO
-            that.selectItem.text = data.aaa;
+            that.selectItem.advice_name = data.advice_name;
 
             that.currentEditItem = null;
             that.editType = "";

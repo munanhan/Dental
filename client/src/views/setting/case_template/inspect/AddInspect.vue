@@ -16,10 +16,10 @@
 
             <el-form-item
                 label="检查名称"
-                prop="inspect_name"
+                prop="inspect_content"
             >
                 <el-input
-                    v-model.trim="form.inspect_name"
+                    v-model.trim="form.inspect_content"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -64,16 +64,22 @@ export default {
     mixins: [AddDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        menu_id:{
+
+        }
+    },
     data() {
         return {
+            apiType:'inspect',
 
             form: {
-                inspect_name: "",
+                inspect_content: "",
+                menu_id:0,
                 type: 0
             },
             formRules: {
-                inspect_name: [
+                inspect_content: [
                     {
                         required: true,
                         message: "请输入检查名称",
@@ -85,7 +91,16 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue,oldValue){
+            let that = this;
+            if (newValue) {
+
+                that.form.menu_id = that.menu_id;
+
+            }
+        }
+    },
     computed: {},
     methods: {}
 };

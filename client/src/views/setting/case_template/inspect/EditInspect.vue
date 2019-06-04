@@ -16,10 +16,10 @@
 
             <el-form-item
                 :label="type"
-                prop="inspect_name"
+                prop="inspect_content"
             >
                 <el-input
-                    v-model.trim="form.inspect_name"
+                    v-model.trim="form.inspect_content"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -58,11 +58,13 @@ export default {
     },
     data() {
         return {
+            apiType: "inspect",
+
             form: {
-                inspect_name: "",
+                inspect_content: "",
             },
             formRules: {
-                inspect_name: [
+                inspect_content: [
                     {
                         required: true,
                         message: "请输入" + this.type,

@@ -25,6 +25,10 @@ import * as chain_store from './chain_store'
 import * as case_template_menu from './case_template_menu'
 import * as case_template from './case_template'
 import * as medical from './medical'
+import * as inspect from './inspect'
+import * as diagnose from './diagnose'
+import * as treat from './treat'
+import * as advice from './advice'
 
 
 const apis = {
@@ -51,10 +55,15 @@ const apis = {
     case_template_menu,
     case_template,
     medical,
+    inspect,
+    diagnose,
+    treat,
+    advice,
     allergy,
     anamnesis,
     teethHabit,
     impressions,
+
 
 
 };

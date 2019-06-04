@@ -138,6 +138,9 @@ export default {
 		},
         selectStatus:{
             type:String
+        },
+        menu_id:{
+
         }
 	},
     data() {
@@ -171,8 +174,53 @@ export default {
 
         saveChange() {
             let that = this;
+            that.form.menu_id = that.menu_id;
+            // console.log(that.form);
+            that.form.id == undefined?that.addData():that.updateData();
 
-            that.isDisabled = true;
+
+        },
+        addData(){
+            let that = this;
+            that.$api.case_template.add(that.form)
+            .then(res => {
+                if (res.code == 200) {
+                        that.$message({
+                            message: "修改成功.",
+                            type: "success",
+                            duration: 800
+                        });
+                        that.isDisabled = true;
+                }
+                else{
+                       that.$message.error( res.msg || "数据获取失败." );
+                }
+                
+            })
+            .catch(res => {
+
+            });
+        },
+        updateData(){
+            let that = this;
+            that.$api.case_template.update(that.form)
+            .then(res => {
+                if (res.code == 200) {
+                        that.$message({
+                            message: "修改成功.",
+                            type: "success",
+                            duration: 800
+                        });
+                        that.isDisabled = true;
+                }
+                else{
+                       that.$message.error( res.msg || "数据获取失败." );
+                }
+                
+            })
+            .catch(res => {
+
+            });
         },
 
         cancel() {

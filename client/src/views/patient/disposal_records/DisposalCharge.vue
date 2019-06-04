@@ -17,6 +17,7 @@
                     <i
                         style="float:right"
                         class="el-icon-setting form-setting"
+                        @click="cost_type"
                     ></i>
                 </div>
                 <div class="left-bottom">
@@ -54,19 +55,21 @@
                         align="center"
                         width="80"
                     >
-                        <el-tooltip
-                            effect="dark"
-                            content="删除"
-                            placement="bottom"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                icon="el-icon-delete"
-                                circle
-                                @click.stop="del(scope.row, scope.$index)"
-                            ></el-button>
-                        </el-tooltip>
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    circle
+                                    @click.stop="del(scope.row, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         prop="aaaa"
@@ -190,13 +193,19 @@
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
+        <cost-type :show.sync="costtype_show"></cost-type>
     </el-dialog>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import CostType from "./CostType";
 export default {
     name: "DisposalCharge",
+
+    components: {
+        CostType
+    },
 
     mixins: [DialogForm],
     created() {
@@ -204,38 +213,39 @@ export default {
     },
     data() {
         return {
+            costtype_show: false,
             tableData: [
                 { aaaa: "网络咨询", bbbb: "朋友介绍" },
                 { aaaa: "朋友介绍", bbbb: "网络咨询" },
                 { aaaa: "家住附近", bbbb: "诊所网站" },
                 { aaaa: "诊所网站", bbbb: "朋友介绍" }
             ],
-            checked: false,
+            checked: true,
             menuData: [
-                // {
-                //     id: 1,
-                //     catepory: "西药费"
-                // },
-                // {
-                //     id: 2,
-                //     catepory: "放射费"
-                // },
-                // {
-                //     id: 3,
-                //     catepory: "检查费"
-                // },
-                // {
-                //     id: 4,
-                //     catepory: "诊疗费"
-                // },
-                // {
-                //     id: 5,
-                //     catepory: "补牙费"
-                // },
-                // {
-                //     id: 6,
-                //     catepory: "手术费"
-                // }
+                {
+                    id: 1,
+                    catepory: "西药费"
+                },
+                {
+                    id: 2,
+                    catepory: "放射费"
+                },
+                {
+                    id: 3,
+                    catepory: "检查费"
+                },
+                {
+                    id: 4,
+                    catepory: "诊疗费"
+                },
+                {
+                    id: 5,
+                    catepory: "补牙费"
+                },
+                {
+                    id: 6,
+                    catepory: "手术费"
+                }
             ]
         };
     },
@@ -266,6 +276,9 @@ export default {
                     that.tableData[index]
                 )[0];
             }
+        },
+        cost_type() {
+            this.costtype_show = true;
         }
     }
 };
@@ -274,9 +287,9 @@ export default {
 @import "~@css/var";
 .discharge-content {
     display: flex;
-    
+
     // border: 1px solid red;
-    
+
     height: 600px;
     width: 1160px;
     .discharge-left {
@@ -303,7 +316,7 @@ export default {
             }
         }
     }
-    
+
     .discharge-middle {
         // border: 1px solid red;
         height: 600px;

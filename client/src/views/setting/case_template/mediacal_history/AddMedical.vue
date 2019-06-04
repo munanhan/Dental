@@ -16,10 +16,10 @@
 
             <el-form-item
                 label="病史名称"
-                prop="medical_name"
+                prop="medical_content"
             >
                 <el-input
-                    v-model.trim="form.medical_name"
+                    v-model.trim="form.medical_content"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -64,16 +64,22 @@ export default {
     mixins: [AddDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        menu_id:{
+
+        }
+    },
     data() {
         return {
+            apiType:'medical',
 
             form: {
-                medical_name: "",
+                menu_id:0,
+                medical_content: "",
                 type: 0
             },
             formRules: {
-                medical_name: [
+                medical_content: [
                     {
                         required: true,
                         message: "请输入病史名称",
@@ -85,7 +91,14 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue,oldValue){
+            let that = this;
+            if (newValue) {
+                that.form.menu_id = that.menu_id;
+            }
+        }
+    },
     computed: {},
     methods: {}
 };

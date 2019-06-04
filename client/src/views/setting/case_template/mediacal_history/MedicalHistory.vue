@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="showDel('partData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -106,7 +106,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('propertiesData',  scope.row, scope.$index)"
+                                        @click.stop="showDel('propertiesData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -164,7 +164,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('timeData', scope.row, scope.$index)"
+                                        @click.stop="showDel('timeData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -220,7 +220,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('otherData', scope.row, scope.$index)"
+                                        @click.stop="showDel('otherData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -246,6 +246,7 @@
         <add-medical
             :show.sync="addMedicalDialog"
             @add-item="addMedicalItem"
+            :menu_id="menu_id"
         ></add-medical>
 
         <edit-medical
@@ -283,6 +284,9 @@ export default {
         },
         selectStatus:{
             type:String
+        },
+        menu_id:{
+
         }
     },
     data() {
@@ -359,16 +363,42 @@ export default {
             that.blockWidth = (that.width - 20) / 2;
         },
 
-        addMedicalItem() {
+        addMedicalItem(value) {
+
             let that = this;
+
+            switch(value.type){
+                case 0:
+                that.partData.push(value);
+                break;
+                case 1:
+                that.propertiesData.push(value);
+                break;
+                case 2:
+                that.timeData.push(value);
+                break;
+                case 3:
+                that.otherData.push(value);
+                break;
+            }
         },
 
         //删除
-        del(type, row, idx) {
-            let that = this;
+        showDel(type, row, idx) {
+          let that = this;
+          that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            that.del(row.id,type,idx);
+          }).catch(() => {
+            that.$message({
+              type: 'info',
+              message: '已取消删除'
+            });          
+          });
 
-            //删除
-            that[type].splice(idx, 1);
         },
 
         showEditDialog(type, row) {
@@ -380,8 +410,8 @@ export default {
 
             that.editType = type;
             that.selectItem = row;
-
-            that.editMedicalDialog = true;
+            that.getById(row);
+            // that.editMedicalDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -397,12 +427,48 @@ export default {
             //         that.$message.error("获取数据失败，请重试.");
             //     });
         },
-
+        getById(row){
+            //根据id获取
+            let that = this;
+            let id = row.id
+            that.$api.medical.getById({'id':id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.currentEditItem = res.data;
+                        that.editMedicalDialog = true;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请重试.");
+                });
+        },
+        del(id,type,idx){
+            let that = this;
+            that.$api.medical.del({id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        //删除
+                        that[type].splice(idx, 1);
+                    } else {
+                        that.$message.error(res.msg || "删除失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("删除失败.");
+                });
+        },
         editItem(data) {
             let that = this;
 
             //设置数据, TODO
-            that.selectItem.text = data.aaa;
+            that.selectItem.medical_content = data.medical_content;
 
             that.currentEditItem = null;
             that.editType = "";
