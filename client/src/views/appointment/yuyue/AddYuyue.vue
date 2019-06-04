@@ -36,17 +36,23 @@
         <el-form-item label="病历号" prop="case_id">
           <el-input v-model="formData.case_id" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
+        <el-form-item label="电话" prop="patient_phone" required>
+          <el-input
+            v-model="formData.patient_phone"
+            type="text"
+            autocomplete="off"
+            placeholder
+            @blur="getPatientByPhone"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="姓名" prop="patient_name" required>
           <el-input v-model="formData.patient_name" type="text" autocomplete="off" placeholder></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="patient_phone" required>
-          <el-input v-model="formData.patient_phone" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
         <el-form-item label="性别" prop="patient_sex" required>
           <el-radio-group v-model="formData.patient_sex">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
+            <el-radio :label="0">男</el-radio>
+            <el-radio :label="1">女</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -221,11 +227,11 @@ export default {
         items: ""
         // start_time:this.yuyue_time,
       },
-      title:'新增预约',
+      title: "新增预约",
       items_o: itemsOptions,
       checked_items: [],
       rules: {
-        phone: telRules.concat({
+        patient_phone: telRules.concat({
           validator: (rule, value, callback) => {
             if (!/^1[34578]\d{9}$/.test(value)) {
               callback(new Error("请输入正确手机号码"));
@@ -234,7 +240,7 @@ export default {
             }
           }
         }),
-        age: ageRules.concat({
+        patient_age: ageRules.concat({
           validator: (rule, value, callback) => {
             if (!/^\d{2}$/.test(value)) {
               callback(new Error("请输入正确年龄"));
@@ -260,14 +266,14 @@ export default {
             .then(res => {
               if (res.code == 200) {
                 this.formData = res.data;
-                this.title  = '修改预约'
+                this.title = "修改预约";
               }
             });
         }
-      }else{
-        this.title  = '新增预约'
+      } else {
+        this.title = "新增预约";
       }
-      if(old_show){
+      if (old_show) {
         this.formData.id = null;
       }
       this.formData.appointment_date = this.yuyue_date
@@ -299,6 +305,24 @@ export default {
     }
   },
   methods: {
+    getPatientByPhone() {
+      let patient_phone = this.formData.patient_phone;
+      if (patient_phone.length == 11) {
+        this.$api.appointment.getPatientByPhone({ patient_phone }).then(res => {
+          if (res.code == 200) {        
+            if (res.data) {
+              this.formData.patient_name = res.data.patient_name;
+              this.formData.patient_age = res.data.patient_age;
+              this.formData.patient_sex = res.data.patient_sex;
+              this.formData.patient_source = res.data.patient_source;
+              this.formData.type = '1'
+            }
+          }
+        });
+      } else {
+        return;
+      }
+    },
     search() {
       this.items_o = itemsOptions;
       let $search = this.$refs.inputSearch;
@@ -311,20 +335,18 @@ export default {
       let value = event.target.attributes["data-time"].value;
 
       let gray = document.getElementsByClassName("gray");
+
       [...gray].forEach(i => {
         i.innerHTML = " ";
         removeClass(i, "gray");
       });
-
       addClass(event.target, "gray");
-      addClass(event.target.nextSibling, "gray");
-
       let [H, i] = value.split(":");
       H = +H + 1;
       if (i != 30) {
-        event.target.innerHTML = `${value}-${H}:00 (60m)`;
+        event.target.innerHTML = `<div class="double">${value}-${H}:00 (60m)</div>`;
       } else {
-        event.target.innerHTML = `${value}-${H}:30 (60m)`;
+        event.target.innerHTML = `<div class="double">${value}-${H}:30 (60m)</div>`;
       }
       this.formData.start_time = value;
     },
@@ -485,12 +507,13 @@ export default {
           flex: auto;
           text-align: center;
           border: 1px solid #000;
+          border-bottom: none;
           cursor: pointer;
-          &:nth-of-type(2n) {
-            border-top: none;
+          &:last-of-type {
+            border-bottom: 1px solid #000;
           }
           &.gray {
-            flex: 0 1 auto;
+            // flex: 0 1 auto;
             position: relative;
             .double {
               background-color: #ccc;
@@ -498,9 +521,10 @@ export default {
               position: absolute;
               left: 0;
               right: 0;
-              top: 0;
-              padding-top: 8%;
-              padding-bottom: 8%;
+              height: 200%;
+              line-height: 200%;
+              z-index: 100;
+              text-align: center;
             }
           }
         }

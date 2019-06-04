@@ -60,3 +60,10 @@ export function getListAppointment(data){
         params:data,
     })
 }
+export function getPatientByPhone(data){
+    return request({
+        url:`${prefix}/getPatientByPhone`,
+        method:'get',
+        params:data,
+    })
+}
