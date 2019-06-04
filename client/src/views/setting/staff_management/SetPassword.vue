@@ -46,6 +46,9 @@ export default {
     components: {},
       props: {
         
+        id:{
+          
+        }
         // refresh: {
         //   type: Boolean,
         //   required: true
