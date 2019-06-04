@@ -22,6 +22,25 @@ class BaseVerifyFields
 
         $parms = getParms($request->all())['parms'];
         //参数
+
+        if ($fields == '') {
+            switch ($request->attributes->get('action')) {
+                case 'delete':
+                    $fields = config('CommonDelete');
+                    break;
+                
+                case 'update':
+                    $controller = $request->attributes->get('controller');
+                    $fields = config('verify_fields.'.$controller.'.addData');
+                    $fields['id'] = 'unique:id|type:int';
+                    break;
+                case 'getById':
+                    $fields = config('CommonGetById');
+                    break;  
+            }
+        }
+
+
         $res = checkParms($fields,$parms);
         //更新时间判断部分
         if(isset($parms['id']) && isset($parms['updated_at'])){

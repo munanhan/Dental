@@ -518,7 +518,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::post('case_template', 'CaseTemplateController@addData');//添加
 
-    Route::put('case_template', 'CaseTemplateController@update');//修改
+    Route::put('case_template','CaseTemplateController@update');//修改
 
     Route::delete('case_template/{id}', 'CaseTemplateController@delete');//删除
 
@@ -536,6 +536,66 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::put('medical', 'MedicalController@update');//修改
 
     Route::delete('medical/{id}', 'MedicalController@delete');//删除
+
+    /*
+     * Route InspectController Api
+     * created for yu
+     */
+
+    Route::get('inspect','InspectController@index');//病例模板的菜单列表
+
+    Route::get('inspect/get_by_id','InspectController@getById');//根据id获取
+
+    Route::post('inspect', 'InspectController@addData');//添加
+
+    Route::put('inspect', 'InspectController@update');//修改
+
+    Route::delete('inspect/{id}', 'InspectController@delete');//删除
+
+    /*
+     * Route DiagnoseController Api
+     * created for yu
+     */
+
+    Route::get('diagnose','DiagnoseController@index');//病例模板的菜单列表
+
+    Route::get('diagnose/get_by_id','DiagnoseController@getById');//根据id获取
+
+    Route::post('diagnose', 'DiagnoseController@addData');//添加
+
+    Route::put('diagnose', 'DiagnoseController@update');//修改
+
+    Route::delete('diagnose/{id}', 'DiagnoseController@delete');//删除
+
+    /*
+     * Route TreatController Api
+     * created for yu
+     */
+
+    Route::get('treat','TreatController@index');//病例模板的菜单列表
+
+    Route::get('treat/get_by_id','TreatController@getById');//根据id获取
+
+    Route::post('treat', 'TreatController@addData');//添加
+
+    Route::put('treat', 'TreatController@update');//修改
+
+    Route::delete('treat/{id}', 'TreatController@delete');//删除
+
+    /*
+     * Route AdviceController Api
+     * created for yu
+     */
+
+    Route::get('advice','AdviceController@index');//病例模板的菜单列表
+
+    Route::get('advice/get_by_id','AdviceController@getById');//根据id获取
+
+    Route::post('advice', 'AdviceController@addData');//添加
+
+    Route::put('advice', 'AdviceController@update');//修改
+
+    Route::delete('advice/{id}', 'AdviceController@delete');//删除
 
 
 

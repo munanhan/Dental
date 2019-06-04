@@ -16,10 +16,10 @@
 
             <el-form-item
                 :label="type"
-                prop="medical_name"
+                prop="medical_content"
             >
                 <el-input
-                    v-model.trim="form.medical_name"
+                    v-model.trim="form.medical_content"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -58,11 +58,13 @@ export default {
     },
     data() {
         return {
+            apiType: "medical",
+
             form: {
-                medical_name: "",
+                medical_content: "",
             },
             formRules: {
-                medical_name: [
+                medical_content: [
                     {
                         required: true,
                         message: "请输入" + this.type,

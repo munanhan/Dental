@@ -98,25 +98,41 @@ export default {
             data.type = that.form.type;
             if (that.selectNode == null) {
                 //没有选中默认为顶级
-                data.p_id = 0;
-                data.outline_name = that.form.outline_name;
+                // data.p_id = 0;
+                // data.outline_name = that.form.outline_name;
             }
             else if (that.selectNode.type == 0) {
                 //这是目录，取id作为p_id
                 that.form.p_id = that.selectNode.id;
-                data.p_id = that.selectNode.id;
-                data.outline_name = that.form.outline_name;
+                // data.p_id = that.selectNode.id;
+                // data.outline_name = that.form.outline_name;
             }
             else if (that.selectNode.type == 1) {
                 //这是案例，取p_id作为p_id
-                data.p_id = that.selectNode.p_id;
-                data.outline_name = that.form.outline_name;
+                // data.p_id = that.selectNode.p_id;
+                // data.outline_name = that.form.outline_name;
                 that.form.p_id = that.selectNode.p_id;
             }
+            that.$api.case_template_menu.add(that.form)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        that.$emit('add-item', res.data);
+                        that.closeDialog();
+                    }
 
-            console.log(that.form);
-            that.$emit('add-item', data);
-            that.closeDialog();
+                })
+                .catch(res => {
+                     that.$message.error(
+                          res.msg || "操作异常请重试."
+                      );
+                });
+            // console.log(that.form);
+
         }
 
     }

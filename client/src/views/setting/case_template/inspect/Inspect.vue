@@ -16,7 +16,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="inspect_content"
                             label="部位"
                             align="center"
                             show-overflow-tooltip
@@ -51,7 +51,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('partData',scope.row, scope.$index)"
+                                        @click.stop="showDel('partData',scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -71,7 +71,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="inspect_content"
                             label="症状"
                             align="center"
                             show-overflow-tooltip
@@ -106,7 +106,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('symptomData',  scope.row, scope.$index)"
+                                        @click.stop="showDel('symptomData',  scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -129,7 +129,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="inspect_content"
                             label="诊法"
                             align="center"
                             show-overflow-tooltip
@@ -164,7 +164,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('diagnosticData', scope.row, scope.$index)"
+                                        @click.stop="showDel('diagnosticData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -185,7 +185,7 @@
                         :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     >
                         <el-table-column
-                            prop="attend_type"
+                            prop="inspect_content"
                             label="其他"
                             align="center"
                             show-overflow-tooltip
@@ -220,7 +220,7 @@
                                         size="mini"
                                         icon="el-icon-delete"
                                         circle
-                                        @click.stop="del('levelData', scope.row, scope.$index)"
+                                        @click.stop="showDel('levelData', scope.row, scope.$index)"
                                     ></el-button>
                                 </el-tooltip>
                             </template>
@@ -245,6 +245,7 @@
         <add-inspect
             :show.sync="AddInspectDialog"
             @add-item="addInspect"
+            :menu_id="menu_id"
         ></add-inspect>
 
         <edit-inspect
@@ -278,6 +279,12 @@ export default {
         },
         selectStatus:{
             type:String
+        },
+        data:{
+
+        },
+        menu_id:{
+
         }
     },
     data() {
@@ -304,6 +311,27 @@ export default {
             let that = this;
 
             if (newValue) {
+                that.partData = [];
+                that.symptomData = [];
+                that.diagnosticData = [];
+                that.levelData = [];
+                for (var i = 0,len = that.data.length; i < len; i++) {
+                    switch(that.data[i].type){
+                        case 0:
+                        that.partData.push(that.data[i]);
+                        break;
+                        case 1:
+                        that.symptomData.push(that.data[i]);
+                        break;
+                        case 2:
+                        that.diagnosticData.push(that.data[i]);
+                        break;
+                        case 3:
+                        that.levelData.push(that.data[i]);
+                        break;
+                    }
+                }
+
                 that.resizeContent();
 
                 that.$emit("update:show", false);
@@ -333,16 +361,41 @@ export default {
             that.blockWidth = (that.width - 20) / 2;
         },
 
-        addInspect() {
+        addInspect(value) {
             let that = this;
+
+            switch(value.type){
+                case 0:
+                that.partData.push(value);
+                break;
+                case 1:
+                that.symptomData.push(value);
+                break;
+                case 2:
+                that.diagnosticData.push(value);
+                break;
+                case 3:
+                that.levelData.push(value);
+                break;
+            }
         },
 
         //删除
-        del(type, row, idx) {
+        showDel(type, row, idx) {
             let that = this;
+              that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                that.del(row.id,type,idx);
+              }).catch(() => {
+                that.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });          
+              });
 
-            //删除
-            that[type].splice(idx, 1);
         },
 
         showEditDialog(type, row) {
@@ -354,8 +407,8 @@ export default {
 
             that.editType = type;
             that.selectItem = row;
-
-            that.editInspectDialog = true;
+            that.getById(row);
+            // that.editInspectDialog = true;
 
             // that.$api[that.apiType]
             //     [that.getByIDMethod](params)
@@ -371,12 +424,48 @@ export default {
             //         that.$message.error("获取数据失败，请重试.");
             //     });
         },
-
+        getById(row){
+            //根据id获取
+            let that = this;
+            let id = row.id
+            that.$api.inspect.getById({'id':id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.currentEditItem = res.data;
+                        that.editInspectDialog = true;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请重试.");
+                });
+        },
+        del(id,type,idx){
+            let that = this;
+            that.$api.inspect.del({id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        //删除
+                        that[type].splice(idx, 1);
+                    } else {
+                        that.$message.error(res.msg || "删除失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("删除失败.");
+                });
+        },
         editItem(data) {
             let that = this;
 
             //设置数据, TODO
-            that.selectItem.text = data.aaa;
+            that.selectItem.inspect_content = data.inspect_content;
 
             that.currentEditItem = null;
             that.editType = "";

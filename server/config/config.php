@@ -24,7 +24,15 @@ return [
                     'users' => '员工管理',
                     'patient_recycling_bin' => '患者回收管理',
                     'clinics' => '诊所管理',
-                    'companies' => '公司管理'
+                    'companies' => '公司管理',
+                    'chain_stores' => '连锁店管理',
+                    'case_template_menus' => '病历模板菜单',
+                    'case_templates' => '病例模板',
+                    'medicals' => '主诉，现病史，既往病史',
+                    'inspects' => '检查，辅助检查',
+                    'diagnoses' => '诊断',
+                    'treats' => '治疗，治疗方案',
+                    'advice' => '医嘱'
                 ],
 
     'patient_group' => [

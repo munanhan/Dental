@@ -80,78 +80,79 @@
                     </div>
                 </div>
                 <div>
-                    <label class="search-item">
-                        <span class="label-text mr-10">患者分类</span>
-                        <el-select
-                            v-model="search.patient_type"
-                            collapse-tags
-                            class="search-input"
-                        >
-                            <el-option
-                                v-for="item in patientType"
-                                :key="item.id"
-                                :label="item.label"
-                                :value="item.id"
+                    <div>
+                        <label class="search-item">
+                            <span class="label-text mr-10">患者分类</span>
+                            <el-select
+                                v-model="search.patient_type"
+                                collapse-tags
+                                class="search-input"
                             >
-                            </el-option>
-                        </el-select>
-                    </label>
-                </div>
-                <div>
-                    <label class="search-item">
-                        <span class="label-text mr-10">就诊医生</span>
-                        <el-select
-                            v-model="search.doctor"
-                            collapse-tags
-                            class="search-input"
-                        >
-                            <el-option
-                                v-for="item in doctor"
-                                :key="item.id"
-                                :label="item.label"
-                                :value="item.id"
+                                <el-option
+                                    v-for="item in patientType"
+                                    :key="item.id"
+                                    :label="item.label"
+                                    :value="item.id"
+                                >
+                                </el-option>
+                            </el-select>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="search-item">
+                            <span class="label-text mr-10">就诊医生</span>
+                            <el-select
+                                v-model="search.doctor"
+                                collapse-tags
+                                class="search-input"
                             >
-                            </el-option>
-                        </el-select>
-                    </label>
-                </div>
-                <div>
-                    <label class="search-item">
-                        <span class="label-text mr-10">患者查询</span>
-                        <el-input
-                            v-model="search.patient_info"
-                            autocomplete="off"
-                            class="input-text"
-                            placeholder="患者、电话查询"
-                        ></el-input>
-                    </label>
-                </div>
-                <div>
-                    <label class="search-item">
-                        <span class="label-text mr-10">处置信息</span>
-                        <el-input
-                            v-model="search.disposal_info"
-                            autocomplete="off"
-                            class="input-text"
-                            placeholder="名称、备注关键字查询"
-                        ></el-input>
-                    </label>
-                </div>
-                <div class="btn-container">
-                    <div class="btn-item mr-10">
-                        <el-button
-                            type="primary"
-                            class="btns"
-                            @click="getData"
-                        >查询</el-button>
+                                <el-option
+                                    v-for="item in doctor"
+                                    :key="item.id"
+                                    :label="item.label"
+                                    :value="item.id"
+                                >
+                                </el-option>
+                            </el-select>
+                        </label>
                     </div>
-                    <div class="btn-item ml-10">
-                        <el-button
-                            class="btns"
-                            @click="exportExcel"
-                        >导出Excel</el-button>
+                    <div>
+                        <label class="search-item">
+                            <span class="label-text mr-10">患者查询</span>
+                            <el-input
+                                v-model="search.patient_info"
+                                autocomplete="off"
+                                class="input-text"
+                                placeholder="患者、电话查询"
+                            ></el-input>
+                        </label>
                     </div>
-
+                    <div>
+                        <label class="search-item">
+                            <span class="label-text mr-10">处置信息</span>
+                            <el-input
+                                v-model="search.disposal_info"
+                                autocomplete="off"
+                                class="input-text"
+                                placeholder="名称、备注关键字查询"
+                            ></el-input>
+                        </label>
+                    </div>
+                    <div class="btn-container">
+                        <div class="btn-item mr-10">
+                            <el-button
+                                type="primary"
+                                class="btns"
+                                @click="getData"
+                            >查询</el-button>
+                        </div>
+                        <div class="btn-item ml-10">
+                            <el-button
+                                class="btns"
+                                @click="exportExcel"
+                            >导出Excel</el-button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -164,7 +165,10 @@
                 ref="head"
             >
                 <div class="mb-10">
-                    <el-radio-group v-model="currentType" @change="changeShow">
+                    <el-radio-group
+                        v-model="currentType"
+                        @change="changeShow"
+                    >
                         <el-radio-button label="diagnose">就诊</el-radio-button>
                         <el-radio-button label="returnVisit">回访</el-radio-button>
                         <el-radio-button label="monthlyCalendar">月历</el-radio-button>
@@ -245,7 +249,7 @@
                     <div class="diagnose-detail">
                         <div class="tooth">
                             <div class="tooth-row">
-                                <div class="tooth-left" >12345678</div>
+                                <div class="tooth-left">12345678</div>
                                 <div class="tooth-right">12345678</div>
                             </div>
                             <div class="tooth-row">
@@ -488,13 +492,13 @@ export default {
             let that = this;
         },
 
-        changeShow(value){
+        changeShow(value) {
             let that = this;
-            that.$emit('update:type', value);
-            
+            that.$emit("update:type", value);
+
             //原来的值不更新，直接替换页面
-            setTimeout(() =>{
-                that.currentType = 'diagnose';
+            setTimeout(() => {
+                that.currentType = "diagnose";
             }, 300);
         }
     }
@@ -587,10 +591,12 @@ export default {
 
                 .search-input {
                     max-width: 220px;
+                    width: 220px;
                 }
 
                 .input-text {
                     max-width: 220px;
+                    width: 220px;
                     font-size: 16px;
                 }
             }
