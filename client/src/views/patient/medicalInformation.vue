@@ -6,8 +6,10 @@
         >
             <el-card>
                 <div style="display:flex">
-                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4>
-                    <i class="el-icon-edit box-content"></i>
+                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4> <i
+                        style="cursor: pointer;font-size:20px;margin-left:30px;margin-top:15px"
+                        class="el-icon-edit"
+                    ></i>
                 </div>
                 <p>备注：</p>
             </el-card>
@@ -19,7 +21,10 @@
             <el-card>
                 <div style="display:flex">
                     <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4>
-                    <i class="el-icon-edit box-content"></i>
+                    <i
+                        style="cursor: pointer;font-size:20px;margin-left:30px;margin-top:15px"
+                        class="el-icon-edit "
+                    ></i>
                 </div>
                 <p>备注：</p>
             </el-card>
@@ -30,8 +35,10 @@
         >
             <el-card>
                 <div style="display:flex">
-                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4>
-                    <i class="el-icon-edit box-content"></i>
+                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4> <i
+                        style="cursor: pointer;font-size:20px;margin-left:30px;margin-top:15px"
+                        class="el-icon-edit "
+                    ></i>
                 </div>
                 <p>备注：</p>
             </el-card>
@@ -41,7 +48,7 @@
 
 <script>
 export default {
-    name: "BookingInformation",
+    name: "medicalInformation",
     components: {},
     props: {},
     data() {
@@ -57,11 +64,5 @@ export default {
 <style lang="less" scoped>
 .el-card {
     width: 600px;
-}
-.box-content {
-    cursor: pointer;
-    font-size: 20px;
-    margin-left: 30px;
-    margin-top: 15px;
 }
 </style>
