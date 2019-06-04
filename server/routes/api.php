@@ -603,7 +603,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
 
-    Route::get('privilege','PrivilegeController@index');//病例模板的菜单列表
+    Route::get('privilege','PrivilegeController@index');//菜单列表
 
     Route::get('privilege/get_by_id','PrivilegeController@getById');//根据id获取
 

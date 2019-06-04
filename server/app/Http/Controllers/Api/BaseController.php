@@ -48,7 +48,6 @@ class BaseController extends Controller
             //获取路由
             $input = getParms($request->all());
             //拆分参数
-
             $this->parms = $input['parms'];
             $this->pager = $input['pager'];
             $this->date = $input['date'];
@@ -173,7 +172,7 @@ class BaseController extends Controller
                 $res = getData($sql,$this->parms);
                 return message($res['msg'],[ 'row' => $res['data'],'total' => $total ],$res['code']);
             }
-
+            
             $res = getData($sql,$this->parms);
 
             return message($res['msg'],$res['data'],$res['code']);
