@@ -266,32 +266,32 @@ export function getAll(data){
     })
 }
 
-//获取当前用户的权限
-export function getUserPermission(data){
-    return request({
-        url: `${prefix}/get_user_permission`,
-        method: 'get',
-        params: data
-    })
-}
+// //获取当前用户的权限
+// export function getUserPermission(data){
+//     return request({
+//         url: `${prefix}/get_user_permission`,
+//         method: 'get',
+//         params: data
+//     })
+// }
 
-//更新用户自己的头像
-export function updateUserAvatar(data){
-    return request({
-        url: `${prefix}/update_avatar`,
-        method: 'post',
-        data: data
-    });
-}
+// //更新用户自己的头像
+// export function updateUserAvatar(data){
+//     return request({
+//         url: `${prefix}/update_avatar`,
+//         method: 'post',
+//         data: data
+//     });
+// }
 
-//更新用户的头像（管理员）
-export function changeUserAvatar(data){
-    return request({
-        url: `${prefix}/change_user_avatar`,
-        method: 'post',
-        data: data
-    });
-}
+// //更新用户的头像（管理员）
+// export function changeUserAvatar(data){
+//     return request({
+//         url: `${prefix}/change_user_avatar`,
+//         method: 'post',
+//         data: data
+//     });
+// }
 
 //获取员工列表
 export function user_list(data){
