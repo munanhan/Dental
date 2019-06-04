@@ -134,18 +134,5 @@ class AppointmentController extends Controller
         return message('获取成功',$res,200);
     }
 
-    public function store(Request $request)
-    {
-        $data=$request->all();
-//        dd($data);
-//        $patient=$this->createPatient($data);
-//       $this->createAppointment($patient,$data);
 
-    }
-
-
-     public function createPatient(array $data)
-     {
-         return Patient::create($data);
-     }
 }

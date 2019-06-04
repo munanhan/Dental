@@ -83,7 +83,7 @@
                         label="出生年月"
                         prop="patient_birthday"
                         style="width:300px"
-                        @input="birthday"
+
                     >
                         <el-date-picker
                             v-model="form.patient_birthday"
@@ -100,6 +100,44 @@
                         prop="patient_age"
                     >
                         <el-input v-model="form.patient_age" ></el-input>
+                    </el-form-item>
+
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
+                            label="就诊日期"
+                            prop="treatment_date"
+                            style="width:300px"
+                    >
+                        <el-date-picker
+                                v-model="form.treatment_date"
+                                type="date"
+                                placeholder="选择日期"
+                                :picker-options="pickerOptions"
+                                value-format="yyyy-MM-dd"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item
+                            label="主治医生"
+                            prop="attend_doctor"
+                            style="margin-left:50px;"
+                    >
+                        <el-select
+                                v-model="form.attend_doctor"
+                                style="width:220px"
+                                placeholder="请选择"
+                                @focus="attendDoctor"
+                        >
+                            <el-option
+                                    v-for="item in attendDoctorList"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
 
                 </div>
@@ -134,7 +172,7 @@
                         label="会员卡号"
                         prop="member_card"
                     >
-                        <el-input v-model="form.member_card"></el-input>
+                        <el-input placeholder="默认为手机号" v-model="form.member_card"></el-input>
                     </el-form-item>
                 </div>
 
@@ -357,6 +395,7 @@ export default {
             allergyList: [],
             anamnesisList: [],
             teethHabitList: [],
+            attendDoctorList:[],
 
             rules: {
                 patient_name: [
@@ -372,6 +411,10 @@ export default {
                         required: true,
                         message: "请输入手机号",
                         trigger: "blur"
+                    },
+                    {
+                        pattern:/^1[3|4|5|7|8|6|9][0-9]{9}$/,
+                        message:'请输入正确的手机号'
                     }
                 ],
 
@@ -380,6 +423,10 @@ export default {
                         required: true,
                         message: "请输入邮箱",
                         trigger: "blur"
+                    },
+                    {
+                        pattern:/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+                        message:'请输入正确的邮箱格式'
                     }
                 ],
                 patient_birthday: [
@@ -389,6 +436,13 @@ export default {
                         trigger: "blur"
                     }
                 ],
+                attend_doctor:[
+                    {
+                        required: true,
+                        message: "请选择主治医生",
+                        trigger: "blur"
+                    }
+                ]
 
             },
 
@@ -409,6 +463,8 @@ export default {
                 patient_email: "",
                 allergy:"",
                 anamnesis:"",
+                attend_doctor:"",
+                treatment_date:"",
 
             }
         };
@@ -436,6 +492,18 @@ export default {
     },
 
     methods: {
+
+        attendDoctor(){
+            let that=this;
+
+            that.$api.patient.getAttendDoctor()
+                .then(res=>{
+                    that.attendDoctorList=res.data;
+                })
+                .catch(res=>{
+                    console.log(res.data);
+                })
+        },
 
         resetForm(form){
             let  that=this;
@@ -518,10 +586,6 @@ export default {
                     .catch(res=>{
                         console.log(res.data);
                     })
-        },
-
-        birthday(){
-
         },
 
         submitFrom(form) {
