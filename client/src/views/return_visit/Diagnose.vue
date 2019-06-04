@@ -591,10 +591,12 @@ export default {
 
                 .search-input {
                     max-width: 220px;
+                    width: 220px;
                 }
 
                 .input-text {
                     max-width: 220px;
+                    width: 220px;
                     font-size: 16px;
                 }
             }
