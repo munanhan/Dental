@@ -20,27 +20,13 @@
                         style="margin:20px;"
                     >
                         <el-col :span="6">
-                            <div> 患者姓名：</div>
+                            <div> 患者姓名：{{data.patient_name}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>患者分组：</div>
+                            <div>患者分组：{{data.patient_group}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>手 机 1：</div>
-                        </el-col>
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col :span="6">
-                            <div>病 历 号：</div>
-                        </el-col>
-                        <el-col :span="6">
-                            <div>介 绍 人：</div>
-                        </el-col>
-                        <el-col :span="6">
-                            <div>职 业：</div>
+                            <div>电 话：{{data.patient_phone}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -48,13 +34,13 @@
                         style="margin:20px"
                     >
                         <el-col :span="6">
-                            <div>出生年月：</div>
+                            <div>病 历 号：{{data.case_id}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>年 龄：</div>
+                            <div>介 绍 人：{{data.introducer}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>社 保 号：</div>
+                            <div>职 业：{{data.patient_profession}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -62,10 +48,24 @@
                         style="margin:20px"
                     >
                         <el-col :span="6">
-                            <div>会员等级：</div>
+                            <div>出生年月：{{data.patient_birthday}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>会员卡号：</div>
+                            <div>年 龄：{{data.patient_age}}</div>
+                        </el-col>
+                        <el-col :span="6">
+                            <div>社 保 号：{{society_no}}</div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col :span="6">
+                            <div>会员等级：{{data.member_level}}</div>
+                        </el-col>
+                        <el-col :span="6">
+                            <div>会员卡号：{{data.member_card}}</div>
                         </el-col>
 
                     </el-row>
@@ -74,7 +74,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="6">
-                            <div>电子邮箱：</div>
+                            <div>电子邮箱：{{data.patient_email}}</div>
                         </el-col>
 
                     </el-row>
@@ -83,7 +83,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="6">
-                            <div>联系地址：</div>
+                            <div>联系地址：{{data.patient_address}}</div>
                         </el-col>
 
                     </el-row>
@@ -92,7 +92,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="6">
-                            <div>备 注：</div>
+                            <div>备 注：{{data.patient_content}}</div>
                         </el-col>
 
                     </el-row>
@@ -105,26 +105,14 @@
                     >
                     </div>
                     <div style="display:flex;margin-bottom:5px">
-                        <el-radio
-                            v-model="sex"
-                            label="0"
-                        >男</el-radio>
-                        <el-radio
-                            v-model="sex"
-                            label="1"
-                        >女</el-radio>
+                        <template>
+                            <el-radio-group v-model="data.patient_sex">
+                                <el-radio :label="3">男</el-radio>
+                                <el-radio :label="6">女</el-radio>
+                            </el-radio-group>
+                        </template>
                     </div>
-                    <!-- <div class="block">
-                        <span
-                            class="demonstration"
-                            style="position: absolute;bottom:0;"
-                        ></span>
-                        <el-rate
-                            v-model="value2"
-                            :colors="['#FF9900', '#FF9900', '#FF9900']"
-                        >
-                        </el-rate>
-                    </div> -->
+
                 </div>
             </div>
 
@@ -138,27 +126,13 @@
                     style="margin:20px"
                 >
                     <el-col :span="6">
-                        <div>咨 询 师：</div>
+                        <div>咨 询 师：{{data.counselor}}</div>
                     </el-col>
                     <el-col :span="6">
-                        <div>初诊医生：</div>
+                        <div>初诊医生：{{data.attend_doctor}}</div>
                     </el-col>
                     <el-col :span="6">
-                        <div>初诊时间：</div>
-                    </el-col>
-                </el-row>
-                <el-row
-                    :gutter="24"
-                    style="margin:20px"
-                >
-                    <el-col :span="6">
-                        <div>患者来源：</div>
-                    </el-col>
-                    <el-col :span="6">
-                        <div>复诊医生：</div>
-                    </el-col>
-                    <el-col :span="6">
-                        <div>复诊时间：</div>
+                        <div>初诊时间：{{data.treatment_date}}</div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -166,13 +140,16 @@
                     style="margin:20px"
                 >
                     <el-col :span="6">
-                        <div>电网咨询：</div>
+                        <div>患者来源：{{data.patient_source}}</div>
                     </el-col>
+
+                </el-row>
+                <el-row
+                    :gutter="24"
+                    style="margin:20px"
+                >
                     <el-col :span="6">
-                        <div>患者分类：</div>
-                    </el-col>
-                    <el-col :span="6">
-                        <div>咨询项目：</div>
+                        <div>患者分类：{{data.patient_category}}</div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -180,7 +157,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="10">
-                        <div>过 敏 史：</div>
+                        <div>过 敏 史：{{data.allergy}}</div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -188,7 +165,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="10">
-                        <div>既 往 史：</div>
+                        <div>既 往 史：{{data.anamnesis}}</div>
                     </el-col>
                 </el-row>
 
@@ -200,18 +177,13 @@
                     bottom:0;width:100%;
                     height:59px">
 
-            <!-- <el-button class="patient-button">扫一扫</el-button> -->
             <el-button
                 style="width:110px;margin-top:10px;margin-left:10px"
                 type="primary"
                 porp="modify-inormation"
                 @click="Modify_info"
             >修改信息</el-button>
-            <!-- <el-button class="patient-button">病历首页打印</el-button> -->
-            <!-- <i
-        class="fa fa-cog"
-        style="cursor:pointer"
-      ></i> -->
+
 
         </div>
         <modify-info :show.sync="modinfo_show"></modify-info>
@@ -234,10 +206,7 @@ export default {
     },
     data() {
         return {
-            patient_id: "",
-            sex: "0",
-            activeNames: ["1"],
-            value2: null,
+            data:{},
             modinfo_show: false
         };
     },

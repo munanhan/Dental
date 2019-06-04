@@ -41,8 +41,6 @@ class UserController extends Controller
         return message('',$user, 200);
     }
 
-
-
     // public function delete(User $user)
     // {
     //     $user->delete();

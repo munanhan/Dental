@@ -26,22 +26,6 @@ use Illuminate\Http\Request;
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     /*
-     * Route Patient Config Api
-     */
-
-    Route::get('patients/resource', function () {
-        return  new \App\Http\Resources\PatientCollection(\App\Model\Patient::all());
-    });
-
-    /*
-     * Route PatientConsult Config Api
-     */
-
-    Route::get('consults/resource',function (){
-        return new \App\Http\Resources\PatientConsultCollection(\App\Model\PatientConsult::all());
-    });
-
-    /*
      * Patient Visit Config Api
      * author by han
      */
@@ -81,7 +65,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('patients', 'PatientController@index');
 
-    Route::get('patients/{patient}', 'PatientController@show');
+   // Route::get('patients/{patient}', 'PatientController@show');
 
     Route::post('patients', 'PatientController@store');
 
@@ -89,7 +73,9 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{patient}', 'PatientController@delete');
 
-    Route::get('patient/intraday','PatientController@intraday');
+    Route::get('patients/attend_doctor','PatientController@attendDoctor');
+
+    Route::get('patients/today_work','PatientController@todayWork');
 
 
     /*
