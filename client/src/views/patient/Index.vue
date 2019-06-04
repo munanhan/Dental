@@ -39,8 +39,23 @@
                                         v-if="appointmentExpend"
                                         ref="item1"
                                     >
-                                        <li>列表1</li>
-                                        <li>列表2</li>
+                                        <li
+                                            v-for="(item,index) in appointment"
+                                            :key="index"
+                                        >
+                                            <div class="work-background">
+                                                <div class="work-background-top">
+                                                    <span class="work-top1">{{item.case_id}}</span>
+                                                    <span class="work-top2">{{item.medical_history}}</span>
+                                                    <span class="work-top3">{{item.appointment_date}}</span>
+                                                </div>
+                                                <div class="work-background-bottom">
+                                                    <span class="work-bottom">{{item.patient_phone}}</span>
+                                                    <span class="work-bottom">{{item.patient_doctor}}</span>
+                                                    {{item.medical_record}}
+                                                </div>
+                                            </div>
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -59,8 +74,23 @@
                                         v-if="diagnosisExpend"
                                         ref="item1"
                                     >
-                                        <li>列表1</li>
-                                        <li>列表2</li>
+                                        <li
+                                            v-for="(item,index) in diagnosis"
+                                            :key="index"
+                                        >
+                                            <div class="work-background">
+                                                <div class="work-background-top">
+                                                    <span class="work-top1">{{item.case_id}}</span>
+                                                    <span class="work-top2">{{item.medical_history}}</span>
+                                                    <span class="work-top3">{{item.appointment_date}}</span>
+                                                </div>
+                                                <div class="work-background-bottom">
+                                                    <span class="work-bottom">{{item.patient_phone}}</span>
+                                                    <span class="work-bottom">{{item.patient_doctor}}</span>
+                                                    {{item.medical_record}}
+                                                </div>
+                                            </div>
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -166,31 +196,20 @@
                                         >
                                             <li>
                                                 <div class="patient-background">
-                                                    <div
-                                                        class="background-top"
-                                                        style="margin-bottom:20px;margin-left:10px"
-                                                    >
-                                                        <span style="margin-right:150px;font-weight:bold;color:#000">123213123</span>
+                                                    <div class="patient-background-top">
+                                                        <span
+                                                            class="patient-top1"
+                                                            style=""
+                                                        >123213123</span>
 
-                                                        <span style="color:#747474;font-size:13px">2019-05-17</span>
+                                                        <span
+                                                            class="patient-top2"
+                                                            style=""
+                                                        >2019-05-17</span>
                                                     </div>
-                                                    <div style="margin-left:30px;font-size:14px;color:#747474">
-                                                        <span style="margin-right:20px">13925814457</span> <span style="margin-right:20px">1212</span> *(无病历号)
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="patient-background">
-                                                    <div
-                                                        class="background-top"
-                                                        style="margin-bottom:20px;margin-left:10px"
-                                                    >
-                                                        <span style="margin-right:150px;font-weight:bold;color:#000">150301012</span>
-
-                                                        <span style="color:#747474;font-size:13px">2019-06-03</span>
-                                                    </div>
-                                                    <div style="margin-left:30px;font-size:14px;color:#747474">
-                                                        <span style="margin-right:20px">13925814457</span> <span style="margin-right:20px">1212</span> *(无病历号)
+                                                    <div class="patient-background-bottom">
+                                                        <span class="patient-bottom">13925814457</span>
+                                                        <span style="margin-right:20px">1212</span> *(无病历号)
                                                     </div>
                                                 </div>
                                             </li>
@@ -433,7 +452,7 @@ export default {
             input: "",
             search: "",
             curTab: "pationInfo",
-            activeName: "patient",
+            activeName: "first",
             addp_show: false,
             appvisit_show: false,
             //   pationRefresh: false,
@@ -478,33 +497,44 @@ export default {
             returnVisitInfo: false,
             consultingInfo: false,
             bookingInformation: false,
-
-            // data: [
-            //     {
-            //         label: "最近患者(0)",
-            //         children: [
-            //             {
-            //                 label: "二级 1-1"
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         label: "黑名单(0)",
-            //         children: [
-            //             {
-            //                 label: "二级 1-1"
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         label: "治疗完成(0)",
-            //         children: [{}]
-            //     }
-            // ],
-            // defaultProps: {
-            //     children: "children",
-            //     label: "label"
-            // }
+            appointment: [
+                {
+                    case_id: "150301012",
+                    medical_history: "史",
+                    appointment_date: "上午 11:30",
+                    patient_phone: "13925814457",
+                    patient_doctor: "马医生"
+                },
+                {
+                    case_id: "150301013",
+                    medical_history: "欠",
+                    appointment_date: "2019-06-04",
+                    patient_phone: "13925814457",
+                    patient_doctor: "余医生"
+                },
+                {
+                    case_id: "150301014",
+                    appointment_date: "2019-06-05",
+                    patient_phone: "13925814457",
+                    patient_doctor: "钟医生"
+                },
+                {
+                    case_id: "150301015",
+                    appointment_date: "2019-06-06",
+                    patient_phone: "13925814457",
+                    patient_doctor: "马医生"
+                }
+            ],
+            diagnosis: [
+                {
+                    case_id: "131313131",
+                    medical_history: "史",
+                    appointment_date: "上午 11:30",
+                    patient_phone: "13925814457",
+                    patient_doctor: "马医生",
+                    medical_record: "*(无病历号)"
+                }
+            ],
             //最近访问
             appointmentExpend: false,
             diagnosisExpend: false,
@@ -653,7 +683,65 @@ export default {
             }
         }
     }
+    .work-item {
+        ul,
+        li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            margin-left: 10px;
+            margin-top: 7px;
+        }
 
+        .work-title {
+            i {
+                transition: all 0.2s;
+
+                &.down {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+        .work-background {
+            border: 1px solid #bababa;
+            background-color: white;
+            margin-right: 10px;
+            border-left-width: 10px;
+            height: 60px;
+            .work-background-top {
+                margin-bottom: 20px;
+                margin-left: 10px;
+                .work-top1 {
+                    // margin-right: 100px;
+                    font-weight: bold;
+                    color: #000;
+                }
+                .work-top2 {
+                    margin-right: 120px;
+                    margin-left: 10px;
+                    background-color: red;
+                    font-size: 10px;
+                    color: white;
+                }
+                .work-top3 {
+                    color: #747474;
+                    font-size: 13px;
+                }
+            }
+            .work-background-bottom {
+                margin-left: 30px;
+                font-size: 14px;
+                color: #747474;
+                .work-bottom {
+                    margin-right: 20px;
+                }
+            }
+            &:hover {
+                color: @color;
+                border-color: @color;
+            }
+        }
+    }
     .patient-item {
         ul,
         li {
@@ -679,29 +767,32 @@ export default {
             margin-right: 10px;
             border-left-width: 10px;
             height: 60px;
+            .patient-background-top {
+                margin-bottom: 20px;
+                margin-left: 10px;
+                .patient-top1 {
+                    margin-right: 150px;
+                    font-weight: bold;
+                    color: #000;
+                }
+                .patient-top2 {
+                    color: #747474;
+                    font-size: 13px;
+                }
+                .patient-top3 {
+                }
+            }
+            .patient-background-bottom {
+                margin-left: 30px;
+                font-size: 14px;
+                color: #747474;
+                .patient-bottom {
+                    margin-right: 20px;
+                }
+            }
             &:hover {
                 color: @color;
                 border-color: @color;
-            }
-        }
-    }
-    .work-item {
-        ul,
-        li {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            margin-left: 10px;
-            margin-top: 7px;
-        }
-
-        .work-title {
-            i {
-                transition: all 0.2s;
-
-                &.down {
-                    transform: rotate(90deg);
-                }
             }
         }
     }
