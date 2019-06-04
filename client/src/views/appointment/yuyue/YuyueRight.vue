@@ -369,6 +369,11 @@ export default {
     },
 
     addYuyue(item) {
+      if(!item){
+        this.yuyue_id = null;
+        this.addYuyueShow = true;
+        return;
+      }
       let date = formatDate(new Date(), "yyyy-MM-dd");
       this.isAttrDataTime(event.target);
       if (

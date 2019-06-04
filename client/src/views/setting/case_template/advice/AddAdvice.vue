@@ -52,11 +52,17 @@ export default {
     mixins: [AddDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        menu_id:{
+
+        }
+    },
     data() {
         return {
+            apiType:'advice',
             form: {
                 advice_name: "",
+                menu_id:0,
             },
             formRules: {
                 advice_name: [
@@ -71,7 +77,16 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue,oldValue){
+            let that = this;
+            if (newValue) {
+
+                that.form.menu_id = that.menu_id;
+
+            }
+        }
+    },
     computed: {},
     methods: {}
 };

@@ -16,10 +16,10 @@
 
             <el-form-item
                 label="诊断名称"
-                prop="diagnose_name"
+                prop="diagnose_content"
             >
                 <el-input
-                    v-model.trim="form.diagnose_name"
+                    v-model.trim="form.diagnose_content"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -62,16 +62,21 @@ export default {
     mixins: [AddDialogForm],
 
     components: {},
-    props: {},
+    props: {
+        menu_id:{
+
+        }
+    },
     data() {
         return {
-
+            apiType: "diagnose",
             form: {
-                diagnose_name: "",
+                diagnose_content: "",
+                menu_id:0,
                 type: 0
             },
             formRules: {
-                diagnose_name: [
+                diagnose_content: [
                     {
                         required: true,
                         message: "请输入诊断名称",
@@ -83,7 +88,16 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue,oldValue){
+            let that = this;
+            if (newValue) {
+                console.log(that.menu_id);
+                that.form.menu_id = that.menu_id;
+
+            }
+        }
+    },
     computed: {},
     methods: {}
 };

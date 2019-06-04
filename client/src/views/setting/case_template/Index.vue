@@ -86,6 +86,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 ></case-template>
 
                 <medical-history
@@ -95,6 +96,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 ></medical-history>
                 <inspect
                     v-show="selectType == 2"
@@ -103,6 +105,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 ></inspect>
 
                 <diagnose
@@ -112,6 +115,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 >
                 </diagnose>
 
@@ -122,6 +126,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 >
                 </treat>
 
@@ -132,6 +137,7 @@
                     :height="rightContentHeight"
                     :width="rightContentWidth"
                     :selectStatus="selectStatus"
+                    :menu_id="menu_id"
                 >
                 </advice>
             </div>
@@ -193,7 +199,7 @@ export default {
             ],
 
             treeProps: {
-                label: "text",
+                label: "outline_name",
                 children: "children"
             },
 
@@ -212,6 +218,7 @@ export default {
             rightContentHeight: 500,
             rightContentWidth: 400,
 
+            menu_id:0,//菜单id
             caseData: {}, //模板
             medicalData: [], //病历
             inspectData: {}, //检查
@@ -257,9 +264,9 @@ export default {
 
         selectType(newValue, oldValue) {
             let that = this;
-            if (newValue) {
+            // if (newValue) {
                 that.selectGetData(newValue);
-            }
+            // }
 
         },
 
@@ -287,9 +294,11 @@ export default {
             that.selectNode = data;
 
             if (data.type == 0) {
+                that.menu_id = 0;
                 that.selectStatus = 'none';
             }
             else{
+                that.menu_id = that.selectNode.id;
                 that.selectGetData(that.selectType);
                 that.selectStatus = 'block';
             }
@@ -326,11 +335,13 @@ export default {
             // console.log(value);
             value.children = [];
             if (value.p_id == 0) {
+
                 //p_id为0的时候 ，为顶级，直接添加数据即可
                 that.templateData.push(value);
             }
             else if(that.selectNode.type == 0){
                 //当非顶级的时候，判断选中这条数据的大纲类型，如果是目录，则向下添加一条数据
+                console.log(value);
                 that.selectNode.children.push(value);
             }
             // else if (that.selectNode.type == 1) {
@@ -404,25 +415,22 @@ export default {
                             that.getData('medical','medicalData','medicalShow');
                             break;
                         case 2:
-                            that.getData('inspect','inspectData');
-                            that.inspectShow = true;
+                            that.getData('inspect','inspectData','inspectShow');
                             break;
                         case 3:
-                            that.getData('diagnose','diagnoseData');
-                            that.diagnoseShow = true;
+                            that.getData('diagnose','diagnoseData','diagnoseShow');
                             break;
                         case 4:
-                            that.getData('treat','treatData');
-                            that.treatShow = true;
+                            that.getData('treat','treatData','treatShow');
                             break;
                         case 5:
-                            that.getData('advice','adviceData');
-                            that.adviceShow = true;
+                            that.getData('advice','adviceData','adviceShow');
                             break;
                     }
                 }
 
             },
+
         getMenu(){
             //获取菜单
             let that = this;

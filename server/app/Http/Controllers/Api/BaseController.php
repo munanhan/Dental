@@ -56,8 +56,10 @@ class BaseController extends Controller
             if(preg_match("/\w+Controller/",$action[0],$preg)){
                 //匹配控制器
                 request()->attributes->set('config_load','verify_fields.'.$preg[0].'.'.$action[1]);//设置验证参数
+                
+                $this->controller = $preg[0];
 
-                $this->controller = $table = str_replace('Controller','s',$preg[0]);
+                $table = str_replace('Controller','s',$preg[0]);
 
                 if (preg_match_all("/\S[A-Z]/",$table,$preg)) {
                     //按照laravel的匹配方式处理模型
@@ -74,6 +76,8 @@ class BaseController extends Controller
 
             }
             request()->attributes->set('table',$this->table);//表
+            request()->attributes->set('controller',$this->controller);//表
+            request()->attributes->set('action',$this->action);//方法
 
             $this->model = new BaseModel($this->table);
             //实例化
@@ -191,8 +195,8 @@ class BaseController extends Controller
             if ($data) {
                 return message('获取成功',$data,200);
             }
-            return message('获取失败',[],500);
-            
+            // return message('获取失败',[],500);
+            return message('获取成功',new \stdClass(),200);
         }
 
         public function addData(){
@@ -343,6 +347,7 @@ class BaseController extends Controller
             //改,没有上传文件的时候
             $parms = $this->parms;
             $where['where'] = ['id' => $parms['id']];
+
             unset($parms['id']);
             $where['update'] = $parms;
 

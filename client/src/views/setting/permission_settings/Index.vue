@@ -549,6 +549,7 @@ export default {
         let that = this;
 
         that.$nextTick(() => {
+            that.getData();
             that.resizeTable();
         });
 
@@ -564,6 +565,7 @@ export default {
             let that = this;
 
             if (newValue) {
+                that.getData();
                 that.resizeTable();
 
                 //更新原来的refresh, 防止下次点击时不通知更新
@@ -641,7 +643,19 @@ export default {
             setTimeout(() => {
                 that.$emit("update:refresh", false);
             }, 6e3);
-        }
+        },
+        getData(){
+          //获取列表数据
+          let that = this;
+            that.$api.privilege.get()
+            .then(res => {
+               console.log(res.data);
+            })
+            .catch(res => {
+
+            });
+
+        },
     }
 };
 </script>

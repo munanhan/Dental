@@ -68,7 +68,7 @@
                                             label="2"
                                         >医保项目</el-radio>
                                         <i
-                                            style="font-size:20px;margin-top:8px;cursor: pointer;"
+                                            style=""
                                             @click="disCharge"
                                             class="el-icon-setting form-setting"
                                         ></i>
@@ -152,10 +152,7 @@
                                     </div>
                                     <div class="upperight-bottom">
                                         <div class="upperight-top-content">
-                                            <div
-                                                class="upperight-text"
-                                                style="margin-top:10px;margin-left:10px;margin-right:20px"
-                                            >已选择的处置项目：</div>
+                                            <div class="upperight-text">已选择的处置项目：</div>
                                             <el-button
                                                 style="height:40px"
                                                 type="success"
@@ -524,6 +521,11 @@ export default {
                                 margin-left: 10px;
                                 margin-top: 10px;
                             }
+                            .form-setting {
+                                font-size: 20px;
+                                margin-top: 8px;
+                                cursor: pointer;
+                            }
                         }
                         .upperight-middle {
                             // border: 1px solid red;
@@ -537,6 +539,11 @@ export default {
                             height: 45px;
                             .upperight-top-content {
                                 display: flex;
+                                .upperight-text {
+                                    margin-top: 10px;
+                                    margin-left: 10px;
+                                    margin-right: 20px;
+                                }
                             }
                             .upperight-table {
                                 margin-top: 5px;

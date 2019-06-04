@@ -257,7 +257,12 @@ export default {
     let that = this;
 
     that.$nextTick(() => {
-      that.resizeTable();
+        that.selectToday(1);
+        that.calculation();
+        that.getData();
+        that.getUserData();
+        that.getModuleData();
+        that.resizeTable();
     });
     //监听事件,由layout那边的resize抛出的
     if (window.addEventListener) {
@@ -279,7 +284,7 @@ export default {
         // that.getData();
         this.selectToday(1);
         this.calculation();
-        // that.getData();
+        that.getData();
         that.getUserData();
         that.getModuleData();
       }
@@ -290,10 +295,10 @@ export default {
     resizeTable() {
       let that = this;
       let tableHeight = that.$refs.menuContent.clientHeight;
-      console.log(tableHeight);
+      // console.log(tableHeight);
       // that.tableHeight = tableHeight;
       that.menuHeight = tableHeight;
-      that.tableHeight = tableHeight;
+      that.tableHeight = tableHeight - 70;
     },
     resetDate() {
       //重置时间
