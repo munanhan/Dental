@@ -105,14 +105,12 @@
                     >
                     </div>
                     <div style="display:flex;margin-bottom:5px">
-                        <el-radio
-                            v-model="sex"
-                            label="0"
-                        >男</el-radio>
-                        <el-radio
-                            v-model="sex"
-                            label="1"
-                        >女</el-radio>
+                        <template>
+                            <el-radio-group v-model="data.patient_sex">
+                                <el-radio :label="3">男</el-radio>
+                                <el-radio :label="6">女</el-radio>
+                            </el-radio-group>
+                        </template>
                     </div>
 
                 </div>
@@ -128,13 +126,13 @@
                     style="margin:20px"
                 >
                     <el-col :span="6">
-                        <div>咨 询 师：</div>
+                        <div>咨 询 师：{{data.counselor}}</div>
                     </el-col>
                     <el-col :span="6">
-                        <div>初诊医生：</div>
+                        <div>初诊医生：{{data.attend_doctor}}</div>
                     </el-col>
                     <el-col :span="6">
-                        <div>初诊时间：</div>
+                        <div>初诊时间：{{data.treatment_date}}</div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -142,7 +140,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="6">
-                        <div>患者来源：</div>
+                        <div>患者来源：{{data.patient_source}}</div>
                     </el-col>
 
                 </el-row>
@@ -151,7 +149,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="6">
-                        <div>患者分类：</div>
+                        <div>患者分类：{{data.patient_category}}</div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -208,9 +206,7 @@ export default {
     },
     data() {
         return {
-            case_id:"",
-            patient_name:"",
-
+            data:{},
             modinfo_show: false
         };
     },

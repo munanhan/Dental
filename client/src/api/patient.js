@@ -51,6 +51,14 @@ export function configData(data) {
     })
 }
 
+export function getAttendDoctor(data) {
+    return request({
+        url: `${prefix}/attend_doctor`,
+        method: 'get',
+        params: data
+    })
+}
+
 
 
 

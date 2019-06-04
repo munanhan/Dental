@@ -65,7 +65,7 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('patients', 'PatientController@index');
 
-    Route::get('patients/{patient}', 'PatientController@show');
+   // Route::get('patients/{patient}', 'PatientController@show');
 
     Route::post('patients', 'PatientController@store');
 
@@ -73,9 +73,9 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{patient}', 'PatientController@delete');
 
-    Route::get('patient/intraday','PatientController@intraday');
+    Route::get('patients/attend_doctor','PatientController@attendDoctor');
 
-    Route::get('patient/aaa','PatientController@aa');
+    Route::get('patients/today_work','PatientController@todayWork');
 
 
     /*
