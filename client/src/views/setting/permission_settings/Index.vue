@@ -68,7 +68,7 @@
                                           ref="permissionPcTree"
                                           check-strictly
                                           :default-checked-keys="role_privilege"
-                                          @check-change="checkedNodes"
+                                          @check="checkedNodes"
 
                                           >
                                         
@@ -262,10 +262,14 @@ export default {
 
             checkNode([node]);
         },
-        checkedNodes(nodes,currentNodes){
+        checkedNodes(checkedNodes, checkedObject){
             //获取节点
-            let that = this;
-            that.selectChild(nodes,currentNodes);
+            let that = this,
+                hasCheck = checkedObject.checkedKeys.indexOf(checkedNodes.id) !== -1;
+
+            that.selectChild(checkedNodes, hasCheck);
+
+            // console.log(checkedNodes, checkedKeys)
         },
         selectTab(tab, event) {
           //选择该角色

@@ -33,11 +33,13 @@ class AppointmentController extends Controller
         $data = array_diff_key($data,$patientArray);
         //判断患者之前是否存在
         $patient = Patient::where('patient_phone',$patientData['patient_phone'])->first();
-        if(!empty($patient)){
+  
+        if(empty($patient)){
              $patientData['patient_type'] = '1';
-        }else{
-            $patient=Patient::create($patientData);
+             $patient=Patient::create($patientData);
         }
+
+
 
         // $data['id'] 存在即修改
         if(isset($data['id'])){
@@ -55,9 +57,13 @@ class AppointmentController extends Controller
         $data['patient_id'] = $patient->id;
         $data['over_time'] = str_replace(substr($data['start_time'],0,2),
             (substr($data['start_time'],0,2)+1),$data['start_time']);
+       $DTime =implode(" : ",explode(":", date("h:i")));
+       if($DTime < $data['over_time']){
+           $data['status'] =3;
+       }
        Appointment::create($data);
 
-       return message('新增预约成功','',200);
+       return message('新增预约成功',"$DTime",200);
     }
     //获得今天或某天的数据
     public function getTodayAppointment(){
