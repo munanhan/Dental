@@ -8,7 +8,7 @@
             <el-tab-pane
                 label="诊所信息"
                 name="ClinicInformation"
-                v-if="$check_pm('setting_clinic')"
+                v-if="$check_pm('setting_clinic_info')"
             >
                 <clinic-information v-if="ClinicInformation" :refresh.sync="ClinicInformationUpdate"></clinic-information>
 
