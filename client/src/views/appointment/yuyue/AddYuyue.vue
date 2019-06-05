@@ -196,6 +196,7 @@ const itemsOptions = [
 ];
 import { addClass, removeClass } from "@/common/util.js";
 import DialogForm from "@/views/base/DialogForm";
+import { type } from 'os';
 export default {
   name: "ChangePassword",
   mixins: [DialogForm],
@@ -226,7 +227,8 @@ export default {
         case_id: "190418001",
         appointment_date: "",
         patient_source: "",
-        items: ""
+        items: "",
+        type:'0'
 
         // start_time:this.yuyue_time,
       },
