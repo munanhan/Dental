@@ -69,15 +69,13 @@
             <el-option label="诊所网站" value="诊所网站"></el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item label="预约医生" prop="appointment_doctor">
-          <el-input
-            v-model="formData.appointment_doctor"
-            type="text"
-            autocomplete="off"
-            placeholder
-          ></el-input>
+          <el-form-item prop="appointment_doctor" label="预约医生">
+          <el-select v-model="formData.appointment_doctor" placeholder="请选择">
+            <el-option v-for="(item,index) in doctor" :key='index' :label="item.name" :value="item.id"></el-option>
+          
+          </el-select>
         </el-form-item>
+
         <el-form-item label="就诊类型" prop="type" required>
           <el-radio-group v-model="formData.type">
             <el-radio label="0">初诊</el-radio>
@@ -224,9 +222,11 @@ export default {
         case_id: "190418001",
         appointment_date: "",
         patient_source: "",
-        items: ""
+        items: "",
+      
         // start_time:this.yuyue_time,
       },
+      doctor:null,
       title: "新增预约",
       items_o: itemsOptions,
       checked_items: [],
@@ -259,6 +259,7 @@ export default {
       this.formData.items = this.checked_items.join(",");
     },
     show(new_show, old_show) {
+
       if (this.yuyue_id) {
         if (new_show) {
           this.$api.appointment
@@ -275,6 +276,12 @@ export default {
       }
       if (old_show) {
         this.formData.id = null;
+      }else{
+        //获取预约医生数据、
+        this.$api.appointment.attendDoctor().then(res=>{
+          this.doctor = res.data;
+        });
+
       }
       this.formData.appointment_date = this.yuyue_date
         ? this.yuyue_date
