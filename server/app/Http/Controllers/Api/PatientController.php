@@ -88,10 +88,7 @@ class PatientController extends Controller
      */
     public function todayFirstVisit($whereTime)
     {
-        //$this->firstOrSubsequent($whereTime,0,0);
-
-        return $this->diagnose($whereTime,2,1,0);
-
+        return $this->diagnose($whereTime,0);
     }
 
     /*
@@ -99,9 +96,7 @@ class PatientController extends Controller
      */
     public function todaySubsequentVisit($whereTime)
     {
-        $this->firstOrSubsequent($whereTime,0,1);
-
-        $this->diagnose($whereTime,2,1,1);
+        return $this->diagnose($whereTime,1);
     }
 
 
@@ -121,18 +116,21 @@ class PatientController extends Controller
     /*
      * 患者诊断
      */
-    protected function diagnose($whereTime,$appointment_status,$patient_type,$appointment_type)
+    protected function diagnose($whereTime,$Status)
     {
+        $first=Patient::where('patient_type',0)
+            ->where('treatment_date',$whereTime)
+            ->where('patient_status',$Status);
         return
             Patient::whereHas('appointments',function ($query)
-            use($whereTime,$appointment_status,$patient_type,$appointment_type) {
+            use($whereTime,$Status) {
                 $query
-                    ->where('patient_type',$patient_type)
-                    ->where('appointments.type',$appointment_type)
-                    ->where('appointments.status',$appointment_status)
+                    ->where('patient_type',1)
+                    ->where('appointments.type',$Status)
+                    ->where('appointments.status',2)
                     ->where('appointments.appointment_date',$whereTime)
-                    ->where('appointments.deleted_at',null);
-            })->get();
+                    ->whereNull('appointments.deleted_at');
+            })->union($first)->get();
     }
 
 
