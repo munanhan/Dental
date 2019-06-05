@@ -52,7 +52,7 @@ class StaffController extends BaseController
 
     public function getRole(){
         //获取角色
-        return message('成功', Role::where('id','>',1)->get(['id','name']), 200);
+        return message('成功', Role::where('id','>',0)->get(['id','name']), 200);
 
     }
 
