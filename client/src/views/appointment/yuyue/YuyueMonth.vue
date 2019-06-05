@@ -376,7 +376,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 //导入全局的颜色
 @import "~@css/var";
 .month {

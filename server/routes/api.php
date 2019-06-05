@@ -252,6 +252,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     //lw
     Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
 
+    Route::get('PatientController/attendDoctor','PatientController@attendDoctor');
+
     Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
 
     Route::get('appointment/getListAppointment','AppointmentController@getListAppointment');

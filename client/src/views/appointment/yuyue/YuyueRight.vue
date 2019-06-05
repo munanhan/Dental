@@ -551,7 +551,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "~@/assets/css/var.less";
 @import "~@views/appointment/css/YuyueRight.less";
 .month {
