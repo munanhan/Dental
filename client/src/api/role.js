@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/privilege';
+const prefix = '/role';
 
 export function add(data){
     return request({
@@ -43,11 +43,3 @@ export function getById(data) {
     })
 }
 
-//根据类型获取
-export function getByType(data) {
-    return request({
-        url: `${prefix}/get_by_type`,
-        method: 'get',
-        params: data
-    })
-}

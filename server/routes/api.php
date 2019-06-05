@@ -591,6 +591,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('privilege','PrivilegeController@index');//病例模板的菜单列表
 
+    Route::get('privilege/get_by_type','PrivilegeController@getByType');//根据类型获取权限
+
     Route::get('privilege/get_by_id','PrivilegeController@getById');//根据id获取
 
     Route::post('privilege', 'PrivilegeController@addData');//添加
@@ -600,6 +602,20 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('privilege/{id}', 'PrivilegeController@delete');//删除
 
 
+    /*
+     * Route RoleController Api
+     * created for yu
+     */
+
+    Route::get('role','RoleController@index');//角色菜单列表
+
+    Route::get('role/get_by_id','RoleController@getById');//根据id获取
+
+    Route::post('role', 'RoleController@addData');//添加
+
+    Route::put('role', 'RoleController@update');//修改
+
+    Route::delete('role/{id}', 'RoleController@delete');//删除
 
 
 });
