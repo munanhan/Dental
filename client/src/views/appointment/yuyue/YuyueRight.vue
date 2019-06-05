@@ -148,13 +148,6 @@
     </el-dialog>
     <!-- 错误提示 -->
     <!-- 更换预约状态 -->
-    <!-- <el-dialog title="更换预约状态" :visible.sync="statusDialog" width="30%">
-      <span>预约日期不能小于今天</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="statusDialog = false">取 消</el-button>
-        <el-button type="primary" @click="statusDialog = false">确 定</el-button>
-      </span>
-    </el-dialog>-->
     <status-dialog :show.sync="statusDialog" :yuyue_id="yuyue_id"></status-dialog>
     <!-- 更换预约状态 -->
     <!-- 新增预约 start -->

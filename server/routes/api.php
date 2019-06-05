@@ -252,6 +252,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     //lw
     Route::get('appointment/getCaseNumber','PatientController@getCaseNumber');
 
+    Route::get('PatientController/attendDoctor','PatientController@attendDoctor');
+
     Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
 
     Route::get('appointment/getListAppointment','AppointmentController@getListAppointment');
@@ -589,7 +591,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
 
-    Route::get('privilege','PrivilegeController@index');//病例模板的菜单列表
+    Route::get('privilege','PrivilegeController@index');//菜单列表
 
     Route::get('privilege/get_by_type','PrivilegeController@getByType');//根据类型获取权限
 

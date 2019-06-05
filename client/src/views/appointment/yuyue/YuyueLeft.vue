@@ -377,7 +377,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "~@/assets/css/var.less";
 .yuyue-left {
   // width: 400px;

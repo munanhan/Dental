@@ -3,11 +3,12 @@
     <div class="setting">
         <el-tabs
             v-model="curTab"
-        >
+        >            
 
             <el-tab-pane
                 label="诊所信息"
                 name="ClinicInformation"
+                v-if="$check_pm('setting_clinic_info')"
             >
                 <clinic-information v-if="ClinicInformation" :refresh.sync="ClinicInformationUpdate"></clinic-information>
 
@@ -16,6 +17,7 @@
             <el-tab-pane
                 label="权限设置"
                 name="PermissionSettings"
+                v-if="$check_pm('setting_privilege')"
             >
                 <permission-settings v-if="PermissionSettings" :refresh.sync="PermissionSettingsUpdate"></permission-settings>
             </el-tab-pane>
@@ -23,6 +25,7 @@
             <el-tab-pane
                 label="员工管理"
                 name="StaffManagement"
+                v-if="$check_pm('setting_staff')"
             >
                 <staff-management v-if="StaffManagement" :refresh.sync="StaffManagementUpdate"></staff-management>
             </el-tab-pane>
@@ -30,6 +33,7 @@
             <el-tab-pane
                 label="处置与收费"
                 name="DisposalCharging"
+                v-if="$check_pm('setting_disposal_charging')"
             >
                 <disposal-charging v-if="DisposalCharging" :refresh.sync="DisposalChargingUpdate"></disposal-charging>
             </el-tab-pane>
@@ -37,6 +41,7 @@
             <el-tab-pane
                 label="处置组和"
                 name="DisposalCombination"
+                v-if="$check_pm('setting_disposal_combination')"
             >
                 <disposal-combination v-if="DisposalCombination" :refresh.sync="DisposalCombinationUpdate"></disposal-combination>
             </el-tab-pane>
@@ -44,6 +49,7 @@
             <el-tab-pane
                 label="病例模板"
                 name="CaseTemplate"
+                v-if="$check_pm('setting_case_template')"
             >
                 <case-template v-if="CaseTemplate" :refresh.sync="CaseTemplateUpdate"></case-template>
             </el-tab-pane>
@@ -51,6 +57,7 @@
             <el-tab-pane
                 label="会员升级"
                 name="MemberUpgrade"
+                v-if="$check_pm('setting_member_upgrade')"
             >
                 <member-upgrade v-if="MemberUpgrade" :refresh.sync="MemberUpgradeUpdate"></member-upgrade>
             </el-tab-pane>
@@ -58,6 +65,7 @@
             <el-tab-pane
                 label="患者回收站"
                 name="PatientRecyclingBin"
+                v-if="$check_pm('setting_patient_recy')"
             >
                 <patient-recycling-bin v-if="PatientRecyclingBin" :refresh.sync="PatientRecyclingBinUpdate"></patient-recycling-bin>
             </el-tab-pane>
@@ -65,6 +73,7 @@
             <el-tab-pane
                 label="操作记录"
                 name="OperationRecord"
+                v-if="$check_pm('setting_operation_record')"
             >
                 <operation-record v-if="OperationRecord" :refresh.sync="OperationRecordUpdate"></operation-record>
             </el-tab-pane>

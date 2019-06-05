@@ -43,6 +43,7 @@ export function getById(data) {
     })
 }
 
+
 //根据类型获取
 export function getByType(data) {
     return request({
@@ -51,3 +52,13 @@ export function getByType(data) {
         params: data
     })
 }
+
+//获取当前用户的权限
+export function getUserPrivilege(data){
+    return request({
+        url: `${prefix}`,
+        method: 'get',
+        params: data
+    })
+}
+

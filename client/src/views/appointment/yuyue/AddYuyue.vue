@@ -3,7 +3,7 @@
     :title="title"
     :visible.sync="show"
     :before-close="closeDialog"
-    class="custom-dialog"
+    class="custom-dialog add-yuyue-dialog"
     :close-on-click-modal="false"
     v-dialog-drag
   >
@@ -69,15 +69,17 @@
             <el-option label="诊所网站" value="诊所网站"></el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item label="预约医生" prop="appointment_doctor">
-          <el-input
-            v-model="formData.appointment_doctor"
-            type="text"
-            autocomplete="off"
-            placeholder
-          ></el-input>
+        <el-form-item prop="appointment_doctor" label="预约医生">
+          <el-select v-model="formData.appointment_doctor" placeholder="请选择">
+            <el-option
+              v-for="(item,index) in doctor"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
         </el-form-item>
+
         <el-form-item label="就诊类型" prop="type" required>
           <el-radio-group v-model="formData.type">
             <el-radio label="0">初诊</el-radio>
@@ -225,8 +227,10 @@ export default {
         appointment_date: "",
         patient_source: "",
         items: ""
+
         // start_time:this.yuyue_time,
       },
+      doctor: null,
       title: "新增预约",
       items_o: itemsOptions,
       checked_items: [],
@@ -275,6 +279,11 @@ export default {
       }
       if (old_show) {
         this.formData.id = null;
+      } else {
+        //获取预约医生数据、
+        this.$api.appointment.attendDoctor().then(res => {
+          this.doctor = res.data;
+        });
       }
       this.formData.appointment_date = this.yuyue_date
         ? this.yuyue_date
@@ -309,13 +318,13 @@ export default {
       let patient_phone = this.formData.patient_phone;
       if (patient_phone.length == 11) {
         this.$api.appointment.getPatientByPhone({ patient_phone }).then(res => {
-          if (res.code == 200) {        
+          if (res.code == 200) {
             if (res.data) {
               this.formData.patient_name = res.data.patient_name;
               this.formData.patient_age = res.data.patient_age;
               this.formData.patient_sex = res.data.patient_sex;
               this.formData.patient_source = res.data.patient_source;
-              this.formData.type = '1'
+              this.formData.type = "1";
             }
           }
         });
@@ -402,157 +411,158 @@ export default {
 </script>
 <style lang="less" >
 @import "~@/assets/css/var.less";
-
-.header {
-  font-size: 18px;
-  display: flex;
-  .base-info {
-    flex: 3 1 auto;
-    margin-left: 10px;
-  }
-  .time-interval {
-    flex: 1 1 auto;
-    margin-left: 18%;
-  }
-  .right {
-    margin-left: 10%;
-    flex: 0 1 auto;
+.add-yuyue-dialog {
+  .header {
+    font-size: 18px;
     display: flex;
-    color: #000;
-    .search {
-      color: @color;
+    .base-info {
+      flex: 3 1 auto;
       margin-left: 10px;
-      line-height: 25px;
-      border: 1px solid @color;
-      border-radius: 8px;
-      font-size: 14px;
-      input {
-        width: 140px;
-        outline: none;
-        border: none;
-        // height: 18px;
-        padding: 0 14px;
+    }
+    .time-interval {
+      flex: 1 1 auto;
+      margin-left: 18%;
+    }
+    .right {
+      margin-left: 10%;
+      flex: 0 1 auto;
+      display: flex;
+      color: #000;
+      .search {
+        color: @color;
+        margin-left: 10px;
+        line-height: 25px;
+        border: 1px solid @color;
+        border-radius: 8px;
+        font-size: 14px;
+        input {
+          width: 140px;
+          outline: none;
+          border: none;
+          // height: 18px;
+          padding: 0 14px;
+        }
       }
     }
   }
-}
-.el-form {
-  display: flex;
-  margin: 10px;
-  .left {
-    border-radius: 10px;
-    padding: 10px;
-    padding-right: 10px;
-    box-sizing: border-box;
-    border: 1px solid #e0e0e0;
-    flex: auto;
-    .el-input {
-      width: 80%;
-      // height: 60%;
-    }
-  }
-  .center {
-    padding: 10px;
-    margin-left: 5px;
-    flex: auto;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+  .el-form {
     display: flex;
-    flex-direction: column;
-    .day-time {
+    margin: 10px;
+    .left {
+      border-radius: 10px;
+      padding: 10px;
+      padding-right: 10px;
+      box-sizing: border-box;
+      border: 1px solid #e0e0e0;
       flex: auto;
+      .el-input {
+        width: 80%;
+        // height: 60%;
+      }
+    }
+    .center {
+      padding: 10px;
+      margin-left: 5px;
+      flex: auto;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
       display: flex;
-      .other-left {
-        color: #fff;
+      flex-direction: column;
+      .day-time {
+        flex: auto;
         display: flex;
-        flex-direction: column;
-        background-color: @hover-color;
-        > div {
-          flex: auto;
+        .other-left {
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          background-color: @hover-color;
           > div {
             flex: auto;
-            box-sizing: border-box;
-            &:first-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                flex: auto;
-                border-top: 1px solid #e6e6e6;
-                &.big-font {
-                  font-size: 20px;
+            > div {
+              flex: auto;
+              box-sizing: border-box;
+              &:first-of-type {
+                display: flex;
+                padding: 0 10px;
+                span {
+                  flex: auto;
+                  border-top: 1px solid #e6e6e6;
+                  &.big-font {
+                    font-size: 20px;
+                  }
+                }
+              }
+              &:last-of-type {
+                display: flex;
+                padding: 0 10px;
+                span {
+                  margin-left: auto;
+                  border-top: 1px solid #e6e6e6;
+                }
+                .span-left {
+                  margin: 0;
                 }
               }
             }
-            &:last-of-type {
-              display: flex;
-              padding: 0 10px;
-              span {
-                margin-left: auto;
-                border-top: 1px solid #e6e6e6;
-              }
-              .span-left {
-                margin: 0;
-              }
-            }
           }
         }
-      }
-      .other-right {
-        flex: auto;
-        display: flex;
-        flex-direction: column;
-        > div {
-          box-sizing: border-box;
-          background-color: #fff;
+        .other-right {
           flex: auto;
-          text-align: center;
-          border: 1px solid #000;
-          border-bottom: none;
-          cursor: pointer;
-          &:last-of-type {
-            border-bottom: 1px solid #000;
-          }
-          &.gray {
-            // flex: 0 1 auto;
-            position: relative;
-            .double {
-              background-color: #ccc;
-              color: #fff;
-              position: absolute;
-              left: 0;
-              right: 0;
-              height: 200%;
-              line-height: 200%;
-              z-index: 100;
-              text-align: center;
+          display: flex;
+          flex-direction: column;
+          > div {
+            box-sizing: border-box;
+            background-color: #fff;
+            flex: auto;
+            text-align: center;
+            border: 1px solid #000;
+            border-bottom: none;
+            cursor: pointer;
+            &:last-of-type {
+              border-bottom: 1px solid #000;
+            }
+            &.gray {
+              // flex: 0 1 auto;
+              position: relative;
+              .double {
+                background-color: #ccc;
+                color: #fff;
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 200%;
+                line-height: 200%;
+                z-index: 100;
+                text-align: center;
+              }
             }
           }
         }
       }
     }
-  }
 
-  .right {
-    padding: 10px;
-    margin-left: 5px;
-    box-sizing: border-box;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
-    flex: auto;
-    display: flex;
-    flex-direction: column;
-    .items {
-      flex: 1 1 auto;
+    .right {
+      padding: 10px;
+      margin-left: 5px;
+      box-sizing: border-box;
+      border-radius: 10px;
       border: 1px solid #e0e0e0;
-      .el-checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        width: 256px;
-        .el-checkbox {
-          width: 30%;
-          box-sizing: border-box;
-          padding-left: 10px;
-          margin-top: 10px;
+      flex: auto;
+      display: flex;
+      flex-direction: column;
+      .items {
+        flex: 1 1 auto;
+        border: 1px solid #e0e0e0;
+        .el-checkbox-group {
+          display: flex;
+          flex-wrap: wrap;
+          width: 256px;
+          .el-checkbox {
+            width: 30%;
+            box-sizing: border-box;
+            padding-left: 10px;
+            margin-top: 10px;
+          }
         }
       }
     }

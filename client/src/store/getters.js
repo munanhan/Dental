@@ -10,11 +10,18 @@ export default {
         return menu || [];
     },
 
-    //功能权限
-    btn_act(state) {
-        let act = state.btn_act;
-        return act || {};
+    // //功能权限
+    // btn_act(state) {
+    //     let act = state.btn_act;
+    //     return act || {};
+    // },
+
+    //子菜单
+    subMenu(state){
+        let subMenu = state.subMenu;
+        return subMenu || {};
     },
+
     chooseDatesub5(state) {
         let sub = state.chooseDate || '';
         return sub.substr(5).replace('-','.');

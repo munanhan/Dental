@@ -28,6 +28,7 @@ class AppointmentController extends Controller
         $data=$request->all();
         $patientArray = ['patient_name'=>'','patient_age'=>'','patient_sex'=>'','patient_phone'=>'','case_id'=>'','patient_content'=>'','patient_source'=>''];
         $patientData = array_intersect_key($data,$patientArray);
+        $patientData['attend_doctor'] = $data['appointment_doctor'];
 
         $data = array_diff_key($data,$patientArray);
         //判断患者之前是否存在
@@ -63,6 +64,8 @@ class AppointmentController extends Controller
 
         $where =  \request('date')?request('date'):date('Y-m-d');
        $appoinment =new Appointment();
+
+
        $res =$appoinment->where('appointment_date',$where)->leftJoin('patients','appointments.patient_id','=','patients.id')->
        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 

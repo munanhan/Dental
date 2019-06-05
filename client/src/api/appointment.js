@@ -67,3 +67,10 @@ export function getPatientByPhone(data){
         params:data,
     })
 }
+export function attendDoctor(data){
+    return request({
+        url:`PatientController/attendDoctor`,
+        method:'get',
+        params:data,
+    })
+}
