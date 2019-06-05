@@ -20,9 +20,13 @@ export default {
         state.menu = value;
     },
 
-    //设置功能权限
-    setActions(state, value) {
-        state.btn_act = value;
+    // // 设置功能权限
+    // setActions(state, value) {
+    //     state.btn_act = value;
+    // },
+
+    setSubMenu(state, value){
+        state.subMenu = value;
     },
 
     updateAvatar(state, value) {

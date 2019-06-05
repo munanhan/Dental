@@ -61,7 +61,7 @@ const getMenuData = data => {
     let quickTarget = {},
         //做多份，防止menu里面过多的数据，用于处理路由的
         routerQuickTarget = {},
-        action = {},
+        subMenu = {},
         menu = [
             // {
             //     url: "/home",
@@ -141,7 +141,7 @@ const getMenuData = data => {
             };
         } else if (item.p_type == 2) {
             //功能
-            action[item["p_act_name"]] = true;
+            subMenu[item["p_act_name"]] = true;
         }
     }
 
@@ -211,7 +211,7 @@ const getMenuData = data => {
     });
 
     return {
-        action,
+        subMenu,
         menu,
         routerArr
     };
@@ -423,11 +423,11 @@ const genRoute = async (router, store) => {
         //     ];
 
         if (resp.code == 200) {
-            let mdata = getMenuData(pdata, menu, action),
-                { menu, action, routerArr } = mdata;
+            let mdata = getMenuData(pdata, menu, subMenu),
+                { menu, subMenu, routerArr } = mdata;
 
             store.commit("setMenu", menu);
-            store.commit("setActions", action);
+            store.commit("setSubMenu", subMenu);
 
             router.addRoutes(routerArr);
 

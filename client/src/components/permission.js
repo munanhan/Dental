@@ -8,7 +8,7 @@ const install = function (Vue) {
         $check_pm: {
             get() {
                 return (key) =>{
-                    return !!store.getters.btn_act[key];
+                    return !!store.getters.subMenu[key];
                 };
             }
         }
