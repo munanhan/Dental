@@ -316,7 +316,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .week {
   width: 100%;
   position: relative;
