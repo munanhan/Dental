@@ -133,7 +133,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .calendar {
         
         .date-header {

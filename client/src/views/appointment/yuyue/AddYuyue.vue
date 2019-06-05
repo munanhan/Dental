@@ -407,7 +407,7 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less" >
+<style lang="less" scoped>
 @import "~@/assets/css/var.less";
 
 .header {

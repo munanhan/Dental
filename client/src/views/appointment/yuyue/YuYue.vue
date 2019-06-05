@@ -43,7 +43,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" >
     .dashboard {
         height: 100%;
     }

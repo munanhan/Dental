@@ -6,7 +6,9 @@ import components from "./components";
 import { Loading } from "element-ui";
 
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
-import { getUserInfo, getUserPermission } from "../api/user";
+import { getUserInfo } from "../api/user";
+import { getUserPrivilege } from '../api/privilege';
+
 
 Vue.use(VueRouter);
 
@@ -20,22 +22,22 @@ const routes = [
             name: "登录"
         }
     },
-    {
-        path: "/",
-        component: () => import("@views/layout/Layout"),
-        redirect: "/home",
+    // {
+    //     path: "/",
+    //     component: () => import("@views/layout/Layout"),
+    //     redirect: "/home",
 
-        children: [
-            {
-                path: "home",
-                component: () => import("@views/home/Index"),
-                meta: {
-                    name: "首页",
-                    icon: "list-alt"
-                }
-            }
-        ]
-    },
+    //     children: [
+    //         {
+    //             path: "home",
+    //             component: () => import("@views/home/Index"),
+    //             meta: {
+    //                 name: "首页",
+    //                 icon: "list-alt"
+    //             }
+    //         }
+    //     ]
+    // },
     {
         path: "/error",
         component: () => import("@views/error/Error"),
@@ -59,13 +61,13 @@ const getMenuData = data => {
     let quickTarget = {},
         //做多份，防止menu里面过多的数据，用于处理路由的
         routerQuickTarget = {},
-        action = {},
+        subMenu = {},
         menu = [
-            {
-                url: "/home",
-                name: "首页",
-                icon: "fa fa-list-alt"
-            }
+            // {
+            //     url: "/home",
+            //     name: "首页",
+            //     icon: "fa fa-list-alt"
+            // }
         ],
         routerArr = [];
 
@@ -139,7 +141,7 @@ const getMenuData = data => {
             };
         } else if (item.p_type == 2) {
             //功能
-            action[item["p_act_name"]] = true;
+            subMenu[item["p_act_name"]] = true;
         }
     }
 
@@ -209,7 +211,7 @@ const getMenuData = data => {
     });
 
     return {
-        action,
+        subMenu,
         menu,
         routerArr
     };
@@ -219,213 +221,213 @@ const getMenuData = data => {
 const genRoute = async (router, store) => {
     let suceess = true;
     try {
-        //TODO 开启------------------
-        // //同步获取数据，锁死整个页面
-        // let resp = await getUserPermission(),
-        //     pdata = resp.data;
+        //开启------------------
+        //同步获取数据，锁死整个页面
+        let resp = await getUserPrivilege(),
+            pdata = resp.data;
         //-----------------------------
 
-        let resp = { code: 200 },
-            pdata = [
-                {
-                    id: 1,
-                    parent_id: 0,
-                    url: "/patient",
-                    p_type: 0,
-                    p_name: "患者",
-                    p_icon: "fa fa-user",
-                    p_component: "/patient/Index",
-                    api: ""
-                },
-                {
-                    id: 2,
-                    parent_id: 0,
-                    url: "/appointment",
-                    p_type: 0,
-                    p_name: "预约",
-                    p_icon: "fa fa-calendar-alt",
-                    p_component: "/appointment/Index",
-                    api: ""
-                },
-                {
-                    id: 3,
-                    parent_id: 0,
-                    url: "/communication",
-                    p_type: 0,
-                    p_name: "沟通",
-                    p_icon: "fa fa-play-circle",
-                    p_component: "/communication/Index",
-                    api: ""
-                },
-                {
-                    id: 4,
-                    parent_id: 0,
-                    url: "/statistics",
-                    p_type: 0,
-                    p_name: "统计",
-                    p_icon: "fa fa-calculator",
-                    p_component: "/statistics/Index",
-                    api: ""
-                },
-                // {
-                //     id: 5,
-                //     parent_id: 0,
-                //     url: "/shop",
-                //     p_type: 0,
-                //     p_name: "商城",
-                //     p_icon: "fa fa-shopping-cart",
-                //     p_component: "/shop/Index",
-                //     api: ""
-                // },
-                {
-                    id: 6,
-                    parent_id: 0,
-                    url: "/setting",
-                    p_type: 0,
-                    p_name: "管理",
-                    p_icon: "fa fa-user-cog",
-                    p_component: "/setting/Index",
-                    api: ""
-                },
+        // let resp = { code: 200 },
+        //     pdata = [
+        //         {
+        //             id: 1,
+        //             parent_id: 0,
+        //             url: "/patient",
+        //             p_type: 0,
+        //             p_name: "患者",
+        //             p_icon: "fa fa-user",
+        //             p_component: "/patient/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 2,
+        //             parent_id: 0,
+        //             url: "/appointment",
+        //             p_type: 0,
+        //             p_name: "预约",
+        //             p_icon: "fa fa-calendar-alt",
+        //             p_component: "/appointment/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 3,
+        //             parent_id: 0,
+        //             url: "/communication",
+        //             p_type: 0,
+        //             p_name: "沟通",
+        //             p_icon: "fa fa-play-circle",
+        //             p_component: "/communication/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 4,
+        //             parent_id: 0,
+        //             url: "/statistics",
+        //             p_type: 0,
+        //             p_name: "统计",
+        //             p_icon: "fa fa-calculator",
+        //             p_component: "/statistics/Index",
+        //             api: ""
+        //         },
+        //         // {
+        //         //     id: 5,
+        //         //     parent_id: 0,
+        //         //     url: "/shop",
+        //         //     p_type: 0,
+        //         //     p_name: "商城",
+        //         //     p_icon: "fa fa-shopping-cart",
+        //         //     p_component: "/shop/Index",
+        //         //     api: ""
+        //         // },
+        //         {
+        //             id: 6,
+        //             parent_id: 0,
+        //             url: "/setting",
+        //             p_type: 0,
+        //             p_name: "管理",
+        //             p_icon: "fa fa-user-cog",
+        //             p_component: "/setting/Index",
+        //             api: ""
+        //         },
 
-                {
-                    id: 7,
-                    parent_id: 0,
-                    p_name: "更多",
-                    p_icon: "fa fa-window-restore",
-                    api: "",
-                    p_type: 0,
-                    url: ""
-                },
+        //         {
+        //             id: 7,
+        //             parent_id: 0,
+        //             p_name: "更多",
+        //             p_icon: "fa fa-window-restore",
+        //             api: "",
+        //             p_type: 0,
+        //             url: ""
+        //         },
 
-                // {
-                //     id: 7,
-                //     parent_id: 6,
-                //     url: "/custom_service",
-                //     p_type: 0,
-                //     p_name: "客服",
-                //     p_icon: "fa fa-user-clock",
-                //     p_component: "/custom_service/Index",
-                //     api: ""
-                // },
-                // {
-                //     id: 8,
-                //     parent_id: 6,
-                //     url: "/warehouse",
-                //     p_type: 0,
-                //     p_name: "库房",
-                //     p_icon: "fa fa-warehouse",
-                //     p_component: "/warehouse/Index",
-                //     api: ""
-                // },
-                {
-                    id: 9,
-                    parent_id: 7,
-                    url: "/return_visit",
-                    p_type: 0,
-                    p_name: "回访",
-                    p_icon: "fa fa-phone-volume",
-                    p_component: "/return_visit/Index",
-                    api: ""
-                },
-                // {
-                //     id: 10,
-                //     parent_id: 6,
-                //     url: "/message",
-                //     p_type: 0,
-                //     p_name: "短信",
-                //     p_icon: "fa fa-envelope",
-                //     p_component: "/message/Index",
-                //     api: ""
-                // },
-                {
-                    id: 11,
-                    parent_id: 7,
-                    url: "/inquiry",
-                    p_type: 1,
-                    p_name: "问诊",
-                    p_icon: "fa fa-stethoscope",
-                    p_component: "/inquiry/Index",
-                    api: ""
-                },
-                // {
-                //     id: 12,
-                //     parent_id: 6,
-                //     url: "/micro_website",
-                //     p_type: 0,
-                //     p_name: "微官网",
-                //     p_icon: "fa fa-university",
-                //     p_component: "/micro_website/Index",
-                //     api: ""
-                // },
-                {
-                    id: 13,
-                    parent_id: 7,
-                    url: "/expenditure",
-                    p_type: 0,
-                    p_name: "支出",
-                    p_icon: "fa fa-money-check-alt",
-                    p_component: "/expenditure/Index",
-                    api: ""
-                },
-                {
-                    id: 14,
-                    parent_id: 7,
-                    url: "/disinfect",
-                    p_type: 0,
-                    p_name: "消毒",
-                    p_icon: "fa fa-recycle",
-                    p_component: "/disinfect/Index",
-                    api: ""
-                },
-                {
-                    id: 15,
-                    parent_id: 7,
-                    url: "/attendance",
-                    p_type: 0,
-                    p_name: "考勤",
-                    p_icon: "fa fa-calendar-alt",
-                    p_component: "/attendance/Index",
-                    api: ""
-                },
-                {
-                    id: 16,
-                    parent_id: 7,
-                    url: "/recovery",
-                    p_type: 0,
-                    p_name: "回收",
-                    p_icon: "fa fa-box-open",
-                    p_component: "/recovery/Index",
-                    api: ""
-                }
-                // {
-                //     id: 17,
-                //     parent_id: 6,
-                //     url: "/marketing",
-                //     p_type: 0,
-                //     p_name: "营销",
-                //     p_icon: "fa fa-pen-nib",
-                //     p_component: "/marketing/Index",
-                //     api: ""
-                // },
-                // {
-                //     id: 18,
-                //     parent_id: 6,
-                //     url: "/setting",
-                //     p_type: 0,
-                //     p_name: "管理",
-                //     p_icon: "fa fa-user-cog",
-                //     p_component: "/setting/Index",
-                //     api: ""
-                // }
-            ];
+        //         // {
+        //         //     id: 7,
+        //         //     parent_id: 6,
+        //         //     url: "/custom_service",
+        //         //     p_type: 0,
+        //         //     p_name: "客服",
+        //         //     p_icon: "fa fa-user-clock",
+        //         //     p_component: "/custom_service/Index",
+        //         //     api: ""
+        //         // },
+        //         // {
+        //         //     id: 8,
+        //         //     parent_id: 6,
+        //         //     url: "/warehouse",
+        //         //     p_type: 0,
+        //         //     p_name: "库房",
+        //         //     p_icon: "fa fa-warehouse",
+        //         //     p_component: "/warehouse/Index",
+        //         //     api: ""
+        //         // },
+        //         {
+        //             id: 9,
+        //             parent_id: 7,
+        //             url: "/return_visit",
+        //             p_type: 0,
+        //             p_name: "回访",
+        //             p_icon: "fa fa-phone-volume",
+        //             p_component: "/return_visit/Index",
+        //             api: ""
+        //         },
+        //         // {
+        //         //     id: 10,
+        //         //     parent_id: 6,
+        //         //     url: "/message",
+        //         //     p_type: 0,
+        //         //     p_name: "短信",
+        //         //     p_icon: "fa fa-envelope",
+        //         //     p_component: "/message/Index",
+        //         //     api: ""
+        //         // },
+        //         {
+        //             id: 11,
+        //             parent_id: 7,
+        //             url: "/inquiry",
+        //             p_type: 1,
+        //             p_name: "问诊",
+        //             p_icon: "fa fa-stethoscope",
+        //             p_component: "/inquiry/Index",
+        //             api: ""
+        //         },
+        //         // {
+        //         //     id: 12,
+        //         //     parent_id: 6,
+        //         //     url: "/micro_website",
+        //         //     p_type: 0,
+        //         //     p_name: "微官网",
+        //         //     p_icon: "fa fa-university",
+        //         //     p_component: "/micro_website/Index",
+        //         //     api: ""
+        //         // },
+        //         {
+        //             id: 13,
+        //             parent_id: 7,
+        //             url: "/expenditure",
+        //             p_type: 0,
+        //             p_name: "支出",
+        //             p_icon: "fa fa-money-check-alt",
+        //             p_component: "/expenditure/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 14,
+        //             parent_id: 7,
+        //             url: "/disinfect",
+        //             p_type: 0,
+        //             p_name: "消毒",
+        //             p_icon: "fa fa-recycle",
+        //             p_component: "/disinfect/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 15,
+        //             parent_id: 7,
+        //             url: "/attendance",
+        //             p_type: 0,
+        //             p_name: "考勤",
+        //             p_icon: "fa fa-calendar-alt",
+        //             p_component: "/attendance/Index",
+        //             api: ""
+        //         },
+        //         {
+        //             id: 16,
+        //             parent_id: 7,
+        //             url: "/recovery",
+        //             p_type: 0,
+        //             p_name: "回收",
+        //             p_icon: "fa fa-box-open",
+        //             p_component: "/recovery/Index",
+        //             api: ""
+        //         }
+        //         // {
+        //         //     id: 17,
+        //         //     parent_id: 6,
+        //         //     url: "/marketing",
+        //         //     p_type: 0,
+        //         //     p_name: "营销",
+        //         //     p_icon: "fa fa-pen-nib",
+        //         //     p_component: "/marketing/Index",
+        //         //     api: ""
+        //         // },
+        //         // {
+        //         //     id: 18,
+        //         //     parent_id: 6,
+        //         //     url: "/setting",
+        //         //     p_type: 0,
+        //         //     p_name: "管理",
+        //         //     p_icon: "fa fa-user-cog",
+        //         //     p_component: "/setting/Index",
+        //         //     api: ""
+        //         // }
+        //     ];
 
         if (resp.code == 200) {
-            let mdata = getMenuData(pdata, menu, action),
-                { menu, action, routerArr } = mdata;
+            let mdata = getMenuData(pdata, menu, subMenu),
+                { menu, subMenu, routerArr } = mdata;
 
             store.commit("setMenu", menu);
-            store.commit("setActions", action);
+            store.commit("setSubMenu", subMenu);
 
             router.addRoutes(routerArr);
 

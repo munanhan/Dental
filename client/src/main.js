@@ -17,7 +17,7 @@ Vue.use(api);
 import dialogDrag from './components/dialogDrag'
 Vue.use(dialogDrag);
 
-//使用按钮权限
+//使用菜单权限
 import permission from './components/permission';
 Vue.use(permission);
 

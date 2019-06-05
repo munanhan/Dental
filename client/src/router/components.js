@@ -1,5 +1,9 @@
 //主的组件
 const components = {
+    //首页
+    "/home/Index": resolve =>
+        require.ensure([], () => resolve(require("@views/home/Index"))),
+
     //患者
     "/patient/Index": resolve =>
         require.ensure([], () => resolve(require("@views/patient/Index"))),
@@ -10,7 +14,9 @@ const components = {
 
     //沟通
     "/communication/Index": resolve =>
-        require.ensure([], () => resolve(require("@views/communication/Index"))),
+        require.ensure([], () =>
+            resolve(require("@views/communication/Index"))
+        ),
 
     //统计
     "/statistics/Index": resolve =>
@@ -44,7 +50,9 @@ const components = {
 
     //微官网
     "/micro_website/Index": resolve =>
-        require.ensure([], () => resolve(require("@views/micro_website/Index"))),
+        require.ensure([], () =>
+            resolve(require("@views/micro_website/Index"))
+        ),
 
     //支出
     "/expenditure/Index": resolve =>

@@ -42,7 +42,7 @@
 </script>
 
 <!-- 样式 -->
-<style lang="less">
+<style lang="less" scoped>
 .active{
     color:red;
 }

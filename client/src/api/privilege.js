@@ -43,3 +43,11 @@ export function getById(data) {
     })
 }
 
+//获取当前用户的权限
+export function getUserPrivilege(data){
+    return request({
+        url: `${prefix}`,
+        method: 'get',
+        params: data
+    })
+}
