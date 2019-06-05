@@ -12,8 +12,10 @@ export default {
     //菜单
     menu: null,
 
+    subMenu: null,
+
     //按钮功能
-    btn_act: null,    
+    // btn_act: null,    
 
     //预约时间
     // yuyue_date:{
