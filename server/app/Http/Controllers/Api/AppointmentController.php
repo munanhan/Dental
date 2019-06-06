@@ -25,27 +25,26 @@ class AppointmentController extends Controller
     }
     //添加预约和修改预约
     public function addAppointment(Request $request){
-        $data=$request->all();
+        $oriData=$request->all();
         $patientArray = ['patient_name'=>'','patient_age'=>'','patient_sex'=>'','patient_phone'=>'','case_id'=>'','patient_content'=>'','patient_source'=>''];
-        $patientData = array_intersect_key($data,$patientArray);
-        $patientData['attend_doctor'] = $data['appointment_doctor'];
+        $data  =array_diff_key($oriData,$patientArray);
+        $patientData= array_intersect_key($oriData,$patientArray);
 
-        $data = array_diff_key($data,$patientArray);
+        $patientData['attend_doctor'] = $oriData['appointment_doctor'];
+      
+
         //判断患者之前是否存在
         $patient = Patient::where('patient_phone',$patientData['patient_phone'])->first();
-  
         if(empty($patient)){
              $patientData['patient_type'] = '1';
              $patient=Patient::create($patientData);
         }
 
-
-
         // $data['id'] 存在即修改
-        if(isset($data['id'])){
-            $id = $data['id'];
-            unset($data['id']);
-            $patient_id = $data['patient_id'];
+        if(isset($oriData['id'])){
+            $id = $oriData['id'];
+
+            $patient_id = $oriData['patient_id'];
             Appointment::where('id',$id)->update($data);
             Patient::where('id',$patient_id)->update($patientData);
             return  message('修改预约成功','',200);
@@ -61,6 +60,7 @@ class AppointmentController extends Controller
        if($DTime < $data['over_time']){
            $data['status'] =3;
        }
+
        Appointment::create($data);
 
        return message('新增预约成功',"$DTime",200);
