@@ -34,8 +34,8 @@ try {
 } catch (e) {
     instance = axios.create({
         baseURL: "/api", // api的base_url
-        timeout: 6000 // 请求超时时间
-        // withCredentials: true, //允许携带cookie
+        timeout: 6000, // 请求超时时间
+        withCredentials: true, //允许携带cookie
     });
 }
 
