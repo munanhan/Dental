@@ -180,7 +180,7 @@ export default {
         resizeContent() {
             let that = this;
             that.blockHeight =
-                that.height - that.$refs.bottom.clientHeight - 20;
+                that.height - that.$refs.bottom.clientHeight - 10;
 
             that.blockWidth = that.width - 20;
         },
