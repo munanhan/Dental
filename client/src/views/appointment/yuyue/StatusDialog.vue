@@ -6,6 +6,7 @@
       :before-close="closeDialog"
       class="custom-dialog"
       :close-on-click-modal="false"
+      width="600px"
       v-dialog-drag
     >
       <div class="content">
@@ -27,11 +28,25 @@
           </div>
           <div>到达</div>
         </div>
+        <div class="item" ref="item5" @click="changeStatus(5)">
+          <div>
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div>流失</div>
+        </div>
         <div class="item" ref="item4" @click="changeStatus(4)">
           <div>
             <i class="el-icon-delete"></i>
           </div>
           <div>删除</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="active" v-if="status == 5">
+          流失
+        </div>
+         <div class="active" v-if="status == 2">
+          到达
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -68,7 +83,7 @@ export default {
             if (res.code == 200) {
               this.status = res.data.status;
               console.log(this.status);
-              this.name = "更换预约状态: " + res.data.name;
+              this.name = "更换预约状态: " + res.data.patient_name;
             }
           });
       }
@@ -117,10 +132,13 @@ export default {
           bgv = "rgb(50, 17, 233)";
           break;
         case "3":
-          bgv = "#f40";
+          bgv = "#f17e1a";
           break;
         case "4":
-          bgv = "rgb(226, 45, 14)";
+          bgv = "#ff3646";
+          break;
+        case "5":
+          bgv = "#ff4040";
           break;
       }
       return bgv;
@@ -141,7 +159,7 @@ export default {
       text-align: center;
       cursor: pointer;
       &:hover:nth-of-type(1) {
-        background-color: #f40;
+        background-color: #f17e1a;
       }
       &:hover:nth-of-type(2) {
         background-color: rgb(160, 101, 238);
@@ -150,7 +168,10 @@ export default {
         background-color: rgb(50, 17, 233);
       }
       &:hover:nth-of-type(4) {
-        background-color: rgb(226, 45, 14);
+        background-color: #ff4040;
+      }
+      &:hover:nth-of-type(5) {
+        background-color: #ff3646;
       }
     }
   }
