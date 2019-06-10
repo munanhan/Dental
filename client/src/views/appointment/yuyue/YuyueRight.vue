@@ -97,7 +97,15 @@
                 targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
             ?'day-blue':'']"
                 @click="addYuyue(item)"
-              ></div>
+              >
+              <template v-if="targetArr[1].indexOf(`${item} : 00`) != -1 &&
+                targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5">
+                <div>
+                  1111
+                </div>
+              </template>
+              
+              </div>
               <div
                 data-time="30"
                 :data-h="item"
@@ -362,6 +370,7 @@ export default {
     },
 
     addYuyue(item) {
+      
       if(!item){
         this.yuyue_id = null;
         this.addYuyueShow = true;

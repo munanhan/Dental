@@ -30,6 +30,7 @@ import * as diagnose from './diagnose'
 import * as treat from './treat'
 import * as advice from './advice'
 import * as privilege from './privilege'
+import * as role from './role'
 
 
 const apis = {
@@ -64,7 +65,8 @@ const apis = {
     anamnesis,
     teethHabit,
     impressions,
-    privilege
+    privilege,
+    role
 
 
 

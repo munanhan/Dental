@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/privilege';
+const prefix = '/role';
 
 export function add(data){
     return request({
@@ -38,25 +38,6 @@ export function del(data) {
 export function getById(data) {
     return request({
         url: `${prefix}/get_by_id`,
-        method: 'get',
-        params: data
-    })
-}
-
-
-//根据类型获取
-export function getByType(data) {
-    return request({
-        url: `${prefix}/get_by_type`,
-        method: 'get',
-        params: data
-    })
-}
-
-//获取当前用户的权限
-export function getUserPrivilege(data){
-    return request({
-        url: `${prefix}`,
         method: 'get',
         params: data
     })
