@@ -57,13 +57,13 @@ class AppointmentController extends Controller
         $data['over_time'] = str_replace(substr($data['start_time'],0,2),
             (substr($data['start_time'],0,2)+1),$data['start_time']);
        $DTime =implode(" : ",explode(":", date("h:i")));
-       if($DTime < $data['over_time']){
+       if($DTime > $data['over_time']){
            $data['status'] =3;
        }
 
        Appointment::create($data);
 
-       return message('新增预约成功',"$DTime",200);
+       return message('新增预约成功',[$DTime,$data['over_time']],200);
     }
     //获得今天或某天的数据
     public function getTodayAppointment(){
