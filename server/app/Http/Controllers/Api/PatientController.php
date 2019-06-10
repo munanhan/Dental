@@ -53,19 +53,16 @@ class PatientController extends Controller
      */
     public function todayWork()
     {
-        //DB::connection()->enableQueryLog();
-        //$queries=DB::getQueryLog();
-        //dd($queries);
-//        $whereTime=request('date');
         $whereTime=now()->toDateString();
+        DB::connection()->enableQueryLog();
+        $this->diagnose($whereTime,0,0,0,2);
+        $queries=DB::getQueryLog();
+        dd($queries);
+        //$whereTime=now()->toDateString();
+        //return $this->appointmentNotArrive($whereTime);
+       // return $this->diagnose($whereTime,0,1,1,2);
+        //return $this->diagnose($whereTime,0,0,0,2);
 
-       // $appointment=$this->appointmentNotArrive($whereTime);
-
-        $todayFirstVisit=$this->todayFirstVisit($whereTime);
-
-        dd($todayFirstVisit);
-
-        //$todaySubsequentVisit=$this->todaySubsequentVisit($whereTime);
 
     }
 
@@ -106,31 +103,34 @@ class PatientController extends Controller
     protected function firstOrSubsequent($whereTime,$patientType,$patientStatus)
     {
         return
-            Patient::where('patient_type',$patientType)
-            ->where('treatment_date',$whereTime)
-            ->where('patient_status',$patientStatus)
-            ->get();
+            Patient::where('treatment_date',$whereTime)
+                ->where('patient_type',$patientType)
+                ->where('patient_status',$patientStatus);
+            //->get();
     }
 
 
     /*
      * 患者诊断
      */
-    protected function diagnose($whereTime,$Status)
+    protected function diagnose($whereTime,$patientType,$patientStatus,$appointmentType,$appointmentStatus)
     {
-        $first=Patient::where('patient_type',0)
-            ->where('treatment_date',$whereTime)
-            ->where('patient_status',$Status);
-        return
-            Patient::whereHas('appointments',function ($query)
-            use($whereTime,$Status) {
-                $query
-                    ->where('patient_type',1)
-                    ->where('appointments.type',$Status)
-                    ->where('appointments.status',2)
-                    ->where('appointments.appointment_date',$whereTime)
-                    ->whereNull('appointments.deleted_at');
-            })->union($first)->get();
+
+        $first=$this->firstOrSubsequent($whereTime,$patientType,$patientStatus);
+        return Patient::whereHas('appointments',function ($query)
+        use($whereTime,$appointmentType,$appointmentStatus) {
+            $query
+                ->where('appointments.type',$appointmentType)
+                ->where('appointments.status',$appointmentStatus)
+                ->where('appointments.appointment_date',$whereTime)
+                ->whereNull('appointments.deleted_at');
+        })->union($first)->get();
+    }
+
+
+    public function testUnion($whereTime)
+    {
+        return DB::table('patients')->where(['patient_type'=>0,'patient_status'=>0,'treatment_date'=>$whereTime])->select();
     }
 
 
@@ -141,7 +141,7 @@ class PatientController extends Controller
     {
         $user=Auth::user();
         if($user->is_admin==1){
-            return message('',$this->getUserByRoleId([2,3,8],$user->clinic_id));
+            return message('',$this->getUserByRoleId([1,2,3,8],$user->clinic_id));
         }else{
             return message(Auth::user());
         }
