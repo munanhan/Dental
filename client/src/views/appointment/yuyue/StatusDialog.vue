@@ -10,11 +10,17 @@
       v-dialog-drag
     >
       <div class="content">
-        <div class="item" ref="item3" @click="changeStatus(3)">
+        <div class="item expried" ref="item3" @click="changeStatus(3)" v-if="status != 0">
           <div>
             <i class="fas fa-exclamation-triangle"></i>
           </div>
           <div>过期</div>
+        </div>
+        <div class="item appoint" ref="item0" @click="changeStatus(0)" v-if="status == 0">
+          <div>
+            <i class="far fa-clock"></i>
+          </div>
+          <div>预约</div>
         </div>
         <div class="item" ref="item1" @click="changeStatus(1)">
           <div>
@@ -128,6 +134,9 @@ export default {
         case "1":
           bgv = "rgb(160, 101, 238)";
           break;
+        case "0":
+          bgv = "#6bb15e";
+          break;
         case "2":
           bgv = "rgb(50, 17, 233)";
           break;
@@ -158,7 +167,10 @@ export default {
       border: 1px solid black;
       text-align: center;
       cursor: pointer;
-      &:hover:nth-of-type(1) {
+      &.appoint:hover  {
+        background-color:  #6bb15e;
+      }
+      &.expried:hover{
         background-color: #f17e1a;
       }
       &:hover:nth-of-type(2) {
