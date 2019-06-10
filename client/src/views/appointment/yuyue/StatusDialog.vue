@@ -48,11 +48,37 @@
         </div>
       </div>
       <div class="tip">
-        <div class="active" v-if="status == 5">
-          流失
+        <div class="flow" v-if="status == 5">
+          <div class="flow-comment">
+            <span>流失备注:</span>
+            <span>
+              <el-input v-model="formData.flow_comment" placeholder="请输入内容" style="width:300px"></el-input>
+            </span>
+          </div>
         </div>
-         <div class="active" v-if="status == 2">
-          到达
+        <div class="active" v-if="status == 2">
+          <div class="attend-doctor">
+            <span>主治医生：</span>
+            <span>
+              <el-select v-model="formData.appointment_doctor" placeholder="请选择">
+                <el-option
+                  v-for="(item,index) in doctor"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </span>
+          </div>
+          <div class="type">
+            <span>类别 :</span>
+            <span>
+              <el-radio-group v-model="formData.type">
+                <el-radio label="0">初诊</el-radio>
+                <el-radio label="1">复诊</el-radio>
+              </el-radio-group>
+            </span>
+          </div>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -75,8 +101,14 @@ export default {
   computed: {},
   data() {
     return {
+      formData: {
+        appointment_doctor: "",
+        type: "",
+        flow_comment: ""
+      },
       status: "",
       name: "",
+      doctor: null,
       commitLoading: false
     };
   },
@@ -88,10 +120,20 @@ export default {
           .then(res => {
             if (res.code == 200) {
               this.status = res.data.status;
-              console.log(this.status);
+              this.$nextTick(function() {
+                this.$refs[
+                  "item" + this.status
+                ].style.backgroundColor = this.changeBg(this.status);
+              });
               this.name = "更换预约状态: " + res.data.patient_name;
+              this.formData.type = res.data.type;
+              this.formData.appointment_doctor = res.data.appointment_doctor;
             }
           });
+        // 获取预约医生数据、
+        this.$api.appointment.attendDoctor().then(res => {
+          this.doctor = res.data;
+        });
       }
     }
   },
@@ -167,10 +209,10 @@ export default {
       border: 1px solid black;
       text-align: center;
       cursor: pointer;
-      &.appoint:hover  {
-        background-color:  #6bb15e;
+      &.appoint:hover {
+        background-color: #6bb15e;
       }
-      &.expried:hover{
+      &.expried:hover {
         background-color: #f17e1a;
       }
       &:hover:nth-of-type(2) {
@@ -184,6 +226,31 @@ export default {
       }
       &:hover:nth-of-type(5) {
         background-color: #ff3646;
+      }
+    }
+  }
+  .tip{
+    display: flex;
+    // border: 1px solid #000;
+    padding-top:30px; 
+    .active{
+      margin: auto;
+      .attend-doctor{
+      
+      }
+      .type{
+        padding: 20px;
+        span:nth-of-type(2){
+          padding-left:20px; 
+        }
+      }
+    }
+    .flow{
+      margin: auto;
+      .flow-comment{
+          span:nth-of-type(2){
+          padding-left:20px; 
+        }
       }
     }
   }
