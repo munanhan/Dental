@@ -2,12 +2,16 @@
     <div class="disposa_content">
         <div class="disposa_top">
             <!-- <div class="background-1"> -->
-            <div class="medical-top">
+            <div
+                v-for="(item,index) in disposa"
+                :key="index"
+                class="medical-top"
+            >
                 <div class="background">
                     <div class="background-left">
                         <div class="left-top">
-                            <div><span class="left-top1">2019-05-17</span>
-                                <span class="left-top2">23:20</span></div>
+                            <div><span class="left-top1">{{item.disposa_date}}</span>
+                                <span class="left-top2">{{item.disposa_time}}</span></div>
                         </div>
                         <div class="left-bottom">
                             <div class="diagnose-detail">
@@ -26,8 +30,8 @@
                     </div>
                     <div class="background-right">
                         <div class="right-top">
-                            <div><span class="right-top1">初诊</span>
-                                <span class="right-top2">1212</span>
+                            <div><span class="right-top1">{{item.disposa_diagnosis}}</span>
+                                <span class="right-top2">{{item.disposa_doctor}}</span>
                             </div>
                             <div class="right-i-content">
                                 <i
@@ -86,7 +90,7 @@
                         <div class="underline"></div>
                         <div class="right-bottom">
                             <div class="bottom-1">合计</div>
-                            <div>100.00</div>
+                            <div>{{item.disposa_combined}}</div>
                         </div>
                     </div>
                 </div>
@@ -122,7 +126,16 @@ export default {
     },
     data() {
         return {
-            dischoice_show: false
+            dischoice_show: false,
+            disposa:[
+                {
+                disposa_date:"1982-05-01",
+                disposa_time:"23:14",
+                disposa_diagnosis:"初诊",
+                disposa_doctor:"马医生",
+                disposa_combined:"320.00"
+                }
+            ]
         };
     },
     created() {},
@@ -339,7 +352,7 @@ export default {
                     }
                     .right-i-content {
                         // border: 1px solid red;
-                        margin-left: 620px;
+                        margin-left: 600px;
                         .right-i {
                             // border: 1px solid red;
                             font-size: 20px;
@@ -356,12 +369,13 @@ export default {
                     .right-bottom {
                         display: flex;
                         font-size: 23px;
+                        // border: 1px solid red;
                         color: rgb(96, 96, 96);
                         margin-top: 5px;
                         height: 60px;
                         float: right;
-                        margin-right: 30px;
-                        width: 180px;
+                        margin-top:10px;
+                        width: 250px;
                         .bottom-1 {
                             margin-left: 30px;
                             margin-right: 30px;
