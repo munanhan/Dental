@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Traits\AttendDoctor;
 use App\Model\Appointment;
 use App\Model\Patient;
-use App\Model\PatientInfo;
-use App\Model\User;
+use App\Model\PatientDisposal;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\DB;
 
-class PatientController extends Controller
+class PatientController extends BaseController
 {
     const SERIAL_NUMBER="serial.number:";
 
@@ -83,9 +79,10 @@ class PatientController extends Controller
         return message('',$patient,200);
     }
 
-    public function update(Request $request)
+    public function update()
     {
-        $patient=$request->all();
+
+        $patient=$this->parms;
         $id=$patient['id'];
         $appOld=Appointment::where('patient_id',$id)->oldest()->first();
         $appOld->appointment_date=$patient['first_date'];
@@ -103,16 +100,29 @@ class PatientController extends Controller
         }
         Patient::where('id',$id)->update($patient);
 
-        return message('',$request->all(), 200);
+        return message('',$this->parms, 200);
     }
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $id=$request->all('id');
+        $type=request('type');
+        dd($id,$type);
         Appointment::where('id',$id)->delete();
         $patient=Patient::find($id);
         $patient->delete();
         return message('',null, 200);
+    }
+
+    public function deleteWork()
+    {
+        $id=request('id');
+        if(PatientDisposal::find($id)){
+            return message('已有处置记录不可删除','',400);
+        }else{
+            $app=Appointment::find($id);
+            $app->delete();
+            return message('删除成功','',200);
+        }
     }
 
 

@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Traits\AttendDoctor;
 use App\Model\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Model\PatientConsult;
 
-class PatientConsultController extends Controller
+class PatientConsultController extends BaseController
 {
 
     use AttendDoctor;
@@ -33,9 +32,9 @@ class PatientConsultController extends Controller
         return message('',$patientConsult);
     }
 
-    public function update(Request $request ,PatientConsult $patientConsult)
+    public function update()
     {
-        $patientConsult->update($request->all());
+        $patientConsult=PatientConsult::where($this->parms['id'])->update($this->parms);
 
         return message('',$patientConsult, 200);
     }
