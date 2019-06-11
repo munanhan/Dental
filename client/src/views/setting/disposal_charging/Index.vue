@@ -250,7 +250,7 @@
 import CostType from './CostTypeDialog';
 import AddDisposalCharging from './AddDisposalChargingDialog';
 import EditDisposalCharging from './EditDisposalChargingDialog';
-import { setCookie,getCookie } from "../../../common/util";
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
 
 export default {
     name: 'DisposalCharging',
@@ -499,7 +499,9 @@ export default {
           that.headers = {'Authorization':token};
         },
         exportData(){
-            window.location = (window.HOSTNAME || '')+'/api/disposal/export';
+            let url = (window.HOSTNAME || '')+'/api/disposal/export';
+            let token = getCookie("token");
+            downloadFile(url,{'Authorization':token});
         },
         getById(editItem){
             let that = this;
