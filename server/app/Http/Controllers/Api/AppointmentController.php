@@ -6,6 +6,7 @@ use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Appointment;
+use phpDocumentor\Reflection\Types\This;
 
 class AppointmentController extends Controller
 {
@@ -20,8 +21,15 @@ class AppointmentController extends Controller
     //修改预约状态
     public function changeAppointmentStatus(Request $request){
         $data=$request->all();
-        Appointment::where('id',$data['id'])->update(['status'=>$data['status']]);
-        return  message('修改成功','',200);
+        $id = $data['id'];
+        unset($data['id']);
+        if($data['status'] == 4){
+            $this->delete($id);
+        }else{
+            Appointment::where('id',$id)->update($data);
+        }
+
+        return  message('修改成功',$data,200);
     }
     //添加预约和修改预约
     public function addAppointment(Request $request){
@@ -29,8 +37,8 @@ class AppointmentController extends Controller
         $patientArray = ['patient_name'=>'','patient_age'=>'','patient_sex'=>'','patient_phone'=>'','case_id'=>'','patient_content'=>'','patient_source'=>''];
         $data  =array_diff_key($oriData,$patientArray);
         $patientData= array_intersect_key($oriData,$patientArray);
-
-        $patientData['attend_doctor'] = $oriData['appointment_doctor'];
+//          数据库患者表删除了attend_doctor
+//        $patientData['attend_doctor'] = $oriData['appointment_doctor'];
       
 
         //判断患者之前是否存在
@@ -72,7 +80,7 @@ class AppointmentController extends Controller
        $appoinment =new Appointment();
 
 
-       $res =$appoinment->where('appointment_date',$where)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+       $res =$appoinment->where('appointment_date',$where)->where('flag',1)->leftJoin('patients','appointments.patient_id','=','patients.id')->
        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
@@ -90,7 +98,7 @@ class AppointmentController extends Controller
         $weekEnd = preg_replace('/-(\d)-/','-0$1-',$weekEnd);
 
         $appoinment =new Appointment();
-        $res =$appoinment->where('appointment_date','>=',$weekStart)->where('appointment_date','<=',$weekEnd)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        $res =$appoinment->where('flag',1)->where('appointment_date','>=',$weekStart)->where('appointment_date','<=',$weekEnd)->leftJoin('patients','appointments.patient_id','=','patients.id')->
         get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
@@ -106,11 +114,11 @@ class AppointmentController extends Controller
         }
         $appoinment =new Appointment();
         if($data['statusRadio'] == '全部'){
-            $res =$appoinment->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+            $res =$appoinment->where('flag',1)->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->leftJoin('patients','appointments.patient_id','=','patients.id')->
             get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         }else{
-            $res =$appoinment->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->where('status',$data['statusRadio'])
+            $res =$appoinment->where('flag',1)->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->where('status',$data['statusRadio'])
                 ->leftJoin('patients','appointments.patient_id','=','patients.id')->
                 get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
@@ -129,7 +137,7 @@ class AppointmentController extends Controller
         $now = explode(" ", date("Y-m-d H:i:s"));
         Appointment::where('status','0')->where('appointment_date','<',$now[0])->update(['status'=>3]);
         Appointment::where('status','0')->where('appointment_date','=',$now[0])->where('over_time','<=',$now[1])->update(['status'=>3]);
-        $res =$appoinment->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        $res =$appoinment->where('flag',1)->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
         get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);
@@ -143,5 +151,34 @@ class AppointmentController extends Controller
         return message('获取成功',$res,200);
     }
 
+    /*
+     * 软删除
+     */
+    public function delete($id)
+    {
+
+        $app=Appointment::find($id);
+        $app->delete();
+    }
+
+    /*
+     * 恢复软删除
+     */
+    public function restore()
+    {
+        $id=request('id');
+        $app=Appointment::withTrashed()->find($id);
+        $app->restore();
+    }
+
+    /*
+     * 强制删除
+     */
+    public function force()
+    {
+        $id=request('id');
+        $app=Appointment::find($id);
+        $app->forceDelete();
+    }
 
 }
