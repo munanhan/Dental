@@ -457,10 +457,10 @@ export const base64ToBlob = data => {
  * @param {String} url url地址
  * @param {Object} header 头部文件，对象形式
  */
-export const downloadFile = (url, header) => {
+export const downloadFile = (url, header, fileName) => {
     var downloadURL = url;
     let xhr = new XMLHttpRequest();
-    let fileName = "zip.rar"; // 文件名称
+    let fileName = fileName; // 文件名称
     xhr.open("GET", downloadURL, true);
 
     //设置头部给后端
