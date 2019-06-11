@@ -109,6 +109,7 @@ export default {
       status: "",
       name: "",
       doctor: null,
+      appointment_data:null,
       commitLoading: false
     };
   },
@@ -119,6 +120,7 @@ export default {
           .getByIdAppointment({ id: this.yuyue_id })
           .then(res => {
             if (res.code == 200) {
+              this.appointment_data = res.data;
               this.status = res.data.status;
               this.$nextTick(function() {
                 this.$refs[
@@ -128,6 +130,7 @@ export default {
               this.name = "更换预约状态: " + res.data.patient_name;
               this.formData.type = res.data.type;
               this.formData.appointment_doctor = res.data.appointment_doctor;
+              this.formData.flow_comment = res.data.flow_comment;
             }
           });
         // 获取预约医生数据、
@@ -139,7 +142,18 @@ export default {
   },
   methods: {
     submitFrom() {
-      let data = { id: this.yuyue_id, status: this.status };
+      let data ={ id: this.yuyue_id, status: this.status};
+      if(this.status == 2){
+        if(this.formData.type != this.appointment_data.type){
+          data.type = this.formData.type;
+        }
+        if(this.formData.appointment_doctor != this.appointment_data.appointment_doctor){
+          data.appointment_doctor = this.formData.appointment_doctor;
+        }
+      }
+      if(this.status == 5){
+        data.flow_comment = this.formData.flow_comment;
+      }
       this.$api.appointment.changeAppointmentStatus(data).then(res => {
         if (res.code == 200) {
           this.getTodayAppointment();
@@ -161,6 +175,9 @@ export default {
       sv = sv.toString();
       let items = document.getElementsByClassName("item");
       items = Array.from(items);
+      if (this.status == 2 && sv == 4) {
+        return;
+      }
       items.forEach(ele => {
         ele.style.backgroundColor = "";
       });
@@ -168,6 +185,11 @@ export default {
       if (this.status == 3 && sv == 1) {
         return;
       }
+      if (this.status == 2 && sv == 0) {
+        this.status = 3;
+        return;
+      }
+
       this.status = sv;
     },
     changeBg(sv) {
@@ -229,27 +251,26 @@ export default {
       }
     }
   }
-  .tip{
+  .tip {
     display: flex;
     // border: 1px solid #000;
-    padding-top:30px; 
-    .active{
+    padding-top: 30px;
+    .active {
       margin: auto;
-      .attend-doctor{
-      
+      .attend-doctor {
       }
-      .type{
+      .type {
         padding: 20px;
-        span:nth-of-type(2){
-          padding-left:20px; 
+        span:nth-of-type(2) {
+          padding-left: 20px;
         }
       }
     }
-    .flow{
+    .flow {
       margin: auto;
-      .flow-comment{
-          span:nth-of-type(2){
-          padding-left:20px; 
+      .flow-comment {
+        span:nth-of-type(2) {
+          padding-left: 20px;
         }
       }
     }
