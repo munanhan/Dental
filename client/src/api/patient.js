@@ -58,6 +58,13 @@ export function getAttendDoctor(data) {
         params: data
     })
 }
+export function searchAll(data) {
+    return request({
+        url: `${prefix}/searchAll`,
+        method: 'get',
+        params: data
+    })
+}
 
 
 

@@ -80,10 +80,23 @@
                                     type="text"
                                     :value="toDecimal(item.disposa_amount * item.disposa_price)"
                                     disabled
-                                    onfocus="if(value=='0.00') {value=''}"
-                                    onblur="if (value=='') {value='0.00'}"
                                 >
-                                <i class="el-icon-delete input-i"></i>
+                                <!-- <template slot-scope="scope"> -->
+                                    <!-- <el-tooltip
+                                        content="删除"
+                                        placement="bottom"
+                                    >
+                                        <el-button
+                                            size="mini"
+                                            icon="fa fa-trash-alt"
+                                            @click.stop="del(scope.row, scope.$index)"
+                                        ></el-button>
+                                    </el-tooltip> -->
+                                <!-- </template> -->
+                                 <i
+                                    class="fa fa-trash-alt input-i"
+                                    @click.stop="del(scope.row, scope.$item)"
+                                ></i>
                             </div>
                             <div class="underline"></div>
                         </div>
@@ -202,6 +215,10 @@ export default {
                 s += "0";
             }
             return s;
+        },
+        del(row, index) {
+            let that = this;
+            that.tableData.splice(index, 1);
         }
     }
 };
