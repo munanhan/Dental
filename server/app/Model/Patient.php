@@ -12,6 +12,7 @@ class Patient extends Model
 {
 
     use SoftDeletes;
+    protected $dates = ['delete_at'];
     protected $guarded=['id',];
 
     protected $dispatchesEvents=[
