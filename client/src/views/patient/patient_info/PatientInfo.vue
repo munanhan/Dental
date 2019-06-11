@@ -1,14 +1,9 @@
 <template>
     <div class="patient-info">
-
-        <el-collapse
-            class="patien-content"
-            style="overflow:auto"
-        >
-
-            <template slot="title">
+        <div class="patien-content">
+            <!-- <template slot="title">
                 <span class="base-fz">基本信息</span>
-            </template>
+            </template> -->
 
             <div
                 class="patient-body"
@@ -170,7 +165,7 @@
                 </el-row>
 
             </div>
-        </el-collapse>
+        </div>
         <div style="border:1px solid #e4e4e4;
                     background-color:#e3e3e3;
                     position:absolute;left;0;
@@ -183,7 +178,6 @@
                 porp="modify-inormation"
                 @click="Modify_info"
             >修改信息</el-button>
-
 
         </div>
         <modify-info :show.sync="modinfo_show"></modify-info>
@@ -206,7 +200,7 @@ export default {
     },
     data() {
         return {
-            data:{},
+            data: {},
             modinfo_show: false
         };
     },
@@ -254,17 +248,17 @@ export default {
 @import "~@css/var";
 
 .patient-info {
-    .el-collapse {
+    .patien-content {
         position: absolute;
         top: 0;
         right: 0;
         left: 0;
         bottom: 0;
         height: 100%;
-        .base-fz {
-            font-size: 18px;
-            margin-left: 10px;
-        }
+        // .base-fz {
+        //     font-size: 18px;
+        //     margin-left: 10px;
+        // }
         .patient-body {
             .patient-left {
                 height: 100%;

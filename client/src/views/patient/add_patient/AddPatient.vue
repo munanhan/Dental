@@ -41,11 +41,16 @@
                     label="姓名"
                     style="width:300px"
                     prop="patient_name"
+                    :disable="false"
                 >
                     <el-input
+                        @keyup.native.13="selectRowByKey(13)"
+                        @keyup.native.38="selectRowByKey(38)"
+                        @keyup.native.40="selectRowByKey(40)"
                         v-model="form.patient_name"
-                        @input="search_all"
+                        ref="searchInput"
                     ></el-input>
+                    <!-- @keyup.native="searchAll" -->
                 </el-form-item>
 
                 <div style="margin-top:10px;margin-left:50px">
@@ -61,7 +66,7 @@
             </div>
             <div
                 class="search-all"
-                ref="search-all"
+                v-if="showNameSearch"
             >
                 <el-table
                     :data="tableData"
@@ -69,7 +74,11 @@
                     style="width:100%"
                     height="300px"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                    @row-dblclick="selectRow"
+                    ref="searchTable"
+                    :row-class-name="rowClassName"
                 >
+                    <!-- @row-dblclick="selectRow" -->
                     <el-table-column
                         prop="phone"
                         label="电话"
@@ -149,6 +158,27 @@
                         prop="patient_age"
                     >
                         <el-input v-model="form.patient_age"></el-input>
+                    </el-form-item>
+
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
+                        label="社保"
+                        prop="society_no"
+                        style="width:300px"
+                    >
+                        <el-input v-model="form.society_no"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                        style="margin-left:50px;width:300px"
+                        label="类 别"
+                        prop="diagnose_status"
+                    >
+                        <el-radio-group v-model="form.diagnose_status">
+                            <el-radio :label="0">初诊</el-radio>
+                            <el-radio :label="1">复诊</el-radio>
+                        </el-radio-group>
                     </el-form-item>
 
                 </div>
@@ -445,6 +475,16 @@ export default {
             },
             tableData: [
                 {
+                    id: 0,
+                    phone: "13923819974",
+                    medical: "2016091102",
+                    name: "",
+                    returnVisit: "",
+                    returnDate: "1996-02-10"
+                },
+
+                {
+                    id: 1,
                     phone: "13923819974",
                     medical: "2016091102",
                     name: "",
@@ -525,12 +565,22 @@ export default {
                 allergy: "",
                 anamnesis: "",
                 attend_doctor: "",
-                treatment_date: ""
-            }
+                treatment_date: "",
+                diagnose_status: 0,
+                society_no: ""
+            },
+
+            showNameSearch: false,
+            showNameTimer: null,
+
+            //搜索框选中
+            searchSelectIdx: null
         };
     },
 
     mounted() {},
+
+    destroyed() {},
 
     watch: {
         show(newValue, oldValue) {
@@ -546,22 +596,126 @@ export default {
                     that.age();
                 }
             }
+        },
+
+        "form.patient_name": {
+            handler(newName, oldName) {
+                let that = this;
+
+                clearTimeout(that.showNameTimer);
+
+                that.showNameTimer = setTimeout(() => {
+                    that.searchAll(newName);
+                }, 300);
+            }
         }
     },
 
     methods: {
         //搜索
-        search_all() {
-            if (!this.form.patient_name) {
-                this.$refs["search-all"].style.display = "none";
-                return;
+        searchAll(value) {
+            let that = this;
+
+            that.searchSelectIdx = 1;
+
+            if (value) {
+                that.showNameSearch = true;
+
+                that.$api.patient.searchAll({ search_all: value }).then(res => {
+                    if (res.code == 200 && res.data.length) {
+                        that.tableData = res.data;
+                        that.showNameSearch = true;
+
+                        that.searchSelectIdx = 0;
+
+                        document.addEventListener(
+                            "keydown",
+                            that.checkHideSearch
+                        );
+                        document.addEventListener(
+                            "click",
+                            that.checkHideSearch
+                        );
+                    }
+                });
+            } else {
+                that.hideSearch();
+            }
+        },
+
+        hideSearch(event) {
+            let that = this;
+
+            that.tableData = [];
+
+            that.showNameSearch = false;
+
+            document.removeEventListener("keydown", that.checkHideSearch);
+            document.removeEventListener("click", that.checkHideSearch);
+        },
+
+        //检查是否要关闭搜索框
+        checkHideSearch(event) {
+            let that = this,
+                target = event.target,
+                keyCode = event.keyCode || null;
+
+            //这个是按键盘触发的
+            if (keyCode) {
+                if (
+                    keyCode == 9 &&
+                    document.activeElement != that.$refs.searchInput.$el
+                ) {
+                    that.hideSearch();
+                }
+            } else {
+                //这个是鼠标触发的
+
+                if (that.$refs.searchTable.$el.contains(target)) {
+                    that.$refs.searchInput.focus();
+                } else {
+                    that.hideSearch();
+                }
+            }
+        },
+
+        rowClassName({ row, rowIndex }) {
+            if (rowIndex === this.searchSelectIdx) {
+                return "select-row";
+            }
+            return "";
+        },
+
+        selectRowByKey(key) {
+            let that = this;
+
+            switch (key) {
+                case 38:
+                    that.searchSelectIdx != 0 && (that.searchSelectIdx -= 1);
+                    // if(that.searchSelectIdx != 0){
+                    //     that.searchSelectIdx -= 1 ;
+                    // }
+                    break;
+                case 40:
+                    if (that.searchSelectIdx != that.tableData.length - 1) {
+                        that.searchSelectIdx++;
+                    }
+
+                    break;
+                case 13:
+                    that.selectRow(that.tableData[that.searchSelectIdx]);
+                    break;
             }
 
-            var data = { search_all: this.form.patient_name };
-            this.$api.patient.searchAll(data).then(res => {
-                this.$refs["search-all"].style.display = "block";
-            });
+            that.$refs.searchInput.focus();
         },
+
+        selectRow(row) {
+            let that = this;
+
+            that.form.patient_name = row.id;
+        },
+
         attendDoctor() {
             let that = this;
 
@@ -737,12 +891,12 @@ export default {
         color: @color;
     }
 }
+
 .search-all {
     border: 1px solid #b9b9b9;
     height: 300px;
     width: 400px;
     margin-left: 80px;
-    display: none;
     position: fixed;
     z-index: 99;
 }

@@ -385,6 +385,7 @@
 
             <el-tabs
                 v-model="curTab"
+                style=""
                 class="right_top"
             >
 
@@ -535,14 +536,7 @@ export default {
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
-            //   pationRefresh: false,
-            //   disposalRecordsRefresh: false,
 
-            //   quickFind: {
-            // 	pationInfo: "pationRefresh",
-            // 	disposalRecords: "disposalRecordsRefresh"
-
-            //   },
             value1: "",
 
             options: [
@@ -752,27 +746,6 @@ export default {
         app_visit() {
             this.appvisit_show = true;
         }
-
-        // maskMouseHandler(evt) {
-        //   let that = this;
-
-        //   //调整移动的区间范围
-        //   that.maxMoveWidth = that.outerWidth - that.maskWidth;
-        //   that.maxMoveHeight = that.outerHeight - that.maskHeight;
-
-        //   //点击鼠标点击的位置
-        //   that.disX = evt.clientX;
-        //   that.disY = evt.clientY;
-
-        //   //记录原来的mask的位置，从这个位置开始计算左右移动距离，- 0 是为了复制值
-        //   that.orginTop = that.top - 0;
-        //   that.orginLeft = that.left - 0;
-
-        //   // 如果存在可移动的范围的时候才绑定
-        //   // 全局监听松开事件，放在在内容选择框外松开
-        //   document.addEventListener("mouseup", that.onMouseUp);
-        //   document.addEventListener("mousemove", that.onMouseMove);
-        // }
     },
     handleNodeClick(data) {
         console.log(data);
@@ -794,6 +767,33 @@ export default {
             box-sizing: border-box;
         }
     }
+
+    /deep/ .el-tabs {
+        position: relative;
+        height: 100%;
+    }
+
+    /deep/ .el-tabs__header {
+        margin-bottom: 0;
+        .el-tabs__nav-scroll {
+            padding-left: 20px;
+        }
+    }
+
+    // /deep/ .el-tabs__content {
+    //     background-color: white;
+    //     // padding: 15px 0;
+    //     position: absolute;
+    //     top: 40px;
+    //     bottom: 0;
+    //     left: 0;
+    //     box-sizing: border-box;
+    //     right: 0;
+
+    //     .el-tab-pane {
+    //         height: 100%;
+    //     }
+    // }
 }
 
 .el-header {
@@ -801,15 +801,11 @@ export default {
     line-height: 60px;
     margin-top: -10px;
 }
-// el-tabs__header is-top .move-line {
-//   border: 1px solid rgb(235, 235, 235);
-// }
 
 .content-left {
     .left_top {
         border: 1px solid #d8d6d6;
         width: 365px;
-        margin-right: 10px;
         height: 100%;
         box-sizing: border-box;
 
@@ -968,7 +964,7 @@ export default {
 
         /deep/ .el-tabs__content {
             position: absolute;
-            top: 45px;
+            top: 40px;
             bottom: 0;
             left: 0;
             right: 0;
@@ -1029,8 +1025,8 @@ export default {
             font-size: 14px;
             color: #747474;
             margin-top: 15px;
-            .visit-bottom1 {
-            }
+            // .visit-bottom1 {
+            // }
             .visit-bottom2 {
                 margin-left: 20px;
             }
