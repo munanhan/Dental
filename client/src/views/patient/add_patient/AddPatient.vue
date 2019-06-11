@@ -106,6 +106,28 @@
 
                 <div style="display:flex">
                     <el-form-item
+                            label="社保"
+                            prop="society_no"
+                            style="width:300px"
+
+                    >
+                        <el-input v-model="form.society_no" ></el-input>
+                    </el-form-item>
+                    <el-form-item
+                            style="margin-left:50px;width:300px"
+                            label="类 别"
+                            prop="diagnose_status"
+                    >
+                        <el-radio-group v-model="form.diagnose_status">
+                            <el-radio :label="0">初诊</el-radio>
+                            <el-radio :label="1">复诊</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+
+                </div>
+
+                <div style="display:flex">
+                    <el-form-item
                             label="就诊日期"
                             prop="treatment_date"
                             style="width:300px"
@@ -465,6 +487,8 @@ export default {
                 anamnesis:"",
                 attend_doctor:"",
                 treatment_date:"",
+                diagnose_status:0,
+                society_no:"",
 
             }
         };
