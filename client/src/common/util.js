@@ -456,6 +456,7 @@ export const base64ToBlob = data => {
  *
  * @param {String} url url地址
  * @param {Object} header 头部文件，对象形式
+ * @param {String} url 文件名称
  */
 export const downloadFile = (url, header, fileName) => {
     var downloadURL = url;
