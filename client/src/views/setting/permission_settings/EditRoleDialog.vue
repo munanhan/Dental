@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-        title="添加角色"
+        title="修改角色名"
         :visible.sync="show"
         width="350px"
         :before-close="closeDialog"
@@ -13,7 +13,7 @@
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">添加</el-button>
+            <el-button type="primary" @click="submitForm('form')">修改</el-button>
             <el-button @click="closethisDialog">关闭</el-button>
           </el-form-item>
 
@@ -23,13 +23,17 @@
   </div>
 </template> 
 <script>
-import AddDialogForm from "@views/base/AddDialogForm";
+import EditDialogForm from "@views/base/EditDialogForm";
 export default {
-    name: 'AddRole',
-    mixins: [AddDialogForm],
+    name: 'EditRole',
+    mixins: [EditDialogForm],
     components: {},
       props: {
-        
+        // p_id:undefined
+        // refresh: {
+        //   type: Boolean,
+        //   required: true
+        // }
       },
       data() {
 
@@ -87,32 +91,28 @@ export default {
           let that = this;
           that.$refs[formName].validate((valid) => {
             if (valid) {
-              that.$api.role.add(that.form)
-                .then(res => {
-                  if(res.code == 200){
-                    that.$message({
-                        message: res.msg,
-                        type: "success",
-                        duration: 800
-                    });
-                    that.closethisDialog();
-                    that.$emit(
-                      "flush",res.data
-                    );
-
-                   }
-                   else{
-                       that.$message.error(
-                            res.msg || "add error."
-                        );
-                   }
-                })
-                .catch(res => {
-                  that.$message.error(
-                            res.msg || "add error."
-                        );
-                   // console.log(res);
-                });
+              // console.log(this.form);
+              that.$api.role.update(that.form)
+                  .then(res => {
+                    if(res.code == 200){
+                      that.$message({
+                          message: res.msg,
+                          type: "success",
+                          duration: 800
+                      });
+                      // console.log(res.data);
+                      that.closethisDialog();
+                      that.$emit("flush",res.data);
+                     }
+                     else{
+                         that.$message.error(
+                              res.msg || "edit error."
+                          );
+                     }
+                  })
+                  .catch(res => {
+                     // console.log(res);
+                  });
             } else {
               console.log('error submit!!');
               return false;

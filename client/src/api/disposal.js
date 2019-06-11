@@ -50,3 +50,10 @@ export function delAll(data) {
     })
 }
 
+export function exportData(data) {
+    return request({
+        url: `${prefix}/export`,
+        method: 'get',
+        params: data
+    })
+}

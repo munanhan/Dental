@@ -413,7 +413,7 @@ export default {
         update(id){
           let that = this;
 
-          that.$api.patient_recycling_bin.reduction({id})
+          that.$api.patient_recycling_bin.reduction({'id':id})
           .then(res => {
               for (var i = 0, length = that.tableData.length - 1; i <= length; i++) {
                  if (that.tableData[i].id == id) {

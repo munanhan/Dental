@@ -369,7 +369,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');//患者回收列表
 
-    Route::put('patient_recycling_bin/{id}', 'PatientRecyclingBinController@update');//修改
+    Route::put('patient_recycling_bin', 'PatientRecyclingBinController@update');//修改
 
     Route::delete('patient_recycling_bin/{id}', 'PatientRecyclingBinController@delete');//删除
 
@@ -388,6 +388,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::put('disposal', 'DisposalController@update');//修改
 
     Route::delete('disposal/{id}', 'DisposalController@delete');//删除
+
+    // Route::get('disposal/export','DisposalController@export');//导出
 
     /*
      * Route CostCategory Api
@@ -597,7 +599,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
 
-    Route::get('privilege','PrivilegeController@index');//菜单列表
+    // Route::get('privilege','PrivilegeController@index');//菜单列表
+    Route::get('privilege/get_user_privilege','PrivilegeController@getUserPrivilege');//获取个人权限
 
     Route::get('privilege/get_by_type','PrivilegeController@getByType');//根据类型获取权限
 
@@ -628,9 +631,13 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
 });
 
+Route::group(['namespace'=>'Api','middleware' => ['check']], function(){
+    
+    Route::get('disposal/export','DisposalController@export');//导出处方
 
+});
 
-
+    
 
 
 

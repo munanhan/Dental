@@ -445,7 +445,12 @@ export default {
           strhtml = `<div class="left" style="background-color:#f40;" id="${id}"><i class="fas fa-exclamation-triangle" style="color:#fff;"></i></div>`;
           break;
         case "4":
-          strhtml = `<div class="left" id="${id}"><i class="el-icon-delete"></i></div>`;
+          strhtml = `<div class="left" id="${id}" style="background-color:#ff3646;"><i class="el-icon-delete" style="color:#fff;"></i></div>`;
+          break;
+        case "5":
+          strhtml = `<div class="left" id="${id}" style="background-color:#ff4040;"><i class="fas fa-times-circle" style="color:#fff;"></i></div>`;
+          break;
+
       }
       return strhtml;
     }

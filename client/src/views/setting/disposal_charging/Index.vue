@@ -190,15 +190,27 @@
           <el-row>
               <div class="btn_content">
                   <el-col :span="24">
-                        <span class="">
+                        <span class="" style="float: left;">
                             <el-button style="margin-right: 10px;"  type="primary" @click="showAddDialog">添加</el-button>
                         </span>
                   
-                        <span class="">
-                            <el-button style="margin-right: 10px;" type="primary" @click="importData">导入Excel</el-button>
+                        <span class="" style="float: left;">
+                            
+                                    <el-upload
+                                        :action="`${uploadUrl}/api/company/upload`"
+                                        :on-success="handleSuccess"
+                                        :on-error="handleError"
+                                        :headers="headers"
+                                        name="import"
+                                    >
+                                    <el-button style="margin-right: 10px;" type="primary" @click="importData">
+                                        导入Excel
+                                    </el-button>
+                                    </el-upload>
+
                         </span>
                  
-                        <span class="">
+                        <span class="" style="float: left;">
                             <el-button style="margin-right: 10px;" type="primary" @click="exportData">导出Excel</el-button>
                         </span>
                   </el-col>
@@ -238,6 +250,8 @@
 import CostType from './CostTypeDialog';
 import AddDisposalCharging from './AddDisposalChargingDialog';
 import EditDisposalCharging from './EditDisposalChargingDialog';
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
+
 export default {
     name: 'DisposalCharging',
     components: {
@@ -253,6 +267,9 @@ export default {
       },
       data() {
         return {
+          uploadUrl:'',
+
+          headers:{},
 
           menu_id:0,//当前菜单id
                    
@@ -375,6 +392,13 @@ export default {
 
       computed: {},
       methods: {
+        handleSuccess(){
+          //上传成功
+        },
+        handleError(){
+          //上传失败
+
+        },
         getMenuTableData(row){
           let that = this;
           that.menu_id = row.id;
@@ -469,10 +493,16 @@ export default {
           that.addDisposalChargingDialog = true;
         },
         importData(){
-
+          let that = this;
+          that.uploadUrl = (window.HOSTNAME || '');
+          let token = getCookie("token");
+          that.headers = {'Authorization':token};
         },
         exportData(){
-
+            window.location = (window.HOSTNAME || '')+'/api/disposal/export';
+            // let url = (window.HOSTNAME || '')+'/api/disposal/export';
+            // let token = getCookie("token");
+            // downloadFile(url,{'Authorization':token});
         },
         getById(editItem){
             let that = this;

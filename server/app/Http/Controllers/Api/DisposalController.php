@@ -6,44 +6,55 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Disposal;
 use App\Http\Controllers\Api\BaseController;
+use App\Exports\BaseExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class DisposalController extends BaseController
 {
             public function index(){
                 //主页
-            	$parms = $this->parms;
-            	$_case_mode = [
-        	    		      	'data' => config('config.billing_mode'),//收费模式
-        	    		      	'table' => 'disposals',//表
-        	    		      	'field' => 'billing_mode'
-        	    			  ];
+                $res = $this->getData();
+            	return message($res['msg'],$res['data'],$res['code']);
+
+            }
+
+            public function getData($export = false){
+                //获取数据
+                $parms = $this->parms;
+                $_case_mode = [
+                                'data' => config('config.billing_mode'),//收费模式
+                                'table' => 'disposals',//表
+                                'field' => 'billing_mode'
+                              ];
 
                 $_medical_insurance = [
                                         'data' => config('config.common_status'),//收费模式
                                         'table' => 'disposals',//表
                                         'field' => 'medical_insurance'
                                       ];
-                
-            	$_select = [
-            				   'table' => 'disposals',//表
-            				   'field' => 'disposals.id,disposals.id as disposal_id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,mem_discount,'.caseThen($_case_mode).','.caseThen($_medical_insurance)
-            			   ];
 
-            	$_join = [
-            				'cost_categories' => 'cost_categories.id = disposals.cate_id'
-            			 ];
+                $mem_discount = $export == false?'mem_discount':caseThen([ 'data' => [ 0 => '否',1 => '是'],
+                                                           'table' => 'disposals',
+                                                           'field' => 'mem_discount']);
+
+                $_select = [
+                               'table' => 'disposals',//表
+                               'field' => 'disposals.id,disposals.id as disposal_id,disposal_code,disposal_name,price,unit,cost_categories.category,remarks,'.caseThen($_case_mode).','.caseThen($_medical_insurance).','.$mem_discount
+                           ];
+
+                $_join = [
+                            'cost_categories' => 'cost_categories.id = disposals.cate_id'
+                         ];
 
 
                 $_where = [];
                 isset($parms['id'])?$_where[] = ['cate_id','=',$parms['id']]:'';
                 isset($parms['disposal_name'])?$_where[] = ['disposal_name','like',$parms['disposal_name']]:'';
 
-            	$sql = MySelect($_select).MyJoin($_join).MyWhere($_where);
+                $sql = MySelect($_select).MyJoin($_join).MyWhere($_where);
 
-            	$res = getData($sql,dbParms($_where));
-
-            	return message($res['msg'],$res['data'],$res['code']);
-
+                return getData($sql,dbParms($_where));
             }
 
             public function getById(){
@@ -117,5 +128,29 @@ class DisposalController extends BaseController
                 else{
                     return message('删除失败',null, 500);
                 }
+            }
+
+            public function export(){
+                //导出
+                $data = $this->getData(true)['data'];
+                //获取数据
+                $export_data = [];
+                array_push($export_data, [ '处置代码','处置名称','价格','单位','按会员折扣','费用类型','收费方式','备注' ]);
+
+                foreach ($data as $k => $v) {
+                    $temp[] = $v->disposal_code;
+                    $temp[] = $v->disposal_name;
+                    $temp[] = $v->price;
+                    $temp[] = $v->unit;
+                    $temp[] = $v->mem_discount;
+                    $temp[] = $v->category;
+                    $temp[] = $v->billing_mode;
+                    $temp[] = $v->remarks;
+                    array_push($export_data,$temp);
+                    $temp = [];
+                }
+                return Excel::download(new BaseExport($export_data), '处置大类.xlsx');
+
+
             }
 }

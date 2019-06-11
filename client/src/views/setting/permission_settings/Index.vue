@@ -43,6 +43,28 @@
                                     @row-click="getMenuTableData"
                                 >
                                     <el-table-column prop="name">
+                                      <template slot-scope="scope">
+                                            <span style="width:110px;display: inline-block;">{{scope.row.name}}</span>
+                                            <i
+                                             class="el-icon-edit"
+                                             style="margin-top:10px;
+                                             font-size:20px;
+                                             cursor:pointer;
+                                             margin-left:10px"
+                                             @click="showEdit(scope.row)"
+                                            
+                                            ></i>
+                                            <i
+                                             class="el-icon-delete"
+                                             style="margin-top:10px;
+                                             font-size:20px;
+                                             cursor:pointer;
+                                             margin-left:10px"
+                                             @click="showDel(scope.row,scope.$index)"
+                                            
+                                            ></i>
+                                            
+                                        </template>
                                     </el-table-column>
                                 </el-table>
 
@@ -134,18 +156,29 @@
         <!-- 添加角色 -->
         <add-role
             :show.sync="addRole"
+            @flush="pushRole"
         >
         </add-role>
+
+        <!-- 修改角色 -->
+        <edit-role
+            :show.sync="editRole"
+            :editItem="editItem"
+            @flush="flush"
+        >
+        </edit-role>
 
     </div>
 </template>
 
 <script>
 import AddRole from './AddRoleDialog';
+import EditRole from './EditRoleDialog';
 export default {
     name: "PermissionSettings",
     components: {
-      AddRole
+      AddRole,
+      EditRole
     },
     props: {
         refresh: {
@@ -158,7 +191,9 @@ export default {
             selectPrivilege:0,
             addRole:false,
             //添加角色
+            editRole:false,
             editItem: {},
+            selectRoleRow:{},
             //高度设定
             treeHight: 700,
             menuHeight: 667,
@@ -222,8 +257,37 @@ export default {
     methods: {
         savePermission(){
           //保存权限
-          let permissionPc = this.$refs.permissionPcTree.getCheckedNodes();
-          let permissionPhone = this.$refs.permissionPhoneTree.getCheckedNodes();
+          let that = this,
+          role_id = that.selectRow.id;
+          if (that.selectPrivilege == 0) {
+            //pc权限
+            var permission = this.$refs.permissionPcTree.getCheckedKeys();
+
+          }
+          if (that.selectPrivilege == 1) {
+            //移动端权限
+            var permission = this.$refs.permissionPhoneTree.getCheckedNodes();
+          }
+          
+          that.$api.privilege.update({'role_id':role_id,'privilege':permission})
+            .then(res => {
+              if(res.code == 200){
+                this.$message({
+                    message: res.msg,
+                    type: "success",
+                    duration: 800
+                });
+                // that.$emit(
+                //   "flush"
+                // );
+
+               }
+               else{
+                   that.$message.error(
+                        res.msg || "设置失败."
+                    );
+               }
+            })
           //console.log(permissionPc);
           //console.log(permissionPhone);
         },
@@ -292,14 +356,26 @@ export default {
             // 70;
             // console.log(treeHight);
         },
-        edit(editItem) {
-            //修改
+        showEdit(row){
             let that = this;
-            that.editItem = editItem;
+            that.selectRoleRow = row;
+            that.getRoleById(row.id);
         },
-        del(id) {
-            //删除
-            alert(id);
+        showDel(row,index){
+            let that = this;
+
+            that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                that.delRole(row.id,index);
+            }).catch(() => {
+                that.$message({
+                type: 'info',
+                message: '已取消删除'
+            });          
+            });
         },
         getPatientInfo() {
             let that = this;
@@ -351,7 +427,6 @@ export default {
         getMenu(){
             //获取菜单
           let that = this;
-          let type = that.selectPrivilege;
             that.$api.role.get()
             .then(res => {
                 that.menuData = res.data;
@@ -360,6 +435,48 @@ export default {
             .catch(res => {
 
             });
+        },
+        getRoleById(id){
+            //获取角色
+          let that = this;
+            that.$api.role.getById({'id':id})
+            .then(res => {
+                that.editItem = res.data;
+                that.editRole = true;
+               // console.log(res.data);
+            })
+            .catch(res => {
+
+            });
+        },
+        delRole(id,index){
+            //删除角色
+            let that = this;
+                that.$api.role
+                .del({ id })
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        that.menuData.splice(index, 1);
+                    } else {
+                        that.$message.error(res.msg || "操作异常请重试.");
+                    }
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        },
+        flush(data){
+            let that = this;
+            that.selectRoleRow.name = data.name;
+        },
+        pushRole(data){
+            let that = this;
+            that.menuData.push(data);
         }
     }
 };

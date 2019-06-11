@@ -12,11 +12,12 @@ export function get(data) {
 
 export function reduction(data) {
     return request({
-        url: `${prefix}/:id`,
+        url: `${prefix}`,
         method: 'put',
         params: data
     })
 }
+
 
 export function del(data) {
     return request({
