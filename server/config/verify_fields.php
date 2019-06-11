@@ -125,4 +125,8 @@ return [
                               'addData' => [ 'advice_name' => 'unique:医嘱|type:string' ],
                            ],
 
+    'PrivilegeController' => [
+                                'update' => [ 'role_id' => 'unique:角色id|type:int' ]
+                             ]
+
 ];

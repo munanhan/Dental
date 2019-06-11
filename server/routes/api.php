@@ -383,6 +383,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::delete('disposal/{id}', 'DisposalController@delete');//删除
 
+    Route::get('disposal/export','DisposalController@export');//导出
+
     /*
      * Route CostCategory Api
      * created for yu
@@ -591,7 +593,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
 
-    Route::get('privilege','PrivilegeController@index');//菜单列表
+    // Route::get('privilege','PrivilegeController@index');//菜单列表
+    Route::get('privilege/get_user_privilege','PrivilegeController@getUserPrivilege');//获取个人权限
 
     Route::get('privilege/get_by_type','PrivilegeController@getByType');//根据类型获取权限
 

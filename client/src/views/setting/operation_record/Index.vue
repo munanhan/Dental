@@ -306,8 +306,14 @@ export default {
     },
     calculation() {
       //计算总共时间
-      var dtfm = new Date(this.search.dtfm);
-      var dtto = new Date(this.search.dtto);
+      var dtfm = new Date(this.search.dtfm + ' 00:00:00');
+      var dtto = new Date(this.search.dtto + ' 00:00:00');
+      if (dtfm > dtto) {
+         this.$message.error(
+              '开始时间必须小于结束时间.'
+          );
+         return false;
+      }
       this.show_time.total_day =
         (dtto - dtfm + 60 * 60 * 24 * 1000) / (60 * 60 * 24 * 1000); //计算天数
       this.show_time.dtfm = this.formatDate(new Date(dtfm), 1);
@@ -457,6 +463,12 @@ export default {
     getData() {
       let that = this;
       //表单数据
+      if (new Date(that.search.dtfm) > new Date(that.search.dtto)) {
+           that.$message.error(
+                '开始时间必须小于结束时间.'
+            );
+           return false;
+      }
       that.$api.operation_log
         .get(that.search)
         .then(res => {

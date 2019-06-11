@@ -56,7 +56,7 @@ export function getByType(data) {
 //获取当前用户的权限
 export function getUserPrivilege(data){
     return request({
-        url: `${prefix}`,
+        url: `${prefix}/get_user_privilege`,
         method: 'get',
         params: data
     })
