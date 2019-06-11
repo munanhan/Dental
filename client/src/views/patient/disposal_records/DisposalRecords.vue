@@ -2,13 +2,35 @@
     <div class="disposa_content">
         <div class="disposa_top">
             <!-- <div class="background-1"> -->
-            <div class="medical-top">
-                <div class="background">
-                    <div class="background-left">
-                        <div class="left-top">
-                            <div><span class="left-top1">2019-05-17</span>
-                                <span class="left-top2">23:20</span></div>
+            <div class="background">
+                <div
+                    class="top-content"
+                    style="display:flex"
+                >
+                    <div class="left-top">
+                        <div><span class="left-top1">{{disposa_date}}</span>
+                            <span class="left-top2">{{disposa_time}}</span></div>
+                    </div>
+                    <div class="right-top">
+                        <div><span class="right-top1">{{disposa_diagnosis}}</span>
+                            <span class="right-top2">{{disposa_doctor}}</span>
                         </div>
+                        <div class="right-i-content">
+                            <i class="el-icon-printer right-i"></i>
+                            <i class="fa fa-newspaper right-i"></i>
+                            <i class="fa fa-pen right-i"></i>
+                            <i class="fa fa-capsules right-i"></i>
+                            <i class="fa fa-comments right-i"></i>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="item"
+                    v-for="(item,index) in disposa"
+                    :key="index"
+                >
+                    <div class="background-left">
+
                         <div class="left-bottom">
                             <div class="diagnose-detail">
                                 <div class="tooth">
@@ -25,23 +47,7 @@
                         </div>
                     </div>
                     <div class="background-right">
-                        <div class="right-top">
-                            <div><span class="right-top1">初诊</span>
-                                <span class="right-top2">1212</span>
-                            </div>
-                            <div class="right-i-content">
-                                <i
-                                    class="el-icon-printer right-i"
-                                    effect="dark"
-                                    content="上移"
-                                    placement="bottom"
-                                ></i>
-                                <i class="fa fa-newspaper right-i"></i>
-                                <i class="fa fa-pen right-i"></i>
-                                <i class="fa fa-capsules right-i"></i>
-                                <i class="fa fa-comments right-i"></i>
-                            </div>
-                        </div>
+
                         <div class="right-middle">
                             <div style="display:flex">
                                 <input
@@ -58,15 +64,13 @@
                                     class="middle-input"
                                     placeholder="单价"
                                     type="text"
-                                    value="0.00"
-                                    onfocus="if(value=='0.00') {value=''}"
-                                    onblur="if (value=='') {value='0.00'}"
-                                    oninput="value=value.replace(/[^\d]/g,'')"
+                                    v-model="item.disposa_price"
+                                    @blur="item.disposa_price =toDecimal(item.disposa_price)"
                                 >
                                 <input
                                     class="middle-input"
                                     type="text"
-                                    value="1"
+                                    v-model="item.disposa_amount"
                                     onfocus="if(value=='1') {value=''}"
                                     onblur="if (value=='') {value='1'}"
                                 >
@@ -74,7 +78,8 @@
                                     class="middle-input"
                                     placeholder="费用"
                                     type="text"
-                                    value="0.00"
+                                    :value="toDecimal(item.disposa_amount * item.disposa_price)"
+                                    disabled
                                     onfocus="if(value=='0.00') {value=''}"
                                     onblur="if (value=='') {value='0.00'}"
                                 >
@@ -84,18 +89,24 @@
                         </div>
                         <input class="lower-input">
                         <div class="underline"></div>
-                        <div class="right-bottom">
-                            <div class="bottom-1">合计</div>
-                            <div>100.00</div>
-                        </div>
+
                     </div>
                 </div>
+                <div
+                    class="right-bottom pull-right"
+                    style="display:flex;font-size:18px"
+                >
+                    <div style="margin-right:10px">合计</div>
+                    <div>{{total}}</div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
         <div class="disposa_bottom">
             <el-button
                 class="dis-button"
                 type="primary"
+                @click="addDisposal"
             >增加处置</el-button>
 
             <!-- <el-button class="dis-button">打印设置</el-button> -->
@@ -122,7 +133,19 @@ export default {
     },
     data() {
         return {
-            dischoice_show: false
+            dischoice_show: false,
+            disposa_date: "1972-05-01",
+            disposa_time: "23:14",
+            disposa_diagnosis: "初诊",
+            disposa_doctor: "马医生",
+
+            disposa: [
+                {
+                    disposa_item: "",
+                    disposa_price: "",
+                    disposa_amount: "1"
+                }
+            ]
         };
     },
     created() {},
@@ -136,7 +159,19 @@ export default {
             }
         }
     },
-    computed: {},
+    computed: {
+        total() {
+            var sum = 0;
+            this.disposa.forEach(element => {
+                if (element.disposa_price) {
+                    sum +=
+                        parseFloat(element.disposa_amount) *
+                        parseFloat(element.disposa_price);
+                }
+            });
+            return this.toDecimal(sum);
+        }
+    },
     methods: {
         getDisposalRecords() {},
 
@@ -147,6 +182,26 @@ export default {
         },
         dis_choice() {
             this.dischoice_show = true;
+        },
+        addDisposal() {
+            this.disposa.push({});
+        },
+        toDecimal: function(x) {
+            var f = parseFloat(x);
+            if (isNaN(f)) {
+                return false;
+            }
+            var f = Math.round(x * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf(".");
+            if (rs < 0) {
+                rs = s.length;
+                s += ".";
+            }
+            while (s.length <= rs + 2) {
+                s += "0";
+            }
+            return s;
         }
     }
 };
@@ -170,50 +225,95 @@ export default {
     .disposa_top {
         height: 100%;
         width: 100%;
+        overflow: auto;
         position: relative;
         margin-bottom: 10px;
-        .medical-top {
-            .background {
-                margin-right: 15px;
-                .transition-2;
-                display: flex;
-                margin-top: 5px;
-                margin-left: 20px;
-                background-color: #f8f8f8;
-                border: 2px solid #e3e3e3;
-                border-left-width: 10px;
-                padding: 10px;
-                color: #989797;
-                &:hover {
-                    border-color: @color;
-                    color: @color;
+        .background {
+            margin-right: 15px;
+            .transition-2;
+            margin-top: 5px;
+            margin-left: 20px;
+            background-color: #f8f8f8;
+            border: 2px solid #e3e3e3;
+            border-left-width: 10px;
+            padding: 10px;
+            color: #989797;
+            &:hover {
+                border-color: @color;
+                color: @color;
+            }
+            .top-content {
+                .left-top {
+                    font-weight: bold;
+                    display: flex;
+                    margin-top: 5px;
+                    font-size: 20px;
+                    .left-top1 {
+                        cursor: pointer;
+                        margin: 0 20px;
+                        border: 1px solid #f8f8f8;
+                        &:hover {
+                            .transition-2;
+                            border: 1px solid #919191;
+                        }
+                    }
+                    .left-top2 {
+                        cursor: pointer;
+                        border: 1px solid #f8f8f8;
+                        &:hover {
+                            .transition-2;
+                            border: 1px solid #919191;
+                        }
+                    }
                 }
+                .right-top {
+                    // border: 1px solid red;
+                    font-weight: bold;
+                    margin-left: 20px;
+                    margin-top: 3px;
+                    display: flex;
+                    font-size: 20px;
+                    .right-top1 {
+                        cursor: pointer;
+                        margin-right: 35px;
+                        border: 1px solid #f8f8f8;
+                        &:hover {
+                            .transition-2;
+                            border: 1px solid #919191;
+                            // color: #1d1d1d;
+                        }
+                    }
+                    .right-top2 {
+                        cursor: pointer;
+                        border: 1px solid #f8f8f8;
+                        &:hover {
+                            .transition-2;
+                            border: 1px solid #919191;
+                            // color: #1d1d1d;
+                        }
+                    }
+                }
+                .right-i-content {
+                    // border: 1px solid red;
+                    margin-left: 600px;
+                    .right-i {
+                        // border: 1px solid red;
+                        font-size: 20px;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    }
+                    :hover {
+                        color: #332222;
+                        transition: all 0.3s;
+                    }
+                }
+            }
+            .item {
+                display: flex;
                 .background-left {
                     // border:1px solid red;
                     width: 220px;
-                    .left-top {
-                        font-weight: bold;
-                        display: flex;
-                        margin-top: 5px;
-                        font-size: 20px;
-                        .left-top1 {
-                            cursor: pointer;
-                            margin: 0 20px;
-                            border: 1px solid #f8f8f8;
-                            &:hover {
-                                .transition-2;
-                                border: 1px solid #919191;
-                            }
-                        }
-                        .left-top2 {
-                            cursor: pointer;
-                            border: 1px solid #f8f8f8;
-                            &:hover {
-                                .transition-2;
-                                border: 1px solid #919191;
-                            }
-                        }
-                    }
+
                     .left-bottom {
                         // border: 1px solid red;
                         cursor: pointer;
@@ -270,33 +370,7 @@ export default {
                 }
                 .background-right {
                     // border: 1px solid red;
-                    .right-top {
-                        // border: 1px solid red;
-                        font-weight: bold;
-                        margin-left: 20px;
-                        margin-top: 3px;
-                        display: flex;
-                        font-size: 20px;
-                        .right-top1 {
-                            cursor: pointer;
-                            margin-right: 35px;
-                            border: 1px solid #f8f8f8;
-                            &:hover {
-                                .transition-2;
-                                border: 1px solid #919191;
-                                // color: #1d1d1d;
-                            }
-                        }
-                        .right-top2 {
-                            cursor: pointer;
-                            border: 1px solid #f8f8f8;
-                            &:hover {
-                                .transition-2;
-                                border: 1px solid #919191;
-                                // color: #1d1d1d;
-                            }
-                        }
-                    }
+
                     .right-middle {
                         // border: 1px solid red;
                         margin-top: 10px;
@@ -313,16 +387,17 @@ export default {
                                 border: 1px solid #cfcfcf;
                             }
                         }
-                        .input-i {
-                            font-size: 20px;
-                            cursor: pointer;
-                        }
+
                         // input::-webkit-input-placeholder {
                         //     color: #000;
                         // }
                         // .middle-lower {
                         //     margin-top: 20px;
                         // }
+                        .input-i {
+                            font-size: 20px;
+                            cursor: pointer;
+                        }
                     }
                     .lower-input {
                         margin-left: 10px;
@@ -339,7 +414,7 @@ export default {
                     }
                     .right-i-content {
                         // border: 1px solid red;
-                        margin-left: 620px;
+                        margin-left: 600px;
                         .right-i {
                             // border: 1px solid red;
                             font-size: 20px;
@@ -356,16 +431,13 @@ export default {
                     .right-bottom {
                         display: flex;
                         font-size: 23px;
+                        // border: 1px solid red;
                         color: rgb(96, 96, 96);
                         margin-top: 5px;
                         height: 60px;
                         float: right;
-                        margin-right: 30px;
-                        width: 180px;
-                        .bottom-1 {
-                            margin-left: 30px;
-                            margin-right: 30px;
-                        }
+                        margin-top: 10px;
+                        width: 250px;
                     }
                     .underline {
                         margin-left: 10px;

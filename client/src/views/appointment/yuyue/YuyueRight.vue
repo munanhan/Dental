@@ -370,6 +370,7 @@ export default {
     },
 
     addYuyue(item) {
+      
       if(!item){
         this.yuyue_id = null;
         this.addYuyueShow = true;

@@ -63,15 +63,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('patients/generate','PatientController@getCaseNumber');
 
-    Route::get('patients', 'PatientController@index');
+//    Route::get('patients', 'PatientController@index');
 
-   // Route::get('patients/{patient}', 'PatientController@show');
+    Route::get('patients/show/{id}', 'PatientController@show');
 
     Route::post('patients', 'PatientController@store');
 
     Route::put('patients/{patient}', 'PatientController@update');
 
-    Route::delete('patients/{patient}', 'PatientController@delete');
+    Route::delete('patients/{id}', 'PatientController@delete');
 
     Route::get('patients/attend_doctor','PatientController@attendDoctor');
 
@@ -121,13 +121,15 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/{patientConsult}', 'PatientConsultController@show');
+    Route::get('patient_consults/show/{id}', 'PatientConsultController@show');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
     Route::put('patient_consults/{patientConsult}', 'PatientConsultController@update');
 
-    Route::delete('patient_consults/{patientConsult}', 'PatientConsultController@delete');
+    Route::delete('patient_consults/{id}', 'PatientConsultController@delete');
+
+    Route::get('patient_consults/getDoctorOrRecorder','PatientConsultController@getDoctorOrRecorder');
 
     /*
      * Route PatientCategory Api

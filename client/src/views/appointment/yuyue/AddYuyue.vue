@@ -101,8 +101,9 @@
 
       <div class="center">
         <el-form-item prop="appointment_date" label-width="0">
-          <el-input v-model="formData.appointment_date" type="text"></el-input>
+          <el-date-picker v-model="formData.appointment_date" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
+
         <div class="day-time">
           <div class="other-left">
             <div v-for="(item,index) in dayTime" :key="index">
@@ -174,6 +175,7 @@ let ageRules = [
     trigger: "blur"
   }
 ];
+
 const itemsOptions = [
   "试戴义齿",
   "换药",
@@ -196,7 +198,8 @@ const itemsOptions = [
 ];
 import { addClass, removeClass } from "@/common/util.js";
 import DialogForm from "@/views/base/DialogForm";
-import { type } from 'os';
+import { type } from "os";
+import { format } from "path";
 export default {
   name: "ChangePassword",
   mixins: [DialogForm],
@@ -226,10 +229,15 @@ export default {
       formData: {
         case_id: "190418001",
         appointment_date: "",
+        appointment_doctor: "",
         patient_source: "",
         items: "",
-        type:'0'
-
+        type: "0",
+        patient_name: "",
+        patient_age: "",
+        patient_source: "",
+        patient_phone: "",
+        patient_sex: ""
         // start_time:this.yuyue_time,
       },
       doctor: null,
@@ -254,7 +262,28 @@ export default {
               callback();
             }
           }
-        })
+        }),
+        patient_name: [
+          {
+            required: true,
+            message: "请输入姓名.",
+            trigger: "blur"
+          }
+        ],
+        patient_sex: [
+          {
+            required: true,
+            message: "请选择性别.",
+            trigger: "blur"
+          }
+        ],
+        appointment_doctor: [
+          {
+            required: true,
+            message: "请选择医生.",
+            trigger: "blur"
+          }
+        ]
       },
 
       commitLoading: false
@@ -327,6 +356,12 @@ export default {
               this.formData.patient_sex = res.data.patient_sex;
               this.formData.patient_source = res.data.patient_source;
               this.formData.type = "1";
+            } else {
+              this.formData.patient_name = null;
+              this.formData.patient_age = null;
+              this.formData.patient_sex = null;
+              this.formData.patient_source = null;
+              this.formData.type = "0";
             }
           }
         });
@@ -366,7 +401,16 @@ export default {
       that.$refs["addYuyueFrom"].validate(valid => {
         if (valid) {
           that.commitLoading = true;
-
+          var t = new Date(that.formData.appointment_date);
+          var tf = function(i) {
+            return (i < 10 ? "0" : "") + i;
+          };
+          that.formData.appointment_date =
+            t.getFullYear() +
+            "-" +
+            tf(t.getMonth() + 1) +
+            "-" +
+            tf(t.getDate());
           that.$api.appointment
             .addAppointment(that.formData)
             .then(res => {

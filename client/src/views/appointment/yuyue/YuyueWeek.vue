@@ -94,7 +94,14 @@ import AddYuyue from "./AddYuyue.vue";
 import { formatDate, addClass, inArray } from "@/common/util.js";
 export default {
   name: "",
-  inject: ["week", "navBar", "dayTime", "getWeekStartEnd", "statusIcon",'getWeekData'],
+  inject: [
+    "week",
+    "navBar",
+    "dayTime",
+    "getWeekStartEnd",
+    "statusIcon",
+    "getWeekData"
+  ],
   props: ["weekStart", "weekEnd", "weekArr"],
   created() {
     this.$nextTick(function() {
@@ -110,7 +117,6 @@ export default {
             }
           });
       }, 1000);
-
     });
   },
   components: {
@@ -200,15 +206,14 @@ export default {
       addYuyueShow: false
     };
   },
-  watch:{
-    navBar:{
-       handler: function(val, oldval) {
-        val.forEach((ele,index)=>{
-          if(ele.select == '周' && ele.active == true){
-             this.getWeekData()
+  watch: {
+    navBar: {
+      handler: function(val, oldval) {
+        val.forEach((ele, index) => {
+          if (ele.select == "周" && ele.active == true) {
+            this.getWeekData();
           }
-        })
-
+        });
       },
       deep: true //对象内部的属性监听，也叫深度监听
     }
@@ -237,11 +242,11 @@ export default {
     addYuyue() {
       this.isAttrDataTime(event.target);
       if (this.data_x) {
-        let date = formatDate(new Date(), "MM.dd");
+        let date = formatDate(new Date(), "yyyy-MM-dd");
         if (this.data_x < date) {
           this.dialogVisible = true;
         } else {
-           this.addYuyueShow = true;
+          this.addYuyueShow = true;
         }
       }
       //修改状态
@@ -276,7 +281,7 @@ export default {
         this.status = false;
         this.target = dom;
         let year = new Date().getFullYear() + "-";
-        this.data_x =year + dom.getAttribute("data-x").replace('.','-');
+        this.data_x = year + dom.getAttribute("data-x").replace(".", "-");
         this.data_y = dom.getAttribute("data-y");
         return;
       }
@@ -300,9 +305,9 @@ export default {
           strhtml += `<div data-id="${item.id}" data-h="${item.start_time}">
             <div class="inner">`;
           strhtml += this.statusIcon(item.status, item.id);
-          strhtml += `<div class="right"><p><span>${item.patient_name}</span><span>${
-            item.type == 1 ? "复" : "初"
-          }
+          strhtml += `<div class="right"><p><span>${
+            item.patient_name
+          }</span><span>${item.type == 1 ? "复" : "初"}
           </span><span>${item.patient_age}</span></p>
                                 <p><span>${item.patient_phone}</span></p>
                                 <p><span>${item.items}</span></p>

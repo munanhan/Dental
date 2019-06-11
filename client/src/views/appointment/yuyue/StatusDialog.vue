@@ -6,14 +6,21 @@
       :before-close="closeDialog"
       class="custom-dialog"
       :close-on-click-modal="false"
+      width="600px"
       v-dialog-drag
     >
       <div class="content">
-        <div class="item" ref="item3" @click="changeStatus(3)">
+        <div class="item expried" ref="item3" @click="changeStatus(3)" v-if="status != 0">
           <div>
             <i class="fas fa-exclamation-triangle"></i>
           </div>
           <div>过期</div>
+        </div>
+        <div class="item appoint" ref="item0" @click="changeStatus(0)" v-if="status == 0">
+          <div>
+            <i class="far fa-clock"></i>
+          </div>
+          <div>预约</div>
         </div>
         <div class="item" ref="item1" @click="changeStatus(1)">
           <div>
@@ -27,11 +34,51 @@
           </div>
           <div>到达</div>
         </div>
+        <div class="item" ref="item5" @click="changeStatus(5)">
+          <div>
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div>流失</div>
+        </div>
         <div class="item" ref="item4" @click="changeStatus(4)">
           <div>
             <i class="el-icon-delete"></i>
           </div>
           <div>删除</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="flow" v-if="status == 5">
+          <div class="flow-comment">
+            <span>流失备注:</span>
+            <span>
+              <el-input v-model="formData.flow_comment" placeholder="请输入内容" style="width:300px"></el-input>
+            </span>
+          </div>
+        </div>
+        <div class="active" v-if="status == 2">
+          <div class="attend-doctor">
+            <span>主治医生：</span>
+            <span>
+              <el-select v-model="formData.appointment_doctor" placeholder="请选择">
+                <el-option
+                  v-for="(item,index) in doctor"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </span>
+          </div>
+          <div class="type">
+            <span>类别 :</span>
+            <span>
+              <el-radio-group v-model="formData.type">
+                <el-radio label="0">初诊</el-radio>
+                <el-radio label="1">复诊</el-radio>
+              </el-radio-group>
+            </span>
+          </div>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -54,8 +101,14 @@ export default {
   computed: {},
   data() {
     return {
+      formData: {
+        appointment_doctor: "",
+        type: "",
+        flow_comment: ""
+      },
       status: "",
       name: "",
+      doctor: null,
       commitLoading: false
     };
   },
@@ -67,10 +120,20 @@ export default {
           .then(res => {
             if (res.code == 200) {
               this.status = res.data.status;
-              console.log(this.status);
-              this.name = "更换预约状态: " + res.data.name;
+              this.$nextTick(function() {
+                this.$refs[
+                  "item" + this.status
+                ].style.backgroundColor = this.changeBg(this.status);
+              });
+              this.name = "更换预约状态: " + res.data.patient_name;
+              this.formData.type = res.data.type;
+              this.formData.appointment_doctor = res.data.appointment_doctor;
             }
           });
+        // 获取预约医生数据、
+        this.$api.appointment.attendDoctor().then(res => {
+          this.doctor = res.data;
+        });
       }
     }
   },
@@ -113,14 +176,20 @@ export default {
         case "1":
           bgv = "rgb(160, 101, 238)";
           break;
+        case "0":
+          bgv = "#6bb15e";
+          break;
         case "2":
           bgv = "rgb(50, 17, 233)";
           break;
         case "3":
-          bgv = "#f40";
+          bgv = "#f17e1a";
           break;
         case "4":
-          bgv = "rgb(226, 45, 14)";
+          bgv = "#ff3646";
+          break;
+        case "5":
+          bgv = "#ff4040";
           break;
       }
       return bgv;
@@ -140,8 +209,11 @@ export default {
       border: 1px solid black;
       text-align: center;
       cursor: pointer;
-      &:hover:nth-of-type(1) {
-        background-color: #f40;
+      &.appoint:hover {
+        background-color: #6bb15e;
+      }
+      &.expried:hover {
+        background-color: #f17e1a;
       }
       &:hover:nth-of-type(2) {
         background-color: rgb(160, 101, 238);
@@ -150,7 +222,35 @@ export default {
         background-color: rgb(50, 17, 233);
       }
       &:hover:nth-of-type(4) {
-        background-color: rgb(226, 45, 14);
+        background-color: #ff4040;
+      }
+      &:hover:nth-of-type(5) {
+        background-color: #ff3646;
+      }
+    }
+  }
+  .tip{
+    display: flex;
+    // border: 1px solid #000;
+    padding-top:30px; 
+    .active{
+      margin: auto;
+      .attend-doctor{
+      
+      }
+      .type{
+        padding: 20px;
+        span:nth-of-type(2){
+          padding-left:20px; 
+        }
+      }
+    }
+    .flow{
+      margin: auto;
+      .flow-comment{
+          span:nth-of-type(2){
+          padding-left:20px; 
+        }
       }
     }
   }
