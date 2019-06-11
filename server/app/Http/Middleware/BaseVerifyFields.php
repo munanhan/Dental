@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 use App\Model\OperationLog;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 use Closure;
 
@@ -18,10 +19,31 @@ class BaseVerifyFields
     public function handle($request, Closure $next)
     {   
 
+
+        $controller = $request->attributes->get('controller');
+
+        if(!in_array(\Route::current()->uri,config('config.expect_route'))){
+            //排除权限控制的路由api
+            $auth = empty(Session::get('user_auth'.auth('api')->user()['id']))?[]:
+                    Session::get('user_auth'.auth('api')->user()['id']);
+            //权限
+            // var_dump($request);exit;
+            // if ($auth === null) {
+            //     return message('权限失效，请刷新页面.',[],401);
+            // }
+            // //控制器
+            //         dd(auth('api')->user()['id']);
+            // if (!in_array(str_replace('Controller','', $controller), $auth)) {
+            //     return message('没有权限.',[],401);
+            // }
+        }
+        
+
         $fields = config($request->attributes->get('config_load'));
 
         $parms = getParms($request->all())['parms'];
         //参数
+
 
         if ($fields == '') {
             switch ($request->attributes->get('action')) {
@@ -30,7 +52,6 @@ class BaseVerifyFields
                     break;
                 
                 case 'update':
-                    $controller = $request->attributes->get('controller');
                     $fields = config('verify_fields.'.$controller.'.addData');
                     $fields['id'] = 'unique:id|type:int';
                     break;

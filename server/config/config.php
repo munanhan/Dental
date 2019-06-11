@@ -13,7 +13,12 @@ return [
         'http://localhost:8082/',
         ],
 
-    'module' => [ 
+    'expect_route' => [  //排除权限控制的api
+                         'api/privilege/get_user_privilege',
+                      ],
+                      
+    'module' => [ //模块用于自动写入日志，
+                  //不填模块就不会自动写入
                     'members' => '会员管理',
                     'patient_members' => '会员等级管理',
                     'cost_categories' => '处置收费大类管理',

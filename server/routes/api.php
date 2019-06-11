@@ -365,7 +365,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_recycling_bin', 'PatientRecyclingBinController@index');//患者回收列表
 
-    Route::put('patient_recycling_bin/{id}', 'PatientRecyclingBinController@update');//修改
+    Route::put('patient_recycling_bin', 'PatientRecyclingBinController@update');//修改
 
     Route::delete('patient_recycling_bin/{id}', 'PatientRecyclingBinController@delete');//删除
 
@@ -385,7 +385,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::delete('disposal/{id}', 'DisposalController@delete');//删除
 
-    Route::get('disposal/export','DisposalController@export');//导出
+    // Route::get('disposal/export','DisposalController@export');//导出
 
     /*
      * Route CostCategory Api
@@ -627,9 +627,13 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
 });
 
+Route::group(['namespace'=>'Api','middleware' => ['check']], function(){
+    
+    Route::get('disposal/export','DisposalController@export');//导出处方
 
+});
 
-
+    
 
 
 

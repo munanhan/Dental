@@ -499,9 +499,10 @@ export default {
           that.headers = {'Authorization':token};
         },
         exportData(){
-            let url = (window.HOSTNAME || '')+'/api/disposal/export';
-            let token = getCookie("token");
-            downloadFile(url,{'Authorization':token});
+            window.location = (window.HOSTNAME || '')+'/api/disposal/export';
+            // let url = (window.HOSTNAME || '')+'/api/disposal/export';
+            // let token = getCookie("token");
+            // downloadFile(url,{'Authorization':token});
         },
         getById(editItem){
             let that = this;

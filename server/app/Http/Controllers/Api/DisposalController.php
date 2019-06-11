@@ -8,6 +8,7 @@ use App\Model\Disposal;
 use App\Http\Controllers\Api\BaseController;
 use App\Exports\BaseExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class DisposalController extends BaseController
 {
@@ -133,7 +134,6 @@ class DisposalController extends BaseController
                 //导出
                 $data = $this->getData(true)['data'];
                 //获取数据
-
                 $export_data = [];
                 array_push($export_data, [ '处置代码','处置名称','价格','单位','按会员折扣','费用类型','收费方式','备注' ]);
 
@@ -149,7 +149,6 @@ class DisposalController extends BaseController
                     array_push($export_data,$temp);
                     $temp = [];
                 }
-
                 return Excel::download(new BaseExport($export_data), '处置大类.xlsx');
 
 

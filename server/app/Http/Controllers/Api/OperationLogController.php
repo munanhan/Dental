@@ -8,14 +8,11 @@ use App\Model\OperationLog;
 use Illuminate\Support\Facades\DB;
 use App\Model\Privilege;
 use App\Model\User;
+use App\Http\Controllers\Api\BaseController;
 
-class OperationLogController extends Controller
+class OperationLogController extends BaseController
 {	
-	public function __construct(){
-		// DB::connection()->enableQueryLog();//开启查询日志
-		// DB::getQueryLog();//调用查询日志
-	}
-    //
+
     public function operationLogList(Request $request){
     	//获取操作日志列表	
     	$parms = $request->input();
