@@ -7,6 +7,7 @@ use App\Model\BaseModel;
 use Illuminate\Support\Facades\Auth;
 use App\Model\OperationLog;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class BaseController extends Controller
 {
@@ -41,6 +42,10 @@ class BaseController extends Controller
         //执行是否的方法
         protected $upload = [];
         //用于判断是否有上传文件
+        protected $export = [];
+        //导出字段
+        protected $export_data = [];
+        //导出的数据
 
         public function __construct(Request $request){
 
@@ -109,7 +114,13 @@ class BaseController extends Controller
 
         public function index(){
             //主页,对应get方法，默认获取全部，可带参数
+            $res = $this->getData();
+            return message($res['msg'],$res['data'],$res['code']);
 
+        }
+
+        public function getData(){
+            //获取数据
             if (empty($this->field)) {
                 $this->field = ' * ';
             }
@@ -173,10 +184,7 @@ class BaseController extends Controller
                 return message($res['msg'],[ 'row' => $res['data'],'total' => $total ],$res['code']);
             }
             
-            $res = getData($sql,$this->parms);
-
-            return message($res['msg'],$res['data'],$res['code']);
-
+            return getData($sql,$this->parms);
         }
 
         public function getById(){
@@ -366,6 +374,20 @@ class BaseController extends Controller
                 $this->fail = true;
                 return [  'msg' => '修改失败.','data' => [],'code' => 500 ];
             }
+        }
+
+        public function export(){
+            //导出
+            // if (empty($this->export)) {
+            //     return [  'msg' => '系统异常.','data' => [],'code' => 500 ];
+            // }
+
+            $data = empty($this->export_data)?$this->getData():$this->export_data;
+
+
+            // return $data;
+
+
         }
 
 }

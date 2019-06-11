@@ -159,6 +159,7 @@ export default {
 		data(newValue, oldValue){
             if (newValue) {
                 let that = this;
+                that.isDisabled = true;
                 that.form = that.data;
             }
 		}
