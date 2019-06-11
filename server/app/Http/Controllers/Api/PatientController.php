@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Traits\AttendDoctor;
+use App\Model\Appointment;
 use App\Model\Patient;
+use App\Model\PatientInfo;
 use App\Model\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,34 +19,99 @@ class PatientController extends Controller
 
     const DEFAULT_LENGTH=3;
 
-    public function index()
-    {
-        return message('',Patient::all());
-    }
+    use AttendDoctor;
 
-    public function show(Patient $patient)
+    public function show()
     {
-        return message('',$patient);
+        $id=request('id');
+        $data= Patient::where('id',$id)->first();
+        $appOld=Appointment::where('patient_id',$id)->oldest()->first();
+        $data['first_date']=$appOld->appointment_date;
+        $data['first_doctor']=$appOld->appointment_doctor;
+        $appNew=Appointment::where('patient_id',$id)->latest()->first();
+        $data['last_date']=$appNew->appointment_date;
+        $data['last_doctor']=$appNew->appointment_doctor;
+        return message('',$data,200);
     }
 
     public function store(Request $request)
     {
-        $patient=Patient::create($request->all());
+        $patient=$request->all();
 
-        return message('',$patient);
+        $appointment['type']=$patient['diagnose_status'];
+        $appointment['appointment_date']=$patient['treatment_date'];
+        $appointment['appointment_doctor']=$patient['attend_doctor'];
+
+        $exclude=['diagnose_status','treatment_date','attend_doctor'];
+        foreach ($exclude as $key){
+            if(array_key_exists($key,$patient)){
+                unset($patient[$key]);
+            }
+        }
+
+        $patientModel=Patient::where(['patient_phone'=>$patient['patient_phone']])->first();
+        if($patientModel){
+            if(Appointment::where(['patient_id'=>$patientModel->id,
+                'treatment_date'=>$appointment['appointment_date'],
+                'attend_doctor'=>$appointment['appointment_doctor']])){
+                return message('该医生今天已经接诊过该患者，请更换医生或日期！','',400);
+            }else{
+                Patient::where('patient_phone',$patient['patient_phone'])->update($patient);
+                $appointment['patient_id']=$patientModel->id;
+                $appointment['flag']=0;
+                $appointment['status']=2;
+                if(Appointment::create($appointment)){
+                    return message('添加成功','',200);
+                }
+            }
+        }else{
+            $patientModel=Patient::create($patient);
+            $appointment['patient_id']=$patientModel->id;
+            $appointment['flag']=0;
+            $appointment['status']=2;
+            if(Appointment::create($appointment)){
+                return message('添加成功','',200);
+            }
+        }
+
     }
 
-    public function update(Request $request ,Patient $patient)
+    public function searchByName()
     {
-        $patient->update($request->all());
-
-        return message('',$patient, 200);
+        $patient_name=request('patient_name');
+        $patient=Patient::where('patient_name','like','%'.$patient_name.'%')->get();
+        return message('',$patient,200);
     }
 
-    public function delete(Patient $patient)
+    public function update(Request $request)
     {
+        $patient=$request->all();
+        $id=$patient['id'];
+        $appOld=Appointment::where('patient_id',$id)->oldest()->first();
+        $appOld->appointment_date=$patient['first_date'];
+        $appOld->appointment_doctor=$patient['first_doctor'];
+        $appOld->save();
+        $appNew=Appointment::where('patient_id',$id)->latest()->first();
+        $appNew->appointment_date=$patient['last_date'];
+        $appNew->appointment_doctor=$patient['last_doctor'];
+        $appNew->save();
+        $exclude=['first_doctor','first_date','last_doctor','last_date'];
+        foreach ($exclude as $key){
+            if(array_key_exists($key,$patient)){
+                unset($patient[$key]);
+            }
+        }
+        Patient::where('id',$id)->update($patient);
+
+        return message('',$request->all(), 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $id=$request->all('id');
+        Appointment::where('id',$id)->delete();
+        $patient=Patient::find($id);
         $patient->delete();
-
         return message('',null, 200);
     }
 
@@ -53,19 +121,13 @@ class PatientController extends Controller
      */
     public function todayWork()
     {
-        //DB::connection()->enableQueryLog();
-        //$queries=DB::getQueryLog();
-        //dd($queries);
-//        $whereTime=request('date');
+
         $whereTime=now()->toDateString();
+        $data['appointmentNotArrive']=$this->appointmentNotArrive($whereTime);
+        $data['todayFirstVisit']=$this->todayFirstVisit($whereTime);
+        $data['todaySubsequentVisit']=$this->todaySubsequentVisit($whereTime);
 
-       // $appointment=$this->appointmentNotArrive($whereTime);
-
-        $todayFirstVisit=$this->todayFirstVisit($whereTime);
-
-        dd($todayFirstVisit);
-
-        //$todaySubsequentVisit=$this->todaySubsequentVisit($whereTime);
+        return message('',$data,200);
 
     }
 
@@ -78,7 +140,7 @@ class PatientController extends Controller
         return Patient::whereHas('appointments',function($query) use ($whereTime){
             $query
                 ->where('appointments.appointment_date',$whereTime)
-                ->where('appointments.deleted_at','=',null)
+                ->whereNull('appointments.deleted_at')
                 ->whereNotIn('appointments.status',[2,3]);
         })->get();
     }
@@ -88,10 +150,7 @@ class PatientController extends Controller
      */
     public function todayFirstVisit($whereTime)
     {
-        //$this->firstOrSubsequent($whereTime,0,0);
-
-        return $this->diagnose($whereTime,2,1,0);
-
+        return $this->diagnose($whereTime,0,2);
     }
 
     /*
@@ -99,40 +158,22 @@ class PatientController extends Controller
      */
     public function todaySubsequentVisit($whereTime)
     {
-        $this->firstOrSubsequent($whereTime,0,1);
-
-        $this->diagnose($whereTime,2,1,1);
+        return $this->diagnose($whereTime,1,2);
     }
-
-
-    /*
-     * 返回初诊或者复诊患者
-     */
-    protected function firstOrSubsequent($whereTime,$patientType,$patientStatus)
-    {
-        return
-            Patient::where('patient_type',$patientType)
-            ->where('treatment_date',$whereTime)
-            ->where('patient_status',$patientStatus)
-            ->get();
-    }
-
 
     /*
      * 患者诊断
      */
-    protected function diagnose($whereTime,$appointment_status,$patient_type,$appointment_type)
+    protected function diagnose($whereTime,$appointmentType,$appointmentStatus)
     {
-        return
-            Patient::whereHas('appointments',function ($query)
-            use($whereTime,$appointment_status,$patient_type,$appointment_type) {
-                $query
-                    ->where('patient_type',$patient_type)
-                    ->where('appointments.type',$appointment_type)
-                    ->where('appointments.status',$appointment_status)
-                    ->where('appointments.appointment_date',$whereTime)
-                    ->where('appointments.deleted_at',null);
-            })->get();
+        return Patient::whereHas('appointments',function ($query)
+        use($whereTime,$appointmentType,$appointmentStatus) {
+            $query
+                ->where('appointments.type',$appointmentType)
+                ->where('appointments.status',$appointmentStatus)
+                ->where('appointments.appointment_date',$whereTime)
+                ->whereNull('appointments.deleted_at');
+        })->get();
     }
 
 
@@ -141,23 +182,10 @@ class PatientController extends Controller
      */
     public function attendDoctor()
     {
-        $user=Auth::user();
-        if($user->is_admin==1){
-            return message('',$this->getUserByRoleId([2,3,8],$user->clinic_id));
-        }else{
-            return message(Auth::user());
-        }
+        return $this->getDoctorByRoleId([1,2,3,8]);
     }
 
-    /*
-     * 根据角色和诊所获取医生
-     */
-    protected function getUserByRoleId(Array $roles,$clinicId)
-    {
-        return Auth::user()->whereHas('roles',function ($query)use($roles,$clinicId){
-            $query->whereIn('roles.id',$roles)->where('clinic_id',$clinicId);
-        })->get();
-    }
+
 
     protected  function getToday()
     {
