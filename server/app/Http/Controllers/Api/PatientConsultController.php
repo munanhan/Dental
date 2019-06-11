@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Traits\AttendDoctor;
+use App\Model\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PatientConsult;
 
 class PatientConsultController extends Controller
 {
+
+    use AttendDoctor;
+
     public function index()
     {
         return message('',PatientConsult::all());
@@ -38,5 +43,10 @@ class PatientConsultController extends Controller
         $patientConsult->delete();
 
         return message('',null, 200);
+    }
+
+    public function getDoctorOrRecorder()
+    {
+        return $this->getDoctorByRoleId(Role::all('id')->toArray());
     }
 }

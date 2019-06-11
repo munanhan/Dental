@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Traits\AttendDoctor;
 use App\Model\Appointment;
 use App\Model\Patient;
 use App\Model\PatientInfo;
@@ -17,6 +18,8 @@ class PatientController extends Controller
     const SERIAL_NUMBER="serial.number:";
 
     const DEFAULT_LENGTH=3;
+
+    use AttendDoctor;
 
     public function show()
     {
@@ -203,23 +206,10 @@ class PatientController extends Controller
      */
     public function attendDoctor()
     {
-        $user=Auth::user();
-        if($user->is_admin==1){
-            return message('',$this->getUserByRoleId([1,2,3,8],$user->clinic_id));
-        }else{
-            return message(Auth::user());
-        }
+        return $this->getDoctorByRoleId([1,2,3,8]);
     }
 
-    /*
-     * 根据角色和诊所获取医生
-     */
-    protected function getUserByRoleId(Array $roles,$clinicId)
-    {
-        return Auth::user()->whereHas('roles',function ($query)use($roles,$clinicId){
-            $query->whereIn('roles.id',$roles)->where('clinic_id',$clinicId);
-        })->get();
-    }
+
 
     protected  function getToday()
     {
