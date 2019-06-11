@@ -7,11 +7,16 @@
         >
             <div class="medical-top">
                 <div
+                    v-for="(item,index) in medicals"
+                    :key="index"
                     class="background"
                     @dblclick="int_diagn"
                 >
                     <div class="medical-top-title">
-                        <div>2019-05-14 &nbsp; 14:56 &nbsp; 初诊 &nbsp;&nbsp; &nbsp; 医生：1212</div>
+                        <div><span>{{item.medical_date}}</span> &nbsp;
+                            <span>{{item.medical_time}}</span> &nbsp;
+                            <span>{{item.medical_diagnosis_judgment}}</span> &nbsp;&nbsp; &nbsp;
+                            <span> {{item.medical_doctor}}</span></div>
                         <div style="margin-left:530px">
                             <i class="el-icon-edit medical-top-i"></i>
                             <i class="el-icon-edit medical-top-i"></i>
@@ -58,8 +63,8 @@
                                 :span="24"
                                 class="patient-left-col"
                             >
-                                <div> 主诉：</div>
-                                <div style="color:#000;margin-left:200px">sadsad</div>
+                                <div> 主诉:</div>
+                                <div class="form-content">{{item.medical_complain}}</div>
                             </el-col>
 
                         </el-row>
@@ -72,7 +77,7 @@
                                 :span="24"
                             >
                                 <div> 现病史:</div>
-                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                                <div style="color:#000;margin-left:50px">{{item.medical_hpi}}</div>
                             </el-col>
 
                         </el-row>
@@ -85,7 +90,7 @@
                                 :span="24"
                             >
                                 <div>既往史:</div>
-                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                                <div style="color:#000;margin-left:50px">{{item.medical_anamnesis}}</div>
                             </el-col>
 
                         </el-row>
@@ -98,7 +103,7 @@
                                 :span="24"
                             >
                                 <div>过敏史:</div>
-                                <div style="color:#000;margin-left:50px">asdsadsadsad</div>
+                                <div style="color:#000;margin-left:50px">{{item.medical_allergy}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -111,7 +116,7 @@
                                 :span="24"
                             >
                                 <div>检查:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div class="form-content">{{item.medical_check}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -124,7 +129,7 @@
                                 :span="24"
                             >
                                 <div>辅助检查:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div style="margin-left:35px;color:#000">{{item.medical_auxiliary}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -137,7 +142,7 @@
                                 :span="24"
                             >
                                 <div>诊断:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div class="form-content">{{item.medical_diagnosis}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -150,7 +155,10 @@
                                 :span="24"
                             >
                                 <div>治疗方案:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div
+                                    style="margin-left:35px"
+                                    class="form-content"
+                                >{{item.medical_treatment_options}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -163,7 +171,7 @@
                                 :span="24"
                             >
                                 <div>治疗:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div class="form-content">{{item.medical_treatment}}</div>
                             </el-col>
                         </el-row>
                         <el-row
@@ -176,7 +184,7 @@
                                 :span="24"
                             >
                                 <div>医嘱:</div>
-                                <div style="color:#000;margin-left:65px">asdsadsadsad</div>
+                                <div class="form-content">{{item.medical_doctor_advice}}</div>
                             </el-col>
                         </el-row>
                     </div>
@@ -189,7 +197,7 @@
 
                 <el-button
                     type="primary"
-                    style="margin-left:10px;width: 90px;"
+                    style="margin-left:10px;width:90px;"
                     @click="int_diagn"
                 >初诊</el-button>
                 <el-button
@@ -236,39 +244,12 @@ export default {
     },
     data() {
         return {
-            FormArr: [
-                {
-                    index: 0,
-                    value: ""
-                }
-            ],
-            // others: [
-            //   {
-            //     value: "选项1",
-            //     label: "全部打印"
-            //   },
-            //   {
-            //     value: "选项2",
-            //     label: "打印设置"
-            //   }
+            // FormArr: [
+            //     {
+            //         index: 0,
+            //         value: ""
+            //     }
             // ],
-            // other:"",
-
-            // risk: [
-            //   {
-            //     value: "选项1",
-            //     label: "SAC外科病例评估"
-            //   },
-            //   {
-            //     value: "选项2",
-            //     label: "SAC修复病例评估"
-            //   },
-            //   {
-            //     value: "选项3",
-            //     label: "牙周病危险评估"
-            //   }
-            // ],
-            // risk_assessment:"",
             form: {
                 oral: [
                     {
@@ -288,7 +269,25 @@ export default {
             vaOral_cavitylue: "",
             value: "",
             intdiag_show: false,
-            subvisit_show: false
+            subvisit_show: false,
+            medicals: [
+                {
+                    medical_date: "2019-05-08",
+                    medical_time: "23:30",
+                    medical_diagnosis_judgment: "初诊",
+                    medical_doctor: "马医生",
+                    medical_complain: "痛痛痛",
+                    medical_hpi: "发病了",
+                    medical_anamnesis: "无既往史",
+                    medical_allergy: "无过敏史",
+                    medical_check: "病病病病病病病病",
+                    medical_auxiliary: "有病有病有病有病",
+                    medical_diagnosis: "复诊",
+                    medical_treatment_options: "用刀用刀用刀用刀",
+                    medical_treatment: "用刀用刀用刀用刀",
+                    medical_doctor_advice: "喝水喝水喝水喝水喝水"
+                }
+            ]
         };
     },
     created() {},
@@ -319,21 +318,23 @@ export default {
         //复诊
         sub_visit() {
             this.subvisit_show = true;
-        },
-        // 阿斯顿发射点发生都杀都还塞的还是丢啊是
-        AddForm() {
-            this.FormArr.push({
-                index: this.FormArr.length,
-                value: ""
-            });
-            console.log(this.FormArr);
-        },
-        Delete(index) {
-            this.FormArr.splice(index, 1);
-            for (let i in this.FormArr) {
-                this.FormArr[i].index = i;
-            }
         }
+
+        //  增删改查
+
+        // AddForm() {
+        //     this.FormArr.push({
+        //         index: this.FormArr.length,
+        //         value: ""
+        //     });
+        //     console.log(this.FormArr);
+        // },
+        // Delete(index) {
+        //     this.FormArr.splice(index, 1);
+        //     for (let i in this.FormArr) {
+        //         this.FormArr[i].index = i;
+        //     }
+        // }
     }
 };
 </script>
@@ -363,7 +364,7 @@ export default {
             font-weight: bold;
             margin-right: 10px;
             margin-left: 20px;
-            background-color: #f8f8f8;
+            background-color: #fafafa;
             border: 2px solid #88cdec;
             border-left-width: 10px;
             padding: 10px;
@@ -372,12 +373,16 @@ export default {
             .medical-top-title {
                 font-size: 22px;
                 display: flex;
-                // border: 1px solid red;
+                border: 1px solid red;
                 width: 100%;
+                .medical-top-i {
+                    cursor: pointer;
+                    margin-left: 20px;
+                }
             }
             .patient-left {
                 margin-bottom: 100px;
-                margin-left: -25px;
+                margin-left: -10px;
                 // border: 1px solid red;
                 font-size: 15px;
                 color: #5e5e5e;
@@ -385,15 +390,17 @@ export default {
                     display: flex;
                     margin-bottom: -20px;
                     // border: 1px solid red;
+                    .form-content {
+                        color: #000;
+                        margin-left: 65px;
+                    }
                 }
             }
-            .medical-top-i {
-                cursor: pointer;
-                margin-left: 20px;
-            }
+
             &:hover {
                 border-color: #6ac2eb;
                 color: #484848;
+                background-color: #f5f5f5;
             }
         }
     }

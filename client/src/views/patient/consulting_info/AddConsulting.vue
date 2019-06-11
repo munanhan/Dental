@@ -15,10 +15,14 @@
             :rules="form.rules"
         >
             <div class="Advan-content">
-                <div class="Advan-top">
-                    <div class="advan-1"> 1503010120</div>
-                    <div class="advan-1"> 5岁</div>
-                    <div class="advan-2"> *(无病历号)</div>
+                <div
+                    v-for="(item,index) in form.consultings"
+                    :key="index"
+                    class="Advan-top"
+                >
+                    <div class="advan-1"> {{item.case_id}}</div>
+                    <div class="advan-1"> {{item.age}}岁</div>
+                    <div class="advan-2"> {{item.medical}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -31,46 +35,56 @@
                             <input>
                         </tr>
                         <tr>
-                            <td align="center"> 基本需求</td>
-                            <!-- <input style="width:620px"> -->
-                            <!-- <el-select
-                                v-model="type"
-                                style="width:620px"
-                            >
-                                <el-option
-                                    label="区域二"
-                                    value="beijing"
+                            <td align="center">基本需求</td>
+                            <div>
+                                <el-select
+                                    style="width:620px;"
+                                    v-model="form.value"
+                                    multiple
+                                    filterable
+                                    allow-create
+                                    default-first-option
+                                    placeholder="请选择"
                                 >
-                                    <el-checkbox v-model="checked1">备选项</el-checkbox>
-                                </el-option>
-                                <el-option
-                                    label="区域三"
-                                    value="231231"
-                                >
-                                    <el-checkbox v-model="checked2">备选项</el-checkbox>
-                                </el-option>
-                                <el-option
-                                    label="区域四"
-                                    value="54545"
-                                >
-                                    <el-checkbox v-model="checked3">备选项</el-checkbox>
-                                </el-option>
-                            </el-select> -->
-                            <i
-                                @click="basice_need"
-                                class="el-icon-setting form-setting"
-                            ></i>
+                                    <el-option
+                                        v-for="item in form.options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <i
+                                    @click="basice_need"
+                                    class="el-icon-setting form-setting"
+                                ></i>
+                            </div>
                         </tr>
                         <tr>
                             <td
                                 align="center"
-                                prop="sad"
+                                prop=""
                             >潜在需求</td>
                             <div>
-                                <input
-                                    v-model="form.sad"
-                                    style="width:616px"
+                                <el-select
+                                    style="
+                                           border:none;
+                                           width:620px"
+                                    v-model="form.value1"
+                                    multiple
+                                    filterable
+                                    allow-create
+                                    default-first-option
+                                    placeholder="请选择"
                                 >
+                                    <el-option
+                                        v-for="item in form.qianzai"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                    >
+                                    </el-option>
+                                </el-select>
                                 <i
                                     @click="potential_dem"
                                     class="el-icon-setting form-setting"
@@ -143,8 +157,40 @@ export default {
             basneed_show: false,
             potentdeman_show: false,
             form: {
+                consultings: [
+                    {
+                        case_id: "钟先生",
+                        age: "10",
+                        medical: "1503010120"
+                    }
+                ],
                 type: [],
-                sad: "",
+                // sad: "",
+                qianzai: [
+                    {
+                        value: "HTML",
+                        label: "HTML"
+                    },
+                    {
+                        value: "CSS",
+                        label: "CSS"
+                    }
+                ],
+                options: [
+                    {
+                        value: "HTML",
+                        label: "HTML"
+                    },
+                    {
+                        value: "CSS",
+                        label: "CSS"
+                    },
+                    {
+                        value: "JavaScript",
+                        label: "JavaScript"
+                    }
+                ],
+                value: [],
                 rules: {}
             },
             commitLoading: false

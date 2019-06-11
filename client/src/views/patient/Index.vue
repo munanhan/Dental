@@ -50,19 +50,19 @@
                                         ref="item1"
                                     >
                                         <li
-                                            v-for="(item,index) in appointment"
+                                            v-for="(item,index) in appointments"
                                             :key="index"
                                         >
                                             <div class="work-background">
                                                 <div class="work-background-top">
-                                                    <span class="work-top1">{{item.case_id}}</span>
-                                                    <span class="work-top2">{{item.medical_history}}</span>
+                                                    <span class="work-top1">{{item.appointment_case_id}}</span>
+                                                    <span class="work-top2">{{item.appointment_history}}</span>
                                                     <span class="work-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="work-background-bottom">
-                                                    <span class="work-bottom">{{item.patient_phone}}</span>
-                                                    <span class="work-bottom">{{item.patient_doctor}}</span>
-                                                    {{item.medical_record}}
+                                                    <span class="work-bottom">{{item.appointment_phone}}</span>
+                                                    <span class="work-bottom">{{item.appointment_doctor}}</span>
+                                                    {{item.appointment_record}}
                                                 </div>
                                             </div>
                                         </li>
@@ -90,14 +90,14 @@
                                         >
                                             <div class="work-background">
                                                 <div class="work-background-top">
-                                                    <span class="work-top1">{{item.case_id}}</span>
-                                                    <span class="work-top2">{{item.medical_history}}</span>
-                                                    <span class="work-top3">{{item.appointment_date}}</span>
+                                                    <span class="work-top1">{{item.diagnosi_case_id}}</span>
+                                                    <span class="work-top2">{{item.diagnosi_history}}</span>
+                                                    <span class="work-top3">{{item.diagnosi_date}}</span>
                                                 </div>
                                                 <div class="work-background-bottom">
-                                                    <span class="work-bottom">{{item.patient_phone}}</span>
-                                                    <span class="work-bottom">{{item.patient_doctor}}</span>
-                                                    {{item.medical_record}}
+                                                    <span class="work-bottom">{{item.diagnosi_phone}}</span>
+                                                    <span class="work-bottom">{{item.diagnosi_doctor}}</span>
+                                                    {{item.diagnosi_record}}
                                                 </div>
                                             </div>
                                         </li>
@@ -119,8 +119,23 @@
                                         v-if="visitExpend"
                                         ref="item1"
                                     >
-                                        <li>列表1</li>
-                                        <li>列表2</li>
+                                        <li
+                                            v-for="(item,index) in subsequent"
+                                            :key="index"
+                                        >
+                                            <div class="work-background">
+                                                <div class="work-background-top">
+                                                    <span class="work-top1">{{item.subsequent_case_id}}</span>
+                                                    <span class="work-top2">{{item.subsequent_history}}</span>
+                                                    <span class="work-top3">{{item.subsequent_date}}</span>
+                                                </div>
+                                                <div class="work-background-bottom">
+                                                    <span class="work-bottom">{{item.subsequent_phone}}</span>
+                                                    <span class="work-bottom">{{item.subsequent_doctor}}</span>
+                                                    {{item.subsequent_record}}
+                                                </div>
+                                            </div>
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -197,23 +212,27 @@
                                                 class="el-icon-caret-right"
                                                 :class="{'down': patientExpend}"
                                             ></i>
-                                            最近患者(0)</div>
+                                            最近患者(1)</div>
                                         <!-- /// -->
                                         <ul
                                             style="margin-top:-2px"
                                             v-if="patientExpend"
                                             ref="item1"
                                         >
-                                            <li>
+                                            <li
+                                                v-for="(item,index) in patientsRecent"
+                                                :key="index"
+                                            >
                                                 <div class="patient-background">
                                                     <div class="patient-background-top">
-                                                        <span class="patient-top1">123213123</span>
-                                                        <span class="patient-top2">史</span>
-                                                        <span class="patient-top3">2019-05-17</span>
+                                                        <span class="patient-top1">{{item.case_id}}</span>
+                                                        <span class="patient-top2">{{item.medical_history}}</span>
+                                                        <span class="patient-top3">{{item.appointment_date}}</span>
                                                     </div>
                                                     <div class="patient-background-bottom">
-                                                        <span class="patient-bottom">13925814457</span>
-                                                        <span style="margin-right:20px">1212</span> *(无病历号)
+                                                        <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                        <span class="patient-bottom2">{{item.patient_doctor}}</span>
+                                                        {{item.medical_record}}
                                                     </div>
                                                 </div>
                                             </li>
@@ -227,15 +246,30 @@
                                             <i
                                                 class="el-icon-caret-right"
                                                 :class="{'down': blackExpend}"
-                                            ></i> 黑名单(0)</div>
+                                            ></i> 黑名单(1)</div>
                                         <!-- /// -->
                                         <ul
                                             style="margin-top:-2px"
                                             v-if="blackExpend"
                                             ref="item1"
                                         >
-                                            <li>列表1</li>
-                                            <li>列表2</li>
+                                            <li
+                                                v-for="(item,index) in blacklist"
+                                                :key="index"
+                                            >
+                                                <div class="patient-background">
+                                                    <div class="patient-background-top">
+                                                        <span class="patient-top1">{{item.blacklist_case_id}}</span>
+                                                        <span class="patient-top2">{{item.blacklist_history}}</span>
+                                                        <span class="patient-top3">{{item.blacklist_date}}</span>
+                                                    </div>
+                                                    <div class="patient-background-bottom">
+                                                        <span class="patient-bottom1">{{item.blacklist_phone}}</span>
+                                                        <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
+                                                        {{item.blacklist_record}}
+                                                    </div>
+                                                </div>
+                                            </li>
 
                                         </ul>
                                     </div>
@@ -247,15 +281,30 @@
                                             <i
                                                 class="el-icon-caret-right"
                                                 :class="{'down': treatmentExpend}"
-                                            ></i> 治疗完成(0)</div>
+                                            ></i> 治疗完成(1)</div>
                                         <!-- /// -->
                                         <ul
                                             style="margin-top:-2px"
                                             v-if="treatmentExpend"
                                             ref="item1"
                                         >
-                                            <li>列表1</li>
-                                            <li>列表2</li>
+                                            <li
+                                                v-for="(item,index) in treatment"
+                                                :key="index"
+                                            >
+                                                <div class="patient-background">
+                                                    <div class="patient-background-top">
+                                                        <span class="patient-top1">{{item.case_id}}</span>
+                                                        <span class="patient-top2">{{item.medical_history}}</span>
+                                                        <span class="patient-top3">{{item.appointment_date}}</span>
+                                                    </div>
+                                                    <div class="patient-background-bottom">
+                                                        <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                        <span class="patient-bottom2">{{item.patient_doctor}}</span>
+                                                        {{item.medical_record}}
+                                                    </div>
+                                                </div>
+                                            </li>
 
                                         </ul>
                                     </div>
@@ -298,6 +347,26 @@
                                 placeholder="姓名、拼音、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
+                        </div>
+                        <div
+                            v-for="(item,index) in access"
+                            :key="index"
+                            class="visit-background"
+                        >
+                            <div
+                                class="visit-background-top"
+                                style="margin-top:5px"
+                            >
+                                <span class="visit-top1">{{item.access_case_id}}</span>
+                                <span class="visit-top2">{{item.access_history}}</span>
+                                <span class="visit-top3">{{item.access_date}}</span>
+                            </div>
+                            <div class="visit-background-bottom">
+                                <span class="visit-bottom1">{{item.access_phone}}</span>
+                                <span class="visit-bottom2">{{item.access_doctor}}</span>
+                                <span class="visit-bottom3">{{item.access_record}}</span>
+                            </div>
+
                         </div>
                         <div class="visit-bottom-content">
                             <el-button
@@ -475,6 +544,7 @@ export default {
 
             //   },
             value1: "",
+
             options: [
                 {
                     value: "选项1",
@@ -509,44 +579,104 @@ export default {
             consultingInfo: false,
             bookingInformation: false,
             medicalInformation: false,
-            appointment: [
+
+            //当天工作
+            appointments: [
                 {
-                    case_id: "150301012",
-                    medical_history: "史",
+                    appointment_case_id: "石先生",
+                    appointment_history: "史",
                     appointment_date: "上午 11:30",
-                    patient_phone: "13925814457",
-                    patient_doctor: "马医生"
+                    appointment_phone: "13925814457",
+                    appointment_doctor: "马医生",
+                    appointment_record: "11002"
                 },
                 {
-                    case_id: "150301013",
-                    medical_history: "欠",
+                    appointment_case_id: "陈先生",
+                    appointment_history: "欠",
                     appointment_date: "2019-06-04",
-                    patient_phone: "13925814457",
-                    patient_doctor: "余医生"
+                    appointment_phone: "13925814457",
+                    appointment_doctor: "余医生",
+                    appointment_record: "11003"
                 },
                 {
-                    case_id: "150301014",
-                    medical_history: "vip",
-                    appointment_date: "2019-06-05",
-                    patient_phone: "13925814457",
-                    patient_doctor: "钟医生"
+                    appointment_case_id: "刘先生",
+                    appointment_history: "欠",
+                    appointment_date: "2019-06-04",
+                    appointment_phone: "13925814457",
+                    appointment_doctor: "马医生",
+                    appointment_record: "11003"
                 },
                 {
-                    case_id: "150301015",
-                    medical_history: "史",
-                    appointment_date: "2019-06-06",
-                    patient_phone: "13925814457",
-                    patient_doctor: "马医生"
+                    appointment_case_id: "韩先生",
+                    appointment_history: "欠",
+                    appointment_date: "2019-06-04",
+                    appointment_phone: "13925814457",
+                    appointment_doctor: "余医生",
+                    appointment_record: "11003"
                 }
             ],
             diagnosis: [
                 {
-                    case_id: "131313131",
+                    diagnosi_case_id: "131313131",
+                    diagnosi_history: "初",
+                    diagnosi_date: "上午 11:30",
+                    diagnosi_phone: "13925814457",
+                    diagnosi_doctor: "马医生",
+                    diagnosi_record: "21001"
+                }
+            ],
+            subsequent: [
+                {
+                    subsequent_case_id: "1001",
+                    subsequent_history: "vip",
+                    subsequent_date: "1990-10-02",
+                    subsequent_phone: "13423901332",
+                    subsequent_doctor: "黄医生",
+                    subsequent_record: "21001"
+                }
+            ],
+
+            //全部患者
+            patientsRecent: [
+                {
+                    recent_case_id: "15030101",
                     medical_history: "初",
                     appointment_date: "上午 11:30",
                     patient_phone: "13925814457",
                     patient_doctor: "马医生",
-                    medical_record: "*(无病历号)"
+                    medical_record: "21001"
+                }
+            ],
+
+            blacklist: [
+                {
+                    blacklist_case_id: "15030101",
+                    blacklist_history: "vip",
+                    blacklist_date: "2019-05-10",
+                    blacklist_phone: "13925814457",
+                    blacklist_doctor: "石医生",
+                    blacklist_record: "21001"
+                }
+            ],
+
+            treatment: [
+                {
+                    case_id: "马先生",
+                    medical_history: "vip",
+                    appointment_date: "2019-05-10",
+                    patient_phone: "15304890744",
+                    patient_doctor: "石医生",
+                    medical_record: "21001"
+                }
+            ],
+            access: [
+                {
+                    access_case_id: "李先生",
+                    access_history: "vip",
+                    access_date: "2019-06-01",
+                    access_phone: "13920578841",
+                    access_doctor: "孔先生",
+                    access_record: "1503010120"
                 }
             ],
             //最近访问
@@ -657,9 +787,9 @@ export default {
     height: 100%;
     border: 1px solid #eee;
     .my-aside {
-        background-color: rgb(238, 241, 246);
+        background-color: #eef1f6;
         .today_top {
-            border: 1px solid rgb(167, 164, 164);
+            border: 1px solid #a7a4a4;
             height: 100%;
             box-sizing: border-box;
         }
@@ -667,7 +797,7 @@ export default {
 }
 
 .el-header {
-    background-color: rgb(235, 235, 235);
+    background-color: #ebebeb;
     line-height: 60px;
     margin-top: -10px;
 }
@@ -715,6 +845,9 @@ export default {
                     transform: rotate(90deg);
                 }
             }
+            &:hover {
+                color: #757575;
+            }
         }
         .work-background {
             border: 1px solid #bababa;
@@ -731,7 +864,7 @@ export default {
                     color: #000;
                 }
                 .work-top2 {
-                    margin-right: 120px;
+                    // margin-right: 120px;
                     margin-left: 10px;
                     background-color: #d30f0f;
                     font-size: 10px;
@@ -740,6 +873,8 @@ export default {
                 .work-top3 {
                     color: #747474;
                     font-size: 13px;
+                    float: right;
+                    margin-right: 5px;
                 }
             }
             .work-background-bottom {
@@ -774,6 +909,9 @@ export default {
                     transform: rotate(90deg);
                 }
             }
+            &:hover {
+                color: #747474;
+            }
         }
         .patient-background {
             border: 1px solid #bababa;
@@ -789,7 +927,6 @@ export default {
                     color: #000;
                 }
                 .patient-top2 {
-                    margin-right: 120px;
                     margin-left: 10px;
                     background-color: #d30f0f;
                     font-size: 10px;
@@ -798,15 +935,18 @@ export default {
                 .patient-top3 {
                     color: #747474;
                     font-size: 13px;
-                }
-                .patient-top3 {
+                    float: right;
+                    margin-right: 5px;
                 }
             }
             .patient-background-bottom {
                 margin-left: 30px;
                 font-size: 14px;
                 color: #747474;
-                .patient-bottom {
+                .patient-bottom1 {
+                    margin-right: 20px;
+                }
+                .patient-bottom2 {
                     margin-right: 20px;
                 }
             }
@@ -847,6 +987,7 @@ export default {
             width: 230px;
         }
     }
+
     .visit-bottom-content {
         margin-top: 800px;
         position: absolute;
@@ -854,6 +995,52 @@ export default {
         width: 100%;
         height: 60px;
         background-color: white;
+    }
+    .visit-background {
+        border: 1px solid #bababa;
+        background-color: white;
+        margin-right: 10px;
+        cursor: pointer;
+        border-left-width: 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        height: 60px;
+        .visit-background-top {
+            .visit-top1 {
+                font-weight: bold;
+                color: #000;
+                margin-left: 10px;
+            }
+            .visit-top2 {
+                margin-left: 5px;
+                background-color: #d30f0f;
+                font-size: 10px;
+                color: white;
+            }
+            .visit-top3 {
+                color: #747474;
+                float: right;
+                margin-right: 10px;
+                font-size: 13px;
+            }
+        }
+        .visit-background-bottom {
+            margin-left: 30px;
+            font-size: 14px;
+            color: #747474;
+            margin-top: 15px;
+            .visit-bottom1 {
+            }
+            .visit-bottom2 {
+                margin-left: 20px;
+            }
+            .visit-bottom3 {
+                margin-left: 40px;
+            }
+        }
+        &:hover {
+            border-color: @color;
+        }
     }
 }
 .work-content {
