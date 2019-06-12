@@ -289,7 +289,6 @@
                     >
                         <el-input v-model="form.patient_content"></el-input>
                     </el-form-item>
-
                 </div>
 
                 <div style="display:flex">
@@ -476,7 +475,7 @@ export default {
             tableData: [
                 {
                     id: 0,
-                    phone: "13923819974",
+                    phone: "13553819974",
                     medical: "2016091102",
                     name: "",
                     returnVisit: "",
@@ -485,7 +484,15 @@ export default {
 
                 {
                     id: 1,
-                    phone: "13923819974",
+                    phone: "15923819974",
+                    medical: "2016091102",
+                    name: "",
+                    returnVisit: "",
+                    returnDate: "1996-02-10"
+                },
+                {
+                    id: 2,
+                    phone: "13523819974",
                     medical: "2016091102",
                     name: "",
                     returnVisit: "",

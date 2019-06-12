@@ -22,11 +22,20 @@
                             <div class="work-content-top3">
                                 <i class="fa fa-angle-right"></i>
                             </div>
-                            <el-date-picker
+                            <!-- <el-date-picker
                                 class="work-data"
                                 v-model="value1"
                                 type="date"
                                 placeholder="选择日期"
+                            >
+                            </el-date-picker> -->
+                            <el-date-picker
+                                v-model="workdate"
+                                type="date"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd"
+                                :clearable="false"
+                                class="work-data"
                             >
                             </el-date-picker>
 
@@ -203,7 +212,7 @@
                             </div> -->
                             <div style="background-color:#efefef">
                                 <div class="patient-item">
-                                    <div style="cursor: pointer;margin-bottom:10px">
+                                    <div style="cursor:pointer;margin-bottom:10px">
                                         <div
                                             @click="expend('patientExpend')"
                                             class="patient-title"
@@ -537,7 +546,7 @@ export default {
             addp_show: false,
             appvisit_show: false,
 
-            value1: "",
+            workdate:  new Date(),
 
             options: [
                 {
@@ -583,31 +592,31 @@ export default {
                     appointment_phone: "13925814457",
                     appointment_doctor: "马医生",
                     appointment_record: "11002"
-                },
-                {
-                    appointment_case_id: "陈先生",
-                    appointment_history: "欠",
-                    appointment_date: "2019-06-04",
-                    appointment_phone: "13925814457",
-                    appointment_doctor: "余医生",
-                    appointment_record: "11003"
-                },
-                {
-                    appointment_case_id: "刘先生",
-                    appointment_history: "欠",
-                    appointment_date: "2019-06-04",
-                    appointment_phone: "13925814457",
-                    appointment_doctor: "马医生",
-                    appointment_record: "11003"
-                },
-                {
-                    appointment_case_id: "韩先生",
-                    appointment_history: "欠",
-                    appointment_date: "2019-06-04",
-                    appointment_phone: "13925814457",
-                    appointment_doctor: "余医生",
-                    appointment_record: "11003"
                 }
+                // {
+                //     appointment_case_id: "陈先生",
+                //     appointment_history: "欠",
+                //     appointment_date: "2019-06-04",
+                //     appointment_phone: "13925814457",
+                //     appointment_doctor: "余医生",
+                //     appointment_record: "11003"
+                // },
+                // {
+                //     appointment_case_id: "刘先生",
+                //     appointment_history: "欠",
+                //     appointment_date: "2019-06-04",
+                //     appointment_phone: "13925814457",
+                //     appointment_doctor: "马医生",
+                //     appointment_record: "11003"
+                // },
+                // {
+                //     appointment_case_id: "韩先生",
+                //     appointment_history: "欠",
+                //     appointment_date: "2019-06-04",
+                //     appointment_phone: "13925814457",
+                //     appointment_doctor: "余医生",
+                //     appointment_record: "11003"
+                // }
             ],
             diagnosis: [
                 {
@@ -683,7 +692,16 @@ export default {
             treatmentExpend: false
         };
     },
-    created() {},
+    created() {
+        let that = this;
+        that.$api.patient
+            .todayWork()
+            .then(res => {
+                console.log(res.data);
+                // that.appointments = res.data.appointmentNotArrive;
+            })
+            .catch(res => {});
+    },
     mounted() {},
     watch: {
         // refresh(newValue, oldValue) {
