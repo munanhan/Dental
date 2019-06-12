@@ -333,11 +333,13 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  bottom: 0;
+  bottom: 1px;
   right: 0;
   display: flex;
   flex-direction: column;
   width: 100%;
+  
+ 
   .week-header {
     flex: auto;
     display: flex;
