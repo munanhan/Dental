@@ -1,6 +1,6 @@
 <template>
   <div class="yuyue-list" >
-    <el-table :data="listData" height="100%" border style="width: 100%">
+    <el-table :data="listData"  border style="width: 100%">
       <el-table-column prop="status" label="状态" width="80">
         <template slot-scope="scope" >
           <span v-if="scope.row.status == '3'"><i class="fas fa-exclamation-triangle" style="color:red;background-color:#fff;"></i>过期</span>
@@ -49,11 +49,8 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.list {
-  width: 100%;
-  background-color: #fff;
-}
+<style lang="less">
+
 .yuyue-list {
   width: 100%;
   height: 100%;

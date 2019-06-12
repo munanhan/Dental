@@ -65,6 +65,15 @@ export function searchAll(data) {
         params: data
     })
 }
+//当前工作
+
+export function todayWork(data) {
+    return request({
+        url: `${prefix}/today_work`,
+        method: 'get',
+        params: data
+    })
+}
 
 
 

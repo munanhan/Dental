@@ -22,10 +22,12 @@ class BaseVerifyFields
 
         $controller = $request->attributes->get('controller');
 
-        if(!in_array(\Route::current()->uri,config('config.expect_route'))){
-            //排除权限控制的路由api
-            $auth = empty(Session::get('user_auth'.auth('api')->user()['id']))?[]:
-                    Session::get('user_auth'.auth('api')->user()['id']);
+        $route = empty(config('config.expect_route'))?[]:config('config.expect_route');
+
+        // if(!in_array(\Route::current()->uri,$route)){
+        //     //排除权限控制的路由api
+        //     $auth = empty(Session::get('user_auth'.auth('api')->user()['id']))?[]:
+        //             Session::get('user_auth'.auth('api')->user()['id']);
             //权限
             // var_dump($request);exit;
             // if ($auth === null) {
@@ -36,7 +38,7 @@ class BaseVerifyFields
             // if (!in_array(str_replace('Controller','', $controller), $auth)) {
             //     return message('没有权限.',[],401);
             // }
-        }
+        // }
         
 
         $fields = config($request->attributes->get('config_load'));

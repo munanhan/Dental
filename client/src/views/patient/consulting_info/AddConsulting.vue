@@ -32,7 +32,15 @@
                                 align="center"
                                 width="200"
                             >客户主诉</td>
-                            <input>
+
+                            <td>
+                                <el-input
+                                    class="table-input"
+                                    v-model="input"
+                                    placeholder="请输入内容"
+                                ></el-input>
+
+                            </td>
                         </tr>
                         <tr>
                             <td align="center">基本需求</td>
@@ -243,7 +251,27 @@ export default {
         td {
             padding: 0;
             background-color: #f8f8f8;
+
+            .table-input{
+                /deep/ .el-input__inner{
+                    border: none;
+                    border-radius: 0;
+                }
+            }
         }
+
+        // .aaa{
+        //     display: flex;
+
+        //     .left{
+        //         flex: 1;
+        //     }
+
+        //     .icon{
+        //         width: 100px;
+        //     }
+        // }
+
         input {
             width: 660px;
             height: 40px;
