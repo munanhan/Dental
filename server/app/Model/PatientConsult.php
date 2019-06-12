@@ -6,7 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientConsult extends Model
 {
-    protected $fillable=[
-
-    ];
+    protected $guarded=['id'];
 }

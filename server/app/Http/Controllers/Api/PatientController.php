@@ -7,6 +7,7 @@ use App\Model\Appointment;
 use App\Model\Patient;
 use App\Model\PatientDisposal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class PatientController extends BaseController
@@ -131,14 +132,12 @@ class PatientController extends BaseController
      */
     public function todayWork()
     {
-
         $whereTime=now()->toDateString();
         $data['appointmentNotArrive']=$this->appointmentNotArrive($whereTime);
         $data['todayFirstVisit']=$this->todayFirstVisit($whereTime);
         $data['todaySubsequentVisit']=$this->todaySubsequentVisit($whereTime);
 
         return message('',$data,200);
-
     }
 
 
@@ -147,12 +146,7 @@ class PatientController extends BaseController
      */
     public function appointmentNotArrive($whereTime)
     {
-        return Patient::whereHas('appointments',function($query) use ($whereTime){
-            $query
-                ->where('appointments.appointment_date',$whereTime)
-                ->whereNull('appointments.deleted_at')
-                ->whereNotIn('appointments.status',[2,3]);
-        })->get();
+        return $this->diagnose($whereTime,'',[0,1,3]);
     }
 
     /*
@@ -160,7 +154,7 @@ class PatientController extends BaseController
      */
     public function todayFirstVisit($whereTime)
     {
-        return $this->diagnose($whereTime,0,2);
+        return $this->diagnose($whereTime,0,[2]);
     }
 
     /*
@@ -168,22 +162,26 @@ class PatientController extends BaseController
      */
     public function todaySubsequentVisit($whereTime)
     {
-        return $this->diagnose($whereTime,1,2);
+        return $this->diagnose($whereTime,1,[2]);
     }
 
     /*
      * 患者诊断
      */
-    protected function diagnose($whereTime,$appointmentType,$appointmentStatus)
+    protected function diagnose($whereTime,$type,array $status)
     {
-        return Patient::whereHas('appointments',function ($query)
-        use($whereTime,$appointmentType,$appointmentStatus) {
-            $query
-                ->where('appointments.type',$appointmentType)
-                ->where('appointments.status',$appointmentStatus)
-                ->where('appointments.appointment_date',$whereTime)
-                ->whereNull('appointments.deleted_at');
-        })->get();
+        return
+        DB::table('patients')
+            ->join('appointments','patients.id','=','appointments.patient_id')
+            ->select('patients.id','case_id','patient_sex','patient_name','patient_age','patient_category',
+               'allergy','anamnesis','patient_phone','type','appointment_doctor','appointment_date','items')
+            ->whereIn('appointments.status',$status)
+            ->whereDate('appointment_date',$whereTime)
+            ->whereNull('appointments.deleted_at')
+            ->when($type,function ($query,$type){
+                return $query->where('appointments.type',$type);
+            })
+            ->get();
     }
 
 
