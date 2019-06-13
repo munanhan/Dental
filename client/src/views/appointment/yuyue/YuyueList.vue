@@ -1,14 +1,24 @@
 <template>
-  <div class="yuyue-list" >
-    <el-table :data="listData"  border style="width: 100%">
+  <div class="yuyue-list">
+    <el-table :data="listData" border style="width: 100%">
       <el-table-column prop="status" label="状态" width="80">
-        <template slot-scope="scope" >
-          <span v-if="scope.row.status == '3'"><i class="fas fa-exclamation-triangle" style="color:red;background-color:#fff;"></i>过期</span>
-          <span v-if="scope.row.status == '2'"><i class="fas fa-warehouse" style="color:red;background-color:#fff;"></i>到达</span>
-          <span v-if="scope.row.status == '1'"><i class="far fa-thumbs-up" style="color:red;background-color:#fff;"></i>确认</span>
-          <span v-if="scope.row.status == '0'"><i class="far fa-clock" style="color:red;background-color:#fff;"></i>预约</span>
+        <template slot-scope="scope">
+          <span v-if="scope.row.status == '4'">
+            <i class="fas fa-times-circle" style="color:#ff3646;background-color:#fff;"></i>流失
+          </span>
+          <span v-if="scope.row.status == '3'">
+            <i class="fas fa-exclamation-triangle" style="color:#f17e1a;background-color:#fff;"></i>过期
+          </span>
+          <span v-if="scope.row.status == '2'">
+            <i class="fas fa-warehouse" style="color:rgb(50, 17, 233);background-color:#fff;"></i>到达
+          </span>
+          <span v-if="scope.row.status == '1'">
+            <i class="far fa-thumbs-up" style="color:rgb(160, 101, 238);background-color:#fff;"></i>确认
+          </span>
+          <span v-if="scope.row.status == '0'">
+            <i class="far fa-clock" style="color:#6bb15e;background-color:#fff;"></i>预约
+          </span>
         </template>
-        
       </el-table-column>
       <el-table-column prop="appointment_date" label="预约日期" width="120"></el-table-column>
       <el-table-column prop="start_time" label="预约时间" width="80"></el-table-column>
@@ -24,7 +34,7 @@
       <el-table-column prop="patient_source" label="患者来源" width="80"></el-table-column>
       <el-table-column prop="patient_phone" label="电话" width="120"></el-table-column>
       <el-table-column prop="created_by" label="创建人" width="90"></el-table-column>
-      <el-table-column prop="created_at" label="创建日期" ></el-table-column>
+      <el-table-column prop="created_at" label="创建日期"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -50,7 +60,6 @@ export default {
 </script>
 
 <style lang="less">
-
 .yuyue-list {
   width: 100%;
   height: 100%;
