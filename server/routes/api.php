@@ -385,7 +385,9 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::delete('disposal/{id}', 'DisposalController@delete');//删除
 
-    // Route::get('disposal/export','DisposalController@export');//导出
+    Route::get('disposal/export','DisposalController@export');//导出
+
+    Route::post('disposal/import','DisposalController@import');//导入
 
     /*
      * Route CostCategory Api
@@ -625,15 +627,13 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::delete('role/{id}', 'RoleController@delete');//删除
 
 
-});
-
-Route::group(['namespace'=>'Api','middleware' => ['check']], function(){
-    
-    Route::get('disposal/export','DisposalController@export');//导出处方
 
 });
 
     
+Route::group(['namespace'=>'Api'], function(){
 
-
+    Route::get('test','Test@index');//测试接口
+});
+    
 

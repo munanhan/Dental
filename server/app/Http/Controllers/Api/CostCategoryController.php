@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\CostCategory;
+use App\Model\Disposal;
 use App\Http\Controllers\Api\BaseController;
 
 class CostCategoryController extends BaseController
@@ -39,6 +40,7 @@ class CostCategoryController extends BaseController
     	//删
     	$res = CostCategory::destroy($id);
     	if ($res) {
+            Disposal::where('cate_id',$id)->delete();
     		return message('成功',[],200);
     	}
     	else{
