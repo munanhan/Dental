@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PatientConsult extends Model
+class PatientDisposalRecord extends Model
 {
-    protected $guarded=['id'];
+    //
 }

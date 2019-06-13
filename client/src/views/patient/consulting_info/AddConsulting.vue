@@ -36,96 +36,132 @@
                             <td>
                                 <el-input
                                     class="table-input"
+                                    v-model="form.input"
+                                ></el-input>
+
+                            </td>
+                        </tr>
+                        <tr class="basic-needs">
+                            <td align="center">基本需求</td>
+                            <td style="background-color:white">
+                                <div>
+                                    <el-select
+                                        class="table-select"
+                                        style="width:620px;"
+                                        v-model="form.value"
+                                        multiple
+                                        filterable
+                                        allow-create
+                                        default-first-option
+                                        placeholder="请选择"
+                                    >
+                                        <el-option
+                                            v-for="item in form.options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value"
+                                        >
+                                        </el-option>
+                                    </el-select>
+                                    <i
+                                        @click="basice_need"
+                                        class="el-icon-setting form-setting"
+                                    ></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="potential">
+                            <td align="center">潜在需求</td>
+                            <td style="background-color:white">
+                                <div>
+                                    <el-select
+                                        class="table-select"
+                                        style="width:620px;"
+                                        v-model="value"
+                                        multiple
+                                        filterable
+                                        allow-create
+                                        default-first-option
+                                        placeholder="请选择文章标签"
+                                    >
+                                        <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value"
+                                        >
+                                        </el-option>
+                                    </el-select>
+                                    <i
+                                        @click="potential_dem"
+                                        class="el-icon-setting form-setting"
+                                    ></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">医生方案</td>
+                            <td>
+                                <el-input
+                                    class="table-input"
                                     v-model="input"
-                                    placeholder="请输入内容"
                                 ></el-input>
 
                             </td>
                         </tr>
                         <tr>
-                            <td align="center">基本需求</td>
-                            <div>
-                                <el-select
-                                    style="width:620px;"
-                                    v-model="form.value"
-                                    multiple
-                                    filterable
-                                    allow-create
-                                    default-first-option
-                                    placeholder="请选择"
-                                >
-                                    <el-option
-                                        v-for="item in form.options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value"
-                                    >
-                                    </el-option>
-                                </el-select>
-                                <i
-                                    @click="basice_need"
-                                    class="el-icon-setting form-setting"
-                                ></i>
-                            </div>
-                        </tr>
-                        <tr>
-                            <td
-                                align="center"
-                                prop=""
-                            >潜在需求</td>
-                            <div>
-                                <el-select
-                                    style="
-                                           border:none;
-                                           width:620px"
-                                    v-model="form.value1"
-                                    multiple
-                                    filterable
-                                    allow-create
-                                    default-first-option
-                                    placeholder="请选择"
-                                >
-                                    <el-option
-                                        v-for="item in form.qianzai"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value"
-                                    >
-                                    </el-option>
-                                </el-select>
-                                <i
-                                    @click="potential_dem"
-                                    class="el-icon-setting form-setting"
-                                ></i>
-                            </div>
-                        </tr>
-                        <tr>
-                            <td align="center">医生方案</td>
-                            <input>
-                        </tr>
-                        <tr>
                             <td align="center">沟通记录</td>
-                            <input>
+                            <td>
+                                <el-input
+                                    class="table-input"
+                                    v-model="input"
+                                ></el-input>
+
+                            </td>
                         </tr>
                         <tr>
                             <td align="center">服务建议</td>
-                            <input>
+                            <td>
+                                <el-input
+                                    class="table-input"
+                                    v-model="form.input"
+                                ></el-input>
+
+                            </td>
                         </tr>
-                        <tr>
+                        <tr class="doctor">
                             <td align="center">接诊医生</td>
-                            <select>
-                                <option> </option>
-                                <option>222</option>
-                                <option>333</option>
-                            </select>
+                            <el-select
+                                class="table-select"
+                                v-model="value"
+                                placeholder="请选择"
+                                style="width:664px"
+                            >
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
                         </tr>
-                        <tr>
+                        <tr class="data-entry">
                             <td align="center">资料录入人</td>
-                            <select style="width:664px">
-                                <option> </option>
-                                <option>222</option>
-                                <option>333</option>
-                            </select>
+                            <el-select
+                                class="table-select"
+                                v-model="value"
+                                placeholder="请选择"
+                                style="width:664px"
+                            >
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
                         </tr>
                     </table>
                 </div>
@@ -165,6 +201,7 @@ export default {
             basneed_show: false,
             potentdeman_show: false,
             form: {
+                input: "",
                 consultings: [
                     {
                         case_id: "钟先生",
@@ -240,6 +277,25 @@ export default {
     }
     .Advan-bottom {
         // border:1px solid red;
+        .basic-needs {
+            .table-select {
+                /deep/ .el-input__inner {
+                    border: none;
+                    border-radius: 0px;
+                }
+            }
+        }
+        .potential {
+            .table-select {
+                /deep/ .el-input__inner {
+                    // border-top: none;
+                    // border-left: none;
+                    // border-bottom: none;
+                    border: none;
+                    border-radius: 0px;
+                }
+            }
+        }
         table {
             border-collapse: collapse;
             border-spacing: 0;
@@ -252,8 +308,8 @@ export default {
             padding: 0;
             background-color: #f8f8f8;
 
-            .table-input{
-                /deep/ .el-input__inner{
+            .table-input {
+                /deep/ .el-input__inner {
                     border: none;
                     border-radius: 0;
                 }
@@ -276,10 +332,30 @@ export default {
             width: 660px;
             height: 40px;
         }
-        select {
-            width: 664px;
-            height: 40px;
+
+        .doctor {
+            .table-select {
+                /deep/ .el-input__inner {
+                    border: none;
+                    border-radius: 0px;
+                }
+            }
         }
+
+        .data-entry {
+            .table-select {
+                /deep/ .el-input__inner {
+                    border-right: none;
+                    border-left: none;
+                    border-bottom: none;
+                    border-radius: 0px;
+                }
+            }
+        }
+        // .el-select {
+        //     width: 664px;
+        //     height: 40px;
+        // }
     }
     .form-setting {
         text-align: right;

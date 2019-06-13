@@ -370,17 +370,18 @@ export default {
     },
 
     addYuyue(item) {
-      
+     //按钮新增预约
       if(!item){
         this.yuyue_id = null;
         this.addYuyueShow = true;
         return;
       }
+
       let date = formatDate(new Date(), "yyyy-MM-dd");
       this.isAttrDataTime(event.target);
+      //提示过期不准预约
       if (
         this.chooseDate < date &&
-        !this.target.hasAttribute("data-id") &&
         !this.target.hasAttribute("id")
       ) {
         this.dialogVisible = true;
@@ -396,10 +397,12 @@ export default {
       }
       this.addYuyueShow = true;
 
-      if (this.target.hasAttribute("data-id")) {
-        this.yuyue_id = this.target.getAttribute("data-id");
+      if (this.target.hasAttribute("id") &&  this.target.getAttribute("class") == "right") {
+        this.yuyue_id = this.target.getAttribute("id");
         this.yuyue_time = this.target.getAttribute("data-h");
+     
       } else {
+      
         this.yuyue_id = null;
         if (item) {
           let time = this.target.attributes["data-time"].value;
@@ -416,7 +419,7 @@ export default {
         this.target = dom;
         return;
       }
-      if (dom.hasAttribute("data-id")) {
+      if (dom.getAttribute("class") == "right") {
         this.target = dom;
         return;
       }
@@ -532,7 +535,7 @@ export default {
           `${ele.getAttribute("data-h")} : ${ele.getAttribute("data-time")}` ==
           item.start_time
         ) {
-          strhtml += `<div data-id="${item.id}" data-h="${
+          strhtml += `<div  data-h="${
             item.start_time
           }"><div class="inner">    
                   `;
@@ -541,7 +544,9 @@ export default {
           strhtml += this.statusIcon(item.status, item.id);
 
           strhtml += `
-              <div class="right">
+              <div class="right" id="${item.id}" data-h="${
+            item.start_time
+          }">
                 <p><span>${item.patient_name}</span><span>${
             item.type == 1 ? "复" : "初"
           }</span><span>${item.patient_age}</span></p>

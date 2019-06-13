@@ -15,11 +15,10 @@ class Appointment extends Model
         protected $dispatchesEvents=[
             'creating'=>CreatingEvent::class,
             'updating'=>UpdatingEvent::class,
-//            'retrieved'=>RecordEvent::class,
         ];
 
         public function patient()
         {
-            $this->belongsTo(Patient::class);
+           return $this->belongsTo(Patient::class,'patient_id');
         }
 }
