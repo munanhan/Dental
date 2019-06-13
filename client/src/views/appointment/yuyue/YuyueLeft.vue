@@ -93,6 +93,9 @@
                   <div>
                     <el-radio v-model="search.statusRadio" label="3">过期</el-radio>
                   </div>
+                   <div>
+                    <el-radio v-model="search.statusRadio" label="4">流失</el-radio>
+                  </div>
                 </div>
               </el-row>
               <el-row class="search" style="margin-top: 20px;">
