@@ -103,10 +103,17 @@
       <path value="$PROJECT_DIR$/server/vendor/phpunit/phpunit" />
       <path value="$PROJECT_DIR$/server/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/server/vendor/hamcrest/hamcrest-php" />
+<<<<<<< HEAD
+      <path value="$PROJECT_DIR$/server/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/server/vendor/maatwebsite/excel" />
+      <path value="$PROJECT_DIR$/server/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/server/vendor/markbaker/matrix" />
+=======
       <path value="$PROJECT_DIR$/server/vendor/maatwebsite/excel" />
       <path value="$PROJECT_DIR$/server/vendor/phpoffice/phpspreadsheet" />
       <path value="$PROJECT_DIR$/server/vendor/markbaker/matrix" />
       <path value="$PROJECT_DIR$/server/vendor/markbaker/complex" />
+>>>>>>> 614661f2ffe8d3d39d2d539d422a3073ec8bce99
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

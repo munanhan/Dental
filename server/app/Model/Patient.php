@@ -31,7 +31,7 @@ class Patient extends Model
         return $this->hasMany(PatientCase::class);
     }
 
-    public function patientVisit()
+    public function patientVisits()
     {
         return $this->hasMany(PatientVisit::class);
     }
