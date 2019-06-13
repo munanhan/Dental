@@ -51,7 +51,7 @@
                                             class="el-icon-caret-right"
                                             :class="{'down': appointmentExpend}"
                                         ></i>
-                                        预约未到(4)</div>
+                                        预约未到(3)</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -64,14 +64,14 @@
                                         >
                                             <div class="work-background">
                                                 <div class="work-background-top">
-                                                    <span class="work-top1">{{item.appointment_case_id}}</span>
-                                                    <span class="work-top2">{{item.appointment_history}}</span>
+                                                    <span class="work-top1">{{item.patient_name}}</span>
+                                                    <span class="work-top2">{{item.member_id}}</span>
                                                     <span class="work-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="work-background-bottom">
-                                                    <span class="work-bottom">{{item.appointment_phone}}</span>
+                                                    <span class="work-bottom">{{item.patient_phone}}</span>
                                                     <span class="work-bottom">{{item.appointment_doctor}}</span>
-                                                    {{item.appointment_record}}
+                                                    {{item.case_id}}
                                                 </div>
                                             </div>
                                         </li>
@@ -99,14 +99,14 @@
                                         >
                                             <div class="work-background">
                                                 <div class="work-background-top">
-                                                    <span class="work-top1">{{item.diagnosi_case_id}}</span>
-                                                    <span class="work-top2">{{item.diagnosi_history}}</span>
-                                                    <span class="work-top3">{{item.diagnosi_date}}</span>
+                                                    <span class="work-top1">{{item.patient_name}}</span>
+                                                    <span class="work-top2">{{item.member_id}}</span>
+                                                    <span class="work-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="work-background-bottom">
-                                                    <span class="work-bottom">{{item.diagnosi_phone}}</span>
-                                                    <span class="work-bottom">{{item.diagnosi_doctor}}</span>
-                                                    {{item.diagnosi_record}}
+                                                    <span class="work-bottom">{{item.patient_phone}}</span>
+                                                    <span class="work-bottom">{{item.appointment_doctor}}</span>
+                                                    {{item.case_id}}
                                                 </div>
                                             </div>
                                         </li>
@@ -134,14 +134,14 @@
                                         >
                                             <div class="work-background">
                                                 <div class="work-background-top">
-                                                    <span class="work-top1">{{item.subsequent_case_id}}</span>
-                                                    <span class="work-top2">{{item.subsequent_history}}</span>
-                                                    <span class="work-top3">{{item.subsequent_date}}</span>
+                                                    <span class="work-top1">{{item.patient_name}}</span>
+                                                    <span class="work-top2">{{item.member_id}}</span>
+                                                    <span class="work-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="work-background-bottom">
-                                                    <span class="work-bottom">{{item.subsequent_phone}}</span>
-                                                    <span class="work-bottom">{{item.subsequent_doctor}}</span>
-                                                    {{item.subsequent_record}}
+                                                    <span class="work-bottom">{{item.patient_phone}}</span>
+                                                    <span class="work-bottom">{{item.appointment_doctor}}</span>
+                                                    {{item.case_id}}
                                                 </div>
                                             </div>
                                         </li>
@@ -546,7 +546,7 @@ export default {
             addp_show: false,
             appvisit_show: false,
 
-            workdate:  new Date(),
+            workdate: new Date(),
 
             options: [
                 {
@@ -584,58 +584,61 @@ export default {
             medicalInformation: false,
 
             //当天工作
-            appointments: [
+            appointments: [],
+            diagnosis: [],
+            subsequent: [],
+            // appointmentNotArrive: [
+            //     {
+            //         appointment_case_id: "石先生",
+            //         appointment_history: "史",
+            //         appointment_date: "上午 11:30",
+            //         appointment_phone: "13925814457",
+            //         appointment_doctor: "马医生",
+            //         appointment_record: "11002"
+            //     },
+            //     {
+            //         appointment_case_id: "陈先生",
+            //         appointment_history: "欠",
+            //         appointment_date: "2019-06-04",
+            //         appointment_phone: "13925814457",
+            //         appointment_doctor: "余医生",
+            //         appointment_record: "11003"
+            //     },
+            //     {
+            //         appointment_case_id: "刘先生",
+            //         appointment_history: "欠",
+            //         appointment_date: "2019-06-04",
+            //         appointment_phone: "13925814457",
+            //         appointment_doctor: "马医生",
+            //         appointment_record: "11003"
+            //     },
+            //     {
+            //         appointment_case_id: "韩先生",
+            //         appointment_history: "欠",
+            //         appointment_date: "2019-06-04",
+            //         appointment_phone: "13925814457",
+            //         appointment_doctor: "余医生",
+            //         appointment_record: "11003"
+            //     }
+            // ],
+            todayFirstVisit: [
                 {
-                    appointment_case_id: "石先生",
-                    appointment_history: "史",
-                    appointment_date: "上午 11:30",
-                    appointment_phone: "13925814457",
-                    appointment_doctor: "马医生",
-                    appointment_record: "11002"
+                    // diagnosi_case_id: "131313131",
+                    // diagnosi_history: "初",
+                    // diagnosi_date: "上午 11:30",
+                    // diagnosi_phone: "13925814457",
+                    // diagnosi_doctor: "马医生",
+                    // diagnosi_record: "21001"
                 }
-                // {
-                //     appointment_case_id: "陈先生",
-                //     appointment_history: "欠",
-                //     appointment_date: "2019-06-04",
-                //     appointment_phone: "13925814457",
-                //     appointment_doctor: "余医生",
-                //     appointment_record: "11003"
-                // },
-                // {
-                //     appointment_case_id: "刘先生",
-                //     appointment_history: "欠",
-                //     appointment_date: "2019-06-04",
-                //     appointment_phone: "13925814457",
-                //     appointment_doctor: "马医生",
-                //     appointment_record: "11003"
-                // },
-                // {
-                //     appointment_case_id: "韩先生",
-                //     appointment_history: "欠",
-                //     appointment_date: "2019-06-04",
-                //     appointment_phone: "13925814457",
-                //     appointment_doctor: "余医生",
-                //     appointment_record: "11003"
-                // }
             ],
-            diagnosis: [
+            todaySubsequentVisit: [
                 {
-                    diagnosi_case_id: "131313131",
-                    diagnosi_history: "初",
-                    diagnosi_date: "上午 11:30",
-                    diagnosi_phone: "13925814457",
-                    diagnosi_doctor: "马医生",
-                    diagnosi_record: "21001"
-                }
-            ],
-            subsequent: [
-                {
-                    subsequent_case_id: "1001",
-                    subsequent_history: "vip",
-                    subsequent_date: "1990-10-02",
-                    subsequent_phone: "13423901332",
-                    subsequent_doctor: "黄医生",
-                    subsequent_record: "21001"
+                    // subsequent_case_id: "1001",
+                    // subsequent_history: "vip",
+                    // subsequent_date: "1990-10-02",
+                    // subsequent_phone: "13423901332",
+                    // subsequent_doctor: "黄医生",
+                    // subsequent_record: "21001"
                 }
             ],
 
@@ -698,7 +701,9 @@ export default {
             .todayWork()
             .then(res => {
                 console.log(res.data);
-                // that.appointments = res.data.appointmentNotArrive;
+                that.appointments = res.data.appointmentNotArrive;
+                that.diagnosis = res.data.todayFirstVisit;
+                that.subsequent = res.data.todaySubsequentVisit;
             })
             .catch(res => {});
     },
