@@ -339,7 +339,7 @@ export default {
                     width: 220px;
 
                     .left-bottom {
-                        border: 1px solid red;
+                        // border: 1px solid red;
                         margin-top: 15px;
                         cursor: pointer;
                         .diagnose-detail {

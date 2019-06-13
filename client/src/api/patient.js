@@ -75,6 +75,15 @@ export function todayWork(data) {
     })
 }
 
+//全部患者
+export function index(data) {
+    return request({
+        url: `${prefix}`,
+        method: 'get',
+        params: data
+    })
+}
+
 
 
 
