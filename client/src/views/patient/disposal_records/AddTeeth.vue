@@ -11,15 +11,15 @@
         <table
             cellspacing="0"
             class="teeth-content"
-            style="margin-left:20px;width:500px;height:200px"
+            style="width:500px;margin-left:20px;height:200px"
         >
             <tbody>
-                <!-- <td
-                        v-for="(item, index) in items"
-                        :key="index"
-                    >
+                <td
+                    v-for="(item, index) in items"
+                    :key="index"
+                >
 
-                    </td> -->
+                </td>
                 <tr>
                     <td>牙</td>
                     <td>牙</td>
@@ -29,7 +29,7 @@
                     <td>牙</td>
                     <td>牙</td>
                     <td>牙</td>
-                    <td>牙</td>
+                    <td style="padding-left:10px">牙</td>
                     <td>牙</td>
                     <td>牙</td>
                     <td>牙</td>
@@ -41,22 +41,30 @@
                 </tr>
 
                 <tr>
-                    <!-- <td v-for="(item, index) in 8" :key="index">
-                    {{ 8 - index }}
-                </td>
+                    <td
+                        v-for="(item, index) in 8"
+                        :key="index"
+                    >
+                        {{ 8 - index }}
+                    </td>
 
-                <td v-for="(item, index) in 8" :key="index">
-                    {{ item }}
-                </td> -->
-                    <td>8</td>
+                    <td
+                        v-for="(item, index) in 8"
+                        :key="index"
+                    >
+                        {{ item }}
+                    </td>
+                    <!-- <td>8</td>
                     <td>7</td>
                     <td>6</td>
                     <td>5</td>
                     <td>4</td>
                     <td>3</td>
                     <td>2</td>
-                    <td class="border-right">1</td>
-                    <td>1</td>
+                    <div class="border-right">
+                        <td style="border:1px solid red">1</td>
+                    </div>
+                    <td style="padding-left:10px">1</td>
                     <td>2</td>
                     <td>3</td>
                     <td>4</td>
@@ -64,7 +72,7 @@
                     <td>6</td>
                     <td>7</td>
                     <td>8</td>
-                    <td></td>
+                    <td></td> -->
                 </tr>
 
                 <tr>
@@ -77,9 +85,9 @@
                     <td>E</td>
                     <td>D</td>
                     <td>C</td>
-                    <td>B</td>
+                    <td style="border:1px solid red">B</td>
                     <td class="border-right">A</td>
-                    <td>A</td>
+                    <td style="padding-left:10px">A</td>
                     <td>B</td>
                     <td>C</td>
                     <td>D</td>
@@ -120,7 +128,7 @@
                     <td class="xxx">C</td>
                     <td class="xxx">B</td>
                     <td class="border-right xxx">A</td>
-                    <td>A</td>
+                    <td style="padding-left:10px">A</td>
                     <td>B</td>
                     <td>C</td>
                     <td>D</td>
@@ -153,7 +161,7 @@
                     <td>3</td>
                     <td>2</td>
                     <td class="border-right">1</td>
-                    <td>1</td>
+                    <td style="padding-left:10px">1</td>
                     <td>2</td>
                     <td>3</td>
                     <td>4</td>
@@ -178,7 +186,7 @@
                     <td>牙</td>
                     <td>牙</td>
                     <td>牙</td>
-                    <td>牙</td>
+                    <td style="padding-left:10px">牙</td>
                     <td>牙</td>
                     <td>牙</td>
                     <td>牙</td>
@@ -242,7 +250,7 @@ export default {
     .border-right {
         border-right: 1px solid black;
         // padding: 10px;
-        margin: 0;
+        // margin: 0;
     }
 
     .line {
