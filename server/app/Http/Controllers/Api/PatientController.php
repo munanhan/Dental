@@ -171,17 +171,113 @@ class PatientController extends BaseController
     protected function diagnose($whereTime,$type,array $status)
     {
         return
-        DB::table('patients')
-            ->join('appointments','patients.id','=','appointments.patient_id')
-            ->select('patients.id','case_id','patient_sex','patient_name','patient_age','patient_category',
-               'allergy','anamnesis','patient_phone','type','appointment_doctor','appointment_date','items')
-            ->whereIn('appointments.status',$status)
+        $this->patientAll()
+            ->whereIn('status',$status)
             ->whereDate('appointment_date',$whereTime)
-            ->whereNull('appointments.deleted_at')
             ->when($type,function ($query,$type){
-                return $query->where('appointments.type',$type);
+                return $query->where('type',$type);
             })
             ->get();
+    }
+
+
+    /*
+     * 全部患者
+     */
+    public function index()
+    {
+
+//        DB::connection()->enableQueryLog();
+//        $this->searchPatient($where,$type);
+//        $queries=DB::getQueryLog();
+//        dd($queries);
+        $data['recentPatient']=$this->recentPatient();
+        $data['blacklistPatient']=$this->blacklistPatient();
+        $data['completePatient']=$this->completePatient();
+        return message('',$data,200);
+
+    }
+
+    protected function searchPatient()
+    {
+        $flag=request('flag');
+        $where=request('search');
+        return
+            $this->patientAll()
+                ->whereNotIn('status',[5])
+                ->where('patient_group','=',0)
+                ->whereBetween('appointment_date',[now()->modify('-30 days')->toDateString(),now()->toDateString()])
+            //->whereRaw('1=1')
+                ->when(($flag==1),function ($query)use($where){
+                    return $query->where('patient_name','like','%'.$where.'%')
+                        ->orWhere('patient_phone','like','%'.$where.'%');
+                })
+                ->when(($flag==2),function ($query)use ($where){
+                    return $query->where('case_id','like','%'.$where.'%');
+                })
+                ->when(($flag==3),function ($query)use ($where){
+                    return $query->where('member_card'.'like','%'.$where.'%');
+                })
+                ->when(($flag==4),function ($query)use ($where){
+                    return $query->whereBetween('created_at',[now()->modify('-3 days')]);
+                })
+
+                ->get();
+    }
+
+
+    /*
+     * 最近患者
+     */
+    protected function recentPatient()
+    {
+        return
+        $this->patientByGroup(0);
+    }
+
+    /*
+     * 黑名单患者
+     */
+    protected function blacklistPatient()
+    {
+        return
+        $this->patientByGroup(1);
+    }
+
+    /*
+     * 治疗完成患者
+     */
+    protected function completePatient()
+    {
+        return
+        $this->patientByGroup(2);
+    }
+
+    /*
+     * 根据分组获取患者
+     */
+    protected function patientByGroup($group)
+    {
+        return
+            $this->patientAll()->whereNotIn('status',[5])
+                ->where('patient_group','=',$group)
+                ->get();
+    }
+
+    /*
+     * 所有患者
+     */
+    protected function patientAll()
+    {
+        return
+        DB::table('patients as p')
+            ->join('appointments as apt','p.id','=','apt.patient_id')
+            ->select('p.id','patient_name','patient_age','patient_sex','patient_phone','patient_category',
+                'patient_group','member_id','member_card','allergy','anamnesis','type','status','appointment_doctor',
+                'appointment_date','items')
+            ->whereRaw('1=1')
+            ->whereNull('apt.deleted_at');
+
     }
 
 

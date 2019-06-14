@@ -31,7 +31,7 @@
                 >
                     <div class="background-left">
 
-                        <div class="left-bottom">
+                        <div class="left-bottom" @click="add_teeth">
                             <div class="diagnose-detail">
                                 <div class="tooth">
                                     <div class="tooth-row">
@@ -82,7 +82,7 @@
                                     disabled
                                 >
                                 <!-- <template slot-scope="scope"> -->
-                                    <!-- <el-tooltip
+                                <!-- <el-tooltip
                                         content="删除"
                                         placement="bottom"
                                     >
@@ -93,7 +93,7 @@
                                         ></el-button>
                                     </el-tooltip> -->
                                 <!-- </template> -->
-                                 <i
+                                <i
                                     class="fa fa-trash-alt input-i"
                                     @click.stop="del(scope.row, scope.$item)"
                                 ></i>
@@ -125,6 +125,7 @@
             <!-- <el-button class="dis-button">打印设置</el-button> -->
         </div>
         <disposal-choice :show.sync="dischoice_show"></disposal-choice>
+        <add-teeth :show.sync="addteeth_show"></add-teeth>
     </div>
 
 </template>
@@ -132,11 +133,13 @@
 <script>
 // import DisposalChoice from "@/views/base/DisposalChoice";
 import DisposalChoice from "./DisposalChoice";
+import AddTeeth from "./AddTeeth";
 export default {
     name: "DisposalRecords",
 
     components: {
-        DisposalChoice
+        DisposalChoice,
+        AddTeeth
     },
     props: {
         refresh: {
@@ -147,6 +150,7 @@ export default {
     data() {
         return {
             dischoice_show: false,
+            addteeth_show:false,
             disposa_date: "1972-05-01",
             disposa_time: "23:14",
             disposa_diagnosis: "初诊",
@@ -195,6 +199,9 @@ export default {
         },
         dis_choice() {
             this.dischoice_show = true;
+        },
+        add_teeth() {
+            this.addteeth_show = true;
         },
         addDisposal() {
             this.disposa.push({});
@@ -333,11 +340,11 @@ export default {
 
                     .left-bottom {
                         // border: 1px solid red;
+                        margin-top: 15px;
                         cursor: pointer;
                         .diagnose-detail {
                             border: 1px solid #f8f8f8;
                             display: flex;
-                            margin-top: 15px;
                             color: #1d1d1d;
 
                             .tooth {

@@ -653,7 +653,7 @@ export default {
         hideSearch(event) {
             let that = this;
 
-            that.tableData = [];
+            // that.tableData = [];
 
             that.showNameSearch = false;
 
