@@ -143,8 +143,8 @@
         <yuyue-month ref="month" :update.sync="navBar[2].active" @OnUpdateYuyueRes="updateYuyueRes"></yuyue-month>
       </div>
       <div v-show="navBar[3].active" class="list">
-        <test></test> 
-        <!-- <yuyue-list></yuyue-list> -->
+        <!-- <test></test>  -->
+        <yuyue-list></yuyue-list>
       </div>
     </div>
     <!-- 错误提示 -->
@@ -191,7 +191,7 @@ export default {
     YuyueMonth,
     YuyueList,
     StatusDialog,
-    test,
+    // test,
   },
   provide: function() {
     return {
