@@ -57,7 +57,13 @@
         </el-form-item>
 
         <el-form-item prop="patient_age" label="年龄" required>
-          <el-input v-model="formData.patient_age" type="text" autocomplete="off" placeholder></el-input>
+          <el-input
+            @keyup="test"
+            v-model="formData.patient_age"
+            type="text"
+            autocomplete="off"
+            placeholder
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="patient_source" label="患者来源">
@@ -345,6 +351,9 @@ export default {
     }
   },
   methods: {
+    test(event) {
+      console.log(event);
+    },
     getPatientByPhone() {
       let patient_phone = this.formData.patient_phone;
       if (patient_phone.length == 11) {

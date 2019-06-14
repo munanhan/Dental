@@ -1,5 +1,5 @@
 <template>
-  <div class="recon-calendar" ref="content">
+  <div class="recon-calendar yuyue-month" ref="content">
     <div class="recon-head" ref="action">
       <div class="calendar-action">
         <i class="fa fa-arrow-circle-left mr-10 pre-mth" @click.stop="switchDate('pre')"></i>
@@ -386,7 +386,7 @@ export default {
   transition: all 0.2s;
 }
 
-.recon-calendar {
+.recon-calendar.yuyue-month{
   position: absolute;
   top: -36px;
   right: 0;
