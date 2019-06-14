@@ -13,13 +13,13 @@
                     >
 
                         <div class="work-top-content">
-                            <div class="work-content-top1">
+                            <div class="work-content-top1" @click="changeWorkdate('prev')">
                                 <i class="fa fa-angle-left"></i>
                             </div>
 
-                            <div class="work-content-top2">今</div>
+                            <div class="work-content-top2"  @click="changeWorkdate('today')">今</div>
 
-                            <div class="work-content-top3">
+                            <div class="work-content-top3"  @click="changeWorkdate('next')">
                                 <i class="fa fa-angle-right"></i>
                             </div>
                             <!-- <el-date-picker
@@ -634,12 +634,11 @@ export default {
                 if (res.code == 200) {
                     console.log(res.data);
                     that.patientsRecent = res.data.recentPatient;
-                    
                     that.recentCount = that.patientsRecent.length;
-                    that.blacklist = that.blacklistPatient;
+                    that.blacklist = res.blacklistPatient;
                     that.blackCount = that.blacklist.length;
-                    that.treatment = that.completePatient;
-                    that.completeCount = thta.treatment.length;
+                    that.treatment = res.completePatient;
+                    that.completeCount = that.treatment.length;
                 } else {
                     console.log(res.msg);
                 }
@@ -648,26 +647,7 @@ export default {
                 console.log(res.msg);
             });
     },
-    // created() {
-    //     let that = this;
-    //     that.$api.patient
-    //         .index()
-    //         .then(res => {
-    //             console.log(res.data);
-    //             // if(res.code==200){
-    //             //     that.appointments = res.data.appointmentNotArrive;
-    //             //     that.diagnosis = res.data.todayFirstVisit;
-    //             //     that.subsequent = res.data.todaySubsequentVisit;
-    //             //     that.appointCount=that.appointments.length;
-    //             //     that.todayFirst=that.diagnosis.length;
-    //             //     that.todaySub=that.subsequent.length;
-    //             // }else{
-    //             //     console.log(res.msg);
-    //             // }
 
-    //         })
-    //         .catch(res => {console.log(res.msg)});
-    // },
     mounted() {},
     watch: {
         // refresh(newValue, oldValue) {
@@ -701,6 +681,20 @@ export default {
     },
     computed: {},
     methods: {
+        changeWorkdate(i){
+            switch(i){
+                case 'prev':
+                    this.workdate = new Date(+new Date(this.workdate) - 3600*24*1000)
+                   
+                    break;
+                case 'next':
+                    this.workdate = new Date(+new Date(this.workdate) + 3600*24*1000)
+                    break;
+                case 'today':
+                    this.workdate = new Date();
+                    break;
+            }
+        },
         expend(type) {
             let that = this;
             that[type] = !that[type];
