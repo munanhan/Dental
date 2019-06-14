@@ -530,9 +530,7 @@
                     >
                     </el-table-column>
                 </el-table>
-
             </div>
-
         </el-form>
 
         <div
@@ -603,10 +601,10 @@ export default {
             teethhab_show: false,
             newrelat_show: false,
             form: {
-                teethList:[
+                teethList: [
                     {
-                        value:"选项1",
-                        label:"不干净"
+                        value: "选项1",
+                        label: "不干净"
                     }
                 ],
                 pastMedicalhistoryList: [
@@ -646,14 +644,14 @@ export default {
                 birthday: "",
                 age: "",
                 value: "",
-                group:"",
+                group: "",
                 case_id: "",
                 phone: "",
                 sex: 2,
                 name: "",
-                teeth:"",
-                member_gard:"",
-                email:"",
+                teeth: "",
+                member_gard: "",
+                email: "",
                 medical_record: ""
             },
             rules: {
@@ -736,14 +734,14 @@ export default {
 @import "~@css/var";
 .mod-1 {
     .image {
-        border: 1px solid red;
+        border: 1px solid rgb(167, 167, 167);
         position: absolute;
         right: 0;
         margin-right: 240px;
         width: 320px;
         height: 350px;
         // background-image:none;
-        background-color: #000;
+        // background-color: #000;
     }
     .number-top {
         background-color: #a6d2ff;
