@@ -181,7 +181,7 @@ class BaseController extends Controller
                 $sql.= MyLimit($this->pager);
                 $total = $this->model->getCount($this->parms);
                 $res = getData($sql,$this->parms);
-                return message($res['msg'],[ 'row' => $res['data'],'total' => $total ],$res['code']);
+                return [ 'msg' => $res['msg'], 'data' => [ 'row' => $res['data'],'total' => $total ], 'code' => $res['code']];
             }
             
             return getData($sql,$this->parms);

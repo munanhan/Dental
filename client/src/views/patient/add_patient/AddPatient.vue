@@ -605,17 +605,17 @@ export default {
             }
         },
 
-        // "form.patient_name": {
-        //     handler(newName, oldName) {
-        //         let that = this;
+        "form.patient_name": {
+            handler(newName, oldName) {
+                let that = this;
 
-        //         clearTimeout(that.showNameTimer);
+                clearTimeout(that.showNameTimer);
 
-        //         that.showNameTimer = setTimeout(() => {
-        //             that.searchAll(newName);
-        //         }, 300);
-        //     }
-        // }
+                that.showNameTimer = setTimeout(() => {
+                    that.searchAll(newName);
+                }, 300);
+            }
+        }
     },
 
     methods: {

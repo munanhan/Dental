@@ -24,20 +24,15 @@ class BaseVerifyFields
 
         $route = empty(config('config.expect_route'))?[]:config('config.expect_route');
 
+        // 暂时屏蔽权限方便测试
         // if(!in_array(\Route::current()->uri,$route)){
-        //     //排除权限控制的路由api
+        // //     //排除权限控制的路由api
         //     $auth = empty(Session::get('user_auth'.auth('api')->user()['id']))?[]:
         //             Session::get('user_auth'.auth('api')->user()['id']);
-            //权限
-            // var_dump($request);exit;
-            // if ($auth === null) {
-            //     return message('权限失效，请刷新页面.',[],401);
-            // }
-            // //控制器
-            //         dd(auth('api')->user()['id']);
-            // if (!in_array(str_replace('Controller','', $controller), $auth)) {
-            //     return message('没有权限.',[],401);
-            // }
+        //     //权限
+        //     if (!in_array(str_replace('Controller','', $controller), $auth)) {
+        //         return message('没有权限.',[],401);
+        //     }
         // }
         
 

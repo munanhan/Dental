@@ -31,6 +31,7 @@ import * as treat from './treat'
 import * as advice from './advice'
 import * as privilege from './privilege'
 import * as role from './role'
+import * as patient_order from './patient_order'
 
 
 const apis = {
@@ -66,7 +67,8 @@ const apis = {
     teethHabit,
     impressions,
     privilege,
-    role
+    role,
+    patient_order
 
 
 

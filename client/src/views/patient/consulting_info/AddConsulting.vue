@@ -77,7 +77,7 @@
                                     <el-select
                                         class="table-select"
                                         style="width:620px;"
-                                        v-model="value"
+                                        v-model="form.potential_demand"
                                         multiple
                                         filterable
                                         allow-create
@@ -85,7 +85,7 @@
                                         placeholder="请选择文章标签"
                                     >
                                         <el-option
-                                            v-for="item in options"
+                                            v-for="item in form.demand"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -133,12 +133,12 @@
                             <td align="center">接诊医生</td>
                             <el-select
                                 class="table-select"
-                                v-model="value"
+                                v-model="form.do"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in options"
+                                    v-for="item in form.doctor"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -150,12 +150,12 @@
                             <td align="center">资料录入人</td>
                             <el-select
                                 class="table-select"
-                                v-model="value"
+                                v-model="form.value"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in options"
+                                    v-for="item in form.options"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -202,6 +202,12 @@ export default {
             potentdeman_show: false,
             form: {
                 input: "",
+                demand: [
+                    {
+                        value: "110",
+                        table: "110"
+                    }
+                ],
                 consultings: [
                     {
                         case_id: "钟先生",
@@ -221,6 +227,12 @@ export default {
                         label: "CSS"
                     }
                 ],
+                doctor: [
+                    {
+                        value: "11",
+                        label: "11"
+                    }
+                ],
                 options: [
                     {
                         value: "HTML",
@@ -235,7 +247,8 @@ export default {
                         label: "JavaScript"
                     }
                 ],
-                value: [],
+                do: "",
+                value: "",
                 rules: {}
             },
             commitLoading: false

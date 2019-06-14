@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Model\Disposal;
 use App\Http\Controllers\Api\BaseController;
 use App\Exports\BaseExport;
+use App\Imports\BaseImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use App\Model\CostCategory;
 
 class DisposalController extends BaseController
 {
@@ -149,8 +151,67 @@ class DisposalController extends BaseController
                     array_push($export_data,$temp);
                     $temp = [];
                 }
-                return Excel::download(new BaseExport($export_data), '处置大类.xlsx');
 
+                return Excel::download(new BaseExport($export_data), '处置大类.xlsx');
+            }
+
+            public function import(){
+                //导入
+                $file = $_FILES;
+
+                $key = key($file);//获取key
+
+                $name = $file[$key]['name'];//文件名
+
+                $ext = substr(strrchr($name, '.'), 1);//获取文件后缀
+
+                $check = checkExt($ext,'excel');
+                if ($check) {
+                    return message($check,null,500); 
+                }
+                // $res = upload($file,'excel');
+
+                // $filePath = array_values($res);
+
+                $data = Excel::toArray('',request()->file($key))[0];
+
+                $cate = CostCategory::get(['id','category'])->toArray();
+
+                $new_cate = [];
+                foreach ($cate as $k => $v) {
+                    $new_cate[$v['category']] = $v['id']; 
+                }
+
+                $config_billing_mode = config('config.billing_mode');
+                $billing_mode = [];
+                foreach ($config_billing_mode as $k => $v) {
+                    $billing_mode[$v] = $k;
+                }
+
+                $insert_data = [];
+                foreach ($data as $k => $v) {
+                    if(empty(array_filter($v)) || $k == 0){
+                        //跳过表头和空数据
+                        continue;
+                    }
+
+                    $insert_data[$k]['disposal_code'] = $v[0];
+                    $insert_data[$k]['disposal_name'] = $v[1];
+                    $insert_data[$k]['price'] = $v[2];
+                    $insert_data[$k]['unit'] = $v[3];
+                    $insert_data[$k]['mem_discount'] = trim($v[4]) == '是'?1:0;
+                    $insert_data[$k]['cate_id'] = isset($new_cate[trim($v[5])])?$new_cate[trim($v[5])]:1;
+                    $insert_data[$k]['billing_mode'] = isset($billing_mode[trim($v[6])])?$billing_mode[trim($v[6])]:0;
+                    $insert_data[$k]['remarks'] = $v[7];
+
+
+                }
+
+                $res = $this->model->insertData($insert_data);
+                if ($res) {
+                    return message('导入成功',null,200);
+                }
+                return message('导入失败',null,500);
 
             }
 }

@@ -197,11 +197,12 @@
                         <span class="" style="float: left;">
                             
                                     <el-upload
-                                        :action="`${uploadUrl}/api/company/upload`"
+                                        :action="`${uploadUrl}/api/disposal/import`"
                                         :on-success="handleSuccess"
                                         :on-error="handleError"
                                         :headers="headers"
                                         name="import"
+                                        :show-file-list="false"
                                     >
                                     <el-button style="margin-right: 10px;" type="primary" @click="importData">
                                         导入Excel
@@ -394,10 +395,19 @@ export default {
       methods: {
         handleSuccess(){
           //上传成功
+          let that = this;
+          that.$message({
+              message: '上传成功',
+              type: "success",
+              duration: 800
+          });
         },
         handleError(){
           //上传失败
-
+           let that = this;
+           that.$message.error(
+                "上传失败."
+            );
         },
         getMenuTableData(row){
           let that = this;
@@ -499,10 +509,18 @@ export default {
           that.headers = {'Authorization':token};
         },
         exportData(){
-            window.location = (window.HOSTNAME || '')+'/api/disposal/export';
-            // let url = (window.HOSTNAME || '')+'/api/disposal/export';
-            // let token = getCookie("token");
-            // downloadFile(url,{'Authorization':token});
+          // let that = this;
+            // window.location = (window.HOSTNAME || '')+'/api/disposal/export';
+            let url = (window.HOSTNAME || '')+'/api/disposal/export';
+            let token = getCookie("token");
+            downloadFile(url,{'Authorization':token},'费用大类');
+            // that.$api.disposal.exportData()
+            // .then(res => {
+
+            // })
+            // .catch(res => {
+            //   // console.log(res)
+            // });
         },
         getById(editItem){
             let that = this;
