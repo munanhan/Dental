@@ -630,6 +630,14 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::delete('role/{id}', 'RoleController@delete');//删除
 
+    /*
+     * Route PatientOrderController Api
+     * created for yu
+     */
+
+    Route::get('patient_order','PatientOrderController@index');//角色菜单列表
+
+
 
 
 });

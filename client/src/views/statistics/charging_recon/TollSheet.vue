@@ -34,6 +34,13 @@
                 ></el-input>
             </div>
 
+            <div class="search-item">
+                <el-button
+                    type="primary"
+                    @click="getData"
+                >查询</el-button>
+            </div>
+
             <div class="action-bar-right">
                 <el-button
                     type="primary"
@@ -53,97 +60,85 @@
                 show-summary
             >
                 <el-table-column
+                    prop="charge_date"
                     label="收费时间"
                     width="120"
                     align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="case_id"
                     label="病历号"
                     width="120"
                     align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="patient_name"
                     label="患者姓名"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="last_arrearage"
                     label="上次欠款"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="receivable"
                     label="本次费用"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="discount_amount"
                     label="折扣金额"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="receipts"
                     label="本次实收"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
-                    label="收费方式1"
+                    prop="charging_type"
+                    label="收费方式"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
-                    label="收费方式2"
-                    align="center"
-                    show-overflow-tooltip
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="address"
+                    prop="arrearage"
                     label="本次欠款"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="cashier"
                     label="收银员"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
-                    label="咨询师"
+                    prop="nurse"
+                    label="护士"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
+
                 <el-table-column
-                    prop="address"
-                    label="介绍人"
-                    align="center"
-                    show-overflow-tooltip
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="address"
+                    prop="doctor"
                     label="医生"
                     align="center"
                     show-overflow-tooltip
@@ -189,7 +184,8 @@ export default {
             tableData: [],
 
             search: {
-                dateRange: [new Date(), new Date()]
+                dateRange: [new Date(), new Date()],
+                dim:''
             },
 
             pager: {
@@ -295,6 +291,26 @@ export default {
 
         getData() {
             let that = this;
+            let parms = {};
+            parms.current_page = that.pager.current;
+            parms.page_size = that.pager.size;
+            parms.dtfm = that.search.dateRange[0];
+            parms.dtto = that.search.dateRange[1];
+            parms.dim = that.search.dim;
+            // console.log(that.search.dateRange);
+            // console.log(that.search.dim);
+
+            that.$api.patient_order.get(parms)
+            .then(res => {
+                if (res.code == 200) {
+                    that.tableData = res.data.row;
+                    that.pager.total = res.data.total;
+                }
+
+            })
+            .catch(res => {
+
+            });
         },
 
         exportExcel() {}
