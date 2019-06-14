@@ -180,20 +180,20 @@
                     >
                         <div class="top-content">
                             <el-select
-                                v-model="value"
+                                v-model="patientSearch.searchType"
                                 placeholder="患者信息"
                                 class="patient-infor"
                             >
                                 <el-option
                                     v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    :key="item.id"
+                                    :label="item.type"
+                                    :value="item.id"
                                 >
                                 </el-option>
                             </el-select>
                             <el-input
-                                v-model="input"
+                                v-model="patientSearch.patientInfo"
                                 class="patient-input"
                                 placeholder="姓名、拼音、电话"
                                 suffix-icon="el-icon-search"
@@ -536,26 +536,27 @@ export default {
             blackCount: "",
             completeCount: "",
 
+            patientSearch: {
+                searchType: 1,
+                patientInfo: ""
+            },
+
             options: [
                 {
-                    value: "选项1",
-                    label: "患者信息"
+                    id: 1,
+                    type: "患者信息"
                 },
                 {
-                    value: "选项2",
-                    label: "病历号"
+                    id: 2,
+                    type: "病历号"
                 },
                 {
-                    value: "选项3",
-                    label: "会员号"
+                    id: 3,
+                    type: "会员号"
                 },
                 {
-                    value: "选项4",
-                    label: "检查医生"
-                },
-                {
-                    value: "选项5",
-                    label: "高级查询..."
+                    id: 4,
+                    type: "检查医生"
                 }
             ],
             value: "",
@@ -603,39 +604,22 @@ export default {
         };
     },
     created() {
-        let that=this;
-        let whereTime=new Date();
-        that.getTodayWork(whereTime)
-
-        // that.$api.patient
-        //     .index()
-        //     .then(res => {
-        //         if (res.code == 200) {
-        //             console.log(res.data);
-        //             that.patientsRecent = res.data.recentPatient;
-        //             that.recentCount = that.patientsRecent.length;
-
-        //             that.blacklist = res.data.blacklistPatient;
-        //             that.blackCount = that.blacklist.length;
-
-        //             that.treatment = res.data.completePatient;
-        //             that.completeCount = that.treatment.length;
-        //         } else {
-        //             console.log(res.msg);
-        //         }
-        //     })
-        //     .catch(res => {
-        //         console.log(res.msg);
-        //     });
+        let that = this;
+        let whereTime = new Date();
+        that.getTodayWork(whereTime);
     },
 
     mounted() {},
     watch: {
-        activeName(newValue,oldValue){
-            switch(newValue){
+        activeName(newValue, oldValue) {
+            switch (newValue) {
                 case "first":
+                    console.log("11");
                 case "patient":
+                    let that = this;
+                    that.getAllPatient();
                 case "visit":
+                    console.log("33");
             }
             console.log(newValue);
         },
@@ -667,7 +651,7 @@ export default {
                 ? (this.dayStatusWork = "今日工作")
                 : (this.dayStatusWork = "当日工作");
             newV == now ? (this.dayStatus = "今日") : (this.dayStatus = "当日");
-            let that=this;
+            let that = this;
             that.getTodayWork();
         },
         curTab(newValue, oldValue) {
@@ -681,11 +665,37 @@ export default {
     },
     computed: {},
     methods: {
+        getAllPatient() {
+            let that = this;
+            that.$api.patient
+                .index(that.patientSearch)
+                .then(res => {
+                    if (res.code == 200) {
+                        console.log(res.data);
+                        that.patientsRecent = res.data.recentPatient;
+                        that.recentCount = that.patientsRecent.length;
+
+                        that.blacklist = res.data.blacklistPatient;
+                        that.blackCount = that.blacklist.length;
+
+                        that.treatment = res.data.completePatient;
+                        that.completeCount = that.treatment.length;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
 
         getTodayWork() {
             let that = this;
             let params = {};
-            params.whereTime = that.workdate;
+            params.whereTime =
+                typeof that.workdate == "object"
+                    ? that.workdate.toLocaleDateString()
+                    : that.workdate;
             that.$api.patient
                 .todayWork(params)
                 .then(res => {
