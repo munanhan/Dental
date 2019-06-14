@@ -13,13 +13,13 @@
                     >
 
                         <div class="work-top-content">
-                            <div class="work-content-top1">
+                            <div class="work-content-top1" @click="changeWorkdate('prev')">
                                 <i class="fa fa-angle-left"></i>
                             </div>
 
-                            <div class="work-content-top2">今</div>
+                            <div class="work-content-top2"  @click="changeWorkdate('today')">今</div>
 
-                            <div class="work-content-top3">
+                            <div class="work-content-top3"  @click="changeWorkdate('next')">
                                 <i class="fa fa-angle-right"></i>
                             </div>
                             <!-- <el-date-picker
@@ -51,7 +51,7 @@
                                             class="el-icon-caret-right"
                                             :class="{'down': appointmentExpend}"
                                         ></i>
-                                        预约未到(3)</div>
+                                        预约未到({{appointCount}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -86,7 +86,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': diagnosisExpend}"
-                                        ></i> 当天初诊(1)</div>
+                                        ></i> 当天初诊({{todayFirst}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -121,7 +121,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': visitExpend}"
-                                        ></i> 当天复诊(0)</div>
+                                        ></i> 当天复诊({{todaySub}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -164,44 +164,30 @@
                         name="patient"
                         class="patient-content"
                     >
-                        <div style="position:relative;
-                                    background-color: rgba(255,255,255,.5);">
-                            <div
-                                class="top-content"
-                                style="border:1px solid #e3e3e3;
-                                       padding:5px 0px;
-                                       display:flex"
+                        <div class="top-content">
+                            <el-select
+                                v-model="value"
+                                placeholder="患者信息"
+                                class="patient-infor"
                             >
-                                <el-select
-                                    v-model="value"
-                                    placeholder="患者信息"
-                                    style="width:105px;padding-left:5px"
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
                                 >
-                                    <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value"
-                                    >
-                                    </el-option>
-                                </el-select>
-                                <el-input
-                                    v-model="input"
-                                    style="width:200px;padding-left:5px"
-                                    placeholder="姓名、拼音、电话"
-                                    suffix-icon="el-icon-search"
-                                ></el-input>
-                                <i
-                                    class="fa fa-sort-alpha-down"
-                                    style="margin-left:5px;
-                                           margin-top:5px;
-                                           color:#8f8f8f;
-                                           font-size:30px;
-                                           cursor:pointer"
-                                ></i>
-                            </div>
+                                </el-option>
+                            </el-select>
+                            <el-input
+                                v-model="input"
+                                class="patient-input"
+                                placeholder="姓名、拼音、电话"
+                                suffix-icon="el-icon-search"
+                            ></el-input>
+                            <i class="fa fa-sort-alpha-down patient-i"></i>
+                        </div>
 
-                            <!-- <div>
+                        <!-- <div>
                                 <el-tree
                                     style="height:100%;
                                            font-weight:bold;
@@ -210,117 +196,116 @@
                                     :props="defaultProps"
                                 ></el-tree>
                             </div> -->
-                            <div style="background-color:#efefef">
-                                <div class="patient-item">
-                                    <div style="cursor:pointer;margin-bottom:10px">
-                                        <div
-                                            @click="expend('patientExpend')"
-                                            class="patient-title"
+                        <div style="background-color:#efefef">
+                            <div class="patient-item">
+                                <div style="cursor:pointer;margin-bottom:10px">
+                                    <div
+                                        @click="expend('patientExpend')"
+                                        class="patient-title"
+                                    >
+                                        <i
+                                            class="el-icon-caret-right"
+                                            :class="{'down': patientExpend}"
+                                        ></i>
+                                        最近患者({{recentCount}})</div>
+                                    <!-- /// -->
+                                    <ul
+                                        style="margin-top:-2px"
+                                        v-if="patientExpend"
+                                        ref="item1"
+                                    >
+                                        <li
+                                            v-for="(item,index) in patientsRecent"
+                                            :key="index"
                                         >
-                                            <i
-                                                class="el-icon-caret-right"
-                                                :class="{'down': patientExpend}"
-                                            ></i>
-                                            最近患者(1)</div>
-                                        <!-- /// -->
-                                        <ul
-                                            style="margin-top:-2px"
-                                            v-if="patientExpend"
-                                            ref="item1"
-                                        >
-                                            <li
-                                                v-for="(item,index) in patientsRecent"
-                                                :key="index"
-                                            >
-                                                <div class="patient-background">
-                                                    <div class="patient-background-top">
-                                                        <span class="patient-top1">{{item.case_id}}</span>
-                                                        <span class="patient-top2">{{item.medical_history}}</span>
-                                                        <span class="patient-top3">{{item.appointment_date}}</span>
-                                                    </div>
-                                                    <div class="patient-background-bottom">
-                                                        <span class="patient-bottom1">{{item.patient_phone}}</span>
-                                                        <span class="patient-bottom2">{{item.patient_doctor}}</span>
-                                                        {{item.medical_record}}
-                                                    </div>
+                                            <div class="patient-background">
+                                                <div class="patient-background-top">
+                                                    <span class="patient-top1">{{item.patient_name}}</span>
+                                                    <span class="patient-top2">{{item.member_id}}</span>
+                                                    <span class="patient-top3">{{item.appointment_date}}</span>
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div style="cursor: pointer;margin-bottom:10px">
-                                        <div
-                                            class="patient-title"
-                                            @click="expend('blackExpend')"
-                                        >
-                                            <i
-                                                class="el-icon-caret-right"
-                                                :class="{'down': blackExpend}"
-                                            ></i> 黑名单(1)</div>
-                                        <!-- /// -->
-                                        <ul
-                                            style="margin-top:-2px"
-                                            v-if="blackExpend"
-                                            ref="item1"
-                                        >
-                                            <li
-                                                v-for="(item,index) in blacklist"
-                                                :key="index"
-                                            >
-                                                <div class="patient-background">
-                                                    <div class="patient-background-top">
-                                                        <span class="patient-top1">{{item.blacklist_case_id}}</span>
-                                                        <span class="patient-top2">{{item.blacklist_history}}</span>
-                                                        <span class="patient-top3">{{item.blacklist_date}}</span>
-                                                    </div>
-                                                    <div class="patient-background-bottom">
-                                                        <span class="patient-bottom1">{{item.blacklist_phone}}</span>
-                                                        <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
-                                                        {{item.blacklist_record}}
-                                                    </div>
+                                                <div class="patient-background-bottom">
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
+                                                    {{item.medical_record}}
                                                 </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                    <div style="cursor: pointer;margin-bottom:10px">
-                                        <div
-                                            class="patient-title"
-                                            @click="expend('treatmentExpend')"
-                                        >
-                                            <i
-                                                class="el-icon-caret-right"
-                                                :class="{'down': treatmentExpend}"
-                                            ></i> 治疗完成(1)</div>
-                                        <!-- /// -->
-                                        <ul
-                                            style="margin-top:-2px"
-                                            v-if="treatmentExpend"
-                                            ref="item1"
-                                        >
-                                            <li
-                                                v-for="(item,index) in treatment"
-                                                :key="index"
-                                            >
-                                                <div class="patient-background">
-                                                    <div class="patient-background-top">
-                                                        <span class="patient-top1">{{item.case_id}}</span>
-                                                        <span class="patient-top2">{{item.medical_history}}</span>
-                                                        <span class="patient-top3">{{item.appointment_date}}</span>
-                                                    </div>
-                                                    <div class="patient-background-bottom">
-                                                        <span class="patient-bottom1">{{item.patient_phone}}</span>
-                                                        <span class="patient-bottom2">{{item.patient_doctor}}</span>
-                                                        {{item.medical_record}}
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                    <!-- // -->
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
+                                <div style="cursor: pointer;margin-bottom:10px">
+                                    <div
+                                        class="patient-title"
+                                        @click="expend('blackExpend')"
+                                    >
+                                        <i
+                                            class="el-icon-caret-right"
+                                            :class="{'down': blackExpend}"
+                                        ></i> 黑名单({{blackCount}})</div>
+                                    <!-- /// -->
+                                    <ul
+                                        style="margin-top:-2px"
+                                        v-if="blackExpend"
+                                        ref="item1"
+                                    >
+                                        <li
+                                            v-for="(item,index) in blacklist"
+                                            :key="index"
+                                        >
+                                            <div class="patient-background">
+                                                <div class="patient-background-top">
+                                                    <span class="patient-top1">{{item.blacklist_case_id}}</span>
+                                                    <span class="patient-top2">{{item.blacklist_history}}</span>
+                                                    <span class="patient-top3">{{item.blacklist_date}}</span>
+                                                </div>
+                                                <div class="patient-background-bottom">
+                                                    <span class="patient-bottom1">{{item.blacklist_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
+                                                    {{item.blacklist_record}}
+                                                </div>
+                                            </div>
+                                        </li>
 
+                                    </ul>
+                                </div>
+                                <div style="cursor: pointer;margin-bottom:10px">
+                                    <div
+                                        class="patient-title"
+                                        @click="expend('treatmentExpend')"
+                                    >
+                                        <i
+                                            class="el-icon-caret-right"
+                                            :class="{'down': treatmentExpend}"
+                                        ></i> 治疗完成({{completeCount}})</div>
+                                    <!-- /// -->
+                                    <ul
+                                        style="margin-top:-2px"
+                                        v-if="treatmentExpend"
+                                        ref="item1"
+                                    >
+                                        <li
+                                            v-for="(item,index) in treatment"
+                                            :key="index"
+                                        >
+                                            <div class="patient-background">
+                                                <div class="patient-background-top">
+                                                    <span class="patient-top1">{{item.patient_name}}</span>
+                                                    <span class="patient-top2">{{item.member_id}}</span>
+                                                    <span class="patient-top3">{{item.appointment_date}}</span>
+                                                </div>
+                                                <div class="patient-background-bottom">
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
+                                                    {{item.medical_record}}
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <!-- // -->
                             </div>
+
                         </div>
 
                         <div
@@ -547,6 +532,14 @@ export default {
             appvisit_show: false,
 
             workdate: new Date(),
+            //当天工作
+            appointCount: "",
+            todayFirst: "",
+            todaySub: "",
+            //全部患者
+            recentCount: "",
+            blackCount: "",
+            completeCount: "",
 
             options: [
                 {
@@ -587,94 +580,13 @@ export default {
             appointments: [],
             diagnosis: [],
             subsequent: [],
-            // appointmentNotArrive: [
-            //     {
-            //         appointment_case_id: "石先生",
-            //         appointment_history: "史",
-            //         appointment_date: "上午 11:30",
-            //         appointment_phone: "13925814457",
-            //         appointment_doctor: "马医生",
-            //         appointment_record: "11002"
-            //     },
-            //     {
-            //         appointment_case_id: "陈先生",
-            //         appointment_history: "欠",
-            //         appointment_date: "2019-06-04",
-            //         appointment_phone: "13925814457",
-            //         appointment_doctor: "余医生",
-            //         appointment_record: "11003"
-            //     },
-            //     {
-            //         appointment_case_id: "刘先生",
-            //         appointment_history: "欠",
-            //         appointment_date: "2019-06-04",
-            //         appointment_phone: "13925814457",
-            //         appointment_doctor: "马医生",
-            //         appointment_record: "11003"
-            //     },
-            //     {
-            //         appointment_case_id: "韩先生",
-            //         appointment_history: "欠",
-            //         appointment_date: "2019-06-04",
-            //         appointment_phone: "13925814457",
-            //         appointment_doctor: "余医生",
-            //         appointment_record: "11003"
-            //     }
-            // ],
-            todayFirstVisit: [
-                {
-                    // diagnosi_case_id: "131313131",
-                    // diagnosi_history: "初",
-                    // diagnosi_date: "上午 11:30",
-                    // diagnosi_phone: "13925814457",
-                    // diagnosi_doctor: "马医生",
-                    // diagnosi_record: "21001"
-                }
-            ],
-            todaySubsequentVisit: [
-                {
-                    // subsequent_case_id: "1001",
-                    // subsequent_history: "vip",
-                    // subsequent_date: "1990-10-02",
-                    // subsequent_phone: "13423901332",
-                    // subsequent_doctor: "黄医生",
-                    // subsequent_record: "21001"
-                }
-            ],
 
             //全部患者
-            patientsRecent: [
-                {
-                    recent_case_id: "15030101",
-                    medical_history: "初",
-                    appointment_date: "上午 11:30",
-                    patient_phone: "13925814457",
-                    patient_doctor: "马医生",
-                    medical_record: "21001"
-                }
-            ],
+            treatment: [],
+            blacklist: [],
+            patientsRecent: [],
 
-            blacklist: [
-                {
-                    blacklist_case_id: "15030101",
-                    blacklist_history: "vip",
-                    blacklist_date: "2019-05-10",
-                    blacklist_phone: "13925814457",
-                    blacklist_doctor: "石医生",
-                    blacklist_record: "21001"
-                }
-            ],
-
-            treatment: [
-                {
-                    case_id: "马先生",
-                    medical_history: "vip",
-                    appointment_date: "2019-05-10",
-                    patient_phone: "15304890744",
-                    patient_doctor: "石医生",
-                    medical_record: "21001"
-                }
-            ],
+            //最近访问
             access: [
                 {
                     access_case_id: "李先生",
@@ -701,12 +613,41 @@ export default {
             .todayWork()
             .then(res => {
                 console.log(res.data);
-                that.appointments = res.data.appointmentNotArrive;
-                that.diagnosis = res.data.todayFirstVisit;
-                that.subsequent = res.data.todaySubsequentVisit;
+                if (res.code == 200) {
+                    that.appointments = res.data.appointmentNotArrive;
+                    that.diagnosis = res.data.todayFirstVisit;
+                    that.subsequent = res.data.todaySubsequentVisit;
+                    that.appointCount = that.appointments.length;
+                    that.todayFirst = that.diagnosis.length;
+                    that.todaySub = that.subsequent.length;
+                } else {
+                    console.log(res.msg);
+                }
             })
-            .catch(res => {});
+            .catch(res => {
+                console.log(res.msg);
+            });
+
+        that.$api.patient
+            .index()
+            .then(res => {
+                if (res.code == 200) {
+                    console.log(res.data);
+                    that.patientsRecent = res.data.recentPatient;
+                    that.recentCount = that.patientsRecent.length;
+                    that.blacklist = res.blacklistPatient;
+                    that.blackCount = that.blacklist.length;
+                    that.treatment = res.completePatient;
+                    that.completeCount = that.treatment.length;
+                } else {
+                    console.log(res.msg);
+                }
+            })
+            .catch(res => {
+                console.log(res.msg);
+            });
     },
+
     mounted() {},
     watch: {
         // refresh(newValue, oldValue) {
@@ -740,6 +681,20 @@ export default {
     },
     computed: {},
     methods: {
+        changeWorkdate(i){
+            switch(i){
+                case 'prev':
+                    this.workdate = new Date(+new Date(this.workdate) - 3600*24*1000)
+                   
+                    break;
+                case 'next':
+                    this.workdate = new Date(+new Date(this.workdate) + 3600*24*1000)
+                    break;
+                case 'today':
+                    this.workdate = new Date();
+                    break;
+            }
+        },
         expend(type) {
             let that = this;
             that[type] = !that[type];
@@ -843,6 +798,31 @@ export default {
                 bottom: 0;
                 left: 0;
                 right: 0;
+            }
+            .patient-content {
+                .top-content {
+                    border: 1px solid #e3e3e3;
+                    padding: 5px 0px;
+                    display: flex;
+                    .patient-infor {
+                        width: 105px;
+                        padding-left: 5px;
+                    }
+                    .patient-input {
+                        width: 200px;
+                        padding-left: 5px;
+                    }
+                    .patient-i {
+                        margin-left: 5px;
+                        margin-top: 5px;
+                        color: #8f8f8f;
+                        font-size: 30px;
+                        cursor: pointer;
+                        &:hover {
+                            color: #525252;
+                        }
+                    }
+                }
             }
         }
     }

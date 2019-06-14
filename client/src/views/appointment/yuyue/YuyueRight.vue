@@ -143,6 +143,7 @@
         <yuyue-month ref="month" :update.sync="navBar[2].active" @OnUpdateYuyueRes="updateYuyueRes"></yuyue-month>
       </div>
       <div v-show="navBar[3].active" class="list">
+        <!-- <test></test>  -->
         <yuyue-list></yuyue-list>
       </div>
     </div>
@@ -177,6 +178,7 @@ import StatusDialog from "./StatusDialog.vue";
 import YuyueWeek from "./YuyueWeek.vue";
 import YuyueMonth from "./YuyueMonth.vue";
 import YuyueList from "./YuyueList.vue";
+import test from "./test.vue";
 import { mapState, mapGetters } from "vuex";
 import { setTimeout } from "timers";
 import { format } from "path";
@@ -188,7 +190,8 @@ export default {
     YuyueWeek,
     YuyueMonth,
     YuyueList,
-    StatusDialog
+    StatusDialog,
+    // test,
   },
   provide: function() {
     return {

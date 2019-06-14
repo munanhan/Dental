@@ -103,10 +103,10 @@
       <path value="$PROJECT_DIR$/server/vendor/phpunit/phpunit" />
       <path value="$PROJECT_DIR$/server/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/server/vendor/hamcrest/hamcrest-php" />
-      <path value="$PROJECT_DIR$/server/vendor/phpoffice/phpspreadsheet" />
       <path value="$PROJECT_DIR$/server/vendor/maatwebsite/excel" />
-      <path value="$PROJECT_DIR$/server/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/server/vendor/phpoffice/phpspreadsheet" />
       <path value="$PROJECT_DIR$/server/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/server/vendor/markbaker/complex" />
     </include_path>
   </component>
 </project>

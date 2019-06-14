@@ -14,30 +14,11 @@
             style="width:500px;margin-left:20px;height:200px"
         >
             <tbody>
-                <td
-                    v-for="(item, index) in items"
-                    :key="index"
-                >
-
-                </td>
                 <tr>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td style="padding-left:10px">牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-
+                    <td
+                        v-for="(item, index) in 16"
+                        :key="index"
+                    > 牙</td>
                 </tr>
 
                 <tr>
@@ -118,7 +99,9 @@
                     </td>
                     <td></td>
                 </tr>
-
+                <!-- <tr>
+                    <td></td>
+                </tr> -->
                 <tr>
                     <td></td>
                     <td></td>
@@ -128,11 +111,14 @@
                     <td class="xxx">C</td>
                     <td class="xxx">B</td>
                     <td class="border-right xxx">A</td>
-                    <td style="padding-left:10px">A</td>
-                    <td>B</td>
-                    <td>C</td>
-                    <td>D</td>
-                    <td>E</td>
+                    <td
+                        class="xxx"
+                        style="padding-left:10px"
+                    >A</td>
+                    <td class="xxx">B</td>
+                    <td class="xxx">C</td>
+                    <td class="xxx">D</td>
+                    <td class="xxx">E</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -146,14 +132,20 @@
                 </tr>
 
                 <tr>
-                    <!-- <td v-for="(item, index) in 8" :key="index">
-                    {{ 8 - index }}
-                </td>
+                    <td
+                        v-for="(item, index) in 8"
+                        :key="index"
+                    >
+                        {{ 8 - index }}
+                    </td>
 
-                <td v-for="(item, index) in 8" :key="index">
-                    {{ item }}
-                </td> -->
-                    <td>8</td>
+                    <td
+                        v-for="(item, index) in 8"
+                        :key="index"
+                    >
+                        {{ item }}
+                    </td>
+                    <!-- <td>8</td>
                     <td>7</td>
                     <td>6</td>
                     <td>5</td>
@@ -169,7 +161,7 @@
                     <td>6</td>
                     <td>7</td>
                     <td>8</td>
-                    <td></td>
+                    <td></td> -->
                 </tr>
                 <tr>
                     <!-- <td
@@ -239,6 +231,7 @@ export default {
     height: 200px;
 }
 .teeth-content {
+    text-align: center;
     .xxx {
         cursor: pointer;
         &:hover {
