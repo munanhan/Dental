@@ -66,6 +66,7 @@ class PatientController extends BaseController
             $appointment['patient_id']=$patientModel->id;
             $appointment['flag']=0;
             $appointment['status']=2;
+
             if(Appointment::create($appointment)){
                 return message('添加成功','',200);
             }
@@ -85,20 +86,25 @@ class PatientController extends BaseController
 
         $patient=$this->parms;
         $id=$patient['id'];
+
         $appOld=Appointment::where('patient_id',$id)->oldest()->first();
         $appOld->appointment_date=$patient['first_date'];
         $appOld->appointment_doctor=$patient['first_doctor'];
         $appOld->save();
+
         $appNew=Appointment::where('patient_id',$id)->latest()->first();
         $appNew->appointment_date=$patient['last_date'];
         $appNew->appointment_doctor=$patient['last_doctor'];
         $appNew->save();
+
         $exclude=['first_doctor','first_date','last_doctor','last_date'];
+
         foreach ($exclude as $key){
             if(array_key_exists($key,$patient)){
                 unset($patient[$key]);
             }
         }
+
         Patient::where('id',$id)->update($patient);
 
         return message('',$this->parms, 200);
@@ -109,14 +115,17 @@ class PatientController extends BaseController
         $type=request('type');
         dd($id,$type);
         Appointment::where('id',$id)->delete();
+
         $patient=Patient::find($id);
         $patient->delete();
+
         return message('',null, 200);
     }
 
     public function deleteWork()
     {
         $id=request('id');
+
         if(PatientDisposal::find($id)){
             return message('已有处置记录不可删除','',400);
         }else{
@@ -132,7 +141,8 @@ class PatientController extends BaseController
      */
     public function todayWork()
     {
-        $whereTime=now()->toDateString();
+        $whereTime=request('whereTime');
+
         $data['appointmentNotArrive']=$this->appointmentNotArrive($whereTime);
         $data['todayFirstVisit']=$this->todayFirstVisit($whereTime);
         $data['todaySubsequentVisit']=$this->todaySubsequentVisit($whereTime);
@@ -172,7 +182,7 @@ class PatientController extends BaseController
     {
         return
         $this->patientAll()
-            ->whereIn('status',$status)
+            ->whereIn('apt.status',$status)
             ->whereDate('appointment_date',$whereTime)
             ->when($type,function ($query,$type){
                 return $query->where('type',$type);
@@ -187,13 +197,10 @@ class PatientController extends BaseController
     public function index()
     {
 
-//        DB::connection()->enableQueryLog();
-//        $this->searchPatient($where,$type);
-//        $queries=DB::getQueryLog();
-//        dd($queries);
         $data['recentPatient']=$this->recentPatient();
         $data['blacklistPatient']=$this->blacklistPatient();
         $data['completePatient']=$this->completePatient();
+
         return message('',$data,200);
 
     }
@@ -259,7 +266,8 @@ class PatientController extends BaseController
     protected function patientByGroup($group)
     {
         return
-            $this->patientAll()->whereNotIn('status',[5])
+            $this->patientAll()
+                ->whereDate('p.created_at','>=',now()->modify('-30 days'))
                 ->where('patient_group','=',$group)
                 ->get();
     }
@@ -271,13 +279,12 @@ class PatientController extends BaseController
     {
         return
         DB::table('patients as p')
-            ->join('appointments as apt','p.id','=','apt.patient_id')
-            ->select('p.id','patient_name','patient_age','patient_sex','patient_phone','patient_category',
-                'patient_group','member_id','member_card','allergy','anamnesis','type','status','appointment_doctor',
-                'appointment_date','items')
+            ->leftJoin('appointments as apt','p.id','=','apt.patient_id')
+            ->leftJoin('patient_orders as o','p.id','=','o.patient_id')
+            ->selectRaw('p.id,patient_name,patient_age,patient_sex,patient_phone,member_id,member_card,allergy,anamnesis,patient_category,patient_group,SUM(o.arrearage) as arrearage,apt.status,start_time,over_time,apt.type,appointment_doctor,appointment_date,items')
             ->whereRaw('1=1')
-            ->whereNull('apt.deleted_at');
-
+            ->whereNull('p.deleted_at')
+            ->groupBy('p.id');
     }
 
 
