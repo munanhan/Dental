@@ -29,37 +29,11 @@ class PatientController extends BaseController
 
         if(isset($id)){
             $data= Patient::where('id',$id)->first();
-
-            if($data){
-                $appOld=Appointment::where('patient_id',$id)->where('status',2)->oldest()->first();
-
-                if($appOld){
-                    $data['first_date']=$appOld->appointment_date;
-                    $data['first_doctor']=$appOld->appointment_doctor;
-                }else{
-                    $data['first_date']='';
-                    $data['first_doctor']='';
-                }
-
-                $appNew=Appointment::where('patient_id',$id)->where('status',2)->latest()->first();
-
-                if($appNew){
-                    $data['last_date']=$appNew->appointment_date;
-                    $data['last_doctor']=$appNew->appointment_doctor;
-                }else{
-                    $data['last_date']='';
-                    $data['last_doctor']='';
-                }
-
-                return message('',$data,200);
-            }else{
-                return message('患者不存在','',400);
-            }
-
-        }else{
-            return message('请选择一个患者','',400);
+            return message('',$data,200);
         }
     }
+
+
 
     /*
      * 添加患者
@@ -112,27 +86,9 @@ class PatientController extends BaseController
      */
     public function update()
     {
-
         $patient=$this->parms;
+
         $id=$patient['id'];
-
-        $appOld=Appointment::where('patient_id',$id)->oldest()->first();
-        $appOld->appointment_date=$patient['first_date'];
-        $appOld->appointment_doctor=$patient['first_doctor'];
-        $appOld->save();
-
-        $appNew=Appointment::where('patient_id',$id)->latest()->first();
-        $appNew->appointment_date=$patient['last_date'];
-        $appNew->appointment_doctor=$patient['last_doctor'];
-        $appNew->save();
-
-        $exclude=['first_doctor','first_date','last_doctor','last_date'];
-
-        foreach ($exclude as $key){
-            if(array_key_exists($key,$patient)){
-                unset($patient[$key]);
-            }
-        }
 
         Patient::where('id',$id)->update($patient);
 
@@ -144,11 +100,10 @@ class PatientController extends BaseController
      */
     public function delete($id)
     {
-        $type=request('type');
-        dd($id,$type);
         Appointment::where('id',$id)->delete();
 
         $patient=Patient::find($id);
+
         $patient->delete();
 
         return message('',null, 200);
@@ -355,6 +310,7 @@ class PatientController extends BaseController
     {
         return
             $this->patientAll()
+                ->where('apt.status','=',2)
                 ->whereDate('p.created_at','>=',now()->modify('-30 days'))
                 ->where('patient_group','=',$group)
                 ->get();

@@ -8,10 +8,6 @@ use App\Model\PatientTeethHabit;
 
 class PatientTeethHabitController extends BaseController
 {
-//    public function index()
-//    {
-//        return message('',PatientTeethHabit::all());
-//    }
 
     public function show(PatientTeethHabit $patientTeethHabit)
     {
@@ -33,17 +29,4 @@ class PatientTeethHabitController extends BaseController
         return message('',$habit);
     }
 
-//    public function update(Request $request , PatientTeethHabit $patientTeethHabit)
-//    {
-//        $patientTeethHabit->update($request->all());
-//
-//        return message('',$patientTeethHabit, 200);
-//    }
-
-//    public function delete(PatientTeethHabit $patientTeethHabit)
-//    {
-//        $patientTeethHabit->delete();
-//
-//        return message('',null, 200);
-//    }
 }
