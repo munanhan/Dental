@@ -74,7 +74,10 @@
                                             v-for="(item,index) in appointments"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -87,7 +90,6 @@
                                                 </div>
                                             </div>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="work-select">
@@ -109,7 +111,10 @@
                                             v-for="(item,index) in diagnosis"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -144,7 +149,10 @@
                                             v-for="(item,index) in subsequent"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -157,7 +165,6 @@
                                                 </div>
                                             </div>
                                         </li>
-
                                     </ul>
                                 </div>
 
@@ -180,7 +187,7 @@
                     >
                         <div class="top-content">
                             <el-select
-                                v-model="patientSearch.searchType"
+                                v-model="patientSearch.flag"
                                 placeholder="患者信息"
                                 class="patient-infor"
                             >
@@ -193,7 +200,7 @@
                                 </el-option>
                             </el-select>
                             <el-input
-                                v-model="patientSearch.patientInfo"
+                                v-model="patientSearch.keywords"
                                 class="patient-input"
                                 placeholder="姓名、拼音、电话"
                                 suffix-icon="el-icon-search"
@@ -223,7 +230,10 @@
                                             v-for="(item,index) in patientsRecent"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
                                                     <span class="patient-top2">{{item.member_id}}</span>
@@ -257,7 +267,10 @@
                                             v-for="(item,index) in blacklist"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
                                                     <span class="patient-top2">{{item.member_id}}</span>
@@ -292,7 +305,10 @@
                                             v-for="(item,index) in treatment"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
                                                     <span class="patient-top2">{{item.member_id}}</span>
@@ -338,6 +354,7 @@
                             v-for="(item,index) in access"
                             :key="index"
                             class="visit-background"
+                            @click="getInfoById(item.id)"
                         >
                             <div
                                 class="visit-background-top"
@@ -379,7 +396,9 @@
                     label="患者信息"
                     name="pationInfo"
                 >
-                    <patient-info :refresh.sync="pationInfo"></patient-info>
+                    <patient-info :refresh.sync="pationInfo" :selectPatient="selectPatient">
+
+                    </patient-info>
 
                 </el-tab-pane>
 
@@ -516,6 +535,7 @@ export default {
 
     data() {
         return {
+            selectPatient:{},
             patient_expend: false,
             input: "",
             search: "",
@@ -526,8 +546,8 @@ export default {
 
             workdate: new Date(),
             //当天工作
-            dayStatusWork: "今天工作",
-            dayStatus: "今天",
+            dayStatusWork: "今日工作",
+            dayStatus: "今日",
             appointCount: "",
             todayFirst: "",
             todaySub: "",
@@ -537,8 +557,8 @@ export default {
             completeCount: "",
 
             patientSearch: {
-                searchType: 1,
-                patientInfo: ""
+                flag: "",
+                keywords: ""
             },
 
             options: [
@@ -584,18 +604,8 @@ export default {
 
             //最近访问
             access: [],
-            //最近访问
-            // access: [
-            //     {
-            //         access_case_id: "李先生",
-            //         access_history: "vip",
-            //         access_date: "2019-06-01",
-            //         access_phone: "13920578841",
-            //         access_doctor: "孔先生",
-            //         access_record: "1503010120"
-            //     }
-            // ],
-            //今天工作
+
+            //今日工作
             appointmentExpend: false,
             diagnosisExpend: false,
             visitExpend: false,
@@ -603,8 +613,6 @@ export default {
             patientExpend: false,
             blackExpend: false,
             treatmentExpend: false
-            //最近访问
-            // access: false
         };
     },
     created() {
@@ -627,7 +635,7 @@ export default {
                 case "visit":
                     that.getRecentVisit();
                     break;
-                // console.log("33");
+            
             }
             console.log(newValue);
         },
@@ -673,6 +681,18 @@ export default {
     },
     computed: {},
     methods: {
+        //获取id
+        getInfoById(id) {
+            console.log(id);
+            let that = this;
+            that.$api.patient
+                .getPatientByID({ id })
+                .then(res => {
+                    that.selectPatient=res.data;
+                })
+                .catch(res => {});
+        },
+        //获取最近访问
         getRecentVisit() {
             let that = this;
             that.$api.patient
@@ -688,6 +708,7 @@ export default {
                     console.log(res.msg);
                 });
         },
+        //获取全部患者
         getAllPatient() {
             let that = this;
             that.$api.patient
@@ -710,7 +731,7 @@ export default {
                     console.log(res.msg);
                 });
         },
-
+        //获取今日工作
         getTodayWork() {
             let that = this;
             let params = {};
@@ -745,6 +766,7 @@ export default {
             that.content.projectConsumption = "projectConsumption" == index;
             that.projectConsumptionUpdate = "projectConsumption" == index;
         },
+        //改变时间日期
         changeWorkdate(i) {
             switch (i) {
                 case "prev":
