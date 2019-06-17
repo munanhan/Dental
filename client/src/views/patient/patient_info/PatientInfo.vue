@@ -49,7 +49,7 @@
                             <div>年 龄：{{data.patient_age}}</div>
                         </el-col>
                         <el-col :span="6">
-                            <div>社 保 号：{{society_no}}</div>
+                            <div>社 保 号：{{data.society_no}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -101,9 +101,9 @@
                     </div>
                     <div style="display:flex;margin-bottom:5px">
                         <template>
-                            <el-radio-group v-model="data.patient_sex">
-                                <el-radio :label="3">男</el-radio>
-                                <el-radio :label="6">女</el-radio>
+                            <el-radio-group v-model="patient_sex">
+                                <el-radio :label="0">男</el-radio>
+                                <el-radio :label="1">女</el-radio>
                             </el-radio-group>
                         </template>
                     </div>
@@ -115,7 +115,7 @@
 
             </div>
 
-            <div class="patient-bottom">
+            <div class="patient-middle">
                 <el-row
                     :gutter="24"
                     style="margin:20px"
@@ -166,14 +166,9 @@
 
             </div>
         </div>
-        <div style="border:1px solid #e4e4e4;
-                    background-color:#e3e3e3;
-                    position:absolute;left;0;
-                    bottom:0;width:100%;
-                    height:59px">
-
+        <div class="patient-bottom">
             <el-button
-                style="width:110px;margin-top:10px;margin-left:10px"
+                class="patient-bottom-button"
                 type="primary"
                 porp="modify-inormation"
                 @click="Modify_info"
@@ -201,7 +196,8 @@ export default {
     data() {
         return {
             data: {},
-            modinfo_show: false
+            modinfo_show: false,
+            patient_sex: 0
         };
     },
     created() {},
@@ -272,7 +268,7 @@ export default {
                 padding: 5px;
                 .image {
                     position: relative;
-                    border: 1px solid red;
+                    border: 1px solid rgb(189, 189, 189);
                     width: 170px;
                     margin-bottom: 10px;
                     margin-left: -30px;
@@ -283,8 +279,22 @@ export default {
                 }
             }
         }
-        .patient-bottom {
+        .patient-middle {
             margin-top: 30px;
+        }
+    }
+    .patient-bottom {
+        border: 1px solid #e4e4e4;
+        background-color: #e3e3e3;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 59px;
+        .patient-bottom-button {
+            width: 110px;
+            margin-top: 10px;
+            margin-left: 10px;
         }
     }
 }

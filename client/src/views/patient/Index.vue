@@ -7,19 +7,28 @@
                     class="left_tab"
                 >
                     <el-tab-pane
-                        label="当天工作"
+                        :label="dayStatusWork"
                         name="first"
                         class="work-content"
                     >
 
                         <div class="work-top-content">
-                            <div class="work-content-top1" @click="changeWorkdate('prev')">
+                            <div
+                                class="work-content-top1"
+                                @click="changeWorkdate('prev')"
+                            >
                                 <i class="fa fa-angle-left"></i>
                             </div>
 
-                            <div class="work-content-top2"  @click="changeWorkdate('today')">今</div>
+                            <div
+                                class="work-content-top2"
+                                @click="changeWorkdate('today')"
+                            >今</div>
 
-                            <div class="work-content-top3"  @click="changeWorkdate('next')">
+                            <div
+                                class="work-content-top3"
+                                @click="changeWorkdate('next')"
+                            >
                                 <i class="fa fa-angle-right"></i>
                             </div>
                             <!-- <el-date-picker
@@ -41,8 +50,11 @@
 
                         </div>
                         <div style="background-color:#efefef">
-                            <div class="work-item">
-                                <div style="cursor: pointer;margin-bottom:10px">
+                            <div
+                                class="work-item"
+                                @select="selectHandler"
+                            >
+                                <div class="work-select">
                                     <div
                                         @click="expend('appointmentExpend')"
                                         class="work-title"
@@ -78,7 +90,7 @@
 
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="work-select">
                                     <div
                                         class="work-title"
                                         @click="expend('diagnosisExpend')"
@@ -86,7 +98,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': diagnosisExpend}"
-                                        ></i> 当天初诊({{todayFirst}})</div>
+                                        ></i> {{dayStatus}}初诊({{todayFirst}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -113,7 +125,7 @@
 
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="work-select">
                                     <div
                                         class="work-title"
                                         @click="expend('visitExpend')"
@@ -121,7 +133,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': visitExpend}"
-                                        ></i> 当天复诊({{todaySub}})</div>
+                                        ></i> {{dayStatus}}复诊({{todaySub}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -148,9 +160,11 @@
 
                                     </ul>
                                 </div>
+
                                 <!-- // -->
                             </div>
                         </div>
+
                         <div class="work-bottom-content">
                             <el-button
                                 type="primary"
@@ -166,20 +180,20 @@
                     >
                         <div class="top-content">
                             <el-select
-                                v-model="value"
+                                v-model="patientSearch.searchType"
                                 placeholder="患者信息"
                                 class="patient-infor"
                             >
                                 <el-option
                                     v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    :key="item.id"
+                                    :label="item.type"
+                                    :value="item.id"
                                 >
                                 </el-option>
                             </el-select>
                             <el-input
-                                v-model="input"
+                                v-model="patientSearch.patientInfo"
                                 class="patient-input"
                                 placeholder="姓名、拼音、电话"
                                 suffix-icon="el-icon-search"
@@ -187,18 +201,9 @@
                             <i class="fa fa-sort-alpha-down patient-i"></i>
                         </div>
 
-                        <!-- <div>
-                                <el-tree
-                                    style="height:100%;
-                                           font-weight:bold;
-                                           background-color:#efefef;"
-                                    :data="data"
-                                    :props="defaultProps"
-                                ></el-tree>
-                            </div> -->
                         <div style="background-color:#efefef">
                             <div class="patient-item">
-                                <div style="cursor:pointer;margin-bottom:10px">
+                                <div class="patient-select">
                                     <div
                                         @click="expend('patientExpend')"
                                         class="patient-title"
@@ -233,7 +238,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="patient-select">
                                     <div
                                         class="patient-title"
                                         @click="expend('blackExpend')"
@@ -268,7 +273,7 @@
 
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="patient-select">
                                     <div
                                         class="patient-title"
                                         @click="expend('treatmentExpend')"
@@ -307,26 +312,13 @@
                             </div>
 
                         </div>
-
-                        <div
-                            class="botton-content"
-                            style="
-                                  position:absolute;
-                                  left;0;bottom:0; 
-                                  width: 100%;
-                                  height: 60px;
-                                  background-color:white;
-                                   "
-                        >
-                            <div class="visit-bottom-content">
-                                <el-button
-                                    type="primary"
-                                    @click="add_patient"
-                                >新增患者</el-button>
-                                <el-button @click="app_visit">复诊预约</el-button>
-                            </div>
+                        <div class="botton-content">
+                            <el-button
+                                type="primary"
+                                @click="add_patient"
+                            >新增患者</el-button>
+                            <el-button @click="app_visit">复诊预约</el-button>
                         </div>
-
                     </el-tab-pane>
 
                     <el-tab-pane
@@ -486,6 +478,7 @@
 </template>
 
 <script>
+import { formatDate, addClass, inArray } from "@/common/util.js";
 import PatientInfo from "@/views/patient/patient_info/PatientInfo";
 import DisposalRecords from "@/views/patient/disposal_records/DisposalRecords";
 import ChargeInfo from "@/views/patient/charge_info/ChargeInfo";
@@ -533,6 +526,8 @@ export default {
 
             workdate: new Date(),
             //当天工作
+            dayStatusWork: "今天工作",
+            dayStatus: "今天",
             appointCount: "",
             todayFirst: "",
             todaySub: "",
@@ -541,26 +536,27 @@ export default {
             blackCount: "",
             completeCount: "",
 
+            patientSearch: {
+                searchType: 1,
+                patientInfo: ""
+            },
+
             options: [
                 {
-                    value: "选项1",
-                    label: "患者信息"
+                    id: 1,
+                    type: "患者信息"
                 },
                 {
-                    value: "选项2",
-                    label: "病历号"
+                    id: 2,
+                    type: "病历号"
                 },
                 {
-                    value: "选项3",
-                    label: "会员号"
+                    id: 3,
+                    type: "会员号"
                 },
                 {
-                    value: "选项4",
-                    label: "检查医生"
-                },
-                {
-                    value: "选项5",
-                    label: "高级查询..."
+                    id: 4,
+                    type: "检查医生"
                 }
             ],
             value: "",
@@ -609,47 +605,24 @@ export default {
     },
     created() {
         let that = this;
-        that.$api.patient
-            .todayWork()
-            .then(res => {
-                console.log(res.data);
-                if (res.code == 200) {
-                    that.appointments = res.data.appointmentNotArrive;
-                    that.diagnosis = res.data.todayFirstVisit;
-                    that.subsequent = res.data.todaySubsequentVisit;
-                    that.appointCount = that.appointments.length;
-                    that.todayFirst = that.diagnosis.length;
-                    that.todaySub = that.subsequent.length;
-                } else {
-                    console.log(res.msg);
-                }
-            })
-            .catch(res => {
-                console.log(res.msg);
-            });
-
-        that.$api.patient
-            .index()
-            .then(res => {
-                if (res.code == 200) {
-                    console.log(res.data);
-                    that.patientsRecent = res.data.recentPatient;
-                    that.recentCount = that.patientsRecent.length;
-                    that.blacklist = res.blacklistPatient;
-                    that.blackCount = that.blacklist.length;
-                    that.treatment = res.completePatient;
-                    that.completeCount = that.treatment.length;
-                } else {
-                    console.log(res.msg);
-                }
-            })
-            .catch(res => {
-                console.log(res.msg);
-            });
+        let whereTime = new Date();
+        that.getTodayWork(whereTime);
     },
 
     mounted() {},
     watch: {
+        activeName(newValue, oldValue) {
+            switch (newValue) {
+                case "first":
+                    console.log("11");
+                case "patient":
+                    let that = this;
+                    that.getAllPatient();
+                case "visit":
+                    console.log("33");
+            }
+            console.log(newValue);
+        },
         // refresh(newValue, oldValue) {
         //         let that = this;
 
@@ -670,6 +643,17 @@ export default {
         //         that.chargeDetailUpdate = "ChargeInfo" == index;
 
         //     },
+        workdate(newValue, oldValue) {
+            let newV = formatDate(newValue, "yyyy-MM-dd"),
+                now = formatDate(new Date(), "yyyy-MM-dd");
+
+            newV == now
+                ? (this.dayStatusWork = "今日工作")
+                : (this.dayStatusWork = "当日工作");
+            newV == now ? (this.dayStatus = "今日") : (this.dayStatus = "当日");
+            let that = this;
+            that.getTodayWork();
+        },
         curTab(newValue, oldValue) {
             let that = this;
 
@@ -681,17 +665,81 @@ export default {
     },
     computed: {},
     methods: {
-        changeWorkdate(i){
-            switch(i){
-                case 'prev':
-                    this.workdate = new Date(+new Date(this.workdate) - 3600*24*1000)
-                   
+        getAllPatient() {
+            let that = this;
+            that.$api.patient
+                .index(that.patientSearch)
+                .then(res => {
+                    if (res.code == 200) {
+                        console.log(res.data);
+                        that.patientsRecent = res.data.recentPatient;
+                        that.recentCount = that.patientsRecent.length;
+
+                        that.blacklist = res.data.blacklistPatient;
+                        that.blackCount = that.blacklist.length;
+
+                        that.treatment = res.data.completePatient;
+                        that.completeCount = that.treatment.length;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
+
+        getTodayWork() {
+            let that = this;
+            let params = {};
+            params.whereTime =
+                typeof that.workdate == "object"
+                    ? that.workdate.toLocaleDateString()
+                    : that.workdate;
+            that.$api.patient
+                .todayWork(params)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.appointments = res.data.appointmentNotArrive;
+                        that.diagnosis = res.data.todayFirstVisit;
+                        that.subsequent = res.data.todaySubsequentVisit;
+                        that.appointCount = that.appointments.length;
+                        that.todayFirst = that.diagnosis.length;
+                        that.todaySub = that.subsequent.length;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
+
+        selectHandler(index) {
+            let that = this;
+            that.content.chargeDetail = "chargeDetail" == index;
+            that.chargeDetailUpdate = "chargeDetail" == index;
+
+            that.content.projectConsumption = "projectConsumption" == index;
+            that.projectConsumptionUpdate = "projectConsumption" == index;
+        },
+        changeWorkdate(i) {
+            switch (i) {
+                case "prev":
+                    this.workdate = new Date(
+                        +new Date(this.workdate) - 3600 * 24 * 1000
+                    );
+
                     break;
-                case 'next':
-                    this.workdate = new Date(+new Date(this.workdate) + 3600*24*1000)
+                case "next":
+                    this.workdate = new Date(
+                        +new Date(this.workdate) + 3600 * 24 * 1000
+                    );
+
                     break;
-                case 'today':
+                case "today":
                     this.workdate = new Date();
+
                     break;
             }
         },
@@ -823,10 +871,22 @@ export default {
                         }
                     }
                 }
+                .botton-content {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 60px;
+                    background-color: white;
+                }
             }
         }
     }
     .work-item {
+        .work-select {
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
         ul,
         li {
             list-style: none;
@@ -891,6 +951,10 @@ export default {
         }
     }
     .patient-item {
+        .patient-select {
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
         ul,
         li {
             list-style: none;
@@ -987,14 +1051,6 @@ export default {
         }
     }
 
-    .visit-bottom-content {
-        margin-top: 800px;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        background-color: white;
-    }
     .visit-background {
         border: 1px solid #bababa;
         background-color: white;
@@ -1040,6 +1096,14 @@ export default {
         &:hover {
             border-color: @color;
         }
+    }
+    .visit-bottom-content {
+        margin-top: 800px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: white;
     }
 }
 .work-content {

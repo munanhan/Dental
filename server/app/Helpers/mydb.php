@@ -397,7 +397,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * 上传方法
  */
-            function upload($file){
+            function upload($file,$type = 'image'){
                 //上传
                 $key = key($file);//获取key
 
@@ -405,7 +405,7 @@ use Illuminate\Support\Facades\DB;
 
                 $ext = substr(strrchr($name, '.'), 1);//获取文件后缀
 
-                $check = checkExt($ext);
+                $check = checkExt($ext,$type);
                 if ($check) {
                     return $check; 
                 }
@@ -435,11 +435,17 @@ use Illuminate\Support\Facades\DB;
 /*
  * 检测后缀名
  */
-            function checkExt($ext){
+            function checkExt($ext,$type){
                 //检测后缀
-                $ext_arr = ['jpg','jpeg','png'];
-                if (in_array($ext, $ext_arr)) {
+                $ext_arr = [ 
+                               'image' => ['jpg','jpeg','png'],
+                               'excel' => ['xlsx','xls'] 
+                           ];
+
+                if (in_array($ext, $ext_arr[$type])) {
+
                     return false;
                 }
-                return '图片后缀名必须为jpg,jpeg,png的任一种.';
+
+                return '文件后缀名必须为'.implode(',', $ext_arr[$type]).'的任一种.';
             }
