@@ -6,7 +6,9 @@ use App\Http\Controllers\Traits\AttendDoctor;
 use App\Model\Appointment;
 use App\Model\Patient;
 use App\Model\PatientDisposal;
+use App\Model\RecentVisit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
@@ -18,19 +20,50 @@ class PatientController extends BaseController
 
     use AttendDoctor;
 
+    /*
+     * 根据id展示患者
+     */
     public function show()
     {
         $id=request('id');
-        $data= Patient::where('id',$id)->first();
-        $appOld=Appointment::where('patient_id',$id)->oldest()->first();
-        $data['first_date']=$appOld->appointment_date;
-        $data['first_doctor']=$appOld->appointment_doctor;
-        $appNew=Appointment::where('patient_id',$id)->latest()->first();
-        $data['last_date']=$appNew->appointment_date;
-        $data['last_doctor']=$appNew->appointment_doctor;
-        return message('',$data,200);
+
+        if(isset($id)){
+            $data= Patient::where('id',$id)->first();
+
+            if($data){
+                $appOld=Appointment::where('patient_id',$id)->where('status',2)->oldest()->first();
+
+                if($appOld){
+                    $data['first_date']=$appOld->appointment_date;
+                    $data['first_doctor']=$appOld->appointment_doctor;
+                }else{
+                    $data['first_date']='';
+                    $data['first_doctor']='';
+                }
+
+                $appNew=Appointment::where('patient_id',$id)->where('status',2)->latest()->first();
+
+                if($appNew){
+                    $data['last_date']=$appNew->appointment_date;
+                    $data['last_doctor']=$appNew->appointment_doctor;
+                }else{
+                    $data['last_date']='';
+                    $data['last_doctor']='';
+                }
+
+                return message('',$data,200);
+            }else{
+                return message('患者不存在','',400);
+            }
+
+        }else{
+            return message('请选择一个患者','',400);
+        }
     }
 
+    /*
+     * 添加患者
+     */
     public function store(Request $request)
     {
         $patient=$request->all();
@@ -50,7 +83,7 @@ class PatientController extends BaseController
         if($patientModel){
             if(Appointment::where(['patient_id'=>$patientModel->id,
                 'treatment_date'=>$appointment['appointment_date'],
-                'attend_doctor'=>$appointment['appointment_doctor']])){
+                'attend_doctor'=>$appointment['appointment_doctor']])->first()){
                 return message('该医生今天已经接诊过该患者，请更换医生或日期！','',400);
             }else{
                 Patient::where('patient_phone',$patient['patient_phone'])->update($patient);
@@ -74,13 +107,9 @@ class PatientController extends BaseController
 
     }
 
-    public function searchByName()
-    {
-        $patient_name=request('patient_name');
-        $patient=Patient::where('patient_name','like','%'.$patient_name.'%')->get();
-        return message('',$patient,200);
-    }
-
+    /*
+     * 根据id更新患者信息
+     */
     public function update()
     {
 
@@ -110,6 +139,9 @@ class PatientController extends BaseController
         return message('',$this->parms, 200);
     }
 
+    /*
+     * 根据id删除患者
+     */
     public function delete($id)
     {
         $type=request('type');
@@ -122,6 +154,9 @@ class PatientController extends BaseController
         return message('',null, 200);
     }
 
+    /*
+     * 根据id删除今日工作
+     */
     public function deleteWork()
     {
         $id=request('id');
@@ -134,7 +169,6 @@ class PatientController extends BaseController
             return message('删除成功','',200);
         }
     }
-
 
     /*
      * 今日工作
@@ -150,6 +184,47 @@ class PatientController extends BaseController
         return message('',$data,200);
     }
 
+    /*
+     * 最近访问患者
+     */
+    public function recentVisitPatient()
+    {
+        $idArray=$this->getRecentVisitPatientId();
+
+        $idString=implode(',',$idArray);
+
+        $data=$this->patientAll()->whereIn('p.id',$idArray)
+            ->orderByRaw(DB::raw("FIELD(p.id,$idString)"))->get();
+
+        return message('',$data,200);
+    }
+
+    /*
+     * 获取最近浏览患者的id
+     */
+    protected function getRecentVisitPatientId()
+    {
+        $subQuery=DB::table('recent_visits')
+            ->where('user_id',Auth::id())
+            ->whereDate('created_at','>=',now()->modify('-30 days'))
+            ->latest()
+            ->limit(99999);
+
+        $query = DB::table(DB::raw("({$subQuery->toSql()}) as sub"))
+            ->select('sub.patient_id')
+            ->groupBy('sub.patient_id')
+            ->orderBy('sub.created_at','DESC');
+
+        $query->mergeBindings($subQuery);
+        $result=json_decode($query->get(), true);
+
+        $patientId=[];
+        foreach ($result as ['patient_id'=>$id]){
+            $patientId[]=$id;
+        }
+
+        return $patientId;
+    }
 
     /*
      * 预约未到
@@ -190,7 +265,6 @@ class PatientController extends BaseController
             ->get();
     }
 
-
     /*
      * 全部患者
      */
@@ -205,6 +279,9 @@ class PatientController extends BaseController
 
     }
 
+    /*
+     * 根据条件查询患者
+     */
     protected function searchPatient()
     {
         $flag=request('flag');
@@ -232,6 +309,17 @@ class PatientController extends BaseController
                 ->get();
     }
 
+    public function searchByName()
+    {
+        $patient_name=request('patient_name');
+        $patient=Patient::where('patient_name','like','%'.$patient_name.'%')->get();
+        return message('',$patient,200);
+    }
+
+    public function searchByInfos()
+    {
+        $this->patientAll()->where('p.patient_name','like','')
+    }
 
     /*
      * 最近患者
@@ -287,7 +375,6 @@ class PatientController extends BaseController
             ->groupBy('p.id');
     }
 
-
     /*
      * 获取主治医生
      */
@@ -295,8 +382,6 @@ class PatientController extends BaseController
     {
         return $this->getDoctorByRoleId([1,2,3,8]);
     }
-
-
 
     protected  function getToday()
     {
