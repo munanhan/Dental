@@ -87,7 +87,7 @@ export function index(data) {
 //最近访问
 export function recentVisit(data) {
     return request({
-        url: `${prefix}`,
+        url: `${prefix}/recent_visit`,
         method: 'get',
         params: data
     })

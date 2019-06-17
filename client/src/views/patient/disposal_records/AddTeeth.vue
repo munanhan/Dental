@@ -19,12 +19,12 @@
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-teeth1' +index"
                     > 牙</td>
                     <td></td>
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-teeth2' +index"
                     > 牙</td>
                 </tr>
 
@@ -32,7 +32,7 @@
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-num1' +index"
                     >
                         <div class="select-cell">
                             {{ 8 - index }}
@@ -45,7 +45,7 @@
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-num2' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -62,7 +62,7 @@
                     <td></td>
                     <td
                         v-for="(item, index) in 'ABCDE'"
-                        :key="index"
+                        :key="'top-alphabet1' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -74,7 +74,7 @@
 
                     <td
                         v-for="(item, index) in 'EDCBA'"
-                        :key="index"
+                        :key="'top-alphabet2' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -118,7 +118,7 @@
 
                     <td
                         v-for="(item, index) in 'ABCDE'"
-                        :key="index"
+                        :key="'bottom-alphabet1' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -131,7 +131,7 @@
 
                     <td
                         v-for="(item, index) in 'EDCBA'"
-                        :key="index"
+                        :key="'bottom-alphabet2' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -155,7 +155,7 @@
                 <tr>
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'bottom-num1' +index"
                     >
                         <div class="select-cell">
                             {{ 8 - index }}
@@ -168,7 +168,7 @@
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'bottom-num2' +index"
                     >
                         <div class="select-cell">
                             {{ item }}
@@ -178,7 +178,7 @@
                 <tr>
                     <td
                         v-for="(item, index) in 17"
-                        :key="index"
+                        :key="'bottom-teeth1' +index"
                     >
                         <template v-if="index != 8">
                             牙
