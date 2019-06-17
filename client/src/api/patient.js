@@ -84,6 +84,15 @@ export function index(data) {
     })
 }
 
+//最近访问
+export function recentVisit(data) {
+    return request({
+        url: `${prefix}`,
+        method: 'get',
+        params: data
+    })
+}
+
 
 
 

@@ -62,7 +62,9 @@
                         <el-col :span="6">
                             <div>会员卡号：{{data.member_card}}</div>
                         </el-col>
-
+                        <el-col :span="6">
+                            <div>民族：{{data.nition}}</div>
+                        </el-col>
                     </el-row>
                     <el-row
                         :gutter="24"
@@ -136,6 +138,12 @@
                 >
                     <el-col :span="6">
                         <div>患者来源：{{data.patient_source}}</div>
+                    </el-col>
+                    <el-col :span="6">
+                        <div>复诊医生：{{data.patient_source}}</div>
+                    </el-col>
+                    <el-col :span="6">
+                        <div>复诊时间：{{data.patient_source}}</div>
                     </el-col>
 
                 </el-row>

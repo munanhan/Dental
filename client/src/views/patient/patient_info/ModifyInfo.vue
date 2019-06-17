@@ -6,7 +6,7 @@
         :close-on-click-modal="false"
         class="custom-dialog"
         v-dialog-drag
-        width="950px"
+        width="750px"
         top="1vh"
     >
         <el-form
@@ -243,7 +243,19 @@
                         label="患者来源"
                         class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -464,72 +476,6 @@
                         </el-select>
                     </el-form-item>
                 </div>
-                <!-- ----------------亲友关系----------- -->
-                <div style="display:flex">
-                    <div
-                        class="number"
-                        style="background-color:#a6d2ff;margin-right:3px"
-                    >3</div>
-                    <div class="number">亲友关系</div>
-                </div>
-                <el-table
-                    border
-                    style="width: 100%"
-                >
-                    <el-table-column
-                        prop="date"
-                        label="关系"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="participant_name"
-                        label="关系人姓名"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="性别"
-                        width="80"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="电话"
-                        width="140"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="会员等级"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="会员号"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="备注"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="修改"
-                        width="80"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="address"
-                        label="删除"
-                    >
-                    </el-table-column>
-                </el-table>
             </div>
         </el-form>
 
@@ -737,7 +683,7 @@ export default {
         border: 1px solid rgb(167, 167, 167);
         position: absolute;
         right: 0;
-        margin-right: 240px;
+        margin-right: 35px;
         width: 320px;
         height: 350px;
         // background-image:none;

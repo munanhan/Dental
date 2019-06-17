@@ -259,13 +259,13 @@
                                         >
                                             <div class="patient-background">
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.blacklist_case_id}}</span>
-                                                    <span class="patient-top2">{{item.blacklist_history}}</span>
-                                                    <span class="patient-top3">{{item.blacklist_date}}</span>
+                                                    <span class="patient-top1">{{item.patient_name}}</span>
+                                                    <span class="patient-top2">{{item.member_id}}</span>
+                                                    <span class="patient-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
-                                                    <span class="patient-bottom1">{{item.blacklist_phone}}</span>
-                                                    <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
                                                     {{item.blacklist_record}}
                                                 </div>
                                             </div>
