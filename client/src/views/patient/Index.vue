@@ -259,13 +259,13 @@
                                         >
                                             <div class="patient-background">
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.blacklist_case_id}}</span>
-                                                    <span class="patient-top2">{{item.blacklist_history}}</span>
-                                                    <span class="patient-top3">{{item.blacklist_date}}</span>
+                                                    <span class="patient-top1">{{item.patient_name}}</span>
+                                                    <span class="patient-top2">{{item.member_id}}</span>
+                                                    <span class="patient-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
-                                                    <span class="patient-bottom1">{{item.blacklist_phone}}</span>
-                                                    <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
                                                     {{item.blacklist_record}}
                                                 </div>
                                             </div>
@@ -343,14 +343,14 @@
                                 class="visit-background-top"
                                 style="margin-top:5px"
                             >
-                                <span class="visit-top1">{{item.access_case_id}}</span>
-                                <span class="visit-top2">{{item.access_history}}</span>
-                                <span class="visit-top3">{{item.access_date}}</span>
+                                <span class="visit-top1">{{item.patient_name}}</span>
+                                <span class="visit-top2">{{item.member_id}}</span>
+                                <span class="visit-top3">{{item.appointment_date}}</span>
                             </div>
                             <div class="visit-background-bottom">
-                                <span class="visit-bottom1">{{item.access_phone}}</span>
-                                <span class="visit-bottom2">{{item.access_doctor}}</span>
-                                <span class="visit-bottom3">{{item.access_record}}</span>
+                                <span class="visit-bottom1">{{item.patient_phone}}</span>
+                                <span class="visit-bottom2">{{item.appointment_doctor}}</span>
+                                <span class="visit-bottom3">{{item.record}}</span>
                             </div>
 
                         </div>
@@ -583,17 +583,19 @@ export default {
             patientsRecent: [],
 
             //最近访问
-            access: [
-                {
-                    access_case_id: "李先生",
-                    access_history: "vip",
-                    access_date: "2019-06-01",
-                    access_phone: "13920578841",
-                    access_doctor: "孔先生",
-                    access_record: "1503010120"
-                }
-            ],
+            access: [],
             //最近访问
+            // access: [
+            //     {
+            //         access_case_id: "李先生",
+            //         access_history: "vip",
+            //         access_date: "2019-06-01",
+            //         access_phone: "13920578841",
+            //         access_doctor: "孔先生",
+            //         access_record: "1503010120"
+            //     }
+            // ],
+            //今天工作
             appointmentExpend: false,
             diagnosisExpend: false,
             visitExpend: false,
@@ -601,6 +603,8 @@ export default {
             patientExpend: false,
             blackExpend: false,
             treatmentExpend: false
+            //最近访问
+            // access: false
         };
     },
     created() {
@@ -612,14 +616,18 @@ export default {
     mounted() {},
     watch: {
         activeName(newValue, oldValue) {
+            let that = this;
             switch (newValue) {
                 case "first":
-                    console.log("11");
+                    that.getTodayWork();
+                    break;
                 case "patient":
-                    let that = this;
                     that.getAllPatient();
+                    break;
                 case "visit":
-                    console.log("33");
+                    that.getRecentVisit();
+                    break;
+                // console.log("33");
             }
             console.log(newValue);
         },
@@ -665,13 +673,27 @@ export default {
     },
     computed: {},
     methods: {
+        getRecentVisit() {
+            let that = this;
+            that.$api.patient
+                .recentVisit()
+                .then(res => {
+                    if (res.code == 200) {
+                        that.access = res.data;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
         getAllPatient() {
             let that = this;
             that.$api.patient
                 .index(that.patientSearch)
                 .then(res => {
                     if (res.code == 200) {
-                        console.log(res.data);
                         that.patientsRecent = res.data.recentPatient;
                         that.recentCount = that.patientsRecent.length;
 

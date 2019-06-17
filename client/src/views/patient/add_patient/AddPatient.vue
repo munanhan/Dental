@@ -13,6 +13,7 @@
             label-width="80px"
             :rules="rules"
             :model="form"
+            class="add-patient"
         >
             <div style="display:flex">
                 <el-form-item
@@ -117,7 +118,7 @@
                 </el-table>
             </div>
 
-            <div style="height:300px;overflow: auto">
+            <div class="patient-box">
                 <div style="display:flex">
                     <el-form-item
                         label="电话"
@@ -886,25 +887,32 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
+.add-patient {
+    .form-setting {
+        text-align: right;
+        width: 30px;
+        font-size: 22px;
+        margin-top: 10px;
+        cursor: pointer;
 
-.form-setting {
-    text-align: right;
-    width: 30px;
-    font-size: 22px;
-    margin-top: 10px;
-    cursor: pointer;
-
-    &:hover {
-        color: @color;
+        &:hover {
+            color: @color;
+        }
     }
-}
 
-.search-all {
-    border: 1px solid #b9b9b9;
-    height: 300px;
-    width: 400px;
-    margin-left: 80px;
-    position: fixed;
-    z-index: 99;
+    .search-all {
+        border: 1px solid #b9b9b9;
+        height: 300px;
+        width: 400px;
+        margin-left: 80px;
+        position: fixed;
+        z-index: 99;
+    }
+    .patient-box {
+        height: 300px;
+        overflow: auto;
+        border: 1px solid #e3e3e3;
+        padding-top: 10px;
+    }
 }
 </style>
