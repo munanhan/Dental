@@ -318,7 +318,7 @@ class PatientController extends BaseController
 
     public function searchByInfos()
     {
-        $this->patientAll()->where('p.patient_name','like','');gi
+        $this->patientAll()->where('p.patient_name','like','');
     }
 
     /*
