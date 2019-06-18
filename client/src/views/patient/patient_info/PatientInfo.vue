@@ -4,7 +4,6 @@
             <!-- <template slot="title">
                 <span class="base-fz">基本信息</span>
             </template> -->
-
             <div
                 class="patient-body"
                 style="display:flex"
@@ -15,27 +14,13 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div> 患者姓名：<span style="color:#000">{{data.patient_name}}</span></div>
+                            <div>患者姓名：<span class="patient-left-color">{{data.patient_name}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>患者分组：<span style="color:#000">{{data.patient_group}}</span></div>
+                            <div>患者分组：<span class="patient-left-color">{{data.patient_group}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>电 话：<span style="color:#000">{{data.patient_phone}}</span></div>
-                        </el-col>
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col :span="8">
-                            <div>病 历 号：<span style="color:#000">{{data.case_id}}</span></div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>介 绍 人：{{data.introducer}}</div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>职 业：{{data.patient_profession}}</div>
+                            <div>电 话：<span class="patient-left-color">{{data.patient_phone}}</span></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -43,27 +28,13 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>出生年月：{{data.patient_birthday}}</div>
+                            <div>病 历 号：<span class="patient-left-color">{{data.case_id}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>年 龄：{{data.patient_age}}</div>
+                            <div>介 绍 人：<span class="patient-left-color"></span>{{data.introducer}}</div>
                         </el-col>
                         <el-col :span="8">
-                            <div>社 保 号：{{data.society_no}}</div>
-                        </el-col>
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col :span="8">
-                            <div>会员等级：{{data.member_level}}</div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>会员卡号：{{data.member_card}}</div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>电子邮箱：{{data.patient_email}}</div>
+                            <div>职 业：<span class="patient-left-color"></span>{{data.patient_profession}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -71,7 +42,35 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>联系地址：{{data.patient_address}}</div>
+                            <div>出生年月：<span class="patient-left-color">{{data.patient_birthday}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>年 龄：<span class="patient-left-color">{{data.patient_age}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>社 保 号：<span class="patient-left-color">{{data.society_no}}</span></div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col :span="8">
+                            <div>会员等级：<span class="patient-left-color">{{data.member_level}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>会员卡号：<span class="patient-left-color">{{data.member_card}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>电子邮箱：<span class="patient-left-color">{{data.patient_email}}</span></div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col :span="8">
+                            <div>联系地址：<span class="patient-left-color">{{data.patient_address}}</span></div>
                         </el-col>
 
                     </el-row>
@@ -80,7 +79,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>备 注：{{data.patient_content}}</div>
+                            <div>备 注：<span class="patient-left-color">{{data.patient_content}}</span></div>
                         </el-col>
 
                     </el-row>
@@ -92,7 +91,7 @@
                         style="background-image: url(404.jpg);"
                     >
                     </div>
-                    <div style="display:flex;margin-bottom:5px">
+                    <div class="patient-right-sex">
                         <template>
                             <el-radio-group v-model="patient_sex">
                                 <el-radio :label="0">男</el-radio>
@@ -114,13 +113,13 @@
                     style="margin:20px"
                 >
                     <el-col :span="7">
-                        <div>民族：{{data.nition}}</div>
+                        <div>民族：<span class="patient-left-color">{{data.nation}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>咨 询 师：{{data.counselor}}</div>
+                        <div>咨 询 师：<span class="patient-left-color">{{data.counselor}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>患者来源：{{data.patient_source}}</div>
+                        <div>患者来源：<span class="patient-left-color">{{data.patient_source}}</span></div>
                     </el-col>
 
                     <!-- <el-col :span="8">
@@ -132,19 +131,19 @@
                     style="margin:20px"
                 >
                     <el-col :span="7">
-                        <div>吸 烟 史：{{data.anamnesis}}</div>
+                        <div>吸 烟 史：<span class="patient-left-color">{{data.anamnesis}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>洁牙习惯：{{data.anamnesis}}</div>
+                        <div>洁牙习惯：<span class="patient-left-color">{{data.teeth_habits}}</span></div>
                     </el-col>
                     <el-col
                         :span="8"
                         style="display:flex"
                     >
-                        <div>刷牙次数：{{data.anamnesis}}</div>
-                        <div style="color:black;display:flex">
+                        <div>刷牙次数：<span class="patient-left-color">{{data.anamnesis}}</span></div>
+                        <!-- <div style="color:black;display:flex">
                             <div>5</div>次/天<div style="margin-left:20px">5</div>分钟/次
-                        </div>
+                        </div> -->
                     </el-col>
                 </el-row>
                 <el-row
@@ -152,7 +151,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="24">
-                        <div>过 敏 史：{{data.allergy}}</div>
+                        <div>过 敏 史：<span class="patient-left-color">{{data.allergy}}</span></div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -160,7 +159,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="24">
-                        <div>既 往 史：{{data.anamnesis}}</div>
+                        <div>既 往 史：<span class="patient-left-color">{{data.anamnesis}}</span></div>
                     </el-col>
                 </el-row>
 
@@ -258,6 +257,7 @@ export default {
 .patient-info {
     .patien-content {
         position: absolute;
+        overflow: auto;
         top: 0;
         right: 0;
         left: 0;
@@ -273,6 +273,9 @@ export default {
             .patient-left {
                 height: 100%;
                 width: 100%;
+                .patient-left-color {
+                    color: #000;
+                }
             }
             .patient-right {
                 flex: 1 auto;
@@ -289,10 +292,17 @@ export default {
                 .block {
                     margin-left: -4px;
                 }
+                .patient-right-sex {
+                    display: flex;
+                    margin-bottom: 5px;
+                }
             }
         }
         .patient-middle {
             margin-top: 30px;
+            .patient-left-color {
+                color: #000;
+            }
         }
     }
     .patient-bottom {

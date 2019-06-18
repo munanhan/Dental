@@ -101,14 +101,14 @@
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddAllergy from "./AddAllergy";
+// import AddAllergy from "./AddAllergy";
 
 export default {
     name: "Allergy",
     mixins: [DialogForm],
 
     components: {
-        AddAllergy
+        // AddAllergy
     },
     props: {},
 

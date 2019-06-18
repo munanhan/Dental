@@ -1,29 +1,8 @@
 <template>
     <div class="disposa_content">
         <div class="disposa_top">
-            <!-- <div class="background-1"> -->
-            <!-- <div style="display: flex; justify-content: space-around;">
-                <div style="flex: 1 auto; text-align:left;">
-                    <div style="display:inline-block;">3123123</div>
-                    <div style="display:inline-block;">bbbbb</div>
-                    <div style="display:inline-block;">cccc</div>
-                </div>
-                <div style="flex: 1 auto;  text-align:right;">
-                    <i
-                        style="font-size:20px;"
-                        class="el-icon-printer right-i mr-10"
-                    ></i>
-                    <i class="fa fa-newspaper right-i"></i>
-                    <i class="fa fa-pen right-i"></i>
-                    <i class="fa fa-capsules right-i"></i>
-                    <i class="fa fa-comments right-i"></i>
-                </div>
-            </div> -->
             <div class="background">
-                <div
-                    class="top-content"
-                    style="display: flex; justify-content: space-around;"
-                >
+                <div class="top-content">
                     <div style="flex: 1; text-align:left;">
                         <div class="top">{{disposa_date}}</div>
                         <div class="top">{{disposa_time}}</div>
@@ -50,7 +29,6 @@
                     :key="index"
                 >
                     <div class="background-left">
-
                         <div
                             class="left-bottom"
                             @click="add_teeth"
@@ -102,10 +80,25 @@
                                     :value="toDecimal(item.disposa_amount * item.disposa_price)"
                                     disabled
                                 >
-                                <i
+                                <!-- <i
                                     class="fa fa-trash-alt input-i"
                                     @click.stop="del(scope.row, scope.$item)"
-                                ></i>
+                                ></i> -->
+                                <template slot-scope="scope">
+                                    <el-tooltip
+                                        effect="dark"
+                                        content="删除"
+                                        placement="bottom"
+                                    >
+                                        <el-button
+                                            type="danger"
+                                            size="mini"
+                                            icon="el-icon-delete"
+                                            circle
+                                            @click.stop="del(scope.row, scope.$index)"
+                                        ></el-button>
+                                    </el-tooltip>
+                                </template>
                             </div>
                             <div class="underline"></div>
                         </div>
@@ -276,6 +269,8 @@ export default {
                 color: @color;
             }
             .top-content {
+                display: flex;
+                justify-content: space-around;
                 .top {
                     margin-right: 20px;
                     display: inline-block;
