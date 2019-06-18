@@ -69,8 +69,26 @@
           <div>
             <span>24h</span>
           </div>
-          <div class="doctor1">王医生</div>
-          <div class="doctor2">未指定医生</div>
+          <div class="doctor1">
+            <el-select v-model="left_doctor" @change="changeYuyue('left')">
+              <el-option
+                v-for="(item,index) in doctor"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </div>
+          <div class="doctor2">
+            <el-select v-model="right_doctor" @change="changeYuyue('right')">
+              <el-option
+                v-for="(item,index) in doctor"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </div>
           <div>
             <span>24h</span>
           </div>
@@ -93,34 +111,42 @@
                 data-time="00"
                 :data-h="item"
                 :key="index +'3'"
-                :class="[targetArr[1].indexOf(`${item} : 00`) != -1 &&
-                targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
-            ?'day-blue':'']"
+                :class="[targetLeftArr[1].indexOf(`${item} : 00`) != -1 &&
+                targetLeftArr[0][targetLeftArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
+            ?'day-left-blue':'']"
                 @click="addYuyue(item)"
-              >
-              <template v-if="targetArr[1].indexOf(`${item} : 00`) != -1 &&
-                targetArr[0][targetArr[1].indexOf(`${item} : 00`)] == chooseDatesub5">
-                <div>
-                  1111
-                </div>
-              </template>
-              
-              </div>
+              ></div>
               <div
                 data-time="30"
                 :data-h="item"
                 :key="index+ '4'"
-                :class="[targetArr[1].indexOf(`${item} : 30`) != -1 &&
-                targetArr[0][targetArr[1].indexOf(`${item} : 30`)] == chooseDatesub5   
-            ?'day-blue':'']"
+                :class="[targetLeftArr[1].indexOf(`${item} : 30`) != -1 &&
+                targetLeftArr[0][targetLeftArr[1].indexOf(`${item} : 30`)] == chooseDatesub5   
+            ?'day-left-blue':'']"
                 @click="addYuyue(item)"
               ></div>
             </template>
           </div>
           <div class="other-center-right">
             <template v-for="(item,index) in dayTime">
-              <div data-time="00" :key="index +'1'" @click="addYuyue(item)"></div>
-              <div data-time="30" :key="index+ '2'" @click="addYuyue(item)"></div>
+              <div
+                data-time="00"
+                :data-h="item"
+                :key="index +'1'"
+                @click="addYuyue(item)"
+                :class="[targetRightArr[1].indexOf(`${item} : 00`) != -1 &&
+                targetRightArr[0][targetRightArr[1].indexOf(`${item} : 00`)] == chooseDatesub5   
+            ?'day-right-blue':'']"
+              ></div>
+              <div
+                data-time="30"
+                :data-h="item"
+                :key="index+ '2'"
+                @click="addYuyue(item)"
+                :class="[targetRightArr[1].indexOf(`${item} : 30`) != -1 &&
+                targetRightArr[0][targetRightArr[1].indexOf(`${item} : 30`)] == chooseDatesub5   
+            ?'day-right-blue':'']"
+              ></div>
             </template>
           </div>
           <div class="other-left">
@@ -190,7 +216,7 @@ export default {
     YuyueWeek,
     YuyueMonth,
     YuyueList,
-    StatusDialog,
+    StatusDialog
     // test,
   },
   provide: function() {
@@ -201,13 +227,23 @@ export default {
       getWeekStartEnd: this.getWeekStartEnd,
       getTodayAppointment: this.getTodayAppointment,
       statusIcon: this.statusIcon,
-      getWeekData:this.getWeekData,
+      getWeekData: this.getWeekData
     };
   },
   created() {
     this.$nextTick(function() {
       this.getWeekStartEnd(this.chooseDate);
-      this.getTodayAppointment();
+      //获取预约医生数据、
+      this.$api.appointment.attendDoctor().then(res => {
+        if (res.code == 200 && res.data.length > 0) {
+          this.doctor = res.data;
+          this.left_doctor = this.doctor[0].name;
+          this.right_doctor = this.doctor[1].name;
+          this.left_doctor_id = this.doctor[0].id;
+          this.right_doctor_id = this.doctor[1].id;
+          this.getTodayAppointment();
+        }
+      });
     });
     let self = this;
     Bus.$on("showTime", function(val) {
@@ -216,6 +252,11 @@ export default {
   },
   data() {
     return {
+      doctor: [],
+      left_doctor: null,
+      right_doctor: null,
+      left_doctor_id: null,
+      right_doctor_id: null,
       statusDialog: false,
       dialogVisible: false,
       addYuyueShow: false,
@@ -253,7 +294,8 @@ export default {
       weekStart: null,
       weekEnd: null,
       yuyue_time: null,
-      yuyue_res: [],
+      yuyue_left_res: [],
+      yuyue_right_res: [],
       yuyue_id: null,
       target: null,
       showTime: {
@@ -266,8 +308,33 @@ export default {
   },
 
   methods: {
+    changeYuyue(direction) {
+      if (direction == "left") {
+        this.$api.appointment
+          .getTodayAppointment({
+            date: this.chooseDate,
+            left_doctor: this.left_doctor
+          })
+          .then(res => {
+            if (res.code == 200) {
+              this.yuyue_left_res = res.data[0];
+            }
+          });
+      } else {
+        this.$api.appointment
+          .getTodayAppointment({
+            date: this.chooseDate,
+            right_doctor: this.right_doctor
+          })
+          .then(res => {
+            if (res.code == 200) {
+              this.yuyue_right_res = res.data[1];
+            }
+          });
+      }
+    },
     updateYuyueRes(data) {
-      this.yuyue_res = data;
+      this.yuyue_left_res = data;
     },
     activeLi(item, index) {
       this.$nextTick(function() {
@@ -288,7 +355,9 @@ export default {
       let upDate = formatDate(date, "yyyy-MM-dd");
 
       this.$store.commit("updateChooseDate", upDate);
-      this.getTodayAppointment();
+      let left = typeof this.left_doctor == "number" ? this.left_doctor : null;
+      let right =typeof this.right_doctor == "number" ? this.right_doctor : null;
+      this.getTodayAppointment(left, right);
       this.myCalender.choosePrevNextDay(upDate);
     },
     handleNextDay() {
@@ -297,7 +366,9 @@ export default {
       let upDate = formatDate(date, "yyyy-MM-dd");
 
       this.$store.commit("updateChooseDate", upDate);
-      this.getTodayAppointment();
+      let left = typeof this.left_doctor == "number" ? this.left_doctor : null;
+      let right =typeof this.right_doctor == "number" ? this.right_doctor : null;
+      this.getTodayAppointment(left, right);
       this.myCalender.choosePrevNextDay(upDate);
     },
     handlePrevWeek() {
@@ -313,10 +384,9 @@ export default {
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
       //获取一个星期的数据
       this.getWeekData();
-
     },
-    getWeekData(){
-         this.$api.appointment
+    getWeekData() {
+      this.$api.appointment
         .getWeekAppointment({
           weekStart: this.weekStart,
           weekEnd: this.weekEnd
@@ -337,7 +407,7 @@ export default {
       this.weekStart = formatDate(start, "yyyy年MM月dd日");
       this.weekEnd = formatDate(end, "yyyy年MM月dd日");
       //获取一个星期的数据
-       this.getWeekData();
+      this.getWeekData();
     },
     chooseToday() {
       this.myCalender.chooseToday();
@@ -362,19 +432,24 @@ export default {
       ];
     },
     //获取一天的预约数据
-    getTodayAppointment() {
+    getTodayAppointment(left, right) {
       this.$api.appointment
-        .getTodayAppointment({ date: this.chooseDate })
+        .getTodayAppointment({
+          date: this.chooseDate,
+          left_doctor: left ? left : this.left_doctor_id,
+          right_doctor: right ? right : this.right_doctor_id
+        })
         .then(res => {
           if (res.code == 200) {
-            this.yuyue_res = res.data;
+            this.yuyue_left_res = res.data[0];
+            this.yuyue_right_res = res.data[1];
           }
         });
     },
 
     addYuyue(item) {
-     //按钮新增预约
-      if(!item){
+      //按钮新增预约
+      if (!item) {
         this.yuyue_id = null;
         this.addYuyueShow = true;
         return;
@@ -383,10 +458,7 @@ export default {
       let date = formatDate(new Date(), "yyyy-MM-dd");
       this.isAttrDataTime(event.target);
       //提示过期不准预约
-      if (
-        this.chooseDate < date &&
-        !this.target.hasAttribute("id")
-      ) {
+      if (this.chooseDate < date && !this.target.hasAttribute("id")) {
         this.dialogVisible = true;
         return;
       }
@@ -400,12 +472,13 @@ export default {
       }
       this.addYuyueShow = true;
 
-      if (this.target.hasAttribute("id") &&  this.target.getAttribute("class") == "right") {
+      if (
+        this.target.hasAttribute("id") &&
+        this.target.getAttribute("class") == "right"
+      ) {
         this.yuyue_id = this.target.getAttribute("id");
         this.yuyue_time = this.target.getAttribute("data-h");
-     
       } else {
-      
         this.yuyue_id = null;
         if (item) {
           let time = this.target.attributes["data-time"].value;
@@ -456,7 +529,6 @@ export default {
         case "5":
           strhtml = `<div class="left" id="${id}" style="background-color:#ff4040;"><i class="fas fa-times-circle" style="color:#fff;"></i></div>`;
           break;
-
       }
       return strhtml;
     }
@@ -503,19 +575,28 @@ export default {
     },
     time_begin() {
       let arr = [];
-      this.yuyue_res.forEach((item, index) => {
+      this.yuyue_left_res.forEach((item, index) => {
         arr.push(item.start_time);
       });
       return arr;
     },
-    targetArr() {
+    targetLeftArr() {
       let xArr = [],
         yArr = [];
-      this.yuyue_res.forEach((item, index) => {
+      this.yuyue_left_res.forEach((item, index) => {
         let str = item.appointment_date.substr(5).replace("-", ".");
         xArr.push(str);
         yArr.push(item.start_time);
-        // arr.push([{ x: str, y: item.start_time }, item]);
+      });
+      return [xArr, yArr];
+    },
+    targetRightArr() {
+      let xArr = [],
+        yArr = [];
+      this.yuyue_right_res.forEach((item, index) => {
+        let str = item.appointment_date.substr(5).replace("-", ".");
+        xArr.push(str);
+        yArr.push(item.start_time);
       });
       return [xArr, yArr];
     },
@@ -529,27 +610,52 @@ export default {
     })
   },
   updated() {
-    let grays = document.getElementsByClassName("day-blue");
-    grays = Array.from(grays);
-    grays.forEach((ele, key) => {
+    let left_grays = document.getElementsByClassName("day-left-blue");
+    let right_grays = document.getElementsByClassName("day-right-blue");
+    left_grays = Array.from(left_grays);
+    right_grays = Array.from(right_grays);
+    left_grays.forEach((ele, key) => {
       let strhtml = '<div class="add-day">';
-      this.yuyue_res.forEach((item, index) => {
+      this.yuyue_left_res.forEach((item, index) => {
         if (
           `${ele.getAttribute("data-h")} : ${ele.getAttribute("data-time")}` ==
           item.start_time
         ) {
-          strhtml += `<div  data-h="${
-            item.start_time
-          }"><div class="inner">    
+          strhtml += `<div  data-h="${item.start_time}"><div class="inner">    
                   `;
           //-------------------------------------------------------
 
           strhtml += this.statusIcon(item.status, item.id);
 
           strhtml += `
-              <div class="right" id="${item.id}" data-h="${
-            item.start_time
-          }">
+              <div class="right" id="${item.id}" data-h="${item.start_time}">
+                <p><span>${item.patient_name}</span><span>${
+            item.type == 1 ? "复" : "初"
+          }</span><span>${item.patient_age}</span></p>
+                                <p><span>${item.patient_phone}</span></p>
+                                <p><span>${item.items}</span></p>
+              </div>
+                            </div>`;
+        }
+      });
+      strhtml += "</div>";
+      ele.innerHTML = strhtml;
+    });
+    right_grays.forEach((ele, key) => {
+      let strhtml = '<div class="add-day">';
+      this.yuyue_right_res.forEach((item, index) => {
+        if (
+          `${ele.getAttribute("data-h")} : ${ele.getAttribute("data-time")}` ==
+          item.start_time
+        ) {
+          strhtml += `<div  data-h="${item.start_time}"><div class="inner">    
+                  `;
+          //-------------------------------------------------------
+
+          strhtml += this.statusIcon(item.status, item.id);
+
+          strhtml += `
+              <div class="right" id="${item.id}" data-h="${item.start_time}">
                 <p><span>${item.patient_name}</span><span>${
             item.type == 1 ? "复" : "初"
           }</span><span>${item.patient_age}</span></p>
@@ -569,6 +675,7 @@ export default {
 <style lang="less">
 @import "~@/assets/css/var.less";
 @import "~@views/appointment/css/YuyueRight.less";
+
 .month {
   width: 100% !important;
 }
