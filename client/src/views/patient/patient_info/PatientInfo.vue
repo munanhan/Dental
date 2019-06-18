@@ -192,9 +192,9 @@ export default {
             type: Boolean,
             required: true
         },
-        selectPatient:{
-            type:Object,
-            required:true,
+        selectPatient: {
+            type: Object,
+            required: true
         }
     },
     data() {
@@ -205,24 +205,23 @@ export default {
         };
     },
     created() {},
-    mounted() {
-
-    },
+    mounted() {},
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
-
+            // this.data = that.selectPatient;
+            // console.log(that.selectPatient);
             if (newValue) {
-               
             }
         },
-        selectPatient(newValue,oldValue){
+
+        selectPatient(newValue, oldValue) {
             let that = this;
-            if(newValue){
+            if (newValue) {
+                this.data = that.selectPatient;
                 console.log(that.selectPatient);
             }
         }
-
     },
     computed: {},
     methods: {

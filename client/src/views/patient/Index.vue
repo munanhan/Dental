@@ -396,7 +396,10 @@
                     label="患者信息"
                     name="pationInfo"
                 >
-                    <patient-info :refresh.sync="pationInfo" :selectPatient="selectPatient">
+                    <patient-info
+                        :refresh.sync="pationInfo"
+                        :selectPatient="selectPatient"
+                    >
 
                     </patient-info>
 
@@ -535,7 +538,7 @@ export default {
 
     data() {
         return {
-            selectPatient:{},
+            selectPatient: {},
             patient_expend: false,
             input: "",
             search: "",
@@ -635,7 +638,6 @@ export default {
                 case "visit":
                     that.getRecentVisit();
                     break;
-            
             }
             console.log(newValue);
         },
@@ -688,7 +690,7 @@ export default {
             that.$api.patient
                 .getPatientByID({ id })
                 .then(res => {
-                    that.selectPatient=res.data;
+                    that.selectPatient = res.data;
                 })
                 .catch(res => {});
         },
