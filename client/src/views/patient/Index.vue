@@ -208,10 +208,10 @@
                             <i class="fa fa-sort-alpha-down patient-i"></i>
                         </div>
 
-                        <div style="border:1px solid red;background-color:#efefef">
+                        <div style="background-color:#efefef">
                             <div
                                 class="patient-item"
-                                style="height:720px;overflow:auto"
+                                style="height:735px;overflow:auto"
                             >
                                 <div class="patient-select">
                                     <div

@@ -158,23 +158,35 @@
         .day-header {
           display: flex;
           flex-basis: 50px;
-          line-height: 50px;
+         
           padding-bottom: 10px;
           text-align: center;
-          .doctor1 {
+          .doctor1,.doctor2 {
             flex: 1;
             border: 1px solid rgb(173, 171, 171);
             background-color: #fff;
+            /deep/ .el-select{
+              .el-input.el-input--suffix{
+                margin-bottom: 50px;
+                padding: 0;
+                input{
+                  height: 38px;
+                  border: none;
+                }
+              }
+            
+            }
           }
-          .doctor2 {
-            flex: 1;
-            border: 1px solid rgb(173, 171, 171);
-            border-left: none;
-            background-color: #fff;
-          }
-          div:first-of-type,
-          div:last-of-type {
+          // .doctor2 {
+          //   flex: 1;
+          //   border: 1px solid rgb(173, 171, 171);
+          //   border-left: none;
+          //   background-color: #fff;
+          // }
+          &>div:first-of-type,
+          &>div:last-of-type {
             flex-basis: 80px;
+            line-height: 50px;
           }
         }
         .day-other {
@@ -204,7 +216,7 @@
                 }
             }
           }
-          .other-center-left{
+          .other-center-left,.other-center-right{
             //   width: 10%;
               flex: auto;
               display: flex;
@@ -228,12 +240,13 @@
                     cursor: pointer;
                     background-color: @hover-color;
                   }
-                  &:not(.day-blue) {
+                  &:not(.day-left-blue),&:not(.day-right-blue){
                     .add-day {
                       display: none;
                     }
                   }
-                  &.day-blue {
+             
+                  &.day-left-blue,&.day-right-blue {
                      
                       font-size: 12px;
                       position: relative;

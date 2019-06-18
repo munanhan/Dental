@@ -129,7 +129,7 @@ export default {
                     {
                         field: "name",
                         title: "患者职业"
-                    },
+                    }
                 ],
                 data: []
             }

@@ -86,6 +86,7 @@
                             style="width:260px"
                             v-model="form.member_id"
                             placeholder="请选择"
+                            @focus="member"
                         >
                             <el-option
                                 v-for="item in memberList"

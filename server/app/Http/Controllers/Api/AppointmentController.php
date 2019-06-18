@@ -79,16 +79,24 @@ class AppointmentController extends Controller
        return message('新增预约成功',[$DTime,$selectTime,$DTime->gte($selectTime)],200);
     }
     //获得今天或某天的数据
-    public function getTodayAppointment(){
+    public function getTodayAppointment(Request $request){
 
         $where =  \request('date')?request('date'):date('Y-m-d');
+        $data=$request->all();
        $appoinment =new Appointment();
-
-
-       $res =$appoinment->where('appointment_date',$where)->where('flag',1)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-       get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
-
-        return message('获取成功',$res,200);
+       $rightRes = [];
+       $leftRes = [];
+       if(isset($data['left_doctor'])){
+        $leftRes =$appoinment->where('appointment_date',$where)->where('flag',1)->where('appointment_doctor',$data['left_doctor'])->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+       }
+      
+       if(isset($data['right_doctor'])){
+        $rightRes =$appoinment->where('appointment_date',$where)->where('flag',1)->where('appointment_doctor',$data['right_doctor'])->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+       }
+       
+        return message('获取成功',[$leftRes,$rightRes],200);
 
     }
     //获得某个礼拜的数据
