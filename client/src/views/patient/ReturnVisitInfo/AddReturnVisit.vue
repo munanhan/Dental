@@ -16,10 +16,10 @@
         >
             <div class="visit-content">
                 <div class="visit-top">
-                  <div style="display:flex;font-size:20px">
-                    <div>asa</div>
-                    <div>sas</div>
-                  </div>
+                    <div style="display:flex;font-size:16px;">
+                        <div class="visit-top1">马先生</div>
+                        <div class="visit-top1">20161005</div>
+                    </div>
                 </div>
                 <div class="visit-bottom">
                     <el-form-item
@@ -84,7 +84,7 @@
                         style="margin-top:20px"
                         label="回访内容"
                     >
-                        <input style="">
+                        <input>
                         <!-- <el-input style="height:20px;width:470px"></el-input> -->
                     </el-form-item>
                     <el-form-item
@@ -142,9 +142,16 @@ export default {
         width: 100%;
         margin-bottom: 10px;
         background-color: #fafafa;
+        border: 1px solid #e2e2e2;
+        .visit-top1 {
+            margin-top: 17px;
+            margin: 17px 20px;
+            color: #000;
+        }
     }
     .visit-bottom {
         background-color: #fafafa;
+        border: 1px solid #e2e2e2;
         // border: 1px solid red;
         padding-bottom: 30px;
         input {
