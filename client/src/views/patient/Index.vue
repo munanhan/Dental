@@ -350,26 +350,28 @@
                                 suffix-icon="el-icon-search"
                             ></el-input>
                         </div>
-                        <div
-                            v-for="(item,index) in access"
-                            :key="index"
-                            class="visit-background"
-                            @click="getInfoById(item.id)"
-                        >
+                        <div style="height:750px;overflow:auto">
                             <div
-                                class="visit-background-top"
-                                style="margin-top:5px"
+                                v-for="(item,index) in access"
+                                :key="index"
+                                class="visit-background"
+                                @click="getInfoById(item.id)"
                             >
-                                <span class="visit-top1">{{item.patient_name}}</span>
-                                <span class="visit-top2">{{item.member_id}}</span>
-                                <span class="visit-top3">{{item.appointment_date}}</span>
-                            </div>
-                            <div class="visit-background-bottom">
-                                <span class="visit-bottom1">{{item.patient_phone}}</span>
-                                <span class="visit-bottom2">{{item.appointment_doctor}}</span>
-                                <span class="visit-bottom3">{{item.record}}</span>
-                            </div>
+                                <div
+                                    class="visit-background-top"
+                                    style="margin-top:5px"
+                                >
+                                    <span class="visit-top1">{{item.patient_name}}</span>
+                                    <span class="visit-top2">{{item.member_id}}</span>
+                                    <span class="visit-top3">{{item.appointment_date}}</span>
+                                </div>
+                                <div class="visit-background-bottom">
+                                    <span class="visit-bottom1">{{item.patient_phone}}</span>
+                                    <span class="visit-bottom2">{{item.appointment_doctor}}</span>
+                                    <span class="visit-bottom3">{{item.record}}</span>
+                                </div>
 
+                            </div>
                         </div>
                         <div class="visit-bottom-content">
                             <el-button
