@@ -16,13 +16,13 @@
         >
             <div class="Advan-content">
                 <div
-                    v-for="(item,index) in form.consultings"
+                    v-for="(item,index) in form.BaseInfo"
                     :key="index"
                     class="Advan-top"
                 >
-                    <div class="advan-1"> {{item.case_id}}</div>
-                    <div class="advan-1"> {{item.age}}岁</div>
-                    <div class="advan-2"> {{item.medical}}</div>
+                    <div class="advan-1"> {{item.patient_name}}</div>
+                    <div class="advan-1"> {{item.patient_age}}岁</div>
+                    <div class="advan-2"> {{item.case_id}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -221,11 +221,11 @@ export default {
                         table: "110"
                     }
                 ],
-                consultings: [
+                BaseInfo: [
                     {
-                        case_id: "钟先生",
-                        age: "10",
-                        medical: "1503010120"
+                        patient_name: "钟先生",
+                        patient_age: "10",
+                        case_id: "1503010120"
                     }
                 ],
                 type: [],
