@@ -81,6 +81,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::get('patients/recent_visit','PatientController@recentVisitPatient');
 
+    Route::get('patients/search_by_name','PatientController@searchByName');
+
 
     /*
      * Route OperationLog Api

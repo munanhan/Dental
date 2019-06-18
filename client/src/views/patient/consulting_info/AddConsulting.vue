@@ -48,7 +48,7 @@
                                     <el-select
                                         class="table-select"
                                         style="width:620px;"
-                                        v-model="form.value"
+                                        v-model="form.jibenxuqiu"
                                         multiple
                                         filterable
                                         allow-create
@@ -56,7 +56,7 @@
                                         placeholder="请选择"
                                     >
                                         <el-option
-                                            v-for="item in form.options"
+                                            v-for="item in form.jibenxuqiuList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -104,7 +104,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.input"
                                 ></el-input>
 
                             </td>
@@ -114,7 +114,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.input"
                                 ></el-input>
 
                             </td>
@@ -150,12 +150,12 @@
                             <td align="center">资料录入人</td>
                             <el-select
                                 class="table-select"
-                                v-model="form.value"
+                                v-model="form.lururen"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in form.options"
+                                    v-for="item in form.lururenList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -202,6 +202,19 @@ export default {
             potentdeman_show: false,
             form: {
                 input: "",
+                lururen: "",
+                lururenList: [
+                    {
+                        value: "1009",
+                        table: "1009"
+                    }
+                ],
+                jibenxuqiuList: [
+                    {
+                        value: "123132",
+                        table: "123132"
+                    }
+                ],
                 demand: [
                     {
                         value: "110",
@@ -247,6 +260,7 @@ export default {
                         label: "JavaScript"
                     }
                 ],
+                potential_demand: "",
                 do: "",
                 value: "",
                 rules: {}

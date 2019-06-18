@@ -33,17 +33,10 @@ class PatientAnamnesisController extends BaseController
         return message('',$patientAnamnesis);
     }
 
-//    public function update(Request $request , PatientAnamnesis $patientAnamnesis)
-//    {
-//        $patientAnamnesis->update($request->all());
-//
-//        return message('',$patientAnamnesis, 200);
-//    }
-//
-//    public function delete(PatientAnamnesis $patientAnamnesis)
-//    {
-//        $patientAnamnesis->delete();
-//
-//        return message('',null, 200);
-//    }
+    public function delete($id)
+    {
+        PatientAnamnesis::where('id',$id)->delete();
+
+        return message('',null, 200);
+    }
 }
