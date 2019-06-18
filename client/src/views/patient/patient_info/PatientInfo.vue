@@ -29,7 +29,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>病 历 号：<span style=""></span>{{data.case_id}}</div>
+                            <div>病 历 号：<span style="color:#000">{{data.case_id}}</span></div>
                         </el-col>
                         <el-col :span="8">
                             <div>介 绍 人：{{data.introducer}}</div>

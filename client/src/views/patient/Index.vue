@@ -208,8 +208,11 @@
                             <i class="fa fa-sort-alpha-down patient-i"></i>
                         </div>
 
-                        <div style="background-color:#efefef">
-                            <div class="patient-item">
+                        <div style="border:1px solid red;background-color:#efefef">
+                            <div
+                                class="patient-item"
+                                style="height:720px;overflow:auto"
+                            >
                                 <div class="patient-select">
                                     <div
                                         @click="expend('patientExpend')"
@@ -222,7 +225,7 @@
                                         最近患者({{recentCount}})</div>
                                     <!-- /// -->
                                     <ul
-                                        style="margin-top:-2px"
+                                        style="margin-top:-2px;"
                                         v-if="patientExpend"
                                         ref="item1"
                                     >
@@ -259,7 +262,7 @@
                                         ></i> 黑名单({{blackCount}})</div>
                                     <!-- /// -->
                                     <ul
-                                        style="margin-top:-2px"
+                                        style="margin-top:-2px;"
                                         v-if="blackExpend"
                                         ref="item1"
                                     >

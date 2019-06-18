@@ -80,18 +80,18 @@
                 <div style="display:flex">
                     <el-form-item
                         label="会员等级"
-                        prop="value"
+                        prop="member_id"
                     >
                         <el-select
                             style="width:260px"
-                            v-model="form.value"
+                            v-model="form.member_id"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in memberList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -468,7 +468,9 @@ export default {
             pastmed_show: false,
             teethhab_show: false,
             newrelat_show: false,
+            memberList: [],
             form: {
+                member_id: "",
                 teethList: [
                     {
                         value: "选项1",
@@ -487,28 +489,28 @@ export default {
                         label: "黄金糕"
                     }
                 ],
-                options: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
+                // options: [
+                //     {
+                //         value: "选项1",
+                //         label: "黄金糕"
+                //     },
+                //     {
+                //         value: "选项2",
+                //         label: "双皮奶"
+                //     },
+                //     {
+                //         value: "选项3",
+                //         label: "蚵仔煎"
+                //     },
+                //     {
+                //         value: "选项4",
+                //         label: "龙须面"
+                //     },
+                //     {
+                //         value: "选项5",
+                //         label: "北京烤鸭"
+                //     }
+                // ],
                 birthday: "",
                 age: "",
                 value: "",
@@ -539,12 +541,12 @@ export default {
         };
     },
     watch: {
-        // show(newValue, oldValue) {
-        //     if (newValue) {
-        //         let that = this;
-        //         that.getCaseNo();
-        //     }
-        // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCaseNo();
+            }
+        }
     },
     methods: {
         mem_grade() {
@@ -579,20 +581,33 @@ export default {
         },
         afterClose() {
             this.$refs["Modifyform"].resetFields();
-        }
+        },
+        //获取会员下拉信息
+        member() {
+            let that = this;
+
+            that.$api.patient_member
+                .get()
+                .then(res => {
+                    that.memberList = res.data;
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
         //病历号获取
-        // getCaseNo() {
-        //     let that = this;
-        //     that.$api.patient
-        //         .caseNo()
-        //         .then(res => {
-        //             console.log(res.data);
-        //             // that.form.case_id = res.data.case_id;
-        //         })
-        //         .catch(res => {
-        //             console.log(res);
-        //         });
-        // }
+        getCaseNo() {
+            let that = this;
+            that.$api.patient
+                .caseNo()
+                .then(res => {
+                    // console.log(res.data);
+                    that.form.case_id = res.data.case_id;
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        }
     }
 };
 </script>
