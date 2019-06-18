@@ -503,7 +503,7 @@
 
 <script>
 import { formatDate, addClass, inArray } from "@/common/util.js";
-import PatientInfo from "@/views/patient/patient_info/PatientBaseInfo";
+import PatientInfo from "@/views/patient/patient_info/PatientInfo";
 import DisposalRecords from "@/views/patient/disposal_records/DisposalRecords";
 import ChargeInfo from "@/views/patient/charge_info/ChargeInfo";
 // import ImageInfo from "./ImageInfo";
