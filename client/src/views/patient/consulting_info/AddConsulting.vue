@@ -104,7 +104,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.input"
                                 ></el-input>
 
                             </td>
@@ -114,7 +114,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.input"
                                 ></el-input>
 
                             </td>
