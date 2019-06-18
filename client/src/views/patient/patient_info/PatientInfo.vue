@@ -191,6 +191,10 @@ export default {
         refresh: {
             type: Boolean,
             required: true
+        },
+        selectPatient: {
+            type: Object,
+            required: true
         }
     },
     data() {
@@ -205,9 +209,17 @@ export default {
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
-
+            // this.data = that.selectPatient;
+            // console.log(that.selectPatient);
             if (newValue) {
-                that.getPatientInfo();
+            }
+        },
+
+        selectPatient(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                this.data = that.selectPatient;
+                console.log(that.selectPatient);
             }
         }
     },
@@ -216,7 +228,7 @@ export default {
         getPatientInfo() {
             let that = this;
 
-            that.$api.aaaa.aaaa
+            that.$api.patient.aaaa
                 .then(res => {
                     that.getDataDone();
                 })

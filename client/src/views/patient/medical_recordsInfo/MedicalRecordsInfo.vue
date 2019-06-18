@@ -21,8 +21,7 @@
                             <div class="top">{{item.medical_date}}</div>
                             <div class="top">{{item.medical_time}}</div>
                             <div class="top">{{item.medical_diagnosis_judgment}}</div>
-                            <div class="top2"> {{item.medical_doctor}}：</div>
-                            <div class="top2"> 11</div>
+                            <div class="top2"> {{item.medical_doctor}}：<span>11</span></div>
                         </div>
                         <div style="text-align:right;">
                             <i

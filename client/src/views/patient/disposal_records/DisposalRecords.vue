@@ -282,6 +282,10 @@ export default {
                     cursor: pointer;
                     font-weight: bold;
                     font-size: 20px;
+                    border: 1px solid #f8f8f8;
+                    &:hover {
+                        border: 1px solid #bebebe;
+                    }
                 }
                 .right-i-content {
                     // border: 1px solid red;

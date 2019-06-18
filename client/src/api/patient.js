@@ -51,6 +51,7 @@ export function configData(data) {
     })
 }
 
+//获取主治医师
 export function getAttendDoctor(data) {
     return request({
         url: `${prefix}/attend_doctor`,
@@ -88,6 +89,15 @@ export function index(data) {
 export function recentVisit(data) {
     return request({
         url: `${prefix}/recent_visit`,
+        method: 'get',
+        params: data
+    })
+}
+
+//患者信息
+export function getPatientByID(data) {
+    return request({
+        url: `${prefix}/show`,
         method: 'get',
         params: data
     })
