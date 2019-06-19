@@ -85,11 +85,9 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Api
      */
 
-    Route::get('patients/generate','PatientController@getCaseNumber');
-
     Route::get('patients', 'PatientController@index');
 
-    Route::get('patients/show', 'PatientController@show');
+    Route::get('patients/get_by_id', 'PatientController@show');
 
     Route::post('patients', 'PatientController@store');
 
@@ -97,15 +95,21 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{id}', 'PatientController@delete');
 
-    Route::delete('patients/today_work/{id}', 'PatientController@deleteWork');
+    Route::get('patients/generate','PatientController@getCaseNumber');
+
+    Route::get('patients/search_by_name','PatientController@searchByName');
 
     Route::get('patients/attend_doctor','PatientController@attendDoctor');
 
-    Route::get('patients/today_work','PatientController@todayWork');
+    Route::get('patients/today_work','TodayWorkController@todayWork');
 
-    Route::get('patients/recent_visit','PatientController@recentVisitPatient');
+    Route::delete('patients/today_work/{id}', 'TodayWorkController@deleteTodayWork');
 
-    Route::get('patients/search_by_name','PatientController@searchByName');
+    Route::get('patients/all_patient', 'AllPatientsController@allPatient');
+
+    Route::get('patients/recent_visit','RecentVisitController@recentVisitPatient');
+
+
 
 
     /*
@@ -136,15 +140,21 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route PatientCase Api
      */
+
     Route::get('patient_cases', 'PatientCaseController@index');
 
-    Route::get('patient_cases/{patientCase}', 'PatientCaseController@show');
+    Route::get('patient_cases/get_by_id', 'PatientCaseController@show');
 
     Route::post('patient_cases', 'PatientCaseController@store');
 
-    Route::put('patient_cases/{patientCase}', 'PatientCaseController@update');
+    Route::get('patient_cases/get_template', 'PatientCaseMenuController@index');
 
-    Route::delete('patient_cases/{patientCase}', 'PatientCaseController@delete');
+    Route::get('patient_cases/get_template_by_id', 'PatientCaseMenuController@getById');
+
+    Route::get('patient_cases/get_medical', 'PatientCaseMedicalController@index');
+
+    Route::get('patient_cases/get_medical_by_id', 'PatientCaseMedicalController@getById');
+
 
     /*
      * Route PatientConsult Api
