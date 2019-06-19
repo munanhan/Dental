@@ -25,6 +25,30 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
+
+    Route::get('potential_demands', 'PotentialDemandController@index');
+
+    Route::get('potential_demands/{potentialDemand}', 'PotentialDemandController@show');
+
+    Route::post('potential_demands', 'PotentialDemandController@store');
+
+    Route::put('potential_demands/{potentialDemand}', 'PotentialDemandController@update');
+
+    Route::delete('potential_demands/{potentialDemand}', 'PotentialDemandController@delete');
+
+    /*
+     * Patient Consult Base Demand Config Api
+     */
+    Route::get('base_demands', 'BaseDemandController@index');
+
+    Route::get('base_demands/{baseDemand}', 'BaseDemandController@show');
+
+    Route::post('base_demands', 'BaseDemandController@store');
+
+    Route::put('base_demands/{baseDemand}', 'BaseDemandController@update');
+
+    Route::delete('base_demands/{baseDemand}', 'BaseDemandController@delete');
+
     /*
      * Patient Visit Config Api
      * author by han
