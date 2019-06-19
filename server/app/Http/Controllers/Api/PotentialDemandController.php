@@ -20,19 +20,16 @@ class PotentialDemandController extends Controller
 
     public function store(Request $request)
     {
+        $potentialDemand= PotentialDemand::find(request('id'));
 
-        $id=$request->all('id');
-
-        $result=BaseDemand::where('id',$id)->first();
-
-        if($result){
-            PotentialDemand::where('id',$id)->update($request->all());
-            $potentialDemand=PotentialDemand::where('id',$id)->first();
+        if($potentialDemand){
+            $potentialDemand->name=request('name');
+            $potentialDemand->save();
         }else{
             $potentialDemand=PotentialDemand::create($request->all());
         }
 
-        return message('',$potentialDemand);
+        return message('',$potentialDemand,200);
     }
 
     public function update(Request $request , PotentialDemand $potentialDemand)

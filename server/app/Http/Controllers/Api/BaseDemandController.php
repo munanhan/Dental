@@ -20,18 +20,16 @@ class BaseDemandController extends Controller
 
     public function store(Request $request)
     {
-        $id=$request->all('id');
+        $baseDemand= BaseDemand::find(request('id'));
 
-        $result=BaseDemand::where('id',$id)->first();
-
-        if($result){
-            BaseDemand::where('id',$id)->update($request->all());
-            $baseDemand=BaseDemand::where('id',$id)->first();
+        if($baseDemand){
+            $baseDemand->name=request('name');
+            $baseDemand->save();
         }else{
             $baseDemand=BaseDemand::create($request->all());
         }
 
-        return message('',$baseDemand);
+        return message('',$baseDemand,200);
     }
 
     public function update(Request $request , BaseDemand $baseDemand)
