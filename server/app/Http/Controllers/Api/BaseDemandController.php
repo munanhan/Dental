@@ -24,9 +24,9 @@ class BaseDemandController extends Controller
 
         $result=BaseDemand::where('id',$id)->first();
 
-        dd($request->all());
         if($result){
-            $baseDemand=BaseDemand::where('id',$id)->update($result->all());
+            BaseDemand::where('id',$id)->update($request->all());
+            $baseDemand=BaseDemand::where('id',$id)->first();
         }else{
             $baseDemand=BaseDemand::create($request->all());
         }
@@ -34,16 +34,17 @@ class BaseDemandController extends Controller
         return message('',$baseDemand);
     }
 
-    public function update(Request $request , BaseDemand $consult)
+    public function update(Request $request , BaseDemand $baseDemand)
     {
-        $consult->update($request->all());
+        $baseDemand->update($request->all());
 
-        return message('',$consult, 200);
+        return message('',$baseDemand, 200);
     }
 
-    public function delete(BaseDemand $consult)
+    public function delete(BaseDemand $baseDemand)
     {
-        $consult->delete();
+
+        $baseDemand->delete();
 
         return message('',null, 200);
     }
