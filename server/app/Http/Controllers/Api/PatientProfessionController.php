@@ -20,8 +20,16 @@ class PatientProfessionController extends Controller
 
     public function store(Request $request)
     {
+        $id=$request->all('id');
 
-        $patientProfession=PatientProfession::create($request->all());
+        $result=PatientProfession::where('id',$id)->first();
+
+        if($result){
+            PatientProfession::where('id',$id)->update($request->all());
+            $patientProfession=PatientProfession::where('id',$id)->first();
+        }else{
+            $patientProfession=PatientProfession::create($request->all());
+        }
 
         return message('',$patientProfession);
     }
