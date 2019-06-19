@@ -43,6 +43,8 @@ class PatientCaseController extends Controller
 
         $patientCase=$this->createPatientCase($data);
 
+        $data['case_info']['patient_id']=$patientCase->id;
+
         PatientCaseInfoController::createCaseInfo($patientCase,$data['case_info']);
 
         return message('',$data);

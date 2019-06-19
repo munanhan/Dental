@@ -12,11 +12,11 @@
             :model="form"
             ref="ConsultForm"
             label-width="100px"
-            :rules="form.rules"
+            :rules="rules"
         >
             <div class="Advan-content">
                 <div
-                    v-for="(item,index) in form.BaseInfo"
+                    v-for="(item,index) in BaseInfo"
                     :key="index"
                     class="Advan-top"
                 >
@@ -36,7 +36,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.main_consult"
                                 ></el-input>
 
                             </td>
@@ -48,15 +48,14 @@
                                     <el-select
                                         class="table-select"
                                         style="width:620px;"
-                                        v-model="form.jibenxuqiu"
+                                        v-model="form.base_demand"
                                         multiple
                                         filterable
                                         allow-create
                                         default-first-option
-                                        placeholder="请选择"
                                     >
                                         <el-option
-                                            v-for="item in form.jibenxuqiuList"
+                                            v-for="item in baseDemandList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -82,10 +81,9 @@
                                         filterable
                                         allow-create
                                         default-first-option
-                                        placeholder="请选择文章标签"
                                     >
                                         <el-option
-                                            v-for="item in form.demand"
+                                            v-for="item in potentialDemandList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -104,9 +102,8 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.doctor_solution"
                                 ></el-input>
-
                             </td>
                         </tr>
                         <tr>
@@ -114,7 +111,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.record"
                                 ></el-input>
 
                             </td>
@@ -124,21 +121,20 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.service_proposal"
                                 ></el-input>
-
                             </td>
                         </tr>
                         <tr class="doctor">
                             <td align="center">接诊医生</td>
                             <el-select
                                 class="table-select"
-                                v-model="form.do"
+                                v-model="form.doctor"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in form.doctor"
+                                    v-for="item in doctorList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -150,12 +146,12 @@
                             <td align="center">资料录入人</td>
                             <el-select
                                 class="table-select"
-                                v-model="form.lururen"
+                                v-model="form.data_entry_person"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in form.lururenList"
+                                    v-for="item in dataEntryPersonList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -200,70 +196,53 @@ export default {
         return {
             basneed_show: false,
             potentdeman_show: false,
+            dataEntryPersonList: [
+                {
+                    value: "1009",
+                    table: "1009"
+                }
+            ],
+            baseDemandList: [
+                {
+                    value: "123132",
+                    table: "123132"
+                }
+            ],
+            BaseInfo: [
+                {
+                    patient_name: "钟先生",
+                    patient_age: "10",
+                    case_id: "1503010120"
+                }
+            ],
+            doctorList: [
+                {
+                    value: "110",
+                    table: "110"
+                }
+            ],
+            potentialDemandList: [
+                {
+                    value: "HTML",
+                    label: "HTML"
+                },
+                {
+                    value: "CSS",
+                    label: "CSS"
+                }
+            ],
+            rules: {
+
+            },
             form: {
-                input: "",
-                lururen: "",
-                lururenList: [
-                    {
-                        value: "1009",
-                        table: "1009"
-                    }
-                ],
-                jibenxuqiuList: [
-                    {
-                        value: "123132",
-                        table: "123132"
-                    }
-                ],
-                demand: [
-                    {
-                        value: "110",
-                        table: "110"
-                    }
-                ],
-                BaseInfo: [
-                    {
-                        patient_name: "钟先生",
-                        patient_age: "10",
-                        case_id: "1503010120"
-                    }
-                ],
-                type: [],
-                // sad: "",
-                qianzai: [
-                    {
-                        value: "HTML",
-                        label: "HTML"
-                    },
-                    {
-                        value: "CSS",
-                        label: "CSS"
-                    }
-                ],
-                doctor: [
-                    {
-                        value: "11",
-                        label: "11"
-                    }
-                ],
-                options: [
-                    {
-                        value: "HTML",
-                        label: "HTML"
-                    },
-                    {
-                        value: "CSS",
-                        label: "CSS"
-                    },
-                    {
-                        value: "JavaScript",
-                        label: "JavaScript"
-                    }
-                ],
+                main_consult: "",
+                base_demand: "",
                 potential_demand: "",
-                do: "",
-                value: "",
-                rules: {}
+                doctor_solution:"",
+                record:"",
+                service_proposal:"",
+                doctor:"",
+                data_entry_person:'',
             },
             commitLoading: false
         };
