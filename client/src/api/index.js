@@ -32,6 +32,8 @@ import * as advice from './advice'
 import * as privilege from './privilege'
 import * as role from './role'
 import * as patient_order from './patient_order'
+import * as base_demand from './base_demand'
+import * as potential_demand from './potential_demand'
 
 
 const apis = {
@@ -68,7 +70,9 @@ const apis = {
     impressions,
     privilege,
     role,
-    patient_order
+    patient_order,
+    base_demand,
+    potential_demand,
 
 
 
