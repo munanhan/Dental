@@ -690,11 +690,22 @@ export default {
     methods: {
         //获取id
         getInfoById(id) {
-            console.log(id);
             let that = this;
             that.$api.patient
                 .getPatientByID({ id })
                 .then(res => {
+                    res.data.allergy =
+                        res.data.allergy.length > 0
+                            ? res.data.allergy.join(",")
+                            : "";
+                    res.data.anamnesis =
+                        res.data.anamnesis.length > 0
+                            ? res.data.anamnesis.join(",")
+                            : "";
+                    res.data.patient_birthday = res.data.patient_birthday
+                        ? res.data.patient_birthday.slice(0, 10)
+                        : "";
+
                     that.selectPatient = res.data;
                 })
                 .catch(res => {});

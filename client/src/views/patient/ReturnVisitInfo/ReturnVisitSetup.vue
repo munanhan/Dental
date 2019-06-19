@@ -11,54 +11,55 @@
             width="1000px"
             v-dialog-drag
         >
-            <div style="width:970px;height:100%;display:flex">
-                <div style="flex:1;text-align:left;width:100px;height:500px">
-                    <div style="margin-bottom:5px;display:flex;height:30px;font-size:16px;color:#000">
-                        <div style="margin-top:5px;margin-right:10px">计划组合</div>
-                        <el-button style="margin-top:-5px;">增加</el-button>
+            <div class="returnvis-content">
+                <div class="left-content">
+                    <div class="left-top">
+                        <div class="top-1">计划组合</div>
+                        <el-button class="top-2">增加</el-button>
                     </div>
-                    <div style="border:1px solid #e3e3e3;height:470px">
+                    <div class="left-bottom">
 
                     </div>
                 </div>
-                <div
-                    style="flex:1;text-align:right;"
-                    class="content"
-                >
-                    <el-table
-                        border
-                        class="width100 mb-10"
-                        :data="anamnesis_menu.data"
-                        :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-                        :height="tableHeight"
+                <div class="right-content">
+                    <div
+                        style="flex:1;text-align:right"
+                        class="content"
                     >
-                        <el-table-column type="index"></el-table-column>
-                        <el-table-column
-                            v-for="(item,index) in anamnesis_menu.columns"
-                            :key="index"
-                            :prop="item.field"
-                            :label="item.title"
+                        <el-table
+                            border
+                            class="width100 mb-10"
+                            :data="anamnesis_menu.data"
+                            :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
+                            :height="tableHeight"
                         >
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.isSet">
-                                    <el-input
-                                        size="mini"
-                                        placeholder="请输入内容"
-                                        v-model="anamnesis_menu.sel[item.field]"
-                                    >
-                                    </el-input>
-                                </span>
-                                <span v-else>{{scope.row[item.field]}}</span>
-                            </template>
-                        </el-table-column>
+                            <el-table-column type="index"></el-table-column>
+                            <el-table-column
+                                v-for="(item,index) in anamnesis_menu.columns"
+                                :key="index"
+                                :prop="item.field"
+                                :label="item.title"
+                            >
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.isSet">
+                                        <el-input
+                                            size="mini"
+                                            placeholder="请输入内容"
+                                            v-model="anamnesis_menu.sel[item.field]"
+                                        >
+                                        </el-input>
+                                    </span>
+                                    <span v-else>{{scope.row[item.field]}}</span>
+                                </template>
+                            </el-table-column>
 
-                        <el-table-column
-                            label="操作"
-                            align="center"
-                            show-overflow-tooltip
-                        >
-                            <template slot-scope="scope">
-                                <el-button
+                            <el-table-column
+                                label="操作"
+                                align="center"
+                                show-overflow-tooltip
+                            >
+                                <template slot-scope="scope">
+                                    <!-- <el-button
                                     v-if="scope.row.isSet"
                                     size="mini"
                                     @click="store(scope.row,scope.$index)"
@@ -70,28 +71,29 @@
                                     size="mini"
                                     @click="edit(scope.row,scope.$index)"
                                 >修改
-                                </el-button>
+                                </el-button> -->
 
-                                <el-button
-                                    v-if="!scope.row.isSet"
-                                    size="mini"
-                                    type="danger"
-                                    @click="del(scope.row,scope.$index)"
-                                >删除
-                                </el-button>
+                                    <el-button
+                                        v-if="!scope.row.isSet"
+                                        size="mini"
+                                        type="danger"
+                                        @click="del(scope.row,scope.$index)"
+                                    >删除
+                                    </el-button>
 
-                                <el-button
+                                    <!-- <el-button
                                     v-else
                                     size="mini"
                                     type="danger"
                                     @click="cancel(scope.row,scope.$index)"
                                 >取消
-                                </el-button>
+                                </el-button> -->
 
-                            </template>
-                        </el-table-column>
+                                </template>
+                            </el-table-column>
 
-                    </el-table>
+                        </el-table>
+                    </div>
 
                 </div>
             </div>
@@ -135,7 +137,15 @@ export default {
                 columns: [
                     {
                         field: "name",
-                        title: "既往史"
+                        title: "计划名称"
+                    },
+                    {
+                        field: "name",
+                        title: "定时天数"
+                    },
+                    {
+                        field: "name",
+                        title: "删除"
                     }
                 ],
                 data: []
@@ -270,6 +280,39 @@ export default {
 .past-medicalhistory {
     /deep/ .el-dialog__header {
         text-align: center;
+    }
+    .returnvis-content {
+        width: 970px;
+        height: 100%;
+        display: flex;
+        .left-content {
+            width: 300px;
+            height: 500px;
+            margin-right: 10px;
+            .left-top {
+                margin-bottom: 5px;
+                display: flex;
+                height: 30px;
+                font-size: 16px;
+                color: #000;
+                .top-1 {
+                    margin-top: 5px;
+                    margin-right: 10px;
+                }
+                .top-2 {
+                    margin-top: -5px;
+                }
+            }
+            .left-bottom {
+                border: 1px solid #e3e3e3;
+                height: 463px;
+            }
+        }
+        .right-content {
+            border: 1px solid #e3e3e3;
+            padding: 10px;
+            width: 100%;
+        }
     }
 }
 </style>

@@ -116,6 +116,27 @@
 
                             </td>
                         </tr>
+                        <!-- <el-form-item
+                            style="border:none;border-top:none;border-bottom:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
+                            label="活动名称"
+                        >
+                            <el-input style=" 
+                                    width:600px;
+                                              border:none;
+                                              border-radius: 0px;
+                                             ">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item
+                            style="border-bottom:none;border-right:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
+                            label="活动名称"
+                        >
+                            <el-input style=" 
+                                             width:600px;
+                                             border-radius: 0px;
+                                             ">
+                            </el-input>
+                        </el-form-item> -->
                         <tr>
                             <td align="center">服务建议</td>
                             <td>
@@ -231,18 +252,16 @@ export default {
                     label: "CSS"
                 }
             ],
-            rules: {
-
-            },
+            rules: {},
             form: {
                 main_consult: "",
                 base_demand: "",
                 potential_demand: "",
-                doctor_solution:"",
-                record:"",
-                service_proposal:"",
-                doctor:"",
-                data_entry_person:'',
+                doctor_solution: "",
+                record: "",
+                service_proposal: "",
+                doctor: "",
+                data_entry_person: ""
             },
             commitLoading: false
         };
@@ -342,7 +361,9 @@ export default {
         .doctor {
             .table-select {
                 /deep/ .el-input__inner {
-                    border: none;
+                    border-right: none;
+                    border-left: none;
+                    border-top: none;
                     border-radius: 0px;
                 }
             }
@@ -351,9 +372,10 @@ export default {
         .data-entry {
             .table-select {
                 /deep/ .el-input__inner {
-                    border-right: none;
-                    border-left: none;
-                    border-bottom: none;
+                    // border-right: none;
+                    // border-left: none;
+                    // border-bottom: none;
+                    border: none;
                     border-radius: 0px;
                 }
             }

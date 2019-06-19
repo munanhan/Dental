@@ -21,9 +21,9 @@
                         <div class="top-text">接诊医生：<span>{{item.patient_doctor}}</span></div>
                     </div>
                     <div class="top-i-content">
-                        
-                            <i class="fa fa-pen top-i"></i>
-                           <i  class="fa fa-trash-alt top-i"></i>
+
+                        <i class="fa fa-pen top-i"></i>
+                        <i class="fa fa-trash-alt top-i"></i>
                     </div>
                 </div>
                 <div class="bottom-title">

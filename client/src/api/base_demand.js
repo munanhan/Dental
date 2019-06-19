@@ -1,7 +1,7 @@
 import request from "../common/request";
 
 const prefix = "/base_demands";
-//既往史
+//基本需求
 export function get(data) {
     return request({
         url: `${prefix}`,

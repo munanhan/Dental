@@ -1,7 +1,7 @@
 import request from "../common/request";
 
-const prefix = "/potential_demands";
-//潜在需求
+const prefix = "/patient_professional";
+//职业
 export function get(data) {
     return request({
         url: `${prefix}`,

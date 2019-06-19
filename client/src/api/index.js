@@ -18,23 +18,23 @@ import * as allergy from "./patient_allergy";
 import * as anamnesis from "./patient_anamnesis";
 import * as teethHabit from "./patient_teeth_habit";
 import * as impressions from "./patient_impression";
-import * as clinic from './clinic'
-import * as area from './area'
-import * as company from './company'
-import * as chain_store from './chain_store'
-import * as case_template_menu from './case_template_menu'
-import * as case_template from './case_template'
-import * as medical from './medical'
-import * as inspect from './inspect'
-import * as diagnose from './diagnose'
-import * as treat from './treat'
-import * as advice from './advice'
-import * as privilege from './privilege'
-import * as role from './role'
-import * as patient_order from './patient_order'
-import * as base_demand from './base_demand'
-import * as potential_demand from './potential_demand'
-
+import * as clinic from "./clinic";
+import * as area from "./area";
+import * as company from "./company";
+import * as chain_store from "./chain_store";
+import * as case_template_menu from "./case_template_menu";
+import * as case_template from "./case_template";
+import * as medical from "./medical";
+import * as inspect from "./inspect";
+import * as diagnose from "./diagnose";
+import * as treat from "./treat";
+import * as advice from "./advice";
+import * as privilege from "./privilege";
+import * as role from "./role";
+import * as patient_order from "./patient_order";
+import * as base_demand from "./base_demand";
+import * as potential_demand from "./potential_demand";
+import * as patient_professional from "./patient_professional";
 
 const apis = {
     base,
@@ -73,9 +73,7 @@ const apis = {
     patient_order,
     base_demand,
     potential_demand,
-
-
-
+    patient_professional
 };
 
 const install = function(Vue) {
