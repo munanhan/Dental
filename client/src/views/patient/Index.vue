@@ -202,7 +202,7 @@
                             <el-input
                                 v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
@@ -349,7 +349,7 @@
                             <el-input
                                 style="width:300px;margin-left:10px;"
                                 v-model="search"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                         </div>
@@ -644,7 +644,6 @@ export default {
                     that.getRecentVisit();
                     break;
             }
-            console.log(newValue);
         },
         // refresh(newValue, oldValue) {
         //         let that = this;
@@ -690,7 +689,7 @@ export default {
     methods: {
         //获取id
         getInfoById(id) {
-            console.log(id);
+          
             let that = this;
             that.$api.patient
                 .getPatientByID({ id })

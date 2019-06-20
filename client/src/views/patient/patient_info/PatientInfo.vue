@@ -217,8 +217,7 @@ export default {
         selectPatient(newValue, oldValue) {
             let that = this;
             if (newValue) {
-                this.data = that.selectPatient;
-                console.log(that.selectPatient);
+                that.data = that.selectPatient;
             }
         }
     },
