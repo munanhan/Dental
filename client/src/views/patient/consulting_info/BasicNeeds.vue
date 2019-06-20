@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-dialog
-            title="患者来源设置"
+            title="基本需求设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog consultcleaning-habits"
+            class="custom-dialog basicneeds-habits"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
@@ -14,13 +14,13 @@
                 <el-table
                     border
                     class="width100 mb-10"
-                    :data="add_consulting_menu.data"
+                    :data="BasicNeeds_menu.data"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
                 >
                     <el-table-column type="index"></el-table-column>
                     <el-table-column
-                        v-for="(item,k) in add_consulting_menu.columns"
+                        v-for="(item,k) in BasicNeeds_menu.columns"
                         :key="k"
                         :prop="item.field"
                         :label="item.title"
@@ -30,7 +30,7 @@
                                 <el-input
                                     size="mini"
                                     placeholder="请输入内容"
-                                    v-model="add_consulting_menu.sel[item.field]"
+                                    v-model="BasicNeeds_menu.sel[item.field]"
                                 >
                                 </el-input>
                             </span>
@@ -117,12 +117,12 @@ export default {
         return {
             tableHeight: "340px",
             tableData: [],
-            add_consulting_menu: {
+            BasicNeeds_menu: {
                 sel: null,
                 columns: [
                     {
                         field: "name",
-                        title: "患者来源"
+                        title: "基本需求"
                     }
                 ],
                 data: []
@@ -135,23 +135,23 @@ export default {
         show(newValue, oldValue) {
             let that = this;
             if (newValue) {
-                that.getConsultList();
+                that.getBasicNeedsList();
             }
         }
     },
     computed: {},
     methods: {
-        getConsultList() {
+        getBasicNeedsList() {
             let that = this;
             that.$api.base_demand
                 .get()
                 .then(res => {
-                    that.add_consulting_menu.data.map(i => {
+                    that.BasicNeeds_menu.data.map(i => {
                         i.id = res.data.id;
                         i.isSet = false;
                         return i;
                     });
-                    that.add_consulting_menu.data = res.data;
+                    that.BasicNeeds_menu.data = res.data;
                 })
                 .catch(res => {
                     console.log(res);
@@ -161,12 +161,12 @@ export default {
         //添加账号
         addTeethHabitItem() {
             let that = this;
-            for (let i of that.add_consulting_menu.data) {
+            for (let i of that.BasicNeeds_menu.data) {
                 if (i.isSet) return that.$message.warning("请先保存当前编辑项");
             }
             let j = { name: "", isSet: true };
-            that.add_consulting_menu.data.push(j);
-            that.add_consulting_menu.sel = JSON.parse(JSON.stringify(j));
+            that.BasicNeeds_menu.data.push(j);
+            that.BasicNeeds_menu.sel = JSON.parse(JSON.stringify(j));
         },
 
         del(row, index) {
@@ -181,7 +181,7 @@ export default {
                 .then(() => {
                     that.$api.base_demand.del({ id }).then(res => {
                         if (res.code == 200) {
-                            that.add_consulting_menu.data.splice(index, 1);
+                            that.BasicNeeds_menu.data.splice(index, 1);
                             that.$message({
                                 type: "success",
                                 message: "删除成功!"
@@ -199,7 +199,7 @@ export default {
 
         store(row, index) {
             let that = this;
-            let data = JSON.parse(JSON.stringify(that.add_consulting_menu.sel));
+            let data = JSON.parse(JSON.stringify(that.BasicNeeds_menu.sel));
 
             if (data.name == "" || data.discount == "") {
                 that.$message.warning("请填写完成信息");
@@ -234,20 +234,20 @@ export default {
 
         edit(row, index) {
             let that = this;
-            for (let i of that.add_consulting_menu.data) {
+            for (let i of that.BasicNeeds_menu.data) {
                 if (i.isSet) {
                     that.$message.warning("请先保存当前编辑项");
                     return false;
                 }
             }
-            that.add_consulting_menu.sel = JSON.parse(JSON.stringify(row));
+            that.BasicNeeds_menu.sel = JSON.parse(JSON.stringify(row));
             that.$set(row, "isSet", true);
         },
 
         cancel(row, index) {
             let that = this;
-            if (!that.add_consulting_menu.sel.id)
-                that.add_consulting_menu.data.splice(index, 1);
+            if (!that.BasicNeeds_menu.sel.id)
+                that.BasicNeeds_menu.data.splice(index, 1);
             row.isSet = false;
         }
     }
@@ -255,7 +255,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@css/var";
-.consultcleaning-habits {
+.basicneeds-habits {
     /deep/ .el-dialog__header {
         text-align: center;
     }

@@ -35,10 +35,13 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 主 诉:</div>
                             <div
+                                style="width:80px"
+                                class="font-left"
+                            > 主 诉:</div>
+                            <div
+                                style="flex:1"
                                 class="font-right"
-                                style="color:#000;margin-left:50px"
                             >asdsadsadsad</div>
                         </el-col>
 
@@ -51,8 +54,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 基本需要:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            > 基本需要:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
 
                     </el-row>
@@ -64,8 +73,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">潜在需求:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >潜在需求:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
 
                     </el-row>
@@ -77,8 +92,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">医生方案:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >医生方案:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -89,8 +110,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">沟通记录:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >沟通记录:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -101,8 +128,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">服务建议:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                 style="width:80px"
+                                class="font-left"
+                            >服务建议:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                 </div>

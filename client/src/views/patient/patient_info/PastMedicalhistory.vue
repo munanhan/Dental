@@ -108,7 +108,7 @@ import DialogForm from "@/views/base/DialogForm";
 import AddPastMedicalhistory from "./AddPastMedicalhistory";
 
 export default {
-    name: "ExpenditureCategory",
+    name: "PastMedicalhistory",
     mixins: [DialogForm],
 
     components: {

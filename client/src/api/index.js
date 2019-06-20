@@ -35,6 +35,8 @@ import * as patient_order from "./patient_order";
 import * as base_demand from "./base_demand";
 import * as potential_demand from "./potential_demand";
 import * as patient_professional from "./patient_professional";
+import * as patient_case_template from "./patient_case_template";
+import * as patient_medical from "./patient_medical";
 
 const apis = {
     base,
@@ -73,7 +75,9 @@ const apis = {
     patient_order,
     base_demand,
     potential_demand,
-    patient_professional
+    patient_professional,
+    patient_case_template,
+    patient_medical
 };
 
 const install = function(Vue) {

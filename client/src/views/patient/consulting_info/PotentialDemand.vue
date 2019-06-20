@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="患者来源设置"
+            title="潜在需求设置"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog potentiacleaning-habits"
@@ -122,7 +122,7 @@ export default {
                 columns: [
                     {
                         field: "name",
-                        title: "患者来源"
+                        title: "潜在需求"
                     }
                 ],
                 data: []
