@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Model\Appointment;
+
 class TodayWorkController extends PatientController
 {
     /*
@@ -18,7 +20,7 @@ class TodayWorkController extends PatientController
     {
         $id=request('id');
 
-        if(PatientDisposal::find($id)){
+        if(\App\Model\PatientDisposal::find($id)){
             return message('已有处置记录不可删除','',400);
         }else{
             $app=Appointment::find($id);

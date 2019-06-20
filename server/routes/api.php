@@ -161,15 +161,17 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/show/{id}', 'PatientConsultController@show');
+    Route::get('patient_consults/show', 'PatientConsultController@getById');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
-    Route::put('patient_consults/{patientConsult}', 'PatientConsultController@update');
+    Route::put('patient_consults', 'PatientConsultController@update');
 
     Route::delete('patient_consults/{id}', 'PatientConsultController@delete');
 
-    Route::get('patient_consults/getDoctorOrRecorder','PatientConsultController@getDoctorOrRecorder');
+    Route::get('patient_consults/doctor_or_record','PatientConsultController@getDoctorOrRecorder');
+
+    Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
 
     /*
      * Route PatientCategory Api

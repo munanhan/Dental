@@ -1,7 +1,7 @@
-import request from "../common/request";
+import request from '../common/request';
 
-const prefix = "/patient_impressions";
-//过敏史
+const prefix = '/patient_consults';
+
 export function get(data) {
     return request({
         url: `${prefix}`,
@@ -28,7 +28,29 @@ export function del(data) {
 
 export function update(data) {
     return request({
-        url: `${prefix}`,
+        url: `${prefix}/:id`,
+        method: "post",
+        params: data
+    });
+}
+
+/*
+接诊医生
+ */
+export function receptionDoctor(data) {
+    return request({
+        url: `${prefix}/doctor_or_record`,
+        method: "post",
+        params: data
+    });
+}
+
+/*
+默认录入人
+ */
+export function defaultRecorder(data) {
+    return request({
+        url: `${prefix}/default_record`,
         method: "post",
         params: data
     });
