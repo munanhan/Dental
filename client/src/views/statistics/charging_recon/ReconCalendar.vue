@@ -29,9 +29,9 @@
             </span>
 
             <span class="current-balance">
-                <span class="mr-20">收：0.00</span>
-                <span class="mr-20">支：0.00</span>
-                <span class="mr-20">余：0.00</span>
+                <span class="mr-20">收：{{receipts_total}}</span>
+                <span class="mr-20">支：{{expenditure_total}}</span>
+                <span class="mr-20">余：{{receipts_total-expenditure_total}}</span>
             </span>
 
         </div>
@@ -73,6 +73,38 @@
                             @click="selectDate(item)"
                         >
                             {{item.date}}
+                            <el-row :gutter="20" style="padding: 10px;">
+                                <el-col :span="20" :offset="6">收：
+                                    <span v-if="typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)].length != 0">
+                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts']}}
+                                    </span>
+                                    <span v-else>
+                                        0
+                                    </span>
+                                </el-col>
+                                <el-col :span="20" :offset="6">支：
+                                    <span v-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
+                                        {{expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                    </span>
+                                    <span v-else>
+                                        0
+                                    </span>
+                                </el-col>
+                                <el-col :span="20" :offset="6">合：
+                                    <span v-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
+                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts'] - expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                    </span>
+                                    <span v-else-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] =='undefined'">
+                                        {{0 - expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                    </span>
+                                    <span v-else-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] =='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
+                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts']}}
+                                    </span>
+                                    <span v-else>
+                                        0
+                                    </span>
+                                </el-col>
+                            </el-row>
                         </td>
                     </tr>
                 </tbody>
@@ -101,7 +133,17 @@ export default {
             selectItem: null,
             selectYear: null,
             selectMonth: null,
-            textMonth: null
+            textMonth: null,
+            expenditure_total:0,
+            receipts_total:0,
+
+            search:{
+                dtfm:'',
+                dtto:''
+            },
+
+            expenditure:[],
+            receipts:[],
         };
     },
     created() {},
@@ -134,8 +176,13 @@ export default {
                 that.curDate = nowDate.getDate();
 
                 that.setDate(nowDate);
-
                 that.$emit("update:update", false);
+            }
+        },
+        dateList(newValue,oldValue){
+            if (newValue) {
+                let that = this;
+                that.getData();
             }
         }
     },
@@ -162,11 +209,17 @@ export default {
                 preMonth = preMonthLast.getMonth(),
                 preMonthLastDate = preMonthLast.getDate(),
                 preMonthLastDay = preMonthLast.getDay(), //星期几
+
                 //下个月开始时间
                 nextMonthStartDay = new Date(selectYear, selectMonth + 1, 1),
                 nextMonthYear = nextMonthStartDay.getFullYear(),
                 nextMonth = nextMonthStartDay.getMonth(),
                 dateArray = [];
+
+                //记录时间段
+                that.search.dtfm = preMonthYear+'/'+(preMonth+1)+'/';//开始时间
+                that.search.dtto = nextMonthYear+'/'+(nextMonth+1)+'/';//结束时间
+
 
             that.selectYear = selectYear;
             that.selectMonth = selectMonth;
@@ -175,12 +228,15 @@ export default {
 
             //计算上个月
             for (var i = 0; i <= preMonthLastDay; i++) {
-                dateArray.push({
+                dateArray.unshift({
                     year: preMonthYear,
                     mth: preMonth + 1,
                     date: preMonthLastDate - i,
                     notCurr: true
                 });
+                if (i == preMonthLastDay) {
+                    that.search.dtfm = that.search.dtfm+(preMonthLastDate - i);
+                }                
             }
 
             //计算当前月
@@ -204,6 +260,10 @@ export default {
                     date: i,
                     notCurr: true
                 });
+                if (i == less) {
+                    //结束时间
+                    that.search.dtto = that.search.dtto+i;
+                }
             }
 
             let result = [];
@@ -216,7 +276,10 @@ export default {
                 result[i] = dateArray.slice(i * 7, (i + 1) * 7);
             }
 
+            // console.log(that.search.dtfm);
+            // console.log(that.search.dtto);
             that.dateList = result;
+
         },
 
         switchDate(type) {
@@ -238,7 +301,6 @@ export default {
             ) {
                 date = new Date();
             }
-
             that.setDate(date);
         },
 
@@ -255,6 +317,24 @@ export default {
                 //如果选了上个月或下个月的话，就重新设置当前的日期
                 that.setDate(new Date(item.year, item.mth - 1, item.date));
             }
+        },
+
+        getData(){
+            //获取数据
+            let that = this;
+            that.$api.recon_calendar.get(that.search)
+            .then(res => {
+                if (res.code == 200) {
+                    that.expenditure = res.data.expenditure;
+                    that.receipts = res.data.receipts;
+                    that.expenditure_total = res.data.expenditure_total;
+                    that.receipts_total = res.data.receipts_total;
+                }
+
+            })
+            .catch(res => {
+
+            });
         },
 
         resizeCalendar() {

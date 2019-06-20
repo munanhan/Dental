@@ -104,7 +104,16 @@ use Illuminate\Support\Facades\DB;
 
                 foreach ($parms as $k => $v) {
                     if (is_array($v)) {
-                        $where.= ' '.$v[0].' '.$v[1].' :'.preg_replace("/\w+\./",'',$v[0]);
+                        switch ($v[1]) {
+                            case 'in':
+                                $where.= ' '.$v[0].' '.$v[1].'(:'.preg_replace("/\w+\./",'',$v[0]).')';
+                                break;
+                            
+                            default:
+                                $where.= ' '.$v[0].' '.$v[1].' :'.preg_replace("/\w+\./",'',$v[0]);
+                                break;
+                        }
+                        
                     }
                     else{
                         $where.= " $k = :".preg_replace("/\w+\./",'',$k);
@@ -113,7 +122,6 @@ use Illuminate\Support\Facades\DB;
                     $n < $length?$where.=' and':'';
                     $n++;
                 }
-
                 return $where;
             }
 
@@ -134,13 +142,33 @@ use Illuminate\Support\Facades\DB;
 
                 foreach ($parms as $k => $v) {
                     if (is_array($v)) {
-                        $where.= ' '.$v[0].' '.$v[1].' :'.$v[2];
+                        switch ($v[1]) {
+                            case 'in':
+                                $where.= ' '.$v[0].' '.$v[1].'('.$v[2].')';
+                                break;
+                            
+                            default:
+                                $where.= ' '.$v[0].' '.$v[1].' :'.$v[2];
+                                break;
+                            }
+                        
                     }
                     else{
                         $where.= " $k = :".$k;
                     }
                     
-                    $n < $length?$where.=' and':'';
+                    if ($n < $length) {
+                        if (isset($v[3])) {
+                            //第三个元素为and,or符号。
+
+                            $where.=' '.$v[3];
+                        }
+                        else{
+                            //默认使用and连接
+                            $where.=' and';
+                        }
+                    }
+                    // $n < $length?$where.=' and':'';
                     $n++;
                 }
 
@@ -257,19 +285,23 @@ use Illuminate\Support\Facades\DB;
                                 }
                                 break;
                             case 'normal':
+                                //非必填
                                 $field = $rule_children[1];
                                 break;
                             case 'min':
+                                //最小值
                                 if ($parms[$k] < $rule_children[1]) {
                                     return $field.'不能小于'.$rule_children[1].'.';
                                 }
                                 break;
                             case 'max':
+                                //最大值
                                 if ($parms[$k] > $rule_children[1]) {
                                     return $field.'不能大于'.$rule_children[1].'.';
                                 }
                                 break;                            
                             case 'type':
+                                //判断类型
                                 $res = checkType($rule_children[1],$parms[$k]);
                                 if ($res) {
                                     return $field.$res;
@@ -332,6 +364,10 @@ use Illuminate\Support\Facades\DB;
                     case 'function':
                         //是否为函数
                         return is_callable($value) == true?false:'只能输入函数.';
+                        break;
+                    case 'date':
+                        //是否为一个日期(没有时分秒)
+                        return strtotime($value) == true?false:'非日期格式.';
                         break;
                 }
             }

@@ -18,7 +18,7 @@
                 prop="type"
             >
                 <el-input
-                    v-model.trim="form.type"
+                    v-model.trim="form.expenditure_method"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -52,7 +52,7 @@ export default {
             commitLoading: false,
 
             form: {
-                expenditure: ""
+                expenditure_method: ""
             },
             formRules: {
                 expenditure: [
@@ -72,10 +72,30 @@ export default {
     methods: {
         addCommit() {
             let that = this;
+            that.$api.expenditure_method.add(that.form)
+                .then(res => {
+                  if(res.code == 200){
 
-            that.$emit('add-item', that.form.expenditure);
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
 
-            that.closeDialog();
+                        that.$emit("add-item", res.data);
+
+                        that.closeDialog();
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "edit error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
         }
     }
 };

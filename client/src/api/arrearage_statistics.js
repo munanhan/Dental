@@ -1,7 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/patient_order';
-
+const prefix = '/arrearage_statistics';
 
 export function get(data) {
     return request({

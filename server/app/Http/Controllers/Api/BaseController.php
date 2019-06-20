@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\OperationLog;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use App\Exports\BaseExport;
+use App\Imports\BaseImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class BaseController extends Controller
 {
@@ -26,6 +30,8 @@ class BaseController extends Controller
         //连表
         protected $group = [];
         //分组
+        protected $order = [];
+        //排序
         protected $field = '';
         //字段
         protected $where = [];
@@ -42,10 +48,10 @@ class BaseController extends Controller
         //执行是否的方法
         protected $upload = [];
         //用于判断是否有上传文件
+        protected $search_date = [];
+        //搜索日期字段
         protected $export = [];
-        //导出字段
-        protected $export_data = [];
-        //导出的数据
+        //导出表头
 
         public function __construct(Request $request){
 
@@ -85,42 +91,82 @@ class BaseController extends Controller
 
             $this->model = new BaseModel($this->table);
             //实例化
+            DB::connection()->enableQueryLog();
+            //数据库日志查询
 
         }
 
-        public function __destruct(){
-            //销毁事件,自动写入日志
-            if (!$this->fail) {
-                //判断写入是否失败，成功则插入日志
-                //日志写入部分
-                //要是用这个功能需要去config文件里面添加对应的模块以及名称，模块key为对应的表名，value为模块名称
-                $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
-                $module = config('config.module.'.$this->table);
-                //模块
+        // public function __destruct(){
+        //     //销毁事件,自动写入日志
+        //     if (!$this->fail) {
+        //         //判断写入是否失败，成功则插入日志
+        //         //日志写入部分
+        //         //要是用这个功能需要去config文件里面添加对应的模块以及名称，模块key为对应的表名，value为模块名称
+        //         $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
+        //         $module = config('config.module.'.$this->table);
+        //         //模块
 
-                if ($module && array_key_exists($this->action, $_log) ) {
-                    //日志
-                    $log = [ 'operation_type' => $_log[$this->action],
-                             'operation_content' => Auth::user()['name'].$_log[$this->action].'了一条'.$module.'数据',
-                             'module' => $module,
-                             'created_by' => Auth::user()['name'],
-                             'created_at' => date('Y-m-d H:i:s')
-                           ];
+        //         if ($module && array_key_exists($this->action, $_log) ) {
+        //             //日志
+        //             $log = [ 'operation_type' => $_log[$this->action],
+        //                      'operation_content' => Auth::user()['name'].$_log[$this->action].'了一条'.$module.'数据',
+        //                      'module' => $module,
+        //                      'created_by' => Auth::user()['name'],
+        //                      'created_at' => date('Y-m-d H:i:s')
+        //                    ];
 
-                    OperationLog::insert($log);
+        //             OperationLog::insert($log);
+        //         }
+        //     }
+        // }
+        public function insertLog($parms = []){
+            //写入日志
+            //日志写入部分
+            //要是用这个功能需要去config文件里面添加对应的模块以及名称，模块key为对应的表名，value为模块名称
+            $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
+
+            $module = config('config.module.'.$this->table);
+            //模块
+
+
+            if ($module && array_key_exists($this->action, $_log) || !empty($parms)) {
+                //日志
+                $log = [ 'operation_type' => isset($parms['operation_type'])?
+                                             $parms['operation_type']:
+                                             $_log[$this->action],
+
+                         'operation_content' => isset($parms['operation_content'])?
+                                                $parms['operation_content']:
+                                                Auth::user()['name'].$_log[$this->action].'了一条'.$module.'数据',
+                         'module' => isset($parms['module'])?$parms['module']:$module,
+
+                         'created_by' => Auth::user()['name'],
+                         'created_at' => date('Y-m-d H:i:s')
+                       ];
+
+                $ok = '';
+                //是否允许写入日志
+                foreach ($log as $k => $v) {
+                    $ok = empty($v)?false:true;
                 }
+                $ok == true?OperationLog::insert($log):'';
             }
+
         }
 
         public function index(){
             //主页,对应get方法，默认获取全部，可带参数
             $res = $this->getData();
+            // dd($this->getLastSql());
             return message($res['msg'],$res['data'],$res['code']);
 
         }
 
         public function getData(){
             //获取数据
+            $this->setWhereIn();
+            //处理wherein参数
+
             if (empty($this->field)) {
                 $this->field = ' * ';
             }
@@ -135,9 +181,9 @@ class BaseController extends Controller
                 $sql.= MyJoin($this->join,'left');
             }
 
-            if (!empty($this->parms)) {
+            $where = [];
+            if (!empty($this->parms) && empty($this->where)) {
             //where 语句
-                $where = [];
                 if (!empty($this->replace_field)) {
                     foreach ($this->parms as $k => $v) {
                         if (array_key_exists($k, $this->replace_field)) {
@@ -156,12 +202,34 @@ class BaseController extends Controller
                     $where = $this->parms;
                 }
 
-                $sql.= MyWheres($where);
             }
+
+            if (!empty($this->search_date)) {
+                foreach ($this->search_date as $k => $v) {
+                    isset($this->date['dtfm'])?$where[] = [ $v,'>=', 'dtfm']:'';
+                    isset($this->date['dtto'])?$where[] = [ $v,'<=', 'dtto']:'';
+                }
+                $this->parms['dtfm'] = isset($this->date['dtfm'])?$this->date['dtfm']:0;
+                $this->parms['dtto'] = isset($this->date['dtto'])?$this->date['dtto']:0;
+            }
+
+            $sql.= MyWheres( array_merge($where,$this->where));
+
+            // else if (!empty($this->search_date)) {
+            //     // foreach ($this->search_date as $k => $v) {
+            //     //     $where[$v] = isset($this->date['dtfm'])?$this->date['dtfm']:0;
+            //     // }
+            // }
+
+            // dd($where);
 
             if (!empty($this->group)) {
             //group 语句
                 $sql.= MyGroup($this->group);
+            }
+
+            if (!empty($this->order)) {
+                $sql.= MyOrder($this->order);
             }
 
             if (!empty($this->having)) {
@@ -178,13 +246,40 @@ class BaseController extends Controller
 
             if (!empty($this->pager['current_page']) &&  !empty($this->pager['page_size'])) {
             //分页
+                $count_sql = preg_replace("/^select.*from/",'select count(*) as total from',$sql);
+
                 $sql.= MyLimit($this->pager);
-                $total = $this->model->getCount($this->parms);
+                // $total = $this->model->getCount($where);
+                $total = getData($count_sql,$this->parms);
                 $res = getData($sql,$this->parms);
-                return [ 'msg' => $res['msg'], 'data' => [ 'row' => $res['data'],'total' => $total ], 'code' => $res['code']];
+                return [ 'msg' => $res['msg'], 'data' => [ 'row' => $res['data'],'total' => $total['data'][0]->total ], 'code' => $res['code']];
             }
             
             return getData($sql,$this->parms);
+        }
+
+        private function setWhereIn(){
+            //遇到数组参数的时候去处理where in条件
+            //把数组元素拆开，然后赋值到where in条件上
+            if (empty($this->parms)) {
+                return false;
+            }
+            foreach ($this->parms as $k => $v) {
+                if(is_array($this->parms[$k])){
+                    //判断，如果是个数组则处理
+                    $in_where = [];
+                    //
+                    foreach ($this->parms[$k] as $parms_key => $parms_val) {
+                        //把数组拆分，然后以数组原本数组名+key顺序的方式注入新的参数
+                        $this->parms[$k.($parms_key+1)] = $parms_val;
+                        $in_where[] = ':'.$k.($parms_key+1);//在in条件参数列表中添加该key对应的值
+                    }
+                    unset($this->parms[$k]);//最后删除原本的数组参数，以免报错
+                    $this->where = [ [ $k,'in',implode(',', $in_where) ] ];//设置where条件
+                }
+            }
+            return true;
+
         }
 
         public function getById(){
@@ -195,7 +290,7 @@ class BaseController extends Controller
                 $where['id'] = $this->parms['id'];
             }
             else{
-                //否则取条件
+                //否则取注入的条件作为查询条件
                 $where = $this->parms;
             }
             $data = $this->model->getById($where);
@@ -211,11 +306,16 @@ class BaseController extends Controller
             $res = $this->model->insertDataGetId($this->parms);
 
             if ($res) {
-               
-                return message('新增成功',$this->model->getById(['id' => $res]),200);
+               if (empty($this->join)) {
+                   return message('新增成功',$this->model->getById(['id' => $res]),200);
+               }
+               $this->parms['id'] = $res;
+               $this->insertLog();
+               return [ 'msg' => '新增成功.','data' => $this->getBySelect()['data'][0],'code' => 200 ];
+                
             }
             else{
-                $this->fail = true;
+                // $this->fail = true;
                 return message('新增失败',[],500);
             }
         }
@@ -236,11 +336,11 @@ class BaseController extends Controller
             //删
             $res = $this->model->deleteData(['id' => $id]);
             if ($res) {
-
+                $this->insertLog();
                 return message('删除成功',null, 200);
             }
             else{
-                $this->fail = true;
+                // $this->fail = true;
                 return message('删除失败',null, 500);
             }
         }
@@ -361,7 +461,7 @@ class BaseController extends Controller
             $res = $this->model->updateData($where);
 
             if ($res) {
-
+                $this->insertLog();
                 if (empty($this->join)) {
 
                     return [ 'msg' => '修改成功.','data' => $this->model->getById(['id' => $this->parms['id']]),'code' => 200 ];
@@ -371,23 +471,40 @@ class BaseController extends Controller
 
             }
             else{
-                $this->fail = true;
+                // $this->fail = true;
                 return [  'msg' => '修改失败.','data' => [],'code' => 500 ];
             }
         }
 
         public function export(){
             //导出
-            // if (empty($this->export)) {
-            //     return [  'msg' => '系统异常.','data' => [],'code' => 500 ];
-            // }
+            return Excel::download(new BaseExport($this->exportData()), '导出数据.xlsx');
+        }
 
-            $data = empty($this->export_data)?$this->getData():$this->export_data;
+        public function exportData(){
+            //导出数据
+            $data = $this->getData(true)['data'];
 
+            $data = isset($data['row'])?$data['row']:$data;
+            //获取数据
+            $export_data = [];
+            array_push($export_data, array_values($this->export));
 
-            // return $data;
+            foreach ($data as $k => $v) {
+                //循环数据
+                foreach ($this->export as $a => $b) {
+                    //赋值，
+                    $temp[] = $v->$a;
+                }
+                array_push($export_data,$temp);
+                $temp = [];
+            }
 
+            return $export_data;
+        }
 
+        public function getLastSql(){
+            return DB::getQueryLog();
         }
 
 }

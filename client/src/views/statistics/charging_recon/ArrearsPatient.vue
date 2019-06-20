@@ -55,71 +55,66 @@
                 :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                 :height="tableHeight"
                 show-summary
+                :summary-method="getSummaries"
             >
                 <el-table-column
                     label="就诊日期"
                     width="120"
                     align="center"
+                    prop="charge_date"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="case_id"
                     label="病历号"
                     width="120"
                     align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="patient_name"
                     label="患者姓名"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="arrearage"
                     label="欠费金额"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="doctor"
                     label="医生"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="patient_phone"
                     label="电话1"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
-                    label="电话2"
-                    align="center"
-                    show-overflow-tooltip
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="address"
+                    prop="patient_age"
                     label="年龄"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="patient_address"
                     label="地址"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="comment"
                     label="备注"
                     align="center"
                     show-overflow-tooltip
@@ -149,6 +144,7 @@
 </template>
 
 <script>
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
 export default {
     name: "ArrearsPatient",
     components: {},
@@ -234,7 +230,7 @@ export default {
             let that = this;
             if (newValue) {
                 that.resizeTable();
-
+                that.getData();
                 that.$emit("update:update", false);
             }
         }
@@ -271,9 +267,75 @@ export default {
 
         getData() {
             let that = this;
-        },
+            let parms = {};
 
-        exportExcel() {}
+            parms.dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            parms.dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            parms.dim = that.search.dim;
+            // console.log(that.search.dateRange);
+            // console.log(that.search.dim);
+
+            that.$api.arrearage_statistics.get(parms)
+            .then(res => {
+                if (res.code == 200) {
+                    that.tableData = res.data;
+                }
+
+            })
+            .catch(res => {
+
+            });
+        },
+          getSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+            columns.forEach((column, index) => {
+              if (index === 0) {
+                sums[index] = '合计';
+                return;
+              }
+              const values = data.map(item => Number(item[column.property]));
+              
+              if (column.property == 'arrearage') {
+                  if (!values.every(value => isNaN(value))) {
+                    sums[index] = values.reduce((prev, curr) => {
+                      const value = Number(curr);
+                      if (!isNaN(value)) {
+                        return prev + curr;
+                      } else {
+                        return prev;
+                      }
+                    }, 0);
+                    sums[index] += ' 元';
+                  } else {
+                    sums[index] = '';
+                  }
+              }
+
+            });
+
+            return sums;
+          },
+
+        exportExcel() {
+            let that = this;
+            let dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            let dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            let dim = that.search.dim;
+
+            let url = (window.HOSTNAME || '')+'/api/arrearage_statistics/export?dtfm='+dtfm+'&dtto='+dtto+'&dim='+dim;
+            let token = getCookie("token");
+            console.log(url);
+            downloadFile(url,{'Authorization':token},'欠费患者');
+        }
     }
 };
 </script>

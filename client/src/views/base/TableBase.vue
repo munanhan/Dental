@@ -285,6 +285,7 @@ export default {
                     [that.delIDField]: row[that.delIDField]
                 };
 
+
             that.$confirm("是否删除当前记录?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
@@ -293,6 +294,7 @@ export default {
                 .then(() => {
                     that.$api[that.apiType]
                         [that.delMethod](params)
+                        // [that.delMethod](params)
                         .then(res => {
                             if (res.code == 200) {
                                 that.$message({

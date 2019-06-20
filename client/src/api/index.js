@@ -32,7 +32,13 @@ import * as advice from './advice'
 import * as privilege from './privilege'
 import * as role from './role'
 import * as patient_order from './patient_order'
-
+import * as expenditure from './expenditure'
+import * as expenditure_type from './expenditure_type'
+import * as expenditure_method from './expenditure_method'
+import * as recon_calendar from './recon_calendar'
+import * as expenditure_statistics from './expenditure_statistics'
+import * as arrearage_statistics from './arrearage_statistics'
+import * as flow_sheet from './flow_sheet'
 
 const apis = {
     base,
@@ -68,8 +74,14 @@ const apis = {
     impressions,
     privilege,
     role,
-    patient_order
-
+    patient_order,
+    expenditure,
+    expenditure_type,
+    expenditure_method,
+    recon_calendar,
+    expenditure_statistics,
+    arrearage_statistics,
+    flow_sheet,
 
 
 };

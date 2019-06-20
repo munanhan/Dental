@@ -37,7 +37,10 @@ return [
                     'inspects' => '检查，辅助检查',
                     'diagnoses' => '诊断',
                     'treats' => '治疗，治疗方案',
-                    'advice' => '医嘱'
+                    'advice' => '医嘱',
+                    'expenditures' => '支出',
+                    'expenditure_type' => '支出类别',
+                    'expenditure_method' => '付款方法',
                 ],
 
     'patient_group' => [
