@@ -471,6 +471,7 @@
                     <medical-records-info
                         v-if="medicalRecordsInfo"
                         :refresh.sync="medicalRecordsInfo"
+                        :medicalInfo="selectPatient"
                     ></medical-records-info>
                 </el-tab-pane>
 
@@ -701,7 +702,6 @@ export default {
     methods: {
         //获取id
         getInfoById(id) {
-
             let that = this;
 
             //选中
@@ -718,10 +718,12 @@ export default {
                         ","
                     );
 
-                    res.data.patient_birthday=formatDate(res.data.patient_birthday,'yyyy-MM-dd');
+                    res.data.patient_birthday = formatDate(
+                        res.data.patient_birthday,
+                        "yyyy-MM-dd"
+                    );
 
                     that.selectPatient = res.data;
-
                 })
                 .catch(res => {
                     console.log(res.data);

@@ -169,9 +169,10 @@
                 <div class="right-content">
                     <div class="right-top">
                         <div class="top1">
-                            <div class="top-num1">1503010120</div>
-                            <div class="top-num2">8岁</div>
+                            <div class="top-num1">{{InitialDiag.case_id}}</div>
+                            <div class="top-num2">{{InitialDiag.patient_age}}岁</div>
                             <el-form-item
+                            class=""
                                 style="margin-top:5px;margin-left:30px"
                                 label="活动名称"
                                 size="small"
@@ -323,8 +324,8 @@
                             slot="footer"
                             class="dialog-footer"
                         >
-                            <div style="margin-top:10px;margin-left:5px">
-                                <el-button>另存模板</el-button>
+                            <div class="button-conten">
+                                <!-- <el-button>另存模板</el-button> -->
                                 <el-button>预约</el-button>
                                 <el-button>回访</el-button>
                                 <el-button type="primary">确 定</el-button>
@@ -344,7 +345,21 @@ export default {
     name: "InitialDiagnosis",
 
     mixins: [DialogForm],
+    props: {
+        // refresh: {
+        //     type: Boolean,
+        //     required: true
+        // },
 
+        addInitial: {
+            type: Object,
+            required: true
+        }
+    },
+    created() {
+        let that = this;
+        that.InitialDiag = that.addInitial;
+    },
     data() {
         return {
             selectNode: null,
@@ -352,6 +367,7 @@ export default {
             activeName: "medicalTemplates",
             rules: {},
             templateContent: [],
+            InitialDiag: [],
             form: {
                 value1: new Date(),
                 radio: "1",
@@ -379,6 +395,12 @@ export default {
         //         that.resizeContent();
         //     }
         // },
+        addInitial(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.InitialDiag = that.addInitial;
+            }
+        },
         activeName(newValue, oldValue) {
             if (newValue) {
                 let that = this;
@@ -411,7 +433,6 @@ export default {
                 .catch(res => {});
         },
         handleNodeClick(data) {
-          
             let that = this;
             that.selectNode = data;
 
@@ -668,6 +689,10 @@ export default {
             border: 1px solid #e6e6e6;
             border-top: none;
             height: 67px;
+            .button-conten {
+                margin-top: 10px;
+                margin-left: 5px;
+            }
         }
     }
     /deep/ .el-tabs__nav-scroll {
