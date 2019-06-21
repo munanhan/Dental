@@ -52,6 +52,8 @@ class BaseController extends Controller
         //搜索日期字段
         protected $export = [];
         //导出表头
+        protected $export_data = [];
+        //导出数据
 
         public function __construct(Request $request){
 
@@ -478,7 +480,11 @@ class BaseController extends Controller
 
         public function export(){
             //导出
-            return Excel::download(new BaseExport($this->exportData()), '导出数据.xlsx');
+            return Excel::download(
+                        new BaseExport(empty($this->export_data)?
+                                       $this->exportData():
+                                       $this->export_data), 
+                        '导出数据.xlsx');
         }
 
         public function exportData(){
