@@ -172,7 +172,7 @@
                             <div class="top-num1">{{InitialDiag.case_id}}</div>
                             <div class="top-num2">{{InitialDiag.patient_age}}岁</div>
                             <el-form-item
-                            class=""
+                                class=""
                                 style="margin-top:5px;margin-left:30px"
                                 label="活动名称"
                                 size="small"

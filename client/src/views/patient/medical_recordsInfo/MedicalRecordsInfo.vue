@@ -13,10 +13,7 @@
                     @dblclick="int_diagn"
                 >
                     <!-- <div class="background-1"> -->
-                    <div
-                        class="medical-top-title"
-                        style="display: flex; justify-content: space-around;"
-                    >
+                    <div class="medical-top-title">
                         <div style="flex: 1;">
                             <div class="top">{{item.medical_date}}</div>
                             <div class="top">{{item.medical_time}}</div>
@@ -405,6 +402,8 @@ export default {
             color: #989797;
 
             .medical-top-title {
+                display: flex;
+                justify-content: space-around;
                 font-size: 22px;
                 // border: 1px solid red;
                 .top {
