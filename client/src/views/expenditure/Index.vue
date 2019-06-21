@@ -55,7 +55,7 @@
                     <label class="search-item">
                         <span class="label-text mr-10">从</span>
                         <el-date-picker
-                            v-model="search.dtFm"
+                            v-model="search.dtfm"
                             type="date"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
@@ -70,7 +70,7 @@
                     <label class="search-item">
                         <span class="label-text mr-10">到</span>
                         <el-date-picker
-                            v-model="search.dtTo"
+                            v-model="search.dtto"
                             type="date"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
@@ -85,14 +85,14 @@
                     <label class="search-item">
                         <span class="label-text mr-10">支出类型</span>
                         <el-select
-                            v-model="search.payType"
+                            v-model="search.expenditure_type"
                             collapse-tags
                             class="search-input"
                         >
                             <el-option
                                 v-for="item in payType"
                                 :key="item.id"
-                                :label="item.label"
+                                :label="item.expenditure_type"
                                 :value="item.id"
                             >
                             </el-option>
@@ -151,9 +151,10 @@
                 <el-table
                     border
                     class="width100"
-                    :data="tdata"
+                    :data="tableData"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
+                    show-summary
                 >
                     <!-- <el-table-column
                         prop="address"
@@ -170,56 +171,56 @@
                     >
                     </el-table-column> -->
                     <el-table-column
-                        prop="address"
+                        prop="date"
                         label="发生日期"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="handler"
                         label="经手人"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="charge_person"
                         label="负责人"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="expenditure_type"
                         label="支出类别"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="expenditure_content"
                         label="支出明细"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="expenditure_money"
                         label="支出金额"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="expenditure_method"
                         label="付款方式"
                         align="center"
                         show-overflow-tooltip
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="address"
+                        prop="remark"
                         label="备注"
                         align="center"
                         show-overflow-tooltip
@@ -241,7 +242,7 @@
                                     size="mini"
                                     icon="el-icon-edit"
                                     circle
-                                    @click.stop="showEditDialog(scope.row)"
+                                    @click.stop="showEdit(scope.row,scope.$index)"
                                 ></el-button>
                             </el-tooltip>
                             <el-tooltip
@@ -254,7 +255,7 @@
                                     size="mini"
                                     icon="el-icon-delete"
                                     circle
-                                    @click.stop="del(scope.row, scope.$index)"
+                                    @click.stop="showDel(scope.row, scope.$index)"
                                 ></el-button>
                             </el-tooltip>
                         </template>
@@ -263,8 +264,8 @@
             </div>
         </div>
 
-        <add-expenditure :show.sync="addDialog"></add-expenditure>
-        <edit-expenditure :show.sync="editDialog"></edit-expenditure>
+        <add-expenditure :show.sync="addDialog" @add-item="addItem"></add-expenditure>
+        <edit-expenditure :show.sync="editDialog" :editItem="editData" @edit-item="updateItem"></edit-expenditure>
     </div>
 </template>
 
@@ -273,6 +274,7 @@ import { formatDate } from "@common/util";
 import AddExpenditure from './AddExpenditure';
 import EditExpenditure from './EditExpenditure';
 import Base from "../base/TableBase";
+import { setCookie,getCookie,downloadFile } from "../../common/util";
 
 export default {
     name: "Expenditure",
@@ -282,21 +284,20 @@ export default {
     props: {},
     data() {
         return {
-            dateType: 0,
+            dateType: 'expenditure',
             search: {
-                dtFm: new Date(),
-                dtTo: new Date(),
-                payType: 0
+                dtfm: new Date(),
+                dtto: new Date(),
+                expenditure_type: undefined
             },
 
             pager: false,
 
             payType: [
-                { id: 0, label: "全部" },
-                { id: 1, label: "现金" },
-                { id: 2, label: "转账" }
-            ],
 
+            ],
+            tableData:[],
+            editData:{},
             // tableData: [],
             // tableHeight: "300px",
 
@@ -309,6 +310,11 @@ export default {
 
             isCurrentDate: false,
 
+            //当前页面索引
+            index: undefined,
+            //当前行
+            selectRow: {},
+
             // addPayDialog: false
         };
     },
@@ -318,11 +324,12 @@ export default {
 
         //设置当前的日期
         that.currentDate = formatDate(new Date(), "yyyy-MM-dd");
-        that.dateFmText = formatDate(that.search.dtFm, "yyyy年MM月dd日");
-        that.dateToText = formatDate(that.search.dtTo, "yyyy年MM月dd日");
+        that.dateFmText = formatDate(that.search.dtfm, "yyyy年MM月dd日");
+        that.dateToText = formatDate(that.search.dtto, "yyyy年MM月dd日");
 
         that.checkCurrentData();
         that.calcDateCount();
+        that.expenditureType();
 
         // that.$nextTick(() => {
         //     that.resizeTable();
@@ -336,7 +343,7 @@ export default {
         // }
     },
     watch: {
-        "search.dtFm": {
+        "search.dtfm": {
             handler(newValue, oldValue) {
                 let that = this;
                 that.dateFmText = formatDate(newValue, "yyyy年MM月dd日");
@@ -346,7 +353,7 @@ export default {
             }
         },
 
-        "search.dtTo": {
+        "search.dtto": {
             handler(newValue, oldValue) {
                 let that = this;
                 that.dateToText = formatDate(newValue, "yyyy年MM月dd日");
@@ -369,15 +376,15 @@ export default {
             let that = this;
 
             that.isCurrentDate =
-                formatDate(that.search.dtFm, "yyyy-MM-dd") ==
+                formatDate(that.search.dtfm, "yyyy-MM-dd") ==
                     that.currentDate &&
-                formatDate(that.search.dtTo, "yyyy-MM-dd") == that.currentDate;
+                formatDate(that.search.dtto, "yyyy-MM-dd") == that.currentDate;
         },
 
         calcDateCount() {
             let that = this,
-                startTime = new Date(that.search.dtFm).getTime(),
-                endTime = new Date(that.search.dtTo).getTime(),
+                startTime = new Date(that.search.dtfm).getTime(),
+                endTime = new Date(that.search.dtto).getTime(),
                 count = Math.round((endTime - startTime) / 86400000) + 1;
 
             that.dateCount = count;
@@ -386,15 +393,15 @@ export default {
         //如果开始和结束的时间相减是负责则同步两边的值
         changeData(type) {
             let that = this,
-                startTime = new Date(that.search.dtFm).getTime(),
-                endTime = new Date(that.search.dtTo).getTime(),
+                startTime = new Date(that.search.dtfm).getTime(),
+                endTime = new Date(that.search.dtto).getTime(),
                 minus = endTime - startTime;
 
             if (minus < 0) {
                 if (type == "fm") {
-                    that.search.dtTo = that.search.dtFm;
+                    that.search.dtto = that.search.dtfm;
                 } else if (type == "to") {
-                    that.search.dtFm = that.search.dtTo;
+                    that.search.dtfm = that.search.dtto;
                 }
             }
         },
@@ -402,78 +409,223 @@ export default {
         switchDate(type) {
             let that = this;
 
-            that.search.dtFm = new Date(that.search.dtFm);
+            that.search.dtfm = new Date(that.search.dtfm);
 
-            let year = that.search.dtFm.getFullYear(),
-                mth = that.search.dtFm.getMonth(),
-                weekday = that.search.dtFm.getDay(),
-                day = that.search.dtFm.getDate();
+            let year = that.search.dtfm.getFullYear(),
+                mth = that.search.dtfm.getMonth(),
+                weekday = that.search.dtfm.getDay(),
+                day = that.search.dtfm.getDate();
 
             switch (type) {
                 case "current":
-                    that.search.dtFm = that.search.dtTo = new Date();
+                    that.search.dtfm = that.search.dtto = new Date();
                 case "day":
-                    that.search.dtTo = that.search.dtFm;
+                    that.search.dtto = that.search.dtfm;
                     break;
                 case "week":
-                    that.search.dtFm = new Date(year, mth, day - weekday);
-                    that.search.dtTo = new Date(year, mth, day + (6 - weekday));
+                    that.search.dtfm = new Date(year, mth, day - weekday);
+                    that.search.dtto = new Date(year, mth, day + (6 - weekday));
                     break;
                 case "month":
-                    that.search.dtFm = new Date(year, mth, 1);
-                    that.search.dtTo = new Date(year, mth + 1, 0);
+                    that.search.dtfm = new Date(year, mth, 1);
+                    that.search.dtto = new Date(year, mth + 1, 0);
                     break;
                 case "pre":
                     if (that.dateType == 0) {
-                        that.search.dtFm = that.search.dtTo = new Date(
+                        that.search.dtfm = that.search.dtto = new Date(
                             year,
                             mth,
                             day - 1
                         );
                     } else if (that.dateType == 1) {
-                        that.search.dtFm = new Date(
+                        that.search.dtfm = new Date(
                             year,
                             mth,
                             day - weekday - 7
                         );
-                        that.search.dtTo = new Date(
+                        that.search.dtto = new Date(
                             year,
                             mth,
                             day + (6 - weekday) - 7
                         );
                     } else {
-                        that.search.dtFm = new Date(year, mth - 1, 1);
-                        that.search.dtTo = new Date(year, mth - 2, 0);
+                        that.search.dtfm = new Date(year, mth - 1, 1);
+                        that.search.dtto = new Date(year, mth - 2, 0);
                     }
 
                     break;
                 case "next":
                     if (that.dateType == 0) {
-                        that.search.dtFm = that.search.dtTo = new Date(
+                        that.search.dtfm = that.search.dtto = new Date(
                             year,
                             mth,
                             day + 1
                         );
                     } else if (that.dateType == 1) {
-                        that.search.dtFm = new Date(
+                        that.search.dtfm = new Date(
                             year,
                             mth,
                             day - weekday + 7
                         );
-                        that.search.dtTo = new Date(
+                        that.search.dtto = new Date(
                             year,
                             mth,
                             day + (6 - weekday) + 7
                         );
                     } else {
-                        that.search.dtFm = new Date(year, mth + 1, 1);
-                        that.search.dtTo = new Date(year, mth + 2, 0);
+                        that.search.dtfm = new Date(year, mth + 1, 1);
+                        that.search.dtto = new Date(year, mth + 2, 0);
                     }
                     break;
             }
         },
 
-        exportExcel() {},
+        exportExcel() {
+            let that = this;
+            let dtfm = typeof that.search.dtfm == 'object'?
+                                that.search.dtfm.toLocaleDateString():
+                                that.search.dtfm;
+
+            let dtto = typeof that.search.dtto == 'object'?
+                                that.search.dtto.toLocaleDateString():
+                                that.search.dtto;
+
+            let expenditure_type = that.search.expenditure_type == undefined?'':
+                                   that.search.expenditure_type;
+
+            let url = (window.HOSTNAME || '')+'/api/expenditure/export?dtfm='+dtfm+'&dtto='+dtto+'&expenditure_type='+expenditure_type;
+            let token = getCookie("token");
+            console.log(url);
+            downloadFile(url,{'Authorization':token},'支出清单');
+        },
+
+        expenditureType(){
+            //支出类型
+            let that = this;
+            that.$api.expenditure_type.get()
+                .then(res => {
+                  if(res.code == 200){
+                        that.payType = res.data;
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "edit error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
+        },
+        getData(){
+            //获取数据
+            let that = this;
+            that.search.dtfm = typeof that.search.dtfm == 'object'?
+                                that.search.dtfm.toLocaleDateString():
+                                that.search.dtfm;
+
+            that.search.dtto = typeof that.search.dtto == 'object'?
+                                that.search.dtto.toLocaleDateString():
+                                that.search.dtto;
+
+            that.$api.expenditure.get(that.search)
+                .then(res => {
+                  if(res.code == 200){
+                        that.tableData = res.data;
+
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "edit error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
+
+        },
+        addItem(data){
+            let that = this;
+            let date = new Date(data.date.replace("-","/")).toLocaleDateString();
+            let dtfm = typeof that.search.dtfm == 'object'?
+                                that.search.dtfm.toLocaleDateString():
+                                that.search.dtfm;
+
+            let dtto = typeof that.search.dtto == 'object'?
+                                that.search.dtto.toLocaleDateString():
+                                that.search.dtto;
+            if (date >= dtfm && date <= dtto) {
+                that.tableData.push(data);
+            }
+
+        },
+        showDel(row,idx){
+            let that = this;
+              that.$confirm('删除不可恢复，是否确定删除？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                that.del(row.id,idx);
+              }).catch(() => {
+                that.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });          
+              });
+        },
+        del(id,index){
+            let that = this;
+            that.$api.expenditure.del({id})
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        //删除
+                        that.tableData.splice(index, 1);
+                    } else {
+                        that.$message.error(res.msg || "删除失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("删除失败.");
+                });
+        },
+        showEdit(row,index){
+            let that = this;
+            let parms = {};
+            parms.id = row.id;
+            that.index = index;
+            that.selectRow = row;
+            that.$api.expenditure.getById(parms)
+                .then(res => {
+                    if (res.code == 200) {
+                        // that.$message({
+                        //     message: res.msg,
+                        //     type: "success",
+                        //     duration: 800
+                        // });
+                        that.editData = res.data;
+                        that.editDialog = true;
+                        
+                    } else {
+                        that.$message.error(res.msg || "获取失败.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取失败.");
+                });
+
+        },
+        updateItem(data){
+            let that = this;
+            that.$set(that.tableData,that.index,data);
+        },
 
         resizeTable() {
             let that = this,

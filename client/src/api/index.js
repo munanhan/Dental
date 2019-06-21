@@ -18,26 +18,34 @@ import * as allergy from "./patient_allergy";
 import * as anamnesis from "./patient_anamnesis";
 import * as teethHabit from "./patient_teeth_habit";
 import * as impressions from "./patient_impression";
-import * as clinic from "./clinic";
-import * as area from "./area";
-import * as company from "./company";
-import * as chain_store from "./chain_store";
-import * as case_template_menu from "./case_template_menu";
-import * as case_template from "./case_template";
-import * as medical from "./medical";
-import * as inspect from "./inspect";
-import * as diagnose from "./diagnose";
-import * as treat from "./treat";
-import * as advice from "./advice";
-import * as privilege from "./privilege";
-import * as role from "./role";
-import * as patient_order from "./patient_order";
+import * as clinic from './clinic'
+import * as area from './area'
+import * as company from './company'
+import * as chain_store from './chain_store'
+import * as case_template_menu from './case_template_menu'
+import * as case_template from './case_template'
+import * as medical from './medical'
+import * as inspect from './inspect'
+import * as diagnose from './diagnose'
+import * as treat from './treat'
+import * as advice from './advice'
+import * as privilege from './privilege'
+import * as role from './role'
+import * as patient_order from './patient_order'
+import * as expenditure from './expenditure'
+import * as expenditure_type from './expenditure_type'
+import * as expenditure_method from './expenditure_method'
+import * as recon_calendar from './recon_calendar'
+import * as expenditure_statistics from './expenditure_statistics'
+import * as arrearage_statistics from './arrearage_statistics'
+import * as flow_sheet from './flow_sheet'
 import * as base_demand from "./base_demand";
 import * as potential_demand from "./potential_demand";
 import * as patient_professional from "./patient_professional";
 import * as patient_case_template from "./patient_case_template";
 import * as patient_medical from "./patient_medical";
 import * as patient_consult from "./patient_consult";
+
 
 const apis = {
     base,
@@ -74,12 +82,20 @@ const apis = {
     privilege,
     role,
     patient_order,
+    expenditure,
+    expenditure_type,
+    expenditure_method,
+    recon_calendar,
+    expenditure_statistics,
+    arrearage_statistics,
+    flow_sheet,
     base_demand,
     potential_demand,
     patient_professional,
     patient_case_template,
     patient_medical,
     patient_consult,
+
 };
 
 const install = function(Vue) {

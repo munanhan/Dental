@@ -58,6 +58,7 @@
                 :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                 :height="tableHeight"
                 show-summary
+                :summary-method="getSummaries"
             >
                 <el-table-column
                     prop="charge_date"
@@ -168,6 +169,7 @@
 </template>
 
 <script>
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
 export default {
     name: "TollSheet",
     components: {},
@@ -294,8 +296,12 @@ export default {
             let parms = {};
             parms.current_page = that.pager.current;
             parms.page_size = that.pager.size;
-            parms.dtfm = that.search.dateRange[0];
-            parms.dtto = that.search.dateRange[1];
+            parms.dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            parms.dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
             parms.dim = that.search.dim;
             // console.log(that.search.dateRange);
             // console.log(that.search.dim);
@@ -312,8 +318,52 @@ export default {
 
             });
         },
+          getSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+            columns.forEach((column, index) => {
+              if (index === 0) {
+                sums[index] = '合计';
+                return;
+              }
+              const values = data.map(item => Number(item[column.property]));
+              
+              if (column.property == 'case_id' || column.property == 'patient_name') {
 
-        exportExcel() {}
+              }
+              else if (!values.every(value => isNaN(value))) {
+                sums[index] = values.reduce((prev, curr) => {
+                  const value = Number(curr);
+                  if (!isNaN(value)) {
+                    return prev + curr;
+                  } else {
+                    return prev;
+                  }
+                }, 0);
+                sums[index] += ' 元';
+              } else {
+                sums[index] = '';
+              }
+            });
+
+            return sums;
+          },
+
+        exportExcel() {
+            let that = this;
+            let dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            let dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            let dim = that.search.dim;
+
+            let url = (window.HOSTNAME || '')+'/api/patient_order/export?dtfm='+dtfm+'&dtto='+dtto+'&dim='+dim;
+            let token = getCookie("token");
+            console.log(url);
+            downloadFile(url,{'Authorization':token},'收费单');
+        }
     }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="新增支出类型"
+        title="修改付款方式"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -15,10 +15,10 @@
         >
             <el-form-item
                 label="类型"
-                prop="expenditure_type"
+                prop="type"
             >
                 <el-input
-                    v-model.trim="form.expenditure_type"
+                    v-model.trim="form.expenditure_method"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -33,7 +33,7 @@
             >取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
                 :loading="commitLoading"
             >确 定</el-button>
         </div>
@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import DialogForm from "../base/DialogForm";
+import EditDialogForm from "../base/EditDialogForm";
 export default {
-    name: "AddExpenditureCategory",
-    mixins: [DialogForm],
+    name: "EditPayType",
+    mixins: [EditDialogForm],
     components: {},
     props: {},
     data() {
@@ -52,10 +52,10 @@ export default {
             commitLoading: false,
 
             form: {
-                expenditure_type: ""
+                expenditure_method: ""
             },
             formRules: {
-                expenditure_type: [
+                expenditure_method: [
                     {
                         required: true,
                         message: "请输入类型",
@@ -70,9 +70,9 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        addCommit() {
+        editCommit() {
             let that = this;
-            that.$api.expenditure_type.add(that.form)
+            that.$api.expenditure_method.update(that.form)
                 .then(res => {
                   if(res.code == 200){
 
@@ -82,7 +82,7 @@ export default {
                             duration: 800
                         });
 
-                        that.$emit("add-item", res.data);
+                        that.$emit("edit-item", res.data);
 
                         that.closeDialog();
 

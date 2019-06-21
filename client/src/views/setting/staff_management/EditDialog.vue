@@ -18,6 +18,24 @@
           <!-- <el-form-item label="密码" prop="password">
             <el-input v-model="form.password" type="password"></el-input>
           </el-form-item> -->
+          <el-form-item label="状态" prop="entry">
+                      <el-select
+                          clearable
+                          filterable
+                          placeholder="在职状态"
+                          size="small"
+                          v-model="form.entry"
+                          class="width100"
+                          
+                      >
+                          <el-option
+                              v-for="item in status"
+                              :key="item.id"
+                              :label="item.name"
+                              :value="item.id"
+                          ></el-option>
+                      </el-select>
+          </el-form-item>
           <el-form-item label="职位" prop="role">
                       <el-select
                           clearable
@@ -66,7 +84,8 @@ export default {
             name:'',
             phone:'',
             password:'',
-            role_id:''
+            role_id:'',
+            entry:undefined,
           },
           role_list:[
             // '主任',
@@ -76,6 +95,10 @@ export default {
             // '收银员',
             // '技师',
             // '咨询师'
+          ],
+          status:[
+            {id:1,name:'在职'},
+            {id:0,name:'离职'}
           ],
 
           rules:{
@@ -117,6 +140,13 @@ export default {
                       trigger: "blur"
                   }
               ],
+            entry:[
+                {
+                    required:true,
+                    message:'请选择状态',
+                    trigger:'blur'
+                }
+            ]
 
           },
           //         //要检查的字段

@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="新增支出类型"
+        title="修改支出类型"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -33,7 +33,7 @@
             >取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
                 :loading="commitLoading"
             >确 定</el-button>
         </div>
@@ -41,12 +41,14 @@
 </template>
 
 <script>
-import DialogForm from "../base/DialogForm";
+import EditDialogForm from "../base/EditDialogForm";
 export default {
-    name: "AddExpenditureCategory",
-    mixins: [DialogForm],
+    name: "EditExpenditureCategory",
+    mixins: [EditDialogForm],
     components: {},
-    props: {},
+    props: {
+
+    },
     data() {
         return {
             commitLoading: false,
@@ -67,12 +69,14 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+
+    },
     computed: {},
     methods: {
-        addCommit() {
+        editCommit() {
             let that = this;
-            that.$api.expenditure_type.add(that.form)
+            that.$api.expenditure_type.update(that.form)
                 .then(res => {
                   if(res.code == 200){
 
@@ -82,7 +86,7 @@ export default {
                             duration: 800
                         });
 
-                        that.$emit("add-item", res.data);
+                        that.$emit("edit-item", res.data);
 
                         that.closeDialog();
 

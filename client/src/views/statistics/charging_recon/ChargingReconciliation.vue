@@ -17,18 +17,18 @@
                     <i class="fa fa-file-alt menu-icon"></i>
                     <span slot="title">欠费患者</span>
                 </el-menu-item>
-                <el-menu-item index="advancePayment">
+<!--                 <el-menu-item index="advancePayment">
                     <i class="fa fa-file-alt menu-icon"></i>
                     <span slot="title">预交款</span>
-                </el-menu-item>
+                </el-menu-item> -->
                 <el-menu-item index="flowSheet">
                     <i class="fa fa-file-alt menu-icon"></i>
                     <span slot="title">流水单</span>
                 </el-menu-item>
-                <el-menu-item index="prepaidBalance">
+<!--                 <el-menu-item index="prepaidBalance">
                     <i class="fa fa-file-alt menu-icon"></i>
                     <span slot="title">预交款余额</span>
-                </el-menu-item>
+                </el-menu-item> -->
                 <el-menu-item index="expenditureDetails">
                     <i class="fa fa-file-alt menu-icon"></i>
                     <span slot="title">支出明细</span>

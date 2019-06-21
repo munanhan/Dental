@@ -79,6 +79,7 @@ class StaffController extends BaseController
         $role['role_id'] = $parms['role'];
         unset($parms['role']);
         $parms['password'] = bcrypt($parms['password']);
+        $parms['clinic_id'] = Auth::user()['clinic_id'];
         $data = User::create($parms);
 
         $role['user_id'] = $data['id'];
@@ -138,16 +139,16 @@ class StaffController extends BaseController
         }
         $data = User::leftJoin('role_users','role_users.user_id','users.id')
                     ->where('users.id',$id)
-                    ->first(['users.id','role_id','phone','name']);
+                    ->first(['users.id','role_id','phone','name','entry']);
         return message('成功',$data,200);
     }
 
     public function update(){
 
         $parms = $this->parms;
-        if (isset($parms['entry'])) {
-            unset($parms['entry']);
-        }
+        // if (isset($parms['entry'])) {
+        //     unset($parms['entry']);
+        // }
         $role['role_id'] = $parms['role_id'];
 
         unset($parms['role_id']);
