@@ -689,7 +689,7 @@ export default {
     methods: {
         //获取id
         getInfoById(id) {
-          
+
             let that = this;
             that.$api.patient
                 .getPatientByID({ id })
