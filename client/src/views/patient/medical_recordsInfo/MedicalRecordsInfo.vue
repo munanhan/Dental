@@ -344,11 +344,23 @@ export default {
 
         //初诊
         int_diagn() {
-            this.intdiag_show = true;
+            let that=this;
+            if(that.medicalInfo.id){
+                that.intdiag_show = true;
+            }else {
+                that.$message.warning('请选择一个患者');
+            }
+
         },
         //复诊
         sub_visit() {
-            this.subvisit_show = true;
+            let that=this;
+            if(that.medicalInfo.id){
+                this.subvisit_show = true;
+            }else {
+                that.$message.warning('请选择一个患者');
+            }
+
         }
 
         //  增删改查

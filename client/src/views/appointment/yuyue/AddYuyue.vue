@@ -5,6 +5,7 @@
     :before-close="closeDialog"
     class="custom-dialog add-yuyue-dialog"
     :close-on-click-modal="false"
+    width="835px"
     v-dialog-drag
   >
     <div class="header">
@@ -57,12 +58,7 @@
         </el-form-item>
 
         <el-form-item prop="patient_age" label="年龄" required>
-          <el-input
-            v-model="formData.patient_age"
-            type="text"
-            autocomplete="off"
-            placeholder
-          ></el-input>
+          <el-input v-model="formData.patient_age" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
         <el-form-item prop="patient_source" label="患者来源">
@@ -214,7 +210,8 @@ export default {
     "yuyue_id",
     "yuyue_date",
     "weekStart",
-    "weekEnd"
+    "weekEnd",
+    "appointment_doctor"
   ],
   inject: ["getTodayAppointment"],
   created() {
@@ -324,6 +321,9 @@ export default {
       this.formData.appointment_date = this.yuyue_date
         ? this.yuyue_date
         : this.chooseDate;
+      this.appointment_doctor
+        ? (this.formData.appointment_doctor = this.appointment_doctor)
+        : null;
       if (!this.yuyue_time) {
         return;
       }
