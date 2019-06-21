@@ -8,9 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Model\Appointment;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\This;
+// use App\Http\Controllers\Api\PatientController;
 
 class AppointmentController extends Controller
 {
+    
+    public function getCaseNumber1(){
+       
+       return PatientController :: getCaseNumber();
+    }
     public function getPatientByPhone(Request $request){
         $data=$request->all();
 
