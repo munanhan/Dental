@@ -101,20 +101,20 @@
 
         </el-dialog>
 
-        <add-membership-grade :show.sync="add_grade_show"></add-membership-grade>
+        <!-- <add-membership-grade :show.sync="add_grade_show"></add-membership-grade> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddMembershipGrade from "./AddMembershipGrade";
+// import AddMembershipGrade from "./AddMembershipGrade";
 
 export default {
     name: "MembershipGrade",
     mixins: [DialogForm],
 
     components: {
-        AddMembershipGrade
+        // AddMembershipGrade
     },
     props: {},
 

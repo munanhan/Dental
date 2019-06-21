@@ -13,7 +13,7 @@
             ref="form"
             :model="form"
             label-width="80px"
-            :rules="form.rules"
+            :rules="rules"
         >
             <div class="initDiag-content">
                 <div class="left-content">
@@ -48,6 +48,10 @@
                                                 class="fa fa-file-alt mr-10 file"
                                             ></i>
                                             <span>{{ data.outline_name }}</span>
+                                            <i
+                                                v-if="data.type == 1"
+                                                class="fa fa-caret-right mr-10 file hide "
+                                            ></i>
                                         </span>
 
                                     </el-tree>
@@ -80,7 +84,7 @@
                         </div> -->
 
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.main_complain"
                         >
                             <div class="lowerleft-left">主诉</div>
@@ -89,7 +93,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.now_history"
                         >
                             <div class="lowerleft-left">现病史</div>
@@ -98,7 +102,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.previous_history"
                         >
                             <div class="lowerleft-left">既往史</div>
@@ -107,7 +111,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.inspect"
                         >
                             <div class="lowerleft-left">检查</div>
@@ -116,7 +120,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.auxiliary"
                         >
                             <div class="lowerleft-left">辅助检查</div>
@@ -125,7 +129,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.diagnosis"
                         >
                             <div class="lowerleft-left">诊断</div>
@@ -134,7 +138,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.treatment_plan"
                         >
                             <div class="lowerleft-left">治疗方案</div>
@@ -143,7 +147,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.treatment"
                         >
                             <div class="lowerleft-left">治疗</div>
@@ -152,7 +156,7 @@
                             </div>
                         </div>
                         <div
-                            style="display:flex"
+                            class="lowerleft-content"
                             v-if="templateContent.doctor_advice"
                         >
                             <div class="lowerleft-left">医嘱</div>
@@ -251,21 +255,21 @@
                             <table border="1">
                                 <tr>
                                     <td align="center">主 诉</td>
-                                    <input>
+                                    <input v-model="form.complain">
                                     <!-- <textarea style="resize:none;height:20px;margin-bottom:-2px"></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">现 病 史</td>
-                                    <input>
+                                    <input v-bind="form.history">
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">既 往 史</td>
-                                    <input>
+                                    <input v-model="form.previous">
                                 </tr>
                                 <tr>
                                     <td align="center">过 敏 史</td>
-                                    <input>
+                                    <input v-model="form.allergy">
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
@@ -276,12 +280,12 @@
                                     <td align="center">主页检查</td>
                                     <input class="middle-input">
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
-                                    <input class="middle-input">
+                                    <!-- <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
                                     <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
                                     <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
+                                    <i class="el-icon-delete-solid middle-i"></i> -->
                                 </tr>
                                 <tr>
                                     <td align="center">诊 断</td>
@@ -346,29 +350,23 @@ export default {
             selectNode: null,
             initialData: [],
             activeName: "medicalTemplates",
+            rules: {},
+            templateContent: [],
             form: {
                 value1: new Date(),
                 radio: "1",
                 checked: "",
 
+                complain: "",
+                history: "",
+                previous: "",
+                allergy: ""
+
                 // defaultProps: {
                 //   children: "children",
                 //   label: "label"
                 // },
-                rules: {}
             },
-
-            templateContent: [
-                // { name: "主诉", key: "main_complain", value: "" }
-                // { name: '现病史', key: 'aaaa' },
-                // { name: '既往史', key: 'aaaa' },
-                // { name: '检查', key: 'aaaa' },
-                // { name: '诊断', key: 'aaaa' },
-                // { name: '治疗方案', key: 'aaaa' },
-                // { name: '辅助检查', key: 'aaaa' },
-                // { name: '治疗', key: 'aaaa' },
-                // { name: '医嘱', key: 'aaaa' },
-            ],
 
             data: {}
         };
@@ -413,6 +411,7 @@ export default {
                 .catch(res => {});
         },
         handleNodeClick(data) {
+          
             let that = this;
             that.selectNode = data;
 
@@ -498,10 +497,24 @@ export default {
             height: 293px;
             .left-tree {
                 .custom-tree-node {
-                    .dir {
-                        color: #f4a460;
+                    // border: 1px solid #ccc;
+                    width: 100%;
+                    &:hover .file {
+                        background-color: #e0ffd6;
                     }
-
+                    .dir {
+                        color: #ffd000;
+                    }
+                    .hide {
+                        position: absolute;
+                        right: 0;
+                        margin-top: -14px;
+                        color: #000;
+                        display: none;
+                    }
+                    &:hover .hide {
+                        display: block;
+                    }
                     .file {
                         color: #4f94cd;
                     }
@@ -514,25 +527,36 @@ export default {
             overflow: auto;
             height: 300px;
             width: 400px;
-            .lowerleft-left {
-                // border: 1px solid #000;
-                // cursor: pointer;
-                color: #f7a325;
-                width: 60px;
-                margin-left: 5px;
-                margin-top: 10px;
-                // border: none;
-                height: 31px;
-                // overflow: auto;
-            }
-            .lowerleft-right {
+            .lowerleft-content {
+                cursor: pointer;
                 // border: 1px solid red;
-                margin-right: 5px;
-                margin-top: 10px;
-                flex: 1;
-                color: #000;
-                margin-left: 10px;
-                margin-bottom: 10px;
+                display: flex;
+                .lowerleft-left {
+                    // border: 1px solid #000;
+                    // cursor: pointer;
+                    color: #f7a325;
+                    width: 60px;
+                    margin-left: 5px;
+                    margin-top: 10px;
+                    // border: none;
+                    height: 31px;
+                    // overflow: auto;
+                }
+                .lowerleft-right {
+                    // border: 1px solid red;
+                    margin-right: 5px;
+                    margin-top: 10px;
+                    flex: 1;
+                    color: #000;
+                    margin-left: 10px;
+                    margin-bottom: 10px;
+                }
+                &:hover {
+                    .lowerleft-left {
+                        text-decoration: underline;
+                    }
+                    text-decoration: underline;
+                }
             }
         }
     }

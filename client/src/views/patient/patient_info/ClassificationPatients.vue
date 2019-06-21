@@ -102,20 +102,20 @@
 
         </el-dialog>
 
-        <add-classification-patients :show.sync="addclasspat_show"></add-classification-patients>
+        <!-- <add-classification-patients :show.sync="addclasspat_show"></add-classification-patients> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddClassificationPatients from "./AddClassificationPatients";
+// import AddClassificationPatients from "./AddClassificationPatients";
 
 export default {
     name: "ClassificationPatients",
     mixins: [DialogForm],
 
     components: {
-        AddClassificationPatients
+        // AddClassificationPatients
     },
     props: {},
 

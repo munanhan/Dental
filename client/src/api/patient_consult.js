@@ -29,7 +29,7 @@ export function del(data) {
 export function update(data) {
     return request({
         url: `${prefix}/:id`,
-        method: "post",
+        method: "put",
         params: data
     });
 }
@@ -40,7 +40,7 @@ export function update(data) {
 export function receptionDoctor(data) {
     return request({
         url: `${prefix}/doctor_or_record`,
-        method: "post",
+        method: "get",
         params: data
     });
 }
@@ -51,7 +51,7 @@ export function receptionDoctor(data) {
 export function defaultRecorder(data) {
     return request({
         url: `${prefix}/default_record`,
-        method: "post",
+        method: "get",
         params: data
     });
 }

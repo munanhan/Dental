@@ -100,20 +100,20 @@
 
         </el-dialog>
 
-        <add-teethcleaning-habits :show.sync="addteeth_show"></add-teethcleaning-habits>
+        <!-- <add-teethcleaning-habits :show.sync="addteeth_show"></add-teethcleaning-habits> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddTeethcleaningHabits from "./AddTeethcleaningHabits";
+// import AddTeethcleaningHabits from "./AddTeethcleaningHabits";
 
 export default {
     name: "ClassificationPatients",
     mixins: [DialogForm],
 
     components: {
-        AddTeethcleaningHabits
+        // AddTeethcleaningHabits
     },
     props: {},
 
