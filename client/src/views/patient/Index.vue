@@ -488,6 +488,7 @@
                     <return-visit-info
                         v-if="returnVisitInfo"
                         :refresh.sync="returnVisitInfo"
+                        :returnInfo="selectPatient"
                     ></return-visit-info>
                 </el-tab-pane>
 

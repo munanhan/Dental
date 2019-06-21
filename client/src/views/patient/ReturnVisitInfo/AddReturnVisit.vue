@@ -17,14 +17,17 @@
             <div class="visit-content">
                 <div class="visit-top">
                     <div style="display:flex;font-size:16px;">
-                        <div class="visit-top1">马先生</div>
-                        <div class="visit-top1">20161005</div>
+                        <div class="number">{{Return_visit.patient_name}} </div>
+                        <div class="top-font"> {{Return_visit.patient_sex}} </div>
+                        <div class="top-font"> {{Return_visit.case_id}} </div>
+                        <div class="top-font"> {{Return_visit.patient_age}}岁 </div>
+                        <div class="top-font"> {{Return_visit.patient_phone}}</div>
                     </div>
                 </div>
                 <div class="visit-bottom">
                     <el-form-item
                         style="padding-top:10px"
-                        label="活动名称"
+                        label="回访时间"
                     >
                         <el-date-picker
                             v-model="form.value1"
@@ -114,16 +117,41 @@
 import DialogForm from "@/views/base/DialogForm";
 export default {
     name: "AddReturnVisit",
-
     mixins: [DialogForm],
+    props: {
+        // refresh: {
+        //     type: Boolean,
+        //     required: true
+        // },
+
+        addReturnVisit: {
+            type: Object,
+            required: true
+        }
+    },
+
+    created() {
+        let that = this;
+        that.Return_visit = that.addReturnVisit;
+    },
 
     data() {
         return {
+            Return_visit: [],
             form: {
                 value1: "",
                 radio: "1"
             }
         };
+    },
+
+    watch: {
+        addReturnVisit(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.Return_visit = that.addReturnVisit;
+            }
+        }
     },
 
     methods: {
@@ -143,10 +171,15 @@ export default {
         margin-bottom: 10px;
         background-color: #fafafa;
         border: 1px solid #e2e2e2;
-        .visit-top1 {
-            margin-top: 17px;
-            margin: 17px 20px;
-            color: #000;
+        .number {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+        .top-font {
+            margin-top: 12px;
+            margin-left: 10px;
         }
     }
     .visit-bottom {

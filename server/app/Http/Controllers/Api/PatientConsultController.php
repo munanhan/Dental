@@ -18,6 +18,7 @@ class PatientConsultController extends BaseController
      */
     public function getDoctorOrRecorder()
     {
+       
         $user=Auth::user();
         if($user->is_admin==1){
             return $this->getDoctorByRoleId(Role::all('id')->toArray());
