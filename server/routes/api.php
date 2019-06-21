@@ -294,9 +294,9 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     // Route::delete('patient_recycling_bin/{patientVisit}', 'PatientRecyclingBinController@delete');
     //lw
-    Route::get('appointment/getCaseNumber','AppointmentController@getCaseNumber1');
+    Route::get('appointment/getCaseNumber','AppointmentController@getCaseNumber');
 
-    Route::get('PatientController/attendDoctor','PatientController@attendDoctor');
+    Route::get('PatientController/attendDoctor','AppointmentController@getDoctor');
 
     Route::get('appointment/getTodayAppointment','AppointmentController@getTodayAppointment');
 

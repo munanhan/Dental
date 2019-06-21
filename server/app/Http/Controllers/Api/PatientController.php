@@ -190,7 +190,7 @@ class PatientController extends BaseController
      */
     public  function getCaseNumber()
     {   
-        $this->CaseNumber();
+        return $this->CaseNumber();
     }
 
     

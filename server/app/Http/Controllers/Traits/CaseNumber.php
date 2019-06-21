@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers\Traits;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Redis;
+
 
 Trait CaseNumber{
 
