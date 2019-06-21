@@ -8,10 +8,6 @@ use App\Model\PatientAllergy;
 
 class PatientAllergyController extends BaseController
 {
-//    public function index()
-//    {
-//        return message('',PatientAllergy::all());
-//    }
 
     public function show(PatientAllergy $patientAllergy)
     {
@@ -33,17 +29,4 @@ class PatientAllergyController extends BaseController
         return message('',$patientAllergy);
     }
 
-//    public function update(Request $request ,PatientAllergy $patientAllergy)
-//    {
-//        $patientAllergy->update($request->all());
-//
-//        return message('',$patientAllergy, 200);
-//    }
-//
-//    public function delete(PatientAllergy $patientAllergy)
-//    {
-//        $patientAllergy->delete();
-//
-//        return message('',null, 200);
-//    }
 }

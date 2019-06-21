@@ -42,7 +42,7 @@
                                             ></i>
                                             <i
                                                 v-if="!data.children"
-                                                class="fa fa-folder"
+                                                class="fa fa-file-alt"
                                             ></i>
                                             <span>{{ node.label }}</span>
                                         </span>
@@ -229,7 +229,7 @@ export default {
     data() {
         return {
             form: {
-                value1: "",
+                value1: new Date(),
                 radio: "2",
                 checked: "",
                 activeName: "medicalTemplates",

@@ -17,7 +17,7 @@ class PatientDisposal extends BaseController
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
         $patientDisposal['patient_id']=request('patient_id');
         $patientDisposal['disposal_date']=request('disposal_date');

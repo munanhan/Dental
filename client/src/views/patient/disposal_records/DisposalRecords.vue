@@ -1,27 +1,26 @@
 <template>
     <div class="disposa_content">
         <div class="disposa_top">
-            <!-- <div class="background-1"> -->
             <div class="background">
-                <div
-                    class="top-content"
-                    style="display:flex"
-                >
-                    <div class="left-top">
-                        <div><span class="left-top1">{{disposa_date}}</span>
-                            <span class="left-top2">{{disposa_time}}</span></div>
+                <div class="top-content">
+                    <div style="flex: 1; text-align:left;">
+                        <div class="top">{{disposa_date}}</div>
+                        <div class="top">{{disposa_time}}</div>
+                        <div class="top">{{disposa_diagnosis}}</div>
+                        <div class="top">{{disposa_doctor}}</div>
                     </div>
-                    <div class="right-top">
-                        <div><span class="right-top1">{{disposa_diagnosis}}</span>
-                            <span class="right-top2">{{disposa_doctor}}</span>
-                        </div>
-                        <div class="right-i-content">
-                            <i class="el-icon-printer right-i"></i>
-                            <i class="fa fa-newspaper right-i"></i>
-                            <i class="fa fa-pen right-i"></i>
-                            <i class="fa fa-capsules right-i"></i>
-                            <i class="fa fa-comments right-i"></i>
-                        </div>
+                    <div
+                        class="right-i-content"
+                        style="text-align:right;"
+                    >
+                        <i class="el-icon-printer right-i"></i>
+                        <i class="fa fa-newspaper right-i"></i>
+                        <i
+                            class="fa fa-pen right-i"
+                            @click="addDisposal"
+                        ></i>
+                        <i class="fa fa-capsules right-i"></i>
+                        <i class="fa fa-comments right-i"></i>
                     </div>
                 </div>
                 <div
@@ -30,8 +29,10 @@
                     :key="index"
                 >
                     <div class="background-left">
-
-                        <div class="left-bottom" @click="add_teeth">
+                        <div
+                            class="left-bottom"
+                            @click="add_teeth"
+                        >
                             <div class="diagnose-detail">
                                 <div class="tooth">
                                     <div class="tooth-row">
@@ -47,12 +48,10 @@
                         </div>
                     </div>
                     <div class="background-right">
-
                         <div class="right-middle">
                             <div style="display:flex">
                                 <input
-                                    class="middle-input"
-                                    style="width:500px;margin-left:10px"
+                                    class="middle-input1"
                                     placeholder="其他"
                                 >
                                 <i
@@ -81,22 +80,25 @@
                                     :value="toDecimal(item.disposa_amount * item.disposa_price)"
                                     disabled
                                 >
-                                <!-- <template slot-scope="scope"> -->
-                                <!-- <el-tooltip
+                                <!-- <i
+                                    class="fa fa-trash-alt input-i"
+                                    @click.stop="del(scope.row, scope.$item)"
+                                ></i> -->
+                                <template slot-scope="scope">
+                                    <el-tooltip
+                                        effect="dark"
                                         content="删除"
                                         placement="bottom"
                                     >
                                         <el-button
+                                            type="danger"
                                             size="mini"
-                                            icon="fa fa-trash-alt"
+                                            icon="el-icon-delete"
+                                            circle
                                             @click.stop="del(scope.row, scope.$index)"
                                         ></el-button>
-                                    </el-tooltip> -->
-                                <!-- </template> -->
-                                <i
-                                    class="fa fa-trash-alt input-i"
-                                    @click.stop="del(scope.row, scope.$item)"
-                                ></i>
+                                    </el-tooltip>
+                                </template>
                             </div>
                             <div class="underline"></div>
                         </div>
@@ -107,7 +109,7 @@
                 </div>
                 <div
                     class="right-bottom pull-right"
-                    style="display:flex;font-size:18px"
+                    style=""
                 >
                     <div style="margin-right:10px">合计</div>
                     <div>{{total}}</div>
@@ -119,13 +121,13 @@
             <el-button
                 class="dis-button"
                 type="primary"
-                @click="addDisposal"
             >增加处置</el-button>
 
             <!-- <el-button class="dis-button">打印设置</el-button> -->
         </div>
         <disposal-choice :show.sync="dischoice_show"></disposal-choice>
         <add-teeth :show.sync="addteeth_show"></add-teeth>
+
     </div>
 
 </template>
@@ -150,7 +152,7 @@ export default {
     data() {
         return {
             dischoice_show: false,
-            addteeth_show:false,
+            addteeth_show: false,
             disposa_date: "1972-05-01",
             disposa_time: "23:14",
             disposa_diagnosis: "初诊",
@@ -209,7 +211,7 @@ export default {
         toDecimal: function(x) {
             var f = parseFloat(x);
             if (isNaN(f)) {
-                return false;
+                return "";
             }
             var f = Math.round(x * 100) / 100;
             var s = f.toString();
@@ -267,59 +269,22 @@ export default {
                 color: @color;
             }
             .top-content {
-                .left-top {
+                display: flex;
+                justify-content: space-around;
+                .top {
+                    margin-right: 20px;
+                    display: inline-block;
+                    cursor: pointer;
                     font-weight: bold;
-                    display: flex;
-                    margin-top: 5px;
                     font-size: 20px;
-                    .left-top1 {
-                        cursor: pointer;
-                        margin: 0 20px;
-                        border: 1px solid #f8f8f8;
-                        &:hover {
-                            .transition-2;
-                            border: 1px solid #919191;
-                        }
-                    }
-                    .left-top2 {
-                        cursor: pointer;
-                        border: 1px solid #f8f8f8;
-                        &:hover {
-                            .transition-2;
-                            border: 1px solid #919191;
-                        }
-                    }
-                }
-                .right-top {
-                    // border: 1px solid red;
-                    font-weight: bold;
-                    margin-left: 20px;
-                    margin-top: 3px;
-                    display: flex;
-                    font-size: 20px;
-                    .right-top1 {
-                        cursor: pointer;
-                        margin-right: 35px;
-                        border: 1px solid #f8f8f8;
-                        &:hover {
-                            .transition-2;
-                            border: 1px solid #919191;
-                            // color: #1d1d1d;
-                        }
-                    }
-                    .right-top2 {
-                        cursor: pointer;
-                        border: 1px solid #f8f8f8;
-                        &:hover {
-                            .transition-2;
-                            border: 1px solid #919191;
-                            // color: #1d1d1d;
-                        }
+                    border: 1px solid #f8f8f8;
+                    &:hover {
+                        border: 1px solid #bebebe;
                     }
                 }
                 .right-i-content {
                     // border: 1px solid red;
-                    margin-left: 600px;
+                    // margin-left: 600px;
                     .right-i {
                         // border: 1px solid red;
                         font-size: 20px;
@@ -394,11 +359,26 @@ export default {
                 }
                 .background-right {
                     // border: 1px solid red;
+                    width: 100%;
 
                     .right-middle {
                         // border: 1px solid red;
+                        width: 100%;
                         margin-top: 10px;
+                        .middle-input1 {
+                            width: 100%;
+                            margin-right: 10px;
+                            background-color: #f8f8f8;
+                            border: 1px solid #f8f8f8;
+                            &:focus {
+                                background: white;
+                            }
+                            &:hover {
+                                border: 1px solid #cfcfcf;
+                            }
+                        }
                         .middle-input {
+                            display: flex;
                             width: 100px;
                             height: 20px;
                             background-color: #f8f8f8;
@@ -424,10 +404,10 @@ export default {
                         }
                     }
                     .lower-input {
-                        margin-left: 10px;
+                        margin-right: 15px;
                         background-color: #f8f8f8;
                         margin-top: 10px;
-                        width: 900px;
+                        width: 100%;
                         border: 1px solid #f8f8f8;
                         &:focus {
                             background: white;
@@ -452,25 +432,19 @@ export default {
                     }
                     // &:hover {
                     // }
-                    .right-bottom {
-                        display: flex;
-                        font-size: 23px;
-                        // border: 1px solid red;
-                        color: rgb(96, 96, 96);
-                        margin-top: 5px;
-                        height: 60px;
-                        float: right;
-                        margin-top: 10px;
-                        width: 250px;
-                    }
+
                     .underline {
-                        margin-left: 10px;
-                        width: 900px;
+                        margin-right: 15px;
+                        width: 100%;
                         border: 0.5px solid #d5d5d5;
                     }
                 }
             }
         }
+    }
+    .right-bottom {
+        display: flex;
+        font-size: 23px;
     }
     .disposa_bottom {
         background-color: #e3e3e3;

@@ -7,19 +7,28 @@
                     class="left_tab"
                 >
                     <el-tab-pane
-                        label="当天工作"
+                        :label="dayStatusWork"
                         name="first"
                         class="work-content"
                     >
 
                         <div class="work-top-content">
-                            <div class="work-content-top1" @click="changeWorkdate('prev')">
+                            <div
+                                class="work-content-top1"
+                                @click="changeWorkdate('prev')"
+                            >
                                 <i class="fa fa-angle-left"></i>
                             </div>
 
-                            <div class="work-content-top2"  @click="changeWorkdate('today')">今</div>
+                            <div
+                                class="work-content-top2"
+                                @click="changeWorkdate('today')"
+                            >今</div>
 
-                            <div class="work-content-top3"  @click="changeWorkdate('next')">
+                            <div
+                                class="work-content-top3"
+                                @click="changeWorkdate('next')"
+                            >
                                 <i class="fa fa-angle-right"></i>
                             </div>
                             <!-- <el-date-picker
@@ -41,8 +50,11 @@
 
                         </div>
                         <div style="background-color:#efefef">
-                            <div class="work-item">
-                                <div style="cursor: pointer;margin-bottom:10px">
+                            <div
+                                class="work-item"
+                                @select="selectHandler"
+                            >
+                                <div class="work-select">
                                     <div
                                         @click="expend('appointmentExpend')"
                                         class="work-title"
@@ -62,7 +74,10 @@
                                             v-for="(item,index) in appointments"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -75,10 +90,9 @@
                                                 </div>
                                             </div>
                                         </li>
-
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="work-select">
                                     <div
                                         class="work-title"
                                         @click="expend('diagnosisExpend')"
@@ -86,7 +100,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': diagnosisExpend}"
-                                        ></i> 当天初诊({{todayFirst}})</div>
+                                        ></i> {{dayStatus}}初诊({{todayFirst}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -97,7 +111,10 @@
                                             v-for="(item,index) in diagnosis"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -113,7 +130,7 @@
 
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="work-select">
                                     <div
                                         class="work-title"
                                         @click="expend('visitExpend')"
@@ -121,7 +138,7 @@
                                         <i
                                             class="el-icon-caret-right"
                                             :class="{'down': visitExpend}"
-                                        ></i> 当天复诊({{todaySub}})</div>
+                                        ></i> {{dayStatus}}复诊({{todaySub}})</div>
                                     <!-- /// -->
                                     <ul
                                         style="margin-top:-2px"
@@ -132,7 +149,10 @@
                                             v-for="(item,index) in subsequent"
                                             :key="index"
                                         >
-                                            <div class="work-background">
+                                            <div
+                                                class="work-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
@@ -145,12 +165,13 @@
                                                 </div>
                                             </div>
                                         </li>
-
                                     </ul>
                                 </div>
+
                                 <!-- // -->
                             </div>
                         </div>
+
                         <div class="work-bottom-content">
                             <el-button
                                 type="primary"
@@ -166,39 +187,33 @@
                     >
                         <div class="top-content">
                             <el-select
-                                v-model="value"
+                                v-model="patientSearch.flag"
                                 placeholder="患者信息"
                                 class="patient-infor"
                             >
                                 <el-option
                                     v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    :key="item.id"
+                                    :label="item.type"
+                                    :value="item.id"
                                 >
                                 </el-option>
                             </el-select>
                             <el-input
-                                v-model="input"
+                                v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
                         </div>
 
-                        <!-- <div>
-                                <el-tree
-                                    style="height:100%;
-                                           font-weight:bold;
-                                           background-color:#efefef;"
-                                    :data="data"
-                                    :props="defaultProps"
-                                ></el-tree>
-                            </div> -->
                         <div style="background-color:#efefef">
-                            <div class="patient-item">
-                                <div style="cursor:pointer;margin-bottom:10px">
+                            <div
+                                class="patient-item"
+                                style="height:735px;overflow:auto"
+                            >
+                                <div class="patient-select">
                                     <div
                                         @click="expend('patientExpend')"
                                         class="patient-title"
@@ -210,7 +225,7 @@
                                         最近患者({{recentCount}})</div>
                                     <!-- /// -->
                                     <ul
-                                        style="margin-top:-2px"
+                                        style="margin-top:-2px;"
                                         v-if="patientExpend"
                                         ref="item1"
                                     >
@@ -218,7 +233,10 @@
                                             v-for="(item,index) in patientsRecent"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
                                                     <span class="patient-top2">{{item.member_id}}</span>
@@ -233,7 +251,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="patient-select">
                                     <div
                                         class="patient-title"
                                         @click="expend('blackExpend')"
@@ -244,7 +262,7 @@
                                         ></i> 黑名单({{blackCount}})</div>
                                     <!-- /// -->
                                     <ul
-                                        style="margin-top:-2px"
+                                        style="margin-top:-2px;"
                                         v-if="blackExpend"
                                         ref="item1"
                                     >
@@ -252,15 +270,18 @@
                                             v-for="(item,index) in blacklist"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.blacklist_case_id}}</span>
-                                                    <span class="patient-top2">{{item.blacklist_history}}</span>
-                                                    <span class="patient-top3">{{item.blacklist_date}}</span>
+                                                    <span class="patient-top1">{{item.patient_name}}</span>
+                                                    <span class="patient-top2">{{item.member_id}}</span>
+                                                    <span class="patient-top3">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
-                                                    <span class="patient-bottom1">{{item.blacklist_phone}}</span>
-                                                    <span class="patient-bottom2">{{item.blacklist_doctor}}</span>
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
                                                     {{item.blacklist_record}}
                                                 </div>
                                             </div>
@@ -268,7 +289,7 @@
 
                                     </ul>
                                 </div>
-                                <div style="cursor: pointer;margin-bottom:10px">
+                                <div class="patient-select">
                                     <div
                                         class="patient-title"
                                         @click="expend('treatmentExpend')"
@@ -287,7 +308,10 @@
                                             v-for="(item,index) in treatment"
                                             :key="index"
                                         >
-                                            <div class="patient-background">
+                                            <div
+                                                class="patient-background"
+                                                @click="getInfoById(item.id)"
+                                            >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
                                                     <span class="patient-top2">{{item.member_id}}</span>
@@ -307,26 +331,13 @@
                             </div>
 
                         </div>
-
-                        <div
-                            class="botton-content"
-                            style="
-                                  position:absolute;
-                                  left;0;bottom:0; 
-                                  width: 100%;
-                                  height: 60px;
-                                  background-color:white;
-                                   "
-                        >
-                            <div class="visit-bottom-content">
-                                <el-button
-                                    type="primary"
-                                    @click="add_patient"
-                                >新增患者</el-button>
-                                <el-button @click="app_visit">复诊预约</el-button>
-                            </div>
+                        <div class="botton-content">
+                            <el-button
+                                type="primary"
+                                @click="add_patient"
+                            >新增患者</el-button>
+                            <el-button @click="app_visit">复诊预约</el-button>
                         </div>
-
                     </el-tab-pane>
 
                     <el-tab-pane
@@ -338,29 +349,32 @@
                             <el-input
                                 style="width:300px;margin-left:10px;"
                                 v-model="search"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                         </div>
-                        <div
-                            v-for="(item,index) in access"
-                            :key="index"
-                            class="visit-background"
-                        >
+                        <div style="height:750px;overflow:auto">
                             <div
-                                class="visit-background-top"
-                                style="margin-top:5px"
+                                v-for="(item,index) in access"
+                                :key="index"
+                                class="visit-background"
+                                @click="getInfoById(item.id)"
                             >
-                                <span class="visit-top1">{{item.access_case_id}}</span>
-                                <span class="visit-top2">{{item.access_history}}</span>
-                                <span class="visit-top3">{{item.access_date}}</span>
-                            </div>
-                            <div class="visit-background-bottom">
-                                <span class="visit-bottom1">{{item.access_phone}}</span>
-                                <span class="visit-bottom2">{{item.access_doctor}}</span>
-                                <span class="visit-bottom3">{{item.access_record}}</span>
-                            </div>
+                                <div
+                                    class="visit-background-top"
+                                    style="margin-top:5px"
+                                >
+                                    <span class="visit-top1">{{item.patient_name}}</span>
+                                    <span class="visit-top2">{{item.member_id}}</span>
+                                    <span class="visit-top3">{{item.appointment_date}}</span>
+                                </div>
+                                <div class="visit-background-bottom">
+                                    <span class="visit-bottom1">{{item.patient_phone}}</span>
+                                    <span class="visit-bottom2">{{item.appointment_doctor}}</span>
+                                    <span class="visit-bottom3">{{item.record}}</span>
+                                </div>
 
+                            </div>
                         </div>
                         <div class="visit-bottom-content">
                             <el-button
@@ -387,7 +401,12 @@
                     label="患者信息"
                     name="pationInfo"
                 >
-                    <patient-info :refresh.sync="pationInfo"></patient-info>
+                    <patient-info
+                        :refresh.sync="pationInfo"
+                        :selectPatient="selectPatient"
+                    >
+
+                    </patient-info>
 
                 </el-tab-pane>
 
@@ -486,6 +505,7 @@
 </template>
 
 <script>
+import { formatDate, addClass, inArray } from "@/common/util.js";
 import PatientInfo from "@/views/patient/patient_info/PatientInfo";
 import DisposalRecords from "@/views/patient/disposal_records/DisposalRecords";
 import ChargeInfo from "@/views/patient/charge_info/ChargeInfo";
@@ -523,6 +543,7 @@ export default {
 
     data() {
         return {
+            selectPatient: {},
             patient_expend: false,
             input: "",
             search: "",
@@ -533,6 +554,8 @@ export default {
 
             workdate: new Date(),
             //当天工作
+            dayStatusWork: "今日工作",
+            dayStatus: "今日",
             appointCount: "",
             todayFirst: "",
             todaySub: "",
@@ -541,26 +564,27 @@ export default {
             blackCount: "",
             completeCount: "",
 
+            patientSearch: {
+                flag: "",
+                keywords: ""
+            },
+
             options: [
                 {
-                    value: "选项1",
-                    label: "患者信息"
+                    id: 1,
+                    type: "患者信息"
                 },
                 {
-                    value: "选项2",
-                    label: "病历号"
+                    id: 2,
+                    type: "病历号"
                 },
                 {
-                    value: "选项3",
-                    label: "会员号"
+                    id: 3,
+                    type: "会员号"
                 },
                 {
-                    value: "选项4",
-                    label: "检查医生"
-                },
-                {
-                    value: "选项5",
-                    label: "高级查询..."
+                    id: 4,
+                    type: "检查医生"
                 }
             ],
             value: "",
@@ -587,17 +611,9 @@ export default {
             patientsRecent: [],
 
             //最近访问
-            access: [
-                {
-                    access_case_id: "李先生",
-                    access_history: "vip",
-                    access_date: "2019-06-01",
-                    access_phone: "13920578841",
-                    access_doctor: "孔先生",
-                    access_record: "1503010120"
-                }
-            ],
-            //最近访问
+            access: [],
+
+            //今日工作
             appointmentExpend: false,
             diagnosisExpend: false,
             visitExpend: false,
@@ -609,47 +625,26 @@ export default {
     },
     created() {
         let that = this;
-        that.$api.patient
-            .todayWork()
-            .then(res => {
-                console.log(res.data);
-                if (res.code == 200) {
-                    that.appointments = res.data.appointmentNotArrive;
-                    that.diagnosis = res.data.todayFirstVisit;
-                    that.subsequent = res.data.todaySubsequentVisit;
-                    that.appointCount = that.appointments.length;
-                    that.todayFirst = that.diagnosis.length;
-                    that.todaySub = that.subsequent.length;
-                } else {
-                    console.log(res.msg);
-                }
-            })
-            .catch(res => {
-                console.log(res.msg);
-            });
-
-        that.$api.patient
-            .index()
-            .then(res => {
-                if (res.code == 200) {
-                    console.log(res.data);
-                    that.patientsRecent = res.data.recentPatient;
-                    that.recentCount = that.patientsRecent.length;
-                    that.blacklist = res.blacklistPatient;
-                    that.blackCount = that.blacklist.length;
-                    that.treatment = res.completePatient;
-                    that.completeCount = that.treatment.length;
-                } else {
-                    console.log(res.msg);
-                }
-            })
-            .catch(res => {
-                console.log(res.msg);
-            });
+        let whereTime = new Date();
+        that.getTodayWork(whereTime);
     },
 
     mounted() {},
     watch: {
+        activeName(newValue, oldValue) {
+            let that = this;
+            switch (newValue) {
+                case "first":
+                    that.getTodayWork();
+                    break;
+                case "patient":
+                    that.getAllPatient();
+                    break;
+                case "visit":
+                    that.getRecentVisit();
+                    break;
+            }
+        },
         // refresh(newValue, oldValue) {
         //         let that = this;
 
@@ -670,6 +665,17 @@ export default {
         //         that.chargeDetailUpdate = "ChargeInfo" == index;
 
         //     },
+        workdate(newValue, oldValue) {
+            let newV = formatDate(newValue, "yyyy-MM-dd"),
+                now = formatDate(new Date(), "yyyy-MM-dd");
+
+            newV == now
+                ? (this.dayStatusWork = "今日工作")
+                : (this.dayStatusWork = "当日工作");
+            newV == now ? (this.dayStatus = "今日") : (this.dayStatus = "当日");
+            let that = this;
+            that.getTodayWork();
+        },
         curTab(newValue, oldValue) {
             let that = this;
 
@@ -681,17 +687,121 @@ export default {
     },
     computed: {},
     methods: {
-        changeWorkdate(i){
-            switch(i){
-                case 'prev':
-                    this.workdate = new Date(+new Date(this.workdate) - 3600*24*1000)
-                   
+        //获取id
+        getInfoById(id) {
+          
+            let that = this;
+            that.$api.patient
+                .getPatientByID({ id })
+                .then(res => {
+                    res.data.allergy =
+                        res.data.allergy.length > 0
+                            ? res.data.allergy.join(",")
+                            : "";
+                    res.data.anamnesis =
+                        res.data.anamnesis.length > 0
+                            ? res.data.anamnesis.join(",")
+                            : "";
+                    res.data.patient_birthday = res.data.patient_birthday
+                        ? res.data.patient_birthday.slice(0, 10)
+                        : "";
+
+                    that.selectPatient = res.data;
+                })
+                .catch(res => {});
+        },
+        //获取最近访问
+        getRecentVisit() {
+            let that = this;
+            that.$api.patient
+                .recentVisit()
+                .then(res => {
+                    if (res.code == 200) {
+                        that.access = res.data;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
+        //获取全部患者
+        getAllPatient() {
+            let that = this;
+            that.$api.patient
+                .index(that.patientSearch)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.patientsRecent = res.data.recentPatient;
+                        that.recentCount = that.patientsRecent.length;
+
+                        that.blacklist = res.data.blacklistPatient;
+                        that.blackCount = that.blacklist.length;
+
+                        that.treatment = res.data.completePatient;
+                        that.completeCount = that.treatment.length;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
+        //获取今日工作
+        getTodayWork() {
+            let that = this;
+            let params = {};
+            params.whereTime =
+                typeof that.workdate == "object"
+                    ? that.workdate.toLocaleDateString()
+                    : that.workdate;
+            that.$api.patient
+                .todayWork(params)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.appointments = res.data.appointmentNotArrive;
+                        that.diagnosis = res.data.todayFirstVisit;
+                        that.subsequent = res.data.todaySubsequentVisit;
+                        that.appointCount = that.appointments.length;
+                        that.todayFirst = that.diagnosis.length;
+                        that.todaySub = that.subsequent.length;
+                    } else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.msg);
+                });
+        },
+
+        selectHandler(index) {
+            let that = this;
+            that.content.chargeDetail = "chargeDetail" == index;
+            that.chargeDetailUpdate = "chargeDetail" == index;
+
+            that.content.projectConsumption = "projectConsumption" == index;
+            that.projectConsumptionUpdate = "projectConsumption" == index;
+        },
+        //改变时间日期
+        changeWorkdate(i) {
+            switch (i) {
+                case "prev":
+                    this.workdate = new Date(
+                        +new Date(this.workdate) - 3600 * 24 * 1000
+                    );
+
                     break;
-                case 'next':
-                    this.workdate = new Date(+new Date(this.workdate) + 3600*24*1000)
+                case "next":
+                    this.workdate = new Date(
+                        +new Date(this.workdate) + 3600 * 24 * 1000
+                    );
+
                     break;
-                case 'today':
+                case "today":
                     this.workdate = new Date();
+
                     break;
             }
         },
@@ -823,10 +933,22 @@ export default {
                         }
                     }
                 }
+                .botton-content {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 60px;
+                    background-color: white;
+                }
             }
         }
     }
     .work-item {
+        .work-select {
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
         ul,
         li {
             list-style: none;
@@ -891,6 +1013,10 @@ export default {
         }
     }
     .patient-item {
+        .patient-select {
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
         ul,
         li {
             list-style: none;
@@ -987,14 +1113,6 @@ export default {
         }
     }
 
-    .visit-bottom-content {
-        margin-top: 800px;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        background-color: white;
-    }
     .visit-background {
         border: 1px solid #bababa;
         background-color: white;
@@ -1040,6 +1158,14 @@ export default {
         &:hover {
             border-color: @color;
         }
+    }
+    .visit-bottom-content {
+        margin-top: 800px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: white;
     }
 }
 .work-content {

@@ -6,54 +6,51 @@
         class="custom-dialog"
         :close-on-click-modal="false"
         v-dialog-drag
-        width="580px"
+        width="630px"
     >
         <table
             cellspacing="0"
+            border="0"
             class="teeth-content"
-            style="width:500px;margin-left:20px;height:200px"
+            style=""
         >
             <tbody>
                 <tr>
+
                     <td
-                        v-for="(item, index) in 16"
-                        :key="index"
+                        v-for="(item, index) in 8"
+                        :key="'top-teeth1' +index"
+                    > 牙</td>
+                    <td></td>
+                    <td
+                        v-for="(item, index) in 8"
+                        :key="'top-teeth2' +index"
                     > 牙</td>
                 </tr>
 
                 <tr>
+
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-num1' +index"
                     >
-                        {{ 8 - index }}
+                        <div class="select-cell">
+                            {{ 8 - index }}
+                        </div>
+                    </td>
+
+                    <td class="line-container">
+                        <div class="v-line"></div>
                     </td>
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'top-num2' +index"
                     >
-                        {{ item }}
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
                     </td>
-                    <!-- <td>8</td>
-                    <td>7</td>
-                    <td>6</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <div class="border-right">
-                        <td style="border:1px solid red">1</td>
-                    </div>
-                    <td style="padding-left:10px">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td></td> -->
                 </tr>
 
                 <tr>
@@ -63,39 +60,51 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>E</td>
-                    <td>D</td>
-                    <td>C</td>
-                    <td style="border:1px solid red">B</td>
-                    <td class="border-right">A</td>
-                    <td style="padding-left:10px">A</td>
-                    <td>B</td>
-                    <td>C</td>
-                    <td>D</td>
-                    <td>E</td>
+                    <td
+                        v-for="(item, index) in 'ABCDE'"
+                        :key="'top-alphabet1' +index"
+                    >
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
+                    </td>
+                    <td class="line-container">
+                        <div class="v-line"></div>
+                    </td>
+
+                    <td
+                        v-for="(item, index) in 'EDCBA'"
+                        :key="'top-alphabet2' +index"
+                    >
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>
                         <div class="right-number">
                             <div class="one">19</div>
-                            <div class="tow">29</div>
+                            <div class="two">29</div>
                         </div>
                     </td>
                 </tr>
 
                 <tr class="line">
-                    <td
-                        colspan="8"
-                        class="border-right"
-                    >
+                    <td colspan="8">
                         <div class="line-aaa"></div>
                         <span class="line-text">左边</span>
                     </td>
+
+                    <td class="line-container">
+                        <div class="v-line"></div>
+                        <div class="h-line"></div>
+                    </td>
+
                     <td colspan="8">
                         <div class="line-aaa"></div>
                         <span class="line-text">右边</span>
-
                     </td>
                     <td></td>
                 </tr>
@@ -106,26 +115,38 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="xxx">E</td>
-                    <td class="xxx">D</td>
-                    <td class="xxx">C</td>
-                    <td class="xxx">B</td>
-                    <td class="border-right xxx">A</td>
+
                     <td
-                        class="xxx"
-                        style="padding-left:10px"
-                    >A</td>
-                    <td class="xxx">B</td>
-                    <td class="xxx">C</td>
-                    <td class="xxx">D</td>
-                    <td class="xxx">E</td>
+                        v-for="(item, index) in 'ABCDE'"
+                        :key="'bottom-alphabet1' +index"
+                    >
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
+                    </td>
+
+                    <td class="line-container">
+                        <div class="v-line"></div>
+                    </td>
+
+                    <td
+                        v-for="(item, index) in 'EDCBA'"
+                        :key="'bottom-alphabet2' +index"
+                    >
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td style="width:20px">
-                        <div class="right-number">
-                            <div>19</div>
-                            <div class="bbbbbbb">29</div>
+                        <div
+                            class="right-number"
+                            style="margin-top:20px"
+                        >
+                            <div class="one">39</div>
+                            <div class="two">49</div>
                         </div>
 
                     </td>
@@ -134,68 +155,36 @@
                 <tr>
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'bottom-num1' +index"
                     >
-                        {{ 8 - index }}
+                        <div class="select-cell">
+                            {{ 8 - index }}
+                        </div>
+                    </td>
+
+                    <td class="line-container">
+                        <div class="v-line"></div>
                     </td>
 
                     <td
                         v-for="(item, index) in 8"
-                        :key="index"
+                        :key="'bottom-num2' +index"
                     >
-                        {{ item }}
+                        <div class="select-cell">
+                            {{ item }}
+                        </div>
                     </td>
-                    <!-- <td>8</td>
-                    <td>7</td>
-                    <td>6</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td class="border-right">1</td>
-                    <td style="padding-left:10px">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td></td> -->
                 </tr>
                 <tr>
-                    <!-- <td
-                        v-for="(item, index) in items"
-                        :key="index"
+                    <td
+                        v-for="(item, index) in 17"
+                        :key="'bottom-teeth1' +index"
                     >
-
-                    </td> -->
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td style="padding-left:10px">牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-                    <td>牙</td>
-
+                        <template v-if="index != 8">
+                            牙
+                        </template>
+                    </td>
                 </tr>
-
-                <tr>
-                    <!-- <td v-for="(item, index) in items" :key="index">
-
-                </td> -->
-
-                </tr>
-
             </tbody>
 
         </table>
@@ -230,14 +219,53 @@ export default {
 /deep/ .el-dialog__body {
     height: 200px;
 }
+
+.transition2 {
+    transition: all 0.2s;
+}
+
 .teeth-content {
     text-align: center;
-    .xxx {
+    width: 580px;
+    margin-left: 20px;
+    height: 200px;
+    .select-cell {
+        border: 1px solid white;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        box-sizing: border-box;
         cursor: pointer;
+        .transition2;
+
         &:hover {
-            color: aqua;
-            border: 1px solid red;
-            border-radius: 60px;
+            border-color: #e3e3e3;
+            background-color: #f8f8f8;
+        }
+    }
+
+    .line-container {
+        position: relative;
+
+        .v-line {
+            height: 120%;
+            width: 1px;
+            border-right: 1px solid black;
+            top: 0;
+            position: absolute;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .h-line {
+            width: 120%;
+            height: 1px;
+            padding-top: 50%;
+            border-top: 1px solid black;
+            left: -2px;
+            position: absolute;
+            top: 3px;
         }
     }
     .border-right {
@@ -265,21 +293,37 @@ export default {
     .right-number {
         position: relative;
         margin-top: -10px;
+        .one {
+            margin-top: -28px;
+            border: 1px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 25px;
+            width: 25px;
+            line-height: 25px;
+            .transition2;
+            &:hover {
+                border-color: #e3e3e3;
+                background-color: #f8f8f8;
+            }
+        }
+        .two {
+            border: 1px solid white;
+            border-radius: 50%;
+            height: 25px;
+            width: 25px;
+            line-height: 25px;
+            cursor: pointer;
+            .transition2;
+            &:hover {
+                border-color: #e3e3e3;
+                background-color: #f8f8f8;
+            }
+        }
     }
 
     .right-number div {
         position: absolute;
     }
-
-    .one {
-        margin-top: -20px;
-    }
-
-    .bbbbbbb {
-        margin-top: 20px;
-    }
-    // &:hover{
-    //     color: red;
-    // }
 }
 </style>

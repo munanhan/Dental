@@ -6,7 +6,7 @@
         :close-on-click-modal="false"
         class="custom-dialog"
         v-dialog-drag
-        width="950px"
+        width="750px"
         top="1vh"
     >
         <el-form
@@ -80,18 +80,19 @@
                 <div style="display:flex">
                     <el-form-item
                         label="会员等级"
-                        prop="value"
+                        prop="member_id"
                     >
                         <el-select
                             style="width:260px"
-                            v-model="form.value"
+                            v-model="form.member_id"
                             placeholder="请选择"
+                            @focus="member"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in memberList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -243,7 +244,19 @@
                         label="患者来源"
                         class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-select
+                            style="width:250px"
+                            v-model="form.value"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item in form.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -386,153 +399,7 @@
                         @click="teeth_hab"
                     ></i>
                 </div>
-                <div style="display:flex">
-                    <el-form-item
-                        label="初诊医生"
-                        class="left-width"
-                    >
-                        <el-select
-                            style="width:260px"
-                            v-model="form.value"
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item
-                        label="初诊日期"
-                        class="right-width"
-                        style="margin-left:30px"
-                    >
-                        <el-select
-                            style="width:250px"
-                            v-model="form.value"
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-                <div style="display:flex">
-                    <el-form-item
-                        label="复诊医生"
-                        class="left-width"
-                    >
-                        <el-select
-                            style="width:260px"
-                            v-model="form.value"
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item
-                        label="复诊日期"
-                        class="right-width"
-                        style="margin-left:30px"
-                    >
-                        <el-select
-                            style="width:250px"
-                            v-model="form.value"
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-                <!-- ----------------亲友关系----------- -->
-                <div style="display:flex">
-                    <div
-                        class="number"
-                        style="background-color:#a6d2ff;margin-right:3px"
-                    >3</div>
-                    <div class="number">亲友关系</div>
-                </div>
-                <el-table
-                    border
-                    style="width: 100%"
-                >
-                    <el-table-column
-                        prop="date"
-                        label="关系"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="participant_name"
-                        label="关系人姓名"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="性别"
-                        width="80"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="电话"
-                        width="140"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="会员等级"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="会员号"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="备注"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="修改"
-                        width="80"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="address"
-                        label="删除"
-                    >
-                    </el-table-column>
-                </el-table>
-
             </div>
-
         </el-form>
 
         <div
@@ -602,11 +469,13 @@ export default {
             pastmed_show: false,
             teethhab_show: false,
             newrelat_show: false,
+            memberList: [],
             form: {
-                teethList:[
+                member_id: "",
+                teethList: [
                     {
-                        value:"选项1",
-                        label:"不干净"
+                        value: "选项1",
+                        label: "不干净"
                     }
                 ],
                 pastMedicalhistoryList: [
@@ -621,39 +490,39 @@ export default {
                         label: "黄金糕"
                     }
                 ],
-                options: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
+                // options: [
+                //     {
+                //         value: "选项1",
+                //         label: "黄金糕"
+                //     },
+                //     {
+                //         value: "选项2",
+                //         label: "双皮奶"
+                //     },
+                //     {
+                //         value: "选项3",
+                //         label: "蚵仔煎"
+                //     },
+                //     {
+                //         value: "选项4",
+                //         label: "龙须面"
+                //     },
+                //     {
+                //         value: "选项5",
+                //         label: "北京烤鸭"
+                //     }
+                // ],
                 birthday: "",
                 age: "",
                 value: "",
-                group:"",
+                group: "",
                 case_id: "",
                 phone: "",
                 sex: 2,
                 name: "",
-                teeth:"",
-                member_gard:"",
-                email:"",
+                teeth: "",
+                member_gard: "",
+                email: "",
                 medical_record: ""
             },
             rules: {
@@ -673,12 +542,12 @@ export default {
         };
     },
     watch: {
-        // show(newValue, oldValue) {
-        //     if (newValue) {
-        //         let that = this;
-        //         that.getCaseNo();
-        //     }
-        // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCaseNo();
+            }
+        }
     },
     methods: {
         mem_grade() {
@@ -713,20 +582,33 @@ export default {
         },
         afterClose() {
             this.$refs["Modifyform"].resetFields();
-        }
+        },
+        //获取会员下拉信息
+        member() {
+            let that = this;
+
+            that.$api.patient_member
+                .get()
+                .then(res => {
+                    that.memberList = res.data;
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
         //病历号获取
-        // getCaseNo() {
-        //     let that = this;
-        //     that.$api.patient
-        //         .caseNo()
-        //         .then(res => {
-        //             console.log(res.data);
-        //             // that.form.case_id = res.data.case_id;
-        //         })
-        //         .catch(res => {
-        //             console.log(res);
-        //         });
-        // }
+        getCaseNo() {
+            let that = this;
+            that.$api.patient
+                .caseNo()
+                .then(res => {
+                    // console.log(res.data);
+                    that.form.case_id = res.data.case_id;
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        }
     }
 };
 </script>
@@ -736,14 +618,14 @@ export default {
 @import "~@css/var";
 .mod-1 {
     .image {
-        border: 1px solid red;
+        border: 1px solid rgb(167, 167, 167);
         position: absolute;
         right: 0;
-        margin-right: 240px;
+        margin-right: 35px;
         width: 320px;
         height: 350px;
         // background-image:none;
-        background-color: #000;
+        // background-color: #000;
     }
     .number-top {
         background-color: #a6d2ff;

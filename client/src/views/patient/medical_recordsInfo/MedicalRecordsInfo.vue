@@ -12,18 +12,42 @@
                     class="background"
                     @dblclick="int_diagn"
                 >
-                    <div class="medical-top-title">
-                        <div><span>{{item.medical_date}}</span> &nbsp;
-                            <span>{{item.medical_time}}</span> &nbsp;
-                            <span>{{item.medical_diagnosis_judgment}}</span> &nbsp;&nbsp; &nbsp;
-                            <span> {{item.medical_doctor}}</span></div>
+                    <!-- <div class="background-1"> -->
+                    <div
+                        class="medical-top-title"
+                        style="display: flex; justify-content: space-around;"
+                    >
+                        <div style="flex: 1;">
+                            <div class="top">{{item.medical_date}}</div>
+                            <div class="top">{{item.medical_time}}</div>
+                            <div class="top">{{item.medical_diagnosis_judgment}}</div>
+                            <div class="top2"> {{item.medical_doctor}}：<span>11</span></div>
+                        </div>
+                        <div style="text-align:right;">
+                            <i
+                                style="font-size:20px;"
+                                class="el-icon-printer medical-top-i"
+                            ></i>
+                            <i class="fa fa-newspaper medical-top-i"></i>
+                            <i class="fa fa-pen medical-top-i"></i>
+                            <i class="fa fa-capsules medical-top-i"></i>
+                            <i class="fa fa-comments medical-top-i"></i>
+                        </div>
+                    </div>
+                    <!-- <div class="medical-top-title">
+                        <div>
+                            <span>{{item.medical_date}}</span>
+                            <span>{{item.medical_time}}</span>
+                            <span>{{item.medical_diagnosis_judgment}}</span>
+                            <span> {{item.medical_doctor}}</span>
+                        </div>
                         <div style="margin-left:530px">
                             <i class="el-icon-edit medical-top-i"></i>
                             <i class="el-icon-edit medical-top-i"></i>
                             <i class="fa fa-capsules medical-top-i"></i>
                             <i class="el-icon-delete-solid medical-top-i"></i>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 水水水水水水水水水水水水水水水水水水水 -->
                     <!-- <el-main>
@@ -372,12 +396,17 @@ export default {
 
             .medical-top-title {
                 font-size: 22px;
-                display: flex;
-                border: 1px solid red;
-                width: 100%;
+                // border: 1px solid red;
+                .top {
+                    display: inline-block;
+                    margin-right: 20px;
+                }
+                .top2 {
+                    display: inline-block;
+                }
                 .medical-top-i {
                     cursor: pointer;
-                    margin-left: 20px;
+                    margin-left: 10px;
                 }
             }
             .patient-left {

@@ -28,7 +28,7 @@ export function del(data) {
 
 export function update(data) {
     return request({
-        url: `${prefix}/:id`,
+        url: `${prefix}`,
         method: "post",
         params: data
     });

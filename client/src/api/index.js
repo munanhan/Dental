@@ -39,6 +39,13 @@ import * as recon_calendar from './recon_calendar'
 import * as expenditure_statistics from './expenditure_statistics'
 import * as arrearage_statistics from './arrearage_statistics'
 import * as flow_sheet from './flow_sheet'
+import * as base_demand from "./base_demand";
+import * as potential_demand from "./potential_demand";
+import * as patient_professional from "./patient_professional";
+import * as patient_case_template from "./patient_case_template";
+import * as patient_medical from "./patient_medical";
+import * as patient_consult from "./patient_consult";
+
 
 const apis = {
     base,
@@ -82,7 +89,12 @@ const apis = {
     expenditure_statistics,
     arrearage_statistics,
     flow_sheet,
-
+    base_demand,
+    potential_demand,
+    patient_professional,
+    patient_case_template,
+    patient_medical,
+    patient_consult,
 
 };
 

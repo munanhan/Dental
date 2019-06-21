@@ -5,10 +5,26 @@
                 @dblclick="add_cons"
                 class="background"
             >
-                <div class="top-title">
+                <!-- <div class="top-title">
                     <div style="margin-right:60px"> &nbsp;&nbsp; 2019-05-16 &nbsp;&nbsp; 14:00 &nbsp;&nbsp;</div>
                     <div style="margin-right:200px">接诊医生:12121212</div>
                     <div>录入:1212</div>
+                </div> -->
+                <div
+                    class="top-title"
+                    v-for="(item,index) in consultingList"
+                    :key="index"
+                >
+                    <div class="top-content">
+                        <div class="top-text">{{item.appointment_date}}</div>
+                        <div class="top-text">{{item.patient_time}}</div>
+                        <div class="top-text">接诊医生：<span>{{item.patient_doctor}}</span></div>
+                    </div>
+                    <div class="top-i-content">
+
+                        <i class="fa fa-pen top-i"></i>
+                        <i class="fa fa-trash-alt top-i"></i>
+                    </div>
                 </div>
                 <div class="bottom-title">
                     <el-row
@@ -19,10 +35,13 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 主 诉:</div>
                             <div
+                                style="width:80px"
+                                class="font-left"
+                            > 主 诉:</div>
+                            <div
+                                style="flex:1"
                                 class="font-right"
-                                style="color:#000;margin-left:50px"
                             >asdsadsadsad</div>
                         </el-col>
 
@@ -35,8 +54,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 基本需要:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            > 基本需要:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
 
                     </el-row>
@@ -48,8 +73,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">潜在需求:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >潜在需求:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
 
                     </el-row>
@@ -61,8 +92,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">医生方案:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >医生方案:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -73,8 +110,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">沟通记录:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                style="width:80px"
+                                class="font-left"
+                            >沟通记录:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -85,8 +128,14 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">服务建议:</div>
-                            <div class="font-right">asdsadsadsad</div>
+                            <div
+                                 style="width:80px"
+                                class="font-left"
+                            >服务建议:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            >asdsadsadsad</div>
                         </el-col>
                     </el-row>
                 </div>
@@ -122,7 +171,16 @@ export default {
     },
     data() {
         return {
-            addcons_show: false
+            addcons_show: false,
+            consultingList: [
+                {
+                    case_id: "150301012",
+                    appointment_date: "2019-06-03",
+                    patient_time: "10:00",
+                    patient_phone: "13925814457",
+                    patient_doctor: "马医生"
+                }
+            ]
         };
     },
     created() {},
@@ -174,6 +232,7 @@ export default {
                 border-color: @color;
             }
             .top-title {
+                justify-content: space-around;
                 display: flex;
                 color: #6d6d6d;
                 font-size: 20px;
@@ -182,6 +241,28 @@ export default {
                 color: #000;
 
                 // border: 1px solid red;
+                .top-content {
+                    flex: 1 auto;
+                    text-align: left;
+                    margin-right: 20px;
+                    .top-text {
+                        margin-left: 3px;
+                        margin-right: 20px;
+                        display: inline-block;
+                    }
+                }
+                .top-i-content {
+                    // border:1px solid red;
+                    margin-right: 10px;
+                    .top-i {
+                        margin-right: 5px;
+                        cursor: pointer;
+                        color: #696969;
+                        &:hover {
+                            color: #000;
+                        }
+                    }
+                }
             }
             .bottom-title {
                 margin-bottom: 100px;

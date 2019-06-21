@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\RecordEvent;
+use App\Model\RecentVisit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Auth;
@@ -28,11 +29,9 @@ class RecordListener
      */
     public function handle(RecordEvent $event)
     {
-        Redis::sadd('recent_visit_id:'.$this->getCurrentUserId(),$event->patient->id);
+        if($event->patient->id !==null){
+            RecentVisit::create(['user_id'=>Auth::id(),'patient_id'=>$event->patient->id]);
+        }
     }
 
-    public function getCurrentUserId()
-    {
-        return Auth::id();
-    }
 }

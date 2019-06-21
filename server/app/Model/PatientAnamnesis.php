@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PatientAnamnesis extends Model
 {
     protected $guarded=['id'];
+
+    protected $table='patient_anamneses';
 }

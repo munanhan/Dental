@@ -20,10 +20,16 @@ class PatientProfessionController extends Controller
 
     public function store(Request $request)
     {
+        $patientProfession= PatientProfession::find(request('id'));
 
-        $patientProfession=PatientProfession::create($request->all());
+        if($patientProfession){
+            $patientProfession->name=request('name');
+            $patientProfession->save();
+        }else{
+            $patientProfession=PatientProfession::create($request->all());
+        }
 
-        return message('',$patientProfession);
+        return message('',$patientProfession,200);
     }
 
     public function update(Request $request ,PatientProfession $patientProfession)

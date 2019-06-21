@@ -12,17 +12,17 @@
             :model="form"
             ref="ConsultForm"
             label-width="100px"
-            :rules="form.rules"
+            :rules="rules"
         >
             <div class="Advan-content">
                 <div
-                    v-for="(item,index) in form.consultings"
+                    v-for="(item,index) in BaseInfo"
                     :key="index"
                     class="Advan-top"
                 >
-                    <div class="advan-1"> {{item.case_id}}</div>
-                    <div class="advan-1"> {{item.age}}岁</div>
-                    <div class="advan-2"> {{item.medical}}</div>
+                    <div class="advan-1"> {{item.patient_name}}</div>
+                    <div class="advan-1"> {{item.patient_age}}岁</div>
+                    <div class="advan-2"> {{item.case_id}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -36,7 +36,7 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.main_consult"
                                 ></el-input>
 
                             </td>
@@ -48,15 +48,14 @@
                                     <el-select
                                         class="table-select"
                                         style="width:620px;"
-                                        v-model="form.value"
+                                        v-model="form.base_demand"
                                         multiple
                                         filterable
                                         allow-create
                                         default-first-option
-                                        placeholder="请选择"
                                     >
                                         <el-option
-                                            v-for="item in form.options"
+                                            v-for="item in baseDemandList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -82,10 +81,9 @@
                                         filterable
                                         allow-create
                                         default-first-option
-                                        placeholder="请选择文章标签"
                                     >
                                         <el-option
-                                            v-for="item in form.demand"
+                                            v-for="item in potentialDemandList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value"
@@ -104,9 +102,8 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.doctor_solution"
                                 ></el-input>
-
                             </td>
                         </tr>
                         <tr>
@@ -114,31 +111,51 @@
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="input"
+                                    v-model="form.record"
                                 ></el-input>
 
                             </td>
                         </tr>
+                        <!-- <el-form-item
+                            style="border:none;border-top:none;border-bottom:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
+                            label="活动名称"
+                        >
+                            <el-input style=" 
+                                    width:600px;
+                                              border:none;
+                                              border-radius: 0px;
+                                             ">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item
+                            style="border-bottom:none;border-right:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
+                            label="活动名称"
+                        >
+                            <el-input style=" 
+                                             width:600px;
+                                             border-radius: 0px;
+                                             ">
+                            </el-input>
+                        </el-form-item> -->
                         <tr>
                             <td align="center">服务建议</td>
                             <td>
                                 <el-input
                                     class="table-input"
-                                    v-model="form.input"
+                                    v-model="form.service_proposal"
                                 ></el-input>
-
                             </td>
                         </tr>
                         <tr class="doctor">
                             <td align="center">接诊医生</td>
                             <el-select
                                 class="table-select"
-                                v-model="form.do"
+                                v-model="form.doctor"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in form.doctor"
+                                    v-for="item in doctorList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -150,12 +167,12 @@
                             <td align="center">资料录入人</td>
                             <el-select
                                 class="table-select"
-                                v-model="form.value"
+                                v-model="form.data_entry_person"
                                 placeholder="请选择"
                                 style="width:664px"
                             >
                                 <el-option
-                                    v-for="item in form.options"
+                                    v-for="item in dataEntryPersonList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -200,56 +217,51 @@ export default {
         return {
             basneed_show: false,
             potentdeman_show: false,
+            dataEntryPersonList: [
+                {
+                    value: "1009",
+                    table: "1009"
+                }
+            ],
+            baseDemandList: [
+                {
+                    value: "123132",
+                    table: "123132"
+                }
+            ],
+            BaseInfo: [
+                {
+                    patient_name: "钟先生",
+                    patient_age: "10",
+                    case_id: "1503010120"
+                }
+            ],
+            doctorList: [
+                {
+                    value: "110",
+                    table: "110"
+                }
+            ],
+            potentialDemandList: [
+                {
+                    value: "HTML",
+                    label: "HTML"
+                },
+                {
+                    value: "CSS",
+                    label: "CSS"
+                }
+            ],
+            rules: {},
             form: {
-                input: "",
-                demand: [
-                    {
-                        value: "110",
-                        table: "110"
-                    }
-                ],
-                consultings: [
-                    {
-                        case_id: "钟先生",
-                        age: "10",
-                        medical: "1503010120"
-                    }
-                ],
-                type: [],
-                // sad: "",
-                qianzai: [
-                    {
-                        value: "HTML",
-                        label: "HTML"
-                    },
-                    {
-                        value: "CSS",
-                        label: "CSS"
-                    }
-                ],
-                doctor: [
-                    {
-                        value: "11",
-                        label: "11"
-                    }
-                ],
-                options: [
-                    {
-                        value: "HTML",
-                        label: "HTML"
-                    },
-                    {
-                        value: "CSS",
-                        label: "CSS"
-                    },
-                    {
-                        value: "JavaScript",
-                        label: "JavaScript"
-                    }
-                ],
-                do: "",
-                value: "",
-                rules: {}
+                main_consult: "",
+                base_demand: "",
+                potential_demand: "",
+                doctor_solution: "",
+                record: "",
+                service_proposal: "",
+                doctor: "",
+                data_entry_person: ""
             },
             commitLoading: false
         };
@@ -349,7 +361,9 @@ export default {
         .doctor {
             .table-select {
                 /deep/ .el-input__inner {
-                    border: none;
+                    border-right: none;
+                    border-left: none;
+                    border-top: none;
                     border-radius: 0px;
                 }
             }
@@ -358,9 +372,10 @@ export default {
         .data-entry {
             .table-select {
                 /deep/ .el-input__inner {
-                    border-right: none;
-                    border-left: none;
-                    border-bottom: none;
+                    // border-right: none;
+                    // border-left: none;
+                    // border-bottom: none;
+                    border: none;
                     border-radius: 0px;
                 }
             }

@@ -6,6 +6,7 @@ use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Appointment;
+use Carbon\Carbon;
 use phpDocumentor\Reflection\Types\This;
 
 class AppointmentController extends Controller
@@ -64,26 +65,38 @@ class AppointmentController extends Controller
         $data['patient_id'] = $patient->id;
         $data['over_time'] = str_replace(substr($data['start_time'],0,2),
             (substr($data['start_time'],0,2)+1),$data['start_time']);
-       $DTime =implode(" : ",explode(":", date("h:i")));
-       if($DTime > $data['over_time']){
+
+        //判断预约时间是否过期
+       $selectTime = array_merge(explode("-", $data['appointment_date']),explode(" : ", $data['over_time']));
+       $selectTime = Carbon :: create($selectTime[0],$selectTime[1],$selectTime[2],$selectTime[3],$selectTime[4],0);
+       $DTime = Carbon :: now();
+       if($DTime->gte($selectTime)){
            $data['status'] =3;
        }
 
        Appointment::create($data);
 
-       return message('新增预约成功',[$DTime,$data['over_time']],200);
+       return message('新增预约成功',[$DTime,$selectTime,$DTime->gte($selectTime)],200);
     }
     //获得今天或某天的数据
-    public function getTodayAppointment(){
+    public function getTodayAppointment(Request $request){
 
         $where =  \request('date')?request('date'):date('Y-m-d');
+        $data=$request->all();
        $appoinment =new Appointment();
-
-
-       $res =$appoinment->where('appointment_date',$where)->where('flag',1)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-       get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
-
-        return message('获取成功',$res,200);
+       $rightRes = [];
+       $leftRes = [];
+       if(isset($data['left_doctor'])){
+        $leftRes =$appoinment->where('appointment_date',$where)->where('flag',1)->where('appointment_doctor',$data['left_doctor'])->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+       }
+      
+       if(isset($data['right_doctor'])){
+        $rightRes =$appoinment->where('appointment_date',$where)->where('flag',1)->where('appointment_doctor',$data['right_doctor'])->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+       }
+       
+        return message('获取成功',[$leftRes,$rightRes],200);
 
     }
     //获得某个礼拜的数据
@@ -134,10 +147,13 @@ class AppointmentController extends Controller
         $endMonth = $data['end'];
         $appoinment =new Appointment();
 
-        $now = explode(" ", date("Y-m-d H:i:s"));
+        $now = explode(" ", date("Y-m-d H:i"));
+        $now[1] = str_replace(':',' : ',$now[1]);
         Appointment::where('status','0')->where('appointment_date','<',$now[0])->update(['status'=>3]);
-        Appointment::where('status','0')->where('appointment_date','=',$now[0])->where('over_time','<=',$now[1])->update(['status'=>3]);
-        $res =$appoinment->where('flag',1)->where('appointment_date','>=',$startMonth)->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
+        Appointment::where('status','0')->where('appointment_date','=',$now[0])->where('over_time','<=',$now[1])
+        ->update(['status'=>3]);
+        $res =$appoinment->where('flag',1)->where('appointment_date','>=',$startMonth)
+        ->where('appointment_date','<=',$endMonth)->leftJoin('patients','appointments.patient_id','=','patients.id')->
         get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
 
         return message('获取成功',$res,200);

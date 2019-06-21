@@ -13,29 +13,35 @@ class PotentialDemandController extends Controller
         return message('',PotentialDemand::all());
     }
 
-    public function show(PotentialDemand $consult)
+    public function show(PotentialDemand $potentialDemand)
     {
-        return message('',$consult);
+        return message('',$potentialDemand);
     }
 
     public function store(Request $request)
     {
+        $potentialDemand= PotentialDemand::find(request('id'));
 
-        $consult=PotentialDemand::create($request->all());
+        if($potentialDemand){
+            $potentialDemand->name=request('name');
+            $potentialDemand->save();
+        }else{
+            $potentialDemand=PotentialDemand::create($request->all());
+        }
 
-        return message('',$consult);
+        return message('',$potentialDemand,200);
     }
 
-    public function update(Request $request , PotentialDemand $consult)
+    public function update(Request $request , PotentialDemand $potentialDemand)
     {
-        $consult->update($request->all());
+        $potentialDemand->update($request->all());
 
-        return message('',$consult, 200);
+        return message('',$potentialDemand, 200);
     }
 
-    public function delete(PotentialDemand $consult)
+    public function delete(PotentialDemand $potentialDemand)
     {
-        $consult->delete();
+        $potentialDemand->delete();
 
         return message('',null, 200);
     }

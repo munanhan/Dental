@@ -4,181 +4,262 @@
             title="患者来源设置"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog expenditure-category"
+            class="custom-dialog teethcleaning-habits"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
             v-dialog-drag
         >
             <div class="content">
-                <!-- <div class="letf-content"> -->
                 <el-table
                     border
                     class="width100 mb-10"
-                    :data="tableData"
+                    :data="patients_source_menu.data"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                     :height="tableHeight"
                 >
+                    <el-table-column type="index"></el-table-column>
                     <el-table-column
-                        prop="aaaa"
-                        label="患者来源"
-                        align="center"
-                        show-overflow-tooltip
+                        v-for="(item,k) in patients_source_menu.columns"
+                        :key="k"
+                        :prop="item.field"
+                        :label="item.title"
                     >
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.isSet">
+                                <el-input
+                                    size="mini"
+                                    placeholder="请输入内容"
+                                    v-model="patients_source_menu.sel[item.field]"
+                                >
+                                </el-input>
+                            </span>
+                            <span v-else>{{scope.row[item.field]}}</span>
+                        </template>
                     </el-table-column>
+
                     <el-table-column
-                        label="删除"
+                        label="操作"
                         align="center"
                         show-overflow-tooltip
                     >
                         <template slot-scope="scope">
+                            <el-button
+                                v-if="scope.row.isSet"
+                                size="mini"
+                                @click="store(scope.row,scope.$index)"
+                            >保存
+                            </el-button>
 
-                            <el-tooltip
-                                effect="dark"
-                                content="上移"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="primary"
-                                    size="mini"
-                                    icon="el-icon-arrow-up"
-                                    circle
-                                    @click.stop="move(-1, scope.$index)"
-                                ></el-button>
-                            </el-tooltip>
+                            <el-button
+                                v-else
+                                size="mini"
+                                @click="edit(scope.row,scope.$index)"
+                            >修改
+                            </el-button>
 
-                            <el-tooltip
-                                effect="dark"
-                                content="下移"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="primary"
-                                    size="mini"
-                                    icon="el-icon-arrow-down"
-                                    circle
-                                    @click.stop="move(1, scope.$index)"
-                                ></el-button>
-                            </el-tooltip>
-                            <el-tooltip
-                                effect="dark"
-                                content="删除"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="danger"
-                                    size="mini"
-                                    icon="el-icon-delete"
-                                    circle
-                                    @click.stop="del(scope.row, scope.$index)"
-                                ></el-button>
-                            </el-tooltip>
+                            <el-button
+                                v-if="!scope.row.isSet"
+                                size="mini"
+                                type="danger"
+                                @click="del(scope.row,scope.$index)"
+                            >删除
+                            </el-button>
+
+                            <el-button
+                                v-else
+                                size="mini"
+                                type="danger"
+                                @click="cancel(scope.row,scope.$index)"
+                            >取消
+                            </el-button>
+
                         </template>
                     </el-table-column>
+
                 </el-table>
-            </div>
-            <div
-                slot="footer"
-                class="dialog-footer"
-            >
-                <div class="pull-left">
+
+                <div
+                    slot="footer"
+                    class="dialog-footer "
+                >
                     <el-button
                         type="primary"
-                        @click="addpat_sour"
+                        @click="addTeethHabitItem"
                         :disabled="commitLoading"
-                    >新增</el-button>
+                    >
+                        新增
+                    </el-button>
+
+                    <el-button @click="closeDialog">关闭
+                    </el-button>
+
                 </div>
 
-                <!-- <div>
-                </div> -->
-                <div>
-                    <el-button
-                        @click="closeDialog"
-                        :disabled="commitLoading"
-                    >取 消</el-button>
-                    <el-button
-                        type="primary"
-                        @click="commit"
-                        :loading="commitLoading"
-                    >确 定</el-button>
-                </div>
-                <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
             </div>
+
         </el-dialog>
 
-        <add-patients-source :show.sync="addpatsour_show"></add-patients-source>
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddPatientsSource from "./AddPatientsSource";
 
 export default {
-    name: "ExpenditureCategory",
+    name: "PatientsSource",
     mixins: [DialogForm],
 
-    components: {
-        AddPatientsSource
-    },
+    components: {},
     props: {},
 
     data() {
         return {
-            addpatsour_show: false,
             tableHeight: "340px",
-            tableData: [
-                { aaaa: "网络咨询" },
-                { aaaa: "朋友介绍" },
-                { aaaa: "家住附近" },
-                { aaaa: "诊所网站" }
-            ]
-            // tableData: []
-
-            // addExpendDialog: false
+            tableData: [],
+            patients_source_menu: {
+                sel: null,
+                columns: [
+                    {
+                        field: "name",
+                        title: "患者来源"
+                    }
+                ],
+                data: []
+            }
         };
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.getTeethHabitList();
+            }
+        }
+    },
     computed: {},
     methods: {
-        //交换位置
-        move(act, index) {
-            let that = this,
-                moveIdx = index + act;
+        getTeethHabitList() {
+            let that = this;
+            that.$api.source
+                .get()
+                .then(res => {
+                    that.patients_source_menu.data.map(i => {
+                        i.id = res.data.id;
+                        i.isSet = false;
+                        return i;
+                    });
+                    that.patients_source_menu.data = res.data;
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        },
 
-            if (moveIdx != -1 && moveIdx != that.tableData.length) {
-                that.tableData[index] = that.tableData.splice(
-                    moveIdx,
-                    1,
-                    that.tableData[index]
-                )[0];
+        //添加账号
+        addTeethHabitItem() {
+            let that = this;
+            for (let i of that.patients_source_menu.data) {
+                if (i.isSet) return that.$message.warning("请先保存当前编辑项");
             }
+            let j = { name: "", isSet: true };
+            that.patients_source_menu.data.push(j);
+            that.patients_source_menu.sel = JSON.parse(JSON.stringify(j));
         },
 
         del(row, index) {
             let that = this;
-            that.tableData.splice(index, 1);
+            let id = row.id;
+
+            that.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    that.$api.source.del({ id }).then(res => {
+                        if (res.code == 200) {
+                            that.patients_source_menu.data.splice(index, 1);
+                            that.$message({
+                                type: "success",
+                                message: "删除成功!"
+                            });
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
         },
 
-        commit() {},
-
-        addItem(item) {
+        store(row, index) {
             let that = this;
+            let data = JSON.parse(
+                JSON.stringify(that.patients_source_menu.sel)
+            );
 
-            console.log(item);
+            if (data.name == "" || data.discount == "") {
+                that.$message.warning("请填写完成信息");
+                return false;
+            }
 
-            that.closeDialog();
+            delete data.isSet;
+
+            that.$api.source
+                .store(data)
+                .then(res => {
+                    if (res.code == 200) {
+                        for (let k in res.data) row[k] = res.data[k];
+
+                        row.isSet = false;
+
+                        that.$message({
+                            type: "success",
+                            message: "保存成功!"
+                        });
+                    } else {
+                        that.$message({
+                            type: "warning",
+                            message: res.msg
+                        });
+                    }
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
         },
-        addpat_sour() {
-            this.addpatsour_show = true;
+
+        edit(row, index) {
+            let that = this;
+            for (let i of that.patients_source_menu.data) {
+                if (i.isSet) {
+                    that.$message.warning("请先保存当前编辑项");
+                    return false;
+                }
+            }
+            that.patients_source_menu.sel = JSON.parse(JSON.stringify(row));
+            that.$set(row, "isSet", true);
+        },
+
+        cancel(row, index) {
+            let that = this;
+            if (!that.patients_source_menu.sel.id)
+                that.patients_source_menu.data.splice(index, 1);
+            row.isSet = false;
         }
     }
 };
 </script>
 <style lang="less" scoped>
-/deep/ .el-dialog__header {
-    text-align: center;
+@import "~@css/var";
+.teethcleaning-habits {
+    /deep/ .el-dialog__header {
+        text-align: center;
+    }
 }
 </style>

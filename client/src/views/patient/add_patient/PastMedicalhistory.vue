@@ -21,6 +21,7 @@
                     <el-table-column type="index"></el-table-column>
                     <el-table-column
                             v-for="(item,index) in anamnesis_menu.columns"
+                            :key="index"
                             :prop="item.field"
                             :label="item.title"
                     >

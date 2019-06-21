@@ -25,6 +25,30 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
+
+    Route::get('potential_demands', 'PotentialDemandController@index');
+
+    Route::get('potential_demands/{potentialDemand}', 'PotentialDemandController@show');
+
+    Route::post('potential_demands', 'PotentialDemandController@store');
+
+    Route::put('potential_demands/{potentialDemand}', 'PotentialDemandController@update');
+
+    Route::delete('potential_demands/{potentialDemand}', 'PotentialDemandController@delete');
+
+    /*
+     * Patient Consult Base Demand Config Api
+     */
+    Route::get('base_demands', 'BaseDemandController@index');
+
+    Route::get('base_demands/{baseDemand}', 'BaseDemandController@show');
+
+    Route::post('base_demands', 'BaseDemandController@store');
+
+    Route::put('base_demands/{baseDemand}', 'BaseDemandController@update');
+
+    Route::delete('base_demands/{baseDemand}', 'BaseDemandController@delete');
+
     /*
      * Patient Visit Config Api
      * author by han
@@ -61,11 +85,9 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      * Route Patient Api
      */
 
-    Route::get('patients/generate','PatientController@getCaseNumber');
-
     Route::get('patients', 'PatientController@index');
 
-    Route::get('patients/show', 'PatientController@show');
+    Route::get('patients/get_by_id', 'PatientController@show');
 
     Route::post('patients', 'PatientController@store');
 
@@ -73,11 +95,21 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
 
     Route::delete('patients/{id}', 'PatientController@delete');
 
-    Route::delete('patients/today_work/{id}', 'PatientController@deleteWork');
+    Route::get('patients/generate','PatientController@getCaseNumber');
+
+    Route::get('patients/search_by_name','PatientController@searchByName');
 
     Route::get('patients/attend_doctor','PatientController@attendDoctor');
 
-    Route::get('patients/today_work','PatientController@todayWork');
+    Route::get('patients/today_work','TodayWorkController@todayWork');
+
+    Route::delete('patients/today_work/{id}', 'TodayWorkController@deleteTodayWork');
+
+    Route::get('patients/all_patient', 'AllPatientsController@allPatient');
+
+    Route::get('patients/recent_visit','RecentVisitController@recentVisitPatient');
+
+
 
 
     /*
@@ -108,30 +140,38 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     /*
      * Route PatientCase Api
      */
+
     Route::get('patient_cases', 'PatientCaseController@index');
 
-    Route::get('patient_cases/{patientCase}', 'PatientCaseController@show');
+    Route::get('patient_cases/get_by_id', 'PatientCaseController@show');
 
     Route::post('patient_cases', 'PatientCaseController@store');
 
-    Route::put('patient_cases/{patientCase}', 'PatientCaseController@update');
+    Route::get('patient_cases/get_template', 'PatientCaseMenuController@index');
 
-    Route::delete('patient_cases/{patientCase}', 'PatientCaseController@delete');
+    Route::get('patient_cases/get_template_by_id', 'PatientCaseMenuController@getById');
+
+    Route::get('patient_cases/get_medical', 'PatientCaseMedicalController@index');
+
+    Route::get('patient_cases/get_medical_by_id', 'PatientCaseMedicalController@getById');
+
 
     /*
      * Route PatientConsult Api
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/show/{id}', 'PatientConsultController@show');
+    Route::get('patient_consults/show', 'PatientConsultController@getById');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
-    Route::put('patient_consults/{patientConsult}', 'PatientConsultController@update');
+    Route::put('patient_consults', 'PatientConsultController@update');
 
     Route::delete('patient_consults/{id}', 'PatientConsultController@delete');
 
-    Route::get('patient_consults/getDoctorOrRecorder','PatientConsultController@getDoctorOrRecorder');
+    Route::get('patient_consults/doctor_or_record','PatientConsultController@getDoctorOrRecorder');
+
+    Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
 
     /*
      * Route PatientCategory Api
