@@ -15,14 +15,10 @@
             :rules="rules"
         >
             <div class="Advan-content">
-                <div
-                    v-for="(item,index) in BaseInfo"
-                    :key="index"
-                    class="Advan-top"
-                >
-                    <div class="advan-1"> {{item.patient_name}}</div>
-                    <div class="advan-1"> {{item.patient_age}}岁</div>
-                    <div class="advan-2"> {{item.case_id}}</div>
+                <div class="Advan-top">
+                    <div class="advan-1"> {{BaseInfo.patient_name}}</div>
+                    <div class="advan-1"> {{BaseInfo.patient_age}}岁</div>
+                    <div class="advan-2"> {{BaseInfo.case_id}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -153,12 +149,13 @@
                                 v-model="form.doctor"
                                 placeholder="请选择"
                                 style="width:664px"
+                                @focus="getReceptionDoctor(1)"
                             >
                                 <el-option
                                     v-for="item in doctorList"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
                                 >
                                 </el-option>
                             </el-select>
@@ -170,12 +167,13 @@
                                 v-model="form.data_entry_person"
                                 placeholder="请选择"
                                 style="width:664px"
+                                @focus="getReceptionDoctor(2)"
                             >
                                 <el-option
                                     v-for="item in dataEntryPersonList"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
                                 >
                                 </el-option>
                             </el-select>
@@ -210,8 +208,25 @@ export default {
         BasicNeeds,
         PotentialDemand
     },
+    props: {
+        // refresh: {
+        //     type: Boolean,
+        //     required: true
+        // },
 
+        addConsult: {
+            type: Object,
+            required: true
+        }
+    },
     mixins: [DialogForm],
+
+    created() {
+        let that = this;
+        that.BaseInfo = that.addConsult;
+    },
+
+    mounted() {},
 
     data() {
         return {
@@ -229,19 +244,9 @@ export default {
                     table: "123132"
                 }
             ],
-            BaseInfo: [
-                {
-                    patient_name: "钟先生",
-                    patient_age: "10",
-                    case_id: "1503010120"
-                }
-            ],
-            doctorList: [
-                {
-                    value: "110",
-                    table: "110"
-                }
-            ],
+            BaseInfo: [],
+            doctorList: [],
+
             potentialDemandList: [
                 {
                     value: "HTML",
@@ -266,8 +271,60 @@ export default {
             commitLoading: false
         };
     },
+    watch: {
+        // refresh(newValue, oldValue) {
+        //     let that = this;
+        //     // this.data = that.selectPatient;
+        //     // console.log(that.selectPatient);
+        //     if (newValue) {
+        //     }
+        // },
 
+        addConsult(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.BaseInfo = that.addConsult;
+            }
+        },
+
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.getdefaultRecorder();
+            }
+        }
+    },
     methods: {
+        getReceptionDoctor(type) {
+            let that = this;
+            that.$api.patient_consult
+                .receptionDoctor()
+                .then(res => {
+                    if (res.code == 200) {
+                        if (type == 1) {
+                            that.doctorList = res.data;
+                        } else {
+                            that.dataEntryPersonList = res.data;
+                        }
+                    }
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
+
+        getdefaultRecorder() {
+            let that = this;
+            that.$api.patient_consult
+                .defaultRecorder()
+                .then(res => {
+                    that.form.data_entry_person = res.data;
+                })
+                .catch(res => {
+                    console.res.data;
+                });
+        },
         basice_need() {
             this.basneed_show = true;
         },

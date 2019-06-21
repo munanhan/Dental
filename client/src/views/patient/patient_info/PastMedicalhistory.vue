@@ -97,22 +97,22 @@
 
         </el-dialog>
 
-        <add-past-medicalhistory
+        <!-- <add-past-medicalhistory
             :show.sync="addmed_show"
-        ></add-past-medicalhistory>
+        ></add-past-medicalhistory> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddPastMedicalhistory from "./AddPastMedicalhistory";
+// import AddPastMedicalhistory from "./AddPastMedicalhistory";
 
 export default {
     name: "PastMedicalhistory",
     mixins: [DialogForm],
 
     components: {
-        AddPastMedicalhistory
+        // AddPastMedicalhistory
     },
     props: {},
 

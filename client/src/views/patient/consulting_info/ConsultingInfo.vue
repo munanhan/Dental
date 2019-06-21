@@ -129,7 +129,7 @@
                             :span="24"
                         >
                             <div
-                                 style="width:80px"
+                                style="width:80px"
                                 class="font-left"
                             >服务建议:</div>
                             <div
@@ -138,6 +138,7 @@
                             >asdsadsadsad</div>
                         </el-col>
                     </el-row>
+
                 </div>
             </div>
         </div>
@@ -150,7 +151,10 @@
                 >新增</el-button>
             </div>
         </div>
-        <add-consulting :show.sync="addcons_show"></add-consulting>
+        <add-consulting
+            :show.sync="addcons_show"
+            :addConsult="consultInfo"
+        ></add-consulting>
     </div>
 
 </template>
@@ -167,7 +171,11 @@ export default {
         refresh: {
             type: Boolean,
             required: true
-        }
+        },
+        consultInfo: {
+            type: Object,
+            required: true
+        },
     },
     data() {
         return {

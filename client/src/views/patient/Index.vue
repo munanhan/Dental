@@ -76,6 +76,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -113,6 +114,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -151,6 +153,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -230,11 +233,12 @@
                                         ref="item1"
                                     >
                                         <li
-                                            v-for="(item,index) in patientsRecent"
+                                            v-for="(item, index) in patientsRecent"
                                             :key="index"
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -272,6 +276,7 @@
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -310,6 +315,7 @@
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -358,6 +364,7 @@
                                 v-for="(item,index) in access"
                                 :key="index"
                                 class="visit-background"
+                                :class="{ 'active': item.id == selectItem }"
                                 @click="getInfoById(item.id)"
                             >
                                 <div
@@ -491,6 +498,7 @@
                     <consulting-info
                         v-if="consultingInfo"
                         :refresh.sync="consultingInfo"
+                        :consultInfo="selectPatient"
                     ></consulting-info>
                 </el-tab-pane>
             </el-tabs>
@@ -544,6 +552,7 @@ export default {
     data() {
         return {
             selectPatient: {},
+
             patient_expend: false,
             input: "",
             search: "",
@@ -620,7 +629,9 @@ export default {
             //全部患者
             patientExpend: false,
             blackExpend: false,
-            treatmentExpend: false
+            treatmentExpend: false,
+
+            selectItem: null
         };
     },
     created() {
@@ -691,24 +702,29 @@ export default {
         getInfoById(id) {
 
             let that = this;
+
+            //选中
+            that.selectItem = id;
+
             that.$api.patient
                 .getPatientByID({ id })
                 .then(res => {
-                    res.data.allergy =
-                        res.data.allergy.length > 0
-                            ? res.data.allergy.join(",")
-                            : "";
-                    res.data.anamnesis =
-                        res.data.anamnesis.length > 0
-                            ? res.data.anamnesis.join(",")
-                            : "";
-                    res.data.patient_birthday = res.data.patient_birthday
-                        ? res.data.patient_birthday.slice(0, 10)
-                        : "";
+                    res.data.allergy = (res.data.allergy.length && []).join(
+                        ","
+                    );
+
+                    res.data.anamnesis = (res.data.anamnesis.length && []).join(
+                        ","
+                    );
+
+                    res.data.patient_birthday=formatDate(res.data.patient_birthday,'yyyy-MM-dd');
 
                     that.selectPatient = res.data;
+
                 })
-                .catch(res => {});
+                .catch(res => {
+                    console.log(res.data);
+                });
         },
         //获取最近访问
         getRecentVisit() {
@@ -976,6 +992,10 @@ export default {
             margin-right: 10px;
             border-left-width: 10px;
             height: 60px;
+
+            &.active {
+                background-color: #eeffcd;
+            }
             .work-background-top {
                 margin-bottom: 20px;
                 margin-left: 10px;
@@ -1044,6 +1064,12 @@ export default {
             margin-right: 10px;
             border-left-width: 10px;
             height: 60px;
+            transition: 0.2s all;
+
+            &.active {
+                background-color: #eeffcd;
+            }
+
             .patient-background-top {
                 margin-bottom: 20px;
                 margin-left: 10px;
@@ -1122,6 +1148,9 @@ export default {
         margin-left: 10px;
         margin-top: 10px;
         height: 60px;
+        &.active {
+            background-color: #eeffcd;
+        }
         .visit-background-top {
             .visit-top1 {
                 font-weight: bold;
