@@ -1,16 +1,33 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Traits\AttendDoctor;
+use App\Http\Controllers\Traits\CaseNumber;
 use App\Model\Patient;
-use Carbon\Traits\Date;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Appointment;
 use Carbon\Carbon;
-use phpDocumentor\Reflection\Types\This;
 
 class AppointmentController extends Controller
 {
+    const SERIAL_NUMBER="serial.number:";
+
+    const DEFAULT_LENGTH=3;
+
+    use CaseNumber,AttendDoctor;
+
+    public function getCaseNumber(){
+       
+       return $this->CaseNumber();
+    }
+
+    public function getDoctor()
+    {
+        return $this->getDoctorByRoleId([1,2,3,8]);
+    }
+
     public function getPatientByPhone(Request $request){
         $data=$request->all();
 
