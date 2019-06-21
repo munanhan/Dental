@@ -1,16 +1,15 @@
 <template>
     <div>
         <el-dialog
-            title="患者职业设置"
+            title="患者职业"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog membership-grade"
+            class="custom-dialog professional-habits"
             :close-on-click-modal="false"
             top="3vh"
             :append-to-body="true"
             v-dialog-drag
         >
-
             <div class="content">
                 <el-table
                     border
@@ -86,7 +85,7 @@
                 >
                     <el-button
                         type="primary"
-                        @click="addMemberItem"
+                        @click="addTeethHabitItem"
                         :disabled="commitLoading"
                     >
                         新增
@@ -101,26 +100,21 @@
 
         </el-dialog>
 
-        <!-- <add-membership-grade :show.sync="add_grade_show"></add-membership-grade> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-// import AddMembershipGrade from "./AddMembershipGrade";
 
 export default {
     name: "professional",
     mixins: [DialogForm],
 
-    components: {
-        // AddMembershipGrade
-    },
+    components: {},
     props: {},
 
     data() {
         return {
-            // add_grade_show: false,
             tableHeight: "340px",
             tableData: [],
             professional_menu: {
@@ -129,7 +123,7 @@ export default {
                     {
                         field: "name",
                         title: "患者职业"
-                    },
+                    }
                 ],
                 data: []
             }
@@ -141,15 +135,15 @@ export default {
         show(newValue, oldValue) {
             let that = this;
             if (newValue) {
-                that.getMemberList();
+                that.getprofessionalList();
             }
         }
     },
     computed: {},
     methods: {
-        getMemberList() {
+        getprofessionalList() {
             let that = this;
-            that.$api.patient_member
+            that.$api.patient_professional
                 .get()
                 .then(res => {
                     that.professional_menu.data.map(i => {
@@ -165,20 +159,18 @@ export default {
         },
 
         //添加账号
-        addMemberItem() {
+        addTeethHabitItem() {
             let that = this;
             for (let i of that.professional_menu.data) {
                 if (i.isSet) return that.$message.warning("请先保存当前编辑项");
             }
-            let j = { name: "", discount: "", isSet: true };
+            let j = { name: "", isSet: true };
             that.professional_menu.data.push(j);
             that.professional_menu.sel = JSON.parse(JSON.stringify(j));
         },
 
         del(row, index) {
             let that = this;
-
-            console.log(row.id);
             let id = row.id;
 
             that.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
@@ -187,7 +179,7 @@ export default {
                 type: "warning"
             })
                 .then(() => {
-                    that.$api.patient_member.del({ id }).then(res => {
+                    that.$api.patient_professional.del({ id }).then(res => {
                         if (res.code == 200) {
                             that.professional_menu.data.splice(index, 1);
                             that.$message({
@@ -216,12 +208,14 @@ export default {
 
             delete data.isSet;
 
-            that.$api.patient_member
-                .updateOrInsert(data)
+            that.$api.patient_professional
+                .store(data)
                 .then(res => {
                     if (res.code == 200) {
                         for (let k in res.data) row[k] = res.data[k];
+
                         row.isSet = false;
+
                         that.$message({
                             type: "success",
                             message: "保存成功!"
@@ -260,7 +254,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.membership-grade {
+@import "~@css/var";
+.professional-habits {
     /deep/ .el-dialog__header {
         text-align: center;
     }

@@ -76,6 +76,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -113,6 +114,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -151,6 +153,7 @@
                                         >
                                             <div
                                                 class="work-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="work-background-top">
@@ -202,16 +205,16 @@
                             <el-input
                                 v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
                         </div>
 
-                        <div style="border:1px solid red;background-color:#efefef">
+                        <div style="background-color:#efefef">
                             <div
                                 class="patient-item"
-                                style="height:720px;overflow:auto"
+                                style="height:735px;overflow:auto"
                             >
                                 <div class="patient-select">
                                     <div
@@ -230,11 +233,12 @@
                                         ref="item1"
                                     >
                                         <li
-                                            v-for="(item,index) in patientsRecent"
+                                            v-for="(item, index) in patientsRecent"
                                             :key="index"
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -272,6 +276,7 @@
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -310,6 +315,7 @@
                                         >
                                             <div
                                                 class="patient-background"
+                                                :class="{ 'active': item.id == selectItem }"
                                                 @click="getInfoById(item.id)"
                                             >
                                                 <div class="patient-background-top">
@@ -349,7 +355,7 @@
                             <el-input
                                 style="width:300px;margin-left:10px;"
                                 v-model="search"
-                                placeholder="姓名、拼音、电话"
+                                placeholder="姓名、电话"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                         </div>
@@ -358,6 +364,7 @@
                                 v-for="(item,index) in access"
                                 :key="index"
                                 class="visit-background"
+                                :class="{ 'active': item.id == selectItem }"
                                 @click="getInfoById(item.id)"
                             >
                                 <div
@@ -491,6 +498,7 @@
                     <consulting-info
                         v-if="consultingInfo"
                         :refresh.sync="consultingInfo"
+                        :consultInfo="selectPatient"
                     ></consulting-info>
                 </el-tab-pane>
             </el-tabs>
@@ -544,6 +552,7 @@ export default {
     data() {
         return {
             selectPatient: {},
+
             patient_expend: false,
             input: "",
             search: "",
@@ -620,7 +629,9 @@ export default {
             //全部患者
             patientExpend: false,
             blackExpend: false,
-            treatmentExpend: false
+            treatmentExpend: false,
+
+            selectItem: null
         };
     },
     created() {
@@ -644,7 +655,6 @@ export default {
                     that.getRecentVisit();
                     break;
             }
-            console.log(newValue);
         },
         // refresh(newValue, oldValue) {
         //         let that = this;
@@ -690,14 +700,30 @@ export default {
     methods: {
         //获取id
         getInfoById(id) {
-            console.log(id);
             let that = this;
+
+            //选中
+            that.selectItem = id;
+
             that.$api.patient
                 .getPatientByID({ id })
                 .then(res => {
+                    res.data.allergy = (res.data.allergy.length && []).join(
+                        ","
+                    );
+
+                    res.data.anamnesis = (res.data.anamnesis.length && []).join(
+                        ","
+                    );
+
+                    res.data.patient_birthday=formatDate(res.data.patient_birthday,'yyyy-MM-dd');
+
                     that.selectPatient = res.data;
+
                 })
-                .catch(res => {});
+                .catch(res => {
+                    console.log(res.data);
+                });
         },
         //获取最近访问
         getRecentVisit() {
@@ -965,6 +991,10 @@ export default {
             margin-right: 10px;
             border-left-width: 10px;
             height: 60px;
+
+            &.active {
+                background-color: #eeffcd;
+            }
             .work-background-top {
                 margin-bottom: 20px;
                 margin-left: 10px;
@@ -1033,6 +1063,12 @@ export default {
             margin-right: 10px;
             border-left-width: 10px;
             height: 60px;
+            transition: 0.2s all;
+
+            &.active {
+                background-color: #eeffcd;
+            }
+
             .patient-background-top {
                 margin-bottom: 20px;
                 margin-left: 10px;
@@ -1111,6 +1147,9 @@ export default {
         margin-left: 10px;
         margin-top: 10px;
         height: 60px;
+        &.active {
+            background-color: #eeffcd;
+        }
         .visit-background-top {
             .visit-top1 {
                 font-weight: bold;

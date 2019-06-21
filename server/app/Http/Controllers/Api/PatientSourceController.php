@@ -20,7 +20,14 @@ class PatientSourceController extends Controller
 
     public function store(Request $request)
     {
-        $patientSource=PatientSource::create($request->all());
+        $patientSource=PatientSource::find(request('id'));
+
+        if($patientSource){
+            $patientSource->name=request('name');
+            $patientSource->save();
+        }else{
+            $patientSource=PatientSource::create($request->all());
+        }
 
         return message('',$patientSource);
     }

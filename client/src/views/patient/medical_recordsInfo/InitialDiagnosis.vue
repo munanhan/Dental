@@ -13,38 +13,45 @@
             ref="form"
             :model="form"
             label-width="80px"
-            :rules="form.rules"
+            :rules="rules"
         >
             <div class="initDiag-content">
                 <div class="left-content">
                     <div class="initDiag-upperleft">
-                        <el-tabs v-model="form.activeName">
+                        <el-tabs v-model="activeName">
                             <el-tab-pane
                                 label="病历模板"
                                 name="medicalTemplates"
                             >
                                 <div
                                     class="left-tree"
-                                    style="height:300px;overflow: auto"
+                                    style="height:250px;overflow: auto"
                                 >
-                                    <el-tree :data="form.initialData">
+                                    <el-tree
+                                        :data="initialData"
+                                        @node-click="handleNodeClick"
+                                    >
                                         <span
                                             class="custom-tree-node"
                                             slot-scope="{node, data}"
                                         >
                                             <i
-                                                v-if="!node.expanded && data.children && data.children.length"
-                                                class="fa fa-folder"
+                                                v-if="!node.expanded && data.type == 0"
+                                                class="fa fa-folder mr-10 dir"
                                             ></i>
                                             <i
-                                                v-if="node.expanded && data.children && data.children.length"
-                                                class="fa fa-folder-open"
+                                                v-if="node.expanded && data.type == 0"
+                                                class="fa fa-folder-open mr-10 dir"
                                             ></i>
                                             <i
-                                                v-if="!data.children"
-                                                class="fa fa-folder"
+                                                v-if="data.type == 1"
+                                                class="fa fa-file-alt mr-10 file"
                                             ></i>
-                                            <span>{{ node.label }}</span>
+                                            <span>{{ data.outline_name }}</span>
+                                            <i
+                                                v-if="data.type == 1"
+                                                class="fa fa-caret-right mr-10 file hide "
+                                            ></i>
                                         </span>
 
                                     </el-tree>
@@ -60,13 +67,110 @@
                     </div>
                     <div class="initDiag-lowerleft">
 
+                        <!-- <template v-for="item in templateContent" >
+                            <div :key="item.key" v-if="item.value" style="display:flex">
+                                <div class="lowerleft-left">{{item.name}}</div>
+                                <div class="lowerleft-right">
+                                    {{ item.value }}
+                                </div>                                
+                            </div>
+                        </template> -->
+
+                        <!-- <div style="display:flex">
+                            <div class="lowerleft-left">{{item.name}}</div>
+                            <div class="lowerleft-right">
+                                {{ data[item.key] }}
+                            </div>
+                        </div> -->
+
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.main_complain"
+                        >
+                            <div class="lowerleft-left">主诉</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.main_complain}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.now_history"
+                        >
+                            <div class="lowerleft-left">现病史</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.now_history}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.previous_history"
+                        >
+                            <div class="lowerleft-left">既往史</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.previous_history}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.inspect"
+                        >
+                            <div class="lowerleft-left">检查</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.inspect}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.auxiliary"
+                        >
+                            <div class="lowerleft-left">辅助检查</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.auxiliary}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.diagnosis"
+                        >
+                            <div class="lowerleft-left">诊断</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.diagnosis}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.treatment_plan"
+                        >
+                            <div class="lowerleft-left">治疗方案</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.treatment_plan}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.treatment"
+                        >
+                            <div class="lowerleft-left">治疗</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.treatment}}
+                            </div>
+                        </div>
+                        <div
+                            class="lowerleft-content"
+                            v-if="templateContent.doctor_advice"
+                        >
+                            <div class="lowerleft-left">医嘱</div>
+                            <div class="lowerleft-right">
+                                {{templateContent.doctor_advice}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="right-content">
                     <div class="right-top">
-                        <div style="display:flex;font-size:15px">
-                            <div style="margin-left:8px;margin-top:13px;margin-right:10px">1503010120</div>
-                            <div style="margin-top:13px">8岁</div>
+                        <div class="top1">
+                            <div class="top-num1">1503010120</div>
+                            <div class="top-num2">8岁</div>
                             <el-form-item
                                 style="margin-top:5px;margin-left:30px"
                                 label="活动名称"
@@ -86,7 +190,7 @@
                                 >复诊</el-radio>
                             </div>
                         </div>
-                        <div style="display:flex">
+                        <div class="top2">
                             <el-form-item
                                 label="检查医生:"
                                 size="small"
@@ -130,7 +234,7 @@
                             >
                                 <el-date-picker
                                     style="width:180px"
-                                    format="yyyy-MM-dd hh:mm"
+                                    format="yyyy-MM-dd"
                                     v-model="form.value1"
                                     type="date"
                                     placeholder="选择日期"
@@ -151,21 +255,21 @@
                             <table border="1">
                                 <tr>
                                     <td align="center">主 诉</td>
-                                    <input>
+                                    <input v-model="form.complain">
                                     <!-- <textarea style="resize:none;height:20px;margin-bottom:-2px"></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">现 病 史</td>
-                                    <input>
+                                    <input v-bind="form.history">
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">既 往 史</td>
-                                    <input>
+                                    <input v-model="form.previous">
                                 </tr>
                                 <tr>
                                     <td align="center">过 敏 史</td>
-                                    <input>
+                                    <input v-model="form.allergy">
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
@@ -176,12 +280,12 @@
                                     <td align="center">主页检查</td>
                                     <input class="middle-input">
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
-                                    <input class="middle-input">
+                                    <!-- <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
                                     <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
                                     <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
+                                    <i class="el-icon-delete-solid middle-i"></i> -->
                                 </tr>
                                 <tr>
                                     <td align="center">诊 断</td>
@@ -243,117 +347,139 @@ export default {
 
     data() {
         return {
+            selectNode: null,
+            initialData: [],
+            activeName: "medicalTemplates",
+            rules: {},
+            templateContent: [],
             form: {
-                value1: "",
+                value1: new Date(),
                 radio: "1",
                 checked: "",
-                activeName: "medicalTemplates",
-                initialData: [
-                    {
-                        label: "口腔内科",
-                        children: [
-                            {
-                                label: "牙周炎",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            },
-                            {
-                                label: "黏膜病",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            },
-                            {
-                                label: "牙髓炎",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: "口腔外科",
-                        children: [
-                            {
-                                label: "二级 1-1",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: "口腔修复科",
-                        children: [
-                            {
-                                label: "二级 1-1",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: "口腔正畸科",
-                        children: [
-                            {
-                                label: "二级 1-1",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: "口腔种植科",
-                        children: [
-                            {
-                                label: "二级 1-1",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: "预防保健科",
-                        children: [
-                            {
-                                label: "二级 1-1",
-                                children: [
-                                    {
-                                        label: "三级 1-1-1"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
+
+                complain: "",
+                history: "",
+                previous: "",
+                allergy: ""
+
                 // defaultProps: {
                 //   children: "children",
                 //   label: "label"
                 // },
-                rules: {}
-            }
+            },
+
+            data: {}
         };
     },
+    watch: {
+        // refresh(newValue, oldValue) {
+        //     let that = this;
 
-    methods: {}
+        //     if (newValue) {
+        //         that.resizeContent();
+        //     }
+        // },
+        activeName(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.activeName = newValue;
+            }
+        },
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getMenu();
+            }
+        },
+
+        selectType(newValue, oldValue) {
+            let that = this;
+            // if (newValue) {
+            that.selectGetData(newValue);
+            // }
+        }
+    },
+    methods: {
+        getMenu() {
+            //获取菜单
+            let that = this;
+            that.$api.patient_case_template
+                .index()
+                .then(res => {
+                    that.initialData = res.data;
+                })
+                .catch(res => {});
+        },
+        handleNodeClick(data) {
+          
+            let that = this;
+            that.selectNode = data;
+
+            if (data.type == 0) {
+                that.menu_id = 0;
+                that.selectStatus = "none";
+            } else {
+                that.menu_id = that.selectNode.id;
+                that.selectGetData(that.activeName);
+                that.selectStatus = "block";
+            }
+            // //设置选中的id
+            // that.selectID = data.id;
+        },
+        selectGetData(option) {
+            let that = this;
+            if (that.selectNode != null && that.selectNode.type == 1) {
+                switch (option) {
+                    case "medicalTemplates":
+                        that.getCaseData(
+                            "patient_case_template",
+                            "templateContent"
+                        );
+                        // that.caseShow = true;
+                        break;
+                    // case 1:
+                    //     that.getData("medical", "medicalData", "medicalShow");
+                    //     break;
+                }
+            }
+        },
+        getCaseData(apiType, dataType) {
+            //主数据
+            let that = this;
+            let menu_id = that.selectNode.id;
+            that.$api[apiType]
+                .show({ menu_id: menu_id })
+                .then(res => {
+                    if (res.code == 200) {
+                        that[dataType] = res.data;
+
+                        // for (var i = 0; i < that.templateContent.length; i++) {
+                        //     var item = that.templateContent[i];
+                        //     item.value = res.data[item.key] || "";
+                        // }
+
+                        // for(var i = 0; i < that.templateContent.length; i++){
+                        //     var item = that.templateContent[i];
+                        //     item.value = "";
+                        // }
+                    } else {
+                        that.$message.error(res.msg || "数据获取失败.");
+                    }
+                })
+                .catch(res => {});
+        }
+
+        // setData(data){
+
+        //     { aa : '' }
+        //     { }
+
+        //         for(var i = 0; i < that.templateContent.length; i++){
+        //             var item = that.templateContent[i];
+        //             item.value = res.data[item.key] || '';
+        //         }
+        // }
+    }
 };
 </script>
 <style lang="less" scoped>
@@ -368,12 +494,70 @@ export default {
             border: 1px solid #cacaca;
             position: relative;
             width: 400px;
-            height: 350px;
+            height: 293px;
+            .left-tree {
+                .custom-tree-node {
+                    // border: 1px solid #ccc;
+                    width: 100%;
+                    &:hover .file {
+                        background-color: #e0ffd6;
+                    }
+                    .dir {
+                        color: #ffd000;
+                    }
+                    .hide {
+                        position: absolute;
+                        right: 0;
+                        margin-top: -14px;
+                        color: #000;
+                        display: none;
+                    }
+                    &:hover .hide {
+                        display: block;
+                    }
+                    .file {
+                        color: #4f94cd;
+                    }
+                }
+            }
         }
         .initDiag-lowerleft {
             margin-top: 5px;
             border: 1px solid #cacaca;
-            height: 242px;
+            overflow: auto;
+            height: 300px;
+            width: 400px;
+            .lowerleft-content {
+                cursor: pointer;
+                // border: 1px solid red;
+                display: flex;
+                .lowerleft-left {
+                    // border: 1px solid #000;
+                    // cursor: pointer;
+                    color: #f7a325;
+                    width: 60px;
+                    margin-left: 5px;
+                    margin-top: 10px;
+                    // border: none;
+                    height: 31px;
+                    // overflow: auto;
+                }
+                .lowerleft-right {
+                    // border: 1px solid red;
+                    margin-right: 5px;
+                    margin-top: 10px;
+                    flex: 1;
+                    color: #000;
+                    margin-left: 10px;
+                    margin-bottom: 10px;
+                }
+                &:hover {
+                    .lowerleft-left {
+                        text-decoration: underline;
+                    }
+                    text-decoration: underline;
+                }
+            }
         }
     }
     .right-content {
@@ -387,6 +571,21 @@ export default {
         .right-top {
             height: 120px;
             border: 1px solid #e6e6e6;
+            .top1 {
+                display: flex;
+                font-size: 15px;
+                .top-num1 {
+                    margin-left: 8px;
+                    margin-top: 13px;
+                    margin-right: 10px;
+                }
+                .top-num2 {
+                    margin-top: 13px;
+                }
+            }
+            .top2 {
+                display: flex;
+            }
         }
         .right-middle {
             border: 1px solid #e6e6e6;

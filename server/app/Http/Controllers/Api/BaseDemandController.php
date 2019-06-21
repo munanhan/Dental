@@ -13,29 +13,36 @@ class BaseDemandController extends Controller
         return message('',BaseDemand::all());
     }
 
-    public function show(BaseDemand $consult)
+    public function show(BaseDemand $baseDemand)
     {
-        return message('',$consult);
+        return message('',$baseDemand);
     }
 
     public function store(Request $request)
     {
+        $baseDemand= BaseDemand::find(request('id'));
 
-        $consult=BaseDemand::create($request->all());
+        if($baseDemand){
+            $baseDemand->name=request('name');
+            $baseDemand->save();
+        }else{
+            $baseDemand=BaseDemand::create($request->all());
+        }
 
-        return message('',$consult);
+        return message('',$baseDemand,200);
     }
 
-    public function update(Request $request , BaseDemand $consult)
+    public function update(Request $request , BaseDemand $baseDemand)
     {
-        $consult->update($request->all());
+        $baseDemand->update($request->all());
 
-        return message('',$consult, 200);
+        return message('',$baseDemand, 200);
     }
 
-    public function delete(BaseDemand $consult)
+    public function delete(BaseDemand $baseDemand)
     {
-        $consult->delete();
+
+        $baseDemand->delete();
 
         return message('',null, 200);
     }

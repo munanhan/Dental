@@ -29,7 +29,9 @@ class RecordListener
      */
     public function handle(RecordEvent $event)
     {
-        RecentVisit::create(['user_id'=>Auth::id(),'patient_id'=>$event->patient->id]);
+        if($event->patient->id !==null){
+            RecentVisit::create(['user_id'=>Auth::id(),'patient_id'=>$event->patient->id]);
+        }
     }
 
 }

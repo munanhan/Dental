@@ -34,8 +34,6 @@ class PatientController extends BaseController
         }
     }
 
-
-
     /*
      * 添加患者
      */
@@ -111,102 +109,6 @@ class PatientController extends BaseController
     }
 
     /*
-     * 根据id删除今日工作
-     */
-    public function deleteWork()
-    {
-        $id=request('id');
-
-        if(PatientDisposal::find($id)){
-            return message('已有处置记录不可删除','',400);
-        }else{
-            $app=Appointment::find($id);
-            $app->delete();
-            return message('删除成功','',200);
-        }
-    }
-
-    /*
-     * 今日工作
-     */
-    public function todayWork()
-    {
-        $whereTime=request('whereTime');
-
-        $data['appointmentNotArrive']=$this->appointmentNotArrive($whereTime);
-        $data['todayFirstVisit']=$this->todayFirstVisit($whereTime);
-        $data['todaySubsequentVisit']=$this->todaySubsequentVisit($whereTime);
-
-        return message('',$data,200);
-    }
-
-    /*
-     * 最近访问患者
-     */
-    public function recentVisitPatient()
-    {
-        $idArray=$this->getRecentVisitPatientId();
-
-        $idString=implode(',',$idArray);
-
-        $data=$this->patientAll()->whereIn('p.id',$idArray)
-            ->orderByRaw(DB::raw("FIELD(p.id,$idString)"))->get();
-
-        return message('',$data,200);
-    }
-
-    /*
-     * 获取最近浏览患者的id
-     */
-    protected function getRecentVisitPatientId()
-    {
-        $subQuery=DB::table('recent_visits')
-            ->where('user_id',Auth::id())
-            ->whereDate('created_at','>=',now()->modify('-30 days'))
-            ->latest()
-            ->limit(99999);
-
-        $query = DB::table(DB::raw("({$subQuery->toSql()}) as sub"))
-            ->select('sub.patient_id')
-            ->groupBy('sub.patient_id')
-            ->orderBy('sub.created_at','DESC');
-
-        $query->mergeBindings($subQuery);
-        $result=json_decode($query->get(), true);
-
-        $patientId=[];
-        foreach ($result as ['patient_id'=>$id]){
-            $patientId[]=$id;
-        }
-
-        return $patientId;
-    }
-
-    /*
-     * 预约未到
-     */
-    public function appointmentNotArrive($whereTime)
-    {
-        return $this->diagnose($whereTime,'',[0,1,3]);
-    }
-
-    /*
-     * 今日初诊
-     */
-    public function todayFirstVisit($whereTime)
-    {
-        return $this->diagnose($whereTime,0,[2]);
-    }
-
-    /*
-     * 今日复诊
-     */
-    public function todaySubsequentVisit($whereTime)
-    {
-        return $this->diagnose($whereTime,1,[2]);
-    }
-
-    /*
      * 患者诊断
      */
     protected function diagnose($whereTime,$type,array $status)
@@ -221,20 +123,6 @@ class PatientController extends BaseController
             ->get();
     }
 
-    /*
-     * 全部患者
-     */
-    public function index()
-    {
-        $keywords=request('keywords');
-        $flag=request('flag');
-        $data['recentPatient']=$this->patientByGroup(0,$flag,$keywords);
-        $data['blacklistPatient']=$this->patientByGroup(1,$flag,$keywords);
-        $data['completePatient']=$this->patientByGroup(2,$flag,$keywords);
-
-        return message('',$data,200);
-
-    }
 
     public function searchByName()
     {
@@ -282,9 +170,7 @@ class PatientController extends BaseController
         DB::table('patients as p')
             ->leftJoin('appointments as apt','p.id','=','apt.patient_id')
             ->leftJoin('patient_orders as o','p.id','=','o.patient_id')
-            ->selectRaw('p.id,case_id,patient_name,patient_age,patient_sex,patient_phone,member_id,
-            member_card,allergy,anamnesis,patient_category,patient_group,SUM(o.arrearage) as arrearage,
-            apt.status,start_time,over_time,apt.type,appointment_doctor,appointment_date,items')
+            ->selectRaw('p.id,case_id,patient_name,patient_age,patient_sex,patient_phone,member_id,member_card,allergy,anamnesis,patient_category,patient_group,SUM(o.arrearage) as arrearage,apt.status,start_time,over_time,apt.type,appointment_doctor,appointment_date,items')
             ->whereRaw('1=1')
             ->whereNull('p.deleted_at')
             ->groupBy('p.id');

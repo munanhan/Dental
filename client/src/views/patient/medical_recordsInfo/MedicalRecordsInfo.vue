@@ -396,7 +396,7 @@ export default {
 
             .medical-top-title {
                 font-size: 22px;
-                border: 1px solid red;
+                // border: 1px solid red;
                 .top {
                     display: inline-block;
                     margin-right: 20px;

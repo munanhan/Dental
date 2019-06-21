@@ -16,11 +16,7 @@ class RecordEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $patient;
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
+
     public function __construct(Patient $patient)
     {
         $this->patient=$patient;

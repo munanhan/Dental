@@ -42,14 +42,6 @@ export function caseNo(data) {
         params: data
     })
 }
-//配置项
-export function configData(data) {
-    return request({
-        url: `${prefix}/resource`,
-        method: 'get',
-        params: data
-    })
-}
 
 //获取主治医师
 export function getAttendDoctor(data) {
@@ -61,7 +53,7 @@ export function getAttendDoctor(data) {
 }
 export function searchAll(data) {
     return request({
-        url: `${prefix}/searchAll`,
+        url: `${prefix}/search_by_name`,
         method: 'get',
         params: data
     })
@@ -79,7 +71,7 @@ export function todayWork(data) {
 //全部患者
 export function index(data) {
     return request({
-        url: `${prefix}`,
+        url: `${prefix}/all_patient`,
         method: 'get',
         params: data
     })
@@ -97,7 +89,7 @@ export function recentVisit(data) {
 //患者信息
 export function getPatientByID(data) {
     return request({
-        url: `${prefix}/show`,
+        url: `${prefix}/get_by_id`,
         method: 'get',
         params: data
     })
