@@ -212,7 +212,12 @@ export default {
             }, 6e3);
         },
         add_cons() {
-            this.addcons_show = true;
+            let that=this;
+            if(that.consultInfo.id ){
+                that.addcons_show = true;
+            }else {
+                that.$message.warning('请选择一个患者');
+            }
         }
     }
 };

@@ -244,7 +244,12 @@ export default {
             console.log(val);
         },
         Modify_info() {
-            this.modinfo_show = true;
+            let that=this;
+            if(that.selectPatient.id){
+                that.modinfo_show = true;
+            }else {
+                that.$message.warning('请选择一个患者');
+            }
         }
     }
 };
