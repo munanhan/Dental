@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Traits\AttendDoctor;
+use App\Http\Controllers\Traits\CaseNumber;
 use App\Model\Appointment;
 use App\Model\Patient;
 use App\Model\PatientDisposal;
@@ -18,7 +19,7 @@ class PatientController extends BaseController
 
     const DEFAULT_LENGTH=3;
 
-    use AttendDoctor;
+    use AttendDoctor,CaseNumber;
 
     /*
      * 根据id展示患者
@@ -297,47 +298,16 @@ class PatientController extends BaseController
         return $this->getDoctorByRoleId([1,2,3,8]);
     }
 
-    protected  function getToday()
-    {
-        return now()->format('Ymd');
-    }
 
     /*
      * 获取病历号
      */
-    protected  function getCaseNumber()
-    {
-
-        $date=$this->getToday();
-
-        $key=self::SERIAL_NUMBER.$date;
-
-        $sequence=Redis::incr($key);
-
-        $seq=$this->getSequence($sequence);
-
-        $serial['case_id']=$date.$seq;
-
-        return message('',$serial);
-
+    public  function getCaseNumber()
+    {   
+        $this->CaseNumber();
     }
 
-    protected function getSequence($seq)
-    {
-        $len=mb_strlen($seq);
-
-        if($len>=self::DEFAULT_LENGTH){
-            return $seq;
-        }
-
-        $rest=self::DEFAULT_LENGTH-$len;
-
-        for($i=0;$i<$rest;$i++){
-            $seq='0'.$seq;
-        }
-
-        return $seq;
-    }
+    
 
 
 }
