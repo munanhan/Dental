@@ -246,8 +246,14 @@
                 <el-button class="medical-button">正畸病历</el-button>
             </div>
         </div>
-        <initial-diagnosis :show.sync="intdiag_show"></initial-diagnosis>
-        <subsequent-visit :show.sync="subvisit_show"></subsequent-visit>
+        <initial-diagnosis
+            :show.sync="intdiag_show"
+            :addInitial="medicalInfo"
+        ></initial-diagnosis>
+        <subsequent-visit
+            :show.sync="subvisit_show"
+            :addSubsequent="medicalInfo"
+        ></subsequent-visit>
     </div>
 </template>
 
@@ -263,6 +269,10 @@ export default {
     props: {
         refresh: {
             type: Boolean,
+            required: true
+        },
+        medicalInfo: {
+            type: Object,
             required: true
         }
     },

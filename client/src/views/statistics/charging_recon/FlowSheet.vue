@@ -37,7 +37,7 @@
                     <el-option
                         v-for="item in doctors"
                         :key="item.id"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.id"
                     >
                     </el-option>
@@ -67,71 +67,73 @@
                 :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
                 :height="tableHeight"
                 show-summary
+                :summary-method="getSummaries"
             >
                 <el-table-column
                     label="单据时间"
                     width="120"
                     align="center"
+                    prop="charge_date"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="case_id"
                     label="病历号"
                     width="120"
                     align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="patient_name"
                     label="患者姓名"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="status"
                     label="单据状态"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="id"
                     label="单据编号"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="charging_type"
                     label="类型"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="receivable"
                     label="应收"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="receipts"
                     label="实收"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="chshier"
                     label="收银员"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="doctor"
                     label="医生"
                     align="center"
                     show-overflow-tooltip
@@ -161,6 +163,7 @@
 </template>
 
 <script>
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
 export default {
     name: "FlowSheet",
     components: {},
@@ -176,7 +179,7 @@ export default {
 
             tableData: [],
 
-            doctors: [{ id: 0, label: "小李" }, { id: 1, label: "小张" }],
+            doctors: [],
 
             search: {
                 dateRange: [new Date(), new Date()],
@@ -248,7 +251,8 @@ export default {
             let that = this;
             if (newValue) {
                 that.resizeTable();
-
+                that.getSelect();
+                that.getData();
                 that.$emit("update:update", false);
             }
         }
@@ -285,9 +289,105 @@ export default {
 
         getData() {
             let that = this;
+            let parms = {};
+
+            parms.dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            parms.dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            parms.doctor_id = that.search.doctor;
+
+            parms.current_page = that.pager.current;
+
+            parms.page_size = that.pager.size;
+
+            that.$api.flow_sheet.get(parms)
+                .then(res => {
+                  if(res.code == 200){
+                        that.tableData = res.data.row;
+                        that.pager.total = res.data.total;
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "get error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
         },
 
-        exportExcel() {}
+          getSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+            columns.forEach((column, index) => {
+              if (index === 0) {
+                sums[index] = '合计';
+                return;
+              }
+              const values = data.map(item => Number(item[column.property]));
+              
+              if (column.property == 'receivable' || column.property == 'receipts') {
+                  if (!values.every(value => isNaN(value))) {
+                    sums[index] = values.reduce((prev, curr) => {
+                      const value = Number(curr);
+                      if (!isNaN(value)) {
+                        return prev + curr;
+                      } else {
+                        return prev;
+                      }
+                    }, 0);
+                    sums[index] += ' 元';
+                  } else {
+                    sums[index] = '';
+                  }
+              }
+            });
+
+            return sums;
+          },
+
+        getSelect(){
+            let that = this;
+            that.$api.flow_sheet.getSelect()
+                .then(res => {
+                  if(res.code == 200){
+                        that.doctors = res.data;
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "get error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
+        },
+
+        exportExcel() {
+            let that = this;
+            let dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            let dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            let doctor = '';
+
+            if (that.search.doctor.length > 0) {
+                for (var i = 0,len = that.search.doctor.length; i < len; i++) {
+                    doctor+= '&doctor_id[]='+that.search.doctor[i];
+                }
+            }
+            let url = (window.HOSTNAME || '')+'/api/flow_sheet/export?dtfm='+dtfm+'&dtto='+dtto+doctor;
+            let token = getCookie("token");
+            // console.log(url);
+            downloadFile(url,{'Authorization':token},'流水单');
+        }
     }
 };
 </script>

@@ -36,7 +36,7 @@
                     <el-option
                         v-for="item in person_handling"
                         :key="item.id"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.id"
                     >
                     </el-option>
@@ -71,52 +71,53 @@
                     label="发生日期"
                     width="120"
                     align="center"
+                    prop="date"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="handler"
                     label="经手人"
                     width="120"
                     align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="charge_person"
                     label="负责人"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="expenditure_type"
                     label="支出类别"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="expenditure_content"
                     label="支出明细"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="expenditure_money"
                     label="支出金额"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="expenditure_method"
                     label="付款方式"
                     align="center"
                     show-overflow-tooltip
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="remark"
                     label="备注"
                     align="center"
                     show-overflow-tooltip
@@ -146,6 +147,7 @@
 </template>
 
 <script>
+import { setCookie,getCookie,downloadFile } from "../../../common/util";
 export default {
     name: "ReconCalendar",
     components: {},
@@ -161,14 +163,13 @@ export default {
 
             tableData: [],
 
-            person_handling: [
-                { id: 0, label: "小李" },
-                { id: 1, label: "小张" }
-            ],
+            person_handling: [],
 
             search: {
-                dateRange: [new Date(), new Date()]
+                dateRange: [new Date(), new Date()],
+                doctor:[]
             },
+
 
             pager: {
                 total: 0,
@@ -235,7 +236,8 @@ export default {
             let that = this;
             if (newValue) {
                 that.resizeTable();
-
+                that.getSelect();
+                that.getData();
                 that.$emit("update:update", false);
             }
         }
@@ -272,9 +274,68 @@ export default {
 
         getData() {
             let that = this;
+            let parms = {};
+            parms.dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            parms.dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            parms.handler = that.search.doctor;
+
+            that.$api.expenditure_statistics.get(parms)
+                .then(res => {
+                  if(res.code == 200){
+                        that.tableData = res.data;
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "get error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
+        },
+        getSelect(){
+            let that = this;
+            that.$api.expenditure_statistics.getSelect()
+                .then(res => {
+                  if(res.code == 200){
+                        that.person_handling = res.data;
+                   }
+                   else{
+                       that.$message.error(
+                            res.msg || "get error."
+                        );
+                   }
+                })
+                .catch(res => {
+                   // console.log(res);
+                });
         },
 
-        exportExcel() {}
+        exportExcel() {
+            let that = this;
+            let dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            let dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+            let handler = '';
+
+            if (that.search.doctor.length > 0) {
+                for (var i = 0,len = that.search.doctor.length; i < len; i++) {
+                    handler+= '&handler[]='+that.search.doctor[i];
+                }
+            }
+            let url = (window.HOSTNAME || '')+'/api/expenditure_statistics/export?dtfm='+dtfm+'&dtto='+dtto+handler;
+            let token = getCookie("token");
+            console.log(url);
+            downloadFile(url,{'Authorization':token},'支出清单');
+        }
     }
 };
 </script>

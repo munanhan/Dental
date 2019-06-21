@@ -21,7 +21,43 @@ class PatientOrderController extends BaseController
                               'users' => 'users.id = patient_orders.cashier_id'
                           ];
 
+            $this->search_date = [ 'charge_date' ];
+
             parent::__construct($request);
+
+            $this->set();
+
+            $this->export = [ 'charge_date' => '收费时间',
+                              'case_id' => '病历号',
+                              'patient_name' => '患者姓名',
+                              'receivable' => '本次应收费用',
+                              'discount_amount' => '折扣金额',
+                              'receipts' => '实收金额',
+                              'charging_type' => '收费类型',
+                              'arrearage' => '本次欠费',
+                              'last_arrearage' => '上次欠费',
+                              'doctor' => '负责医生',
+                              'nurse' => '负责护士',
+                              'cashier' => '收款人'
+                            ];
+
+        }
+
+        public function set(){
+            //设置参数和条件
+
+            if(isset($this->parms['dim'])){
+
+                $this->where[] = [ '(patients.patient_name','=','patient_name','or' ];
+                $this->where[] = [ 'patients.patient_phone','=','phone','or' ];
+                $this->where[] = [ 'patients.case_id','=','case_id)' ];
+
+                $this->parms['patient_name'] = $this->parms['dim'];
+                $this->parms['phone'] = $this->parms['dim'];
+                $this->parms['case_id'] = $this->parms['dim'];
+
+                unset($this->parms['dim']);
+            }
 
         }
 

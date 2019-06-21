@@ -127,6 +127,19 @@ return [
 
     'PrivilegeController' => [
                                 'update' => [ 'role_id' => 'unique:角色id|type:int' ]
-                             ]
+                             ],
+
+    'ExpenditureController' => [
+                                  'addData' => [ 'date' => 'unique:日期|type:date',
+                                                 'handler' => 'unique:经手人|type:int',
+                                                 'expenditure_type' => 'unique:支出类别|type:int',
+                                                 'expenditure_method' => 'unique:付款方式|type:int',
+                                                 'expenditure_money' => 'normal:支出金额|type:number|min:0.01'
+                                               ]
+                               ],
+
+    'ExpenditureTypeController' => [ 'addData' => ['expenditure_type' => 'unique:支出类别|type:string'] ],
+
+    'ExpenditureMethodController' => [ 'addData' => ['expenditure_method' => 'unique:付款方式|type:string'] ],
 
 ];

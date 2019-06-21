@@ -154,12 +154,23 @@
                         <el-input v-model="form.group"></el-input>
                     </el-form-item>
                 </div>
-                <el-form-item
-                    label="患者备注"
-                    style="width:700px"
-                >
-                    <el-input></el-input>
-                </el-form-item>
+                <div style="display:flex">
+                    <el-form-item
+                        label="患者备注"
+                        class="left-width"
+                        prop="email"
+                    >
+                        <el-input v-model="form.patient_content"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                        label="民族"
+                        class="right-width"
+                        style="margin-left:30px"
+                        prop="group"
+                    >
+                        <el-input v-model="form.nation"></el-input>
+                    </el-form-item>
+                </div>
                 <div style="display:flex">
                     <el-form-item
                         label="介绍人"
@@ -189,7 +200,11 @@
                 </div>
                 <div style="display:flex">
                     <el-form-item label="联系地址">
-                        <el-select
+                        <el-input
+                            v-model="form.address"
+                            style="width:620px"
+                        ></el-input>
+                        <!-- <el-select
                             style="width:620px"
                             v-model="form.value"
                             placeholder="请选择"
@@ -201,7 +216,7 @@
                                 :value="item.value"
                             >
                             </el-option>
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -410,7 +425,7 @@
                 :loading="commitLoading"
                 type="primary"
             >确 定</el-button>
-            <el-button @click="new_relat">新增关系</el-button>
+            <!-- <el-button @click="new_relat">新增关系</el-button> -->
             <el-button @click="closeDialog">取 消</el-button>
 
             <membership-grade :show.sync="memgrade_show"></membership-grade>
@@ -523,7 +538,10 @@ export default {
                 teeth: "",
                 member_gard: "",
                 email: "",
-                medical_record: ""
+                medical_record: "",
+                patient_content: "",
+                nation: "",
+                address: ""
             },
             rules: {
                 name: [

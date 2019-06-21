@@ -675,7 +675,97 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * created for yu
      */
 
-    Route::get('patient_order','PatientOrderController@index');//角色菜单列表
+    Route::get('patient_order','PatientOrderController@index');//列表
+
+    Route::get('patient_order/export','PatientOrderController@export');//导出
+
+    /*
+     * Route ExpenditureController Api
+     * created for yu
+     */
+
+    Route::get('expenditure','ExpenditureController@index');//列表
+
+    Route::get('expenditure/get_by_id','ExpenditureController@getById');//根据id获取
+
+    Route::post('expenditure', 'ExpenditureController@addData');//添加
+
+    Route::put('expenditure', 'ExpenditureController@update');//修改
+
+    Route::delete('expenditure/{id}', 'ExpenditureController@delete');//删除
+
+    Route::get('expenditure/export','ExpenditureController@export');//导出
+
+    Route::get('expenditure/get_select','ExpenditureController@getSelect');//列表
+
+
+    /*
+     * Route ExpenditureTypeController Api
+     * created for yu
+     */
+
+    Route::get('expenditure_type','ExpenditureTypeController@index');//列表
+
+    Route::get('expenditure_type/get_by_id','ExpenditureTypeController@getById');//根据id获取
+
+    Route::post('expenditure_type', 'ExpenditureTypeController@addData');//添加
+
+    Route::put('expenditure_type', 'ExpenditureTypeController@update');//修改
+
+    Route::delete('expenditure_type/{id}', 'ExpenditureTypeController@delete');//删除
+
+    /*
+     * Route ExpenditureMethodController Api
+     * created for yu
+     */
+
+    Route::get('expenditure_method','ExpenditureMethodController@index');//列表
+
+    Route::get('expenditure_method/get_by_id','ExpenditureMethodController@getById');//根据id获取
+
+    Route::post('expenditure_method', 'ExpenditureMethodController@addData');//添加
+
+    Route::put('expenditure_method', 'ExpenditureMethodController@update');//修改
+
+    Route::delete('expenditure_method/{id}', 'ExpenditureMethodController@delete');//删除
+
+    /*
+     * Route ReconCalendarController Api
+     * created for yu
+     */
+
+    Route::get('recon_calendar','ReconCalendarController@index');//列表
+
+    /*
+     * Route ExpenditureStatisticsController Api
+     * created for yu
+     */
+
+    Route::get('expenditure_statistics','ExpenditureStatisticsController@index');//列表
+
+    Route::get('expenditure_statistics/export','ExpenditureStatisticsController@export');//导出
+
+    Route::get('expenditure_statistics/get_select','ExpenditureStatisticsController@getSelect');//下拉列表
+
+    /*
+     * Route ArrearageStatisticsController Api
+     * created for yu
+     */
+
+    Route::get('arrearage_statistics','ArrearageStatisticsController@index');//列表
+
+    Route::get('arrearage_statistics/export','ArrearageStatisticsController@export');//导出
+
+    /*
+     * Route FlowSheetController Api
+     * created for yu
+     */
+
+    Route::get('flow_sheet','FlowSheetController@index');//列表
+
+    Route::get('flow_sheet/export','FlowSheetController@export');//导出
+
+    Route::get('flow_sheet/get_select','FlowSheetController@getSelect');//下拉列表
 
 
 
@@ -685,7 +775,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     
 Route::group(['namespace'=>'Api'], function(){
 
-    Route::get('test','Test@index');//测试接口
+    Route::get('test','ExpenditureController@getBySelect');//测试接口
 });
     
 

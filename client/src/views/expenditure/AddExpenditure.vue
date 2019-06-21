@@ -37,17 +37,17 @@
                     <el-col :span="12">
                         <el-form-item
                             label="经手人"
-                            prop="handling"
+                            prop="handler"
                         >
                             <el-select
-                                v-model="form.handling"
+                                v-model="form.handler"
                                 collapse-tags
                                 class="width100"
                             >
                                 <el-option
                                     v-for="item in handlingList"
                                     :key="item.id"
-                                    :label="item.label"
+                                    :label="item.name"
                                     :value="item.id"
                                 >
                                 </el-option>
@@ -57,10 +57,10 @@
                     <el-col :span="12">
                         <el-form-item
                             label="负责人"
-                            prop="leading"
+                            prop="charge_person"
                         >
                             <el-input
-                                v-model.trim="form.leading"
+                                v-model.trim="form.charge_person"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -70,18 +70,18 @@
                     <el-col :span="12">
                         <el-form-item
                             label="支出类别"
-                            prop="expenditure_category"
+                            prop="expenditure_type"
                         >
                             <div class="sub-form-item">
                                 <el-select
-                                    v-model="form.expenditure_category"
+                                    v-model="form.expenditure_type"
                                     collapse-tags
                                     class="width100"
                                 >
                                     <el-option
                                         v-for="item in expenditureCategory"
                                         :key="item.id"
-                                        :label="item.label"
+                                        :label="item.expenditure_type"
                                         :value="item.id"
                                     >
                                     </el-option>
@@ -97,10 +97,10 @@
                     <el-col :span="12">
                         <el-form-item
                             label="支出明细"
-                            prop="expenditure_details"
+                            prop="expenditure_content"
                         >
                             <el-input
-                                v-model="form.expenditure_details"
+                                v-model="form.expenditure_content"
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
@@ -110,10 +110,10 @@
                     <el-col :span="12">
                         <el-form-item
                             label="支出金额"
-                            prop="amount"
+                            prop="expenditure_money"
                         >
                             <el-input-number
-                                v-model="form.amount"
+                                v-model="form.expenditure_money"
                                 controls-position="right"
                                 class="width100"
                             ></el-input-number>
@@ -122,18 +122,18 @@
                     <el-col :span="12">
                         <el-form-item
                             label="付款方式"
-                            prop="pay_type"
+                            prop="expenditure_method"
                         >
                             <div class="sub-form-item">
                                 <el-select
-                                    v-model="form.pay_type"
+                                    v-model="form.expenditure_method"
                                     collapse-tags
                                     class="width100"
                                 >
                                     <el-option
                                         v-for="item in payType"
                                         :key="item.id"
-                                        :label="item.label"
+                                        :label="item.expenditure_method"
                                         :value="item.id"
                                     >
                                     </el-option>
@@ -168,7 +168,7 @@
                 >取 消</el-button>
                 <el-button
                     type="primary"
-                    @click="addCommit"
+                    @click="addData"
                     :loading="commitLoading"
                 >确 定</el-button>
                 <!-- :disabled="!$check_pm('resume_add') || analyzeLoading" -->
@@ -201,15 +201,17 @@ export default {
     data() {
         return {
             // commitLoading: false,
+            apiType:'expenditure',
 
             form: {
                 date: new Date(),
-                pay_type: "",
-                leading: "",
+                handler: undefined,
+                charge_person:'',
                 remark: "",
-                amount: 0,
-                expenditure_category: "",
-                expenditure_details: ""
+                expenditure_money: 0,
+                expenditure_type: "",
+                expenditure_method: "",
+                expenditure_content:'',
             },
             formRules: {
                 date: [
@@ -219,14 +221,14 @@ export default {
                         trigger: "blur"
                     }
                 ],
-                handling: [
+                handler: [
                     {
                         required: true,
-                        message: "请输入负责人",
+                        message: "请输入经手人",
                         trigger: "blur"
                     }
                 ],
-                pay_type: [
+                expenditure_method: [
                     {
                         required: true,
                         message: "请输入付款方式",
@@ -240,7 +242,7 @@ export default {
                         trigger: "blur"
                     }
                 ],
-                expenditure_category: [
+                expenditure_type: [
                     {
                         required: true,
                         message: "请输入支出类别",
@@ -249,16 +251,11 @@ export default {
                 ]
             },
 
-            handlingList: [{ id: 0, label: "小李" }, { id: 1, label: "小张" }],
+            handlingList: [],
 
-            payType: [{ id: 1, label: "现金" }, { id: 2, label: "转账" }],
+            payType: [],
 
-            expenditureCategory: [
-                { id: 1, label: "房租水电" },
-                { id: 2, label: "工资奖金" },
-                { id: 3, label: "药品耗材" },
-                { id: 4, label: "外加工费用" }
-            ],
+            expenditureCategory: [],
 
             expenditureCategoryDialog: false,
             payTypeDialog: false
@@ -266,13 +263,41 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {},
+    watch: {
+        show(newValue,oldValue){
+            if (newValue) {
+                let that = this;
+                that.$api.expenditure.getSelect()
+                    .then(res => {
+                        that.handlingList = res.data.user;
+                        that.expenditureCategory = res.data.expenditure_type;
+                        that.payType = res.data.expenditure_method;
+
+                    })
+                    .catch(res => {
+                       // console.log(res);
+                    });
+            }
+        }
+    },
     computed: {},
     methods: {
 
-        updateCategroy(list) {},
+        updateCategroy(list) {
+            let that = this;
+            that.expenditureCategory = list;
+        },
 
-        updatePayType(list) {}
+        updatePayType(list) {
+            let that = this;
+            that.payType = list;
+        },
+
+        addData(){
+            let that = this;
+            that.form.date = typeof that.form.date == 'object'?that.form.date.toLocaleDateString():that.form.date;
+            that.addCommit();
+        }
     }
 };
 </script>
