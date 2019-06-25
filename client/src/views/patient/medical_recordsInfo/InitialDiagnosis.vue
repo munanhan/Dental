@@ -10,7 +10,7 @@
         top="2vh"
     >
         <el-form
-            ref="form"
+            ref="initialform"
             :model="form"
             label-width="80px"
             :rules="rules"
@@ -23,10 +23,7 @@
                                 label="病历模板"
                                 name="medicalTemplates"
                             >
-                                <div
-                                    class="left-tree"
-                                    style="height:250px;overflow: auto"
-                                >
+                                <div class="left-tree">
                                     <el-tree
                                         :data="initialData"
                                         @node-click="handleNodeClick"
@@ -86,6 +83,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.main_complain"
+                            @click="transmission('aaaaa', templateContent.main_complain)"
                         >
                             <div class="lowerleft-left">主诉</div>
                             <div class="lowerleft-right">
@@ -95,6 +93,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.now_history"
+                            @click="transmission('bbbbb', templateContent.now_history)"
                         >
                             <div class="lowerleft-left">现病史</div>
                             <div class="lowerleft-right">
@@ -104,6 +103,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.previous_history"
+                            @click="transmission('ccccc', templateContent.previous_history)"
                         >
                             <div class="lowerleft-left">既往史</div>
                             <div class="lowerleft-right">
@@ -113,6 +113,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.inspect"
+                            @click="transmission('ddddd', templateContent.inspect)"
                         >
                             <div class="lowerleft-left">检查</div>
                             <div class="lowerleft-right">
@@ -122,6 +123,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.auxiliary"
+                            @click="transmission('eeeee', templateContent.auxiliary)"
                         >
                             <div class="lowerleft-left">辅助检查</div>
                             <div class="lowerleft-right">
@@ -131,6 +133,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.diagnosis"
+                            @click="transmission('fffff', templateContent.diagnosis)"
                         >
                             <div class="lowerleft-left">诊断</div>
                             <div class="lowerleft-right">
@@ -140,6 +143,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.treatment_plan"
+                            @click="transmission('ggggg', templateContent.treatment_plan)"
                         >
                             <div class="lowerleft-left">治疗方案</div>
                             <div class="lowerleft-right">
@@ -149,6 +153,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.treatment"
+                            @click="transmission('hhhhh', templateContent.treatment)"
                         >
                             <div class="lowerleft-left">治疗</div>
                             <div class="lowerleft-right">
@@ -158,6 +163,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.doctor_advice"
+                            @click="transmission('iiiii', templateContent.doctor_advice)"
                         >
                             <div class="lowerleft-left">医嘱</div>
                             <div class="lowerleft-right">
@@ -247,10 +253,10 @@
                     <div class="right-middle">
                         <div style="display:flex">
                             <el-button class="middle-button">Ω特殊符号</el-button>
-                            <el-checkbox
+                            <!-- <el-checkbox
                                 class="middle-checkbox"
                                 v-model="form.checked"
-                            ><span style="font-size:15px;color:#000">牙位同步</span></el-checkbox>
+                            ><span style="font-size:15px;color:#000">牙位同步</span></el-checkbox> -->
                         </div>
                         <div class="middle-table">
                             <table border="1">
@@ -261,7 +267,7 @@
                                 </tr>
                                 <tr>
                                     <td align="center">现 病 史</td>
-                                    <input v-bind="form.history">
+                                    <input v-model="form.history">
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
                                 <tr>
@@ -274,12 +280,18 @@
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
-                                    <input class="middle-input">
+                                    <input
+                                        v-model="form.check"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                 </tr>
                                 <tr>
-                                    <td align="center">主页检查</td>
-                                    <input class="middle-input">
+                                    <td align="center">辅助检查</td>
+                                    <input
+                                        v-model="form.auxiliarycheck"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                     <!-- <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
@@ -290,22 +302,34 @@
                                 </tr>
                                 <tr>
                                     <td align="center">诊 断</td>
-                                    <input class="middle-input">
+                                    <input
+                                        v-model="form.diagnosi"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                 </tr>
                                 <tr>
                                     <td align="center">治疗方案</td>
-                                    <input class="middle-input">
+                                    <input
+                                        v-model="form.treatmentOptions"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                 </tr>
                                 <tr>
                                     <td align="center">治疗</td>
-                                    <input class="middle-input">
+                                    <input
+                                        v-model="form.treatment"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                 </tr>
                                 <tr>
                                     <td align="center">医嘱</td>
-                                    <input style="height:35px">
+                                    <input
+                                        v-model="form.advice"
+                                        style="height:35px"
+                                    >
                                 </tr>
                             </table>
                             <div class="bottom-image">
@@ -371,12 +395,17 @@ export default {
             form: {
                 value1: new Date(),
                 radio: "1",
-                checked: "",
-
+                check: "",
+                cheack: "",
                 complain: "",
                 history: "",
                 previous: "",
-                allergy: ""
+                allergy: "",
+                treatment: "",
+                auxiliarycheck: "",
+                diagnosi: "",
+                treatmentOptions: "",
+                advice: ""
 
                 // defaultProps: {
                 //   children: "children",
@@ -384,7 +413,9 @@ export default {
                 // },
             },
 
-            data: {}
+            data: {},
+
+            aaa: []
         };
     },
     watch: {
@@ -411,6 +442,8 @@ export default {
             if (newValue) {
                 let that = this;
                 that.getMenu();
+            } else {
+                this.templateContent = [];
             }
         },
 
@@ -422,6 +455,9 @@ export default {
         }
     },
     methods: {
+        afterClose() {
+            this.$refs["initialform"].resetFields();
+        },
         getMenu() {
             //获取菜单
             let that = this;
@@ -488,6 +524,47 @@ export default {
                     }
                 })
                 .catch(res => {});
+        },
+
+        transmission(type, value) {
+            let that = this;
+            switch (type) {
+                case "aaaaa":
+                    that.form.complain = value;
+                    break;
+                case "bbbbb":
+                    that.form.history = value;
+                    break;
+                case "ccccc":
+                    that.form.previous = value;
+                    break;
+                case "ddddd":
+                    that.form.check = value;
+                    break;
+                case "eeeee":
+                    that.form.auxiliarycheck = value;
+                    break;
+                case "fffff":
+                    that.form.diagnosi = value;
+                    break;
+                case "ggggg":
+                    that.form.treatmentOptions = value;
+                    break;
+                case "hhhhh":
+                    that.form.treatment = value;
+                    break;
+                case "iiiii":
+                    that.form.advice = value;
+                    break;
+            }
+            // switch(){
+            //     case:
+
+            //     break;
+
+            //     default:
+            //         break;
+            // }
         }
 
         // setData(data){
@@ -517,6 +594,8 @@ export default {
             width: 400px;
             height: 293px;
             .left-tree {
+                height: 250px;
+                overflow: auto;
                 .custom-tree-node {
                     // border: 1px solid #ccc;
                     width: 100%;
@@ -677,6 +756,7 @@ export default {
                         color: #949494;
                         font-size: 25px;
                         padding-top: 35px;
+                        // transition: all 0.2s;
                         padding-left: 40px;
                     }
                 }

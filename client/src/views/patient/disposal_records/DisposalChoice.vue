@@ -1,416 +1,584 @@
 <template>
-    <el-dialog
-        title="处置选择"
-        :visible.sync="show"
-        :before-close="closeDialog"
-        class="custom-dialog"
-        :close-on-click-modal="false"
-        v-dialog-drag
-        width="1010px"
-        top="2vh"
-    >
-        <div class="dispos-content">
-            <div class="dispos-tabs">
-                <el-tabs
-                    v-model="activeName"
-                    class="tabs"
+    <div>
+        <el-dialog
+            title="处置选择"
+            :visible.sync="show"
+            width="1200px"
+            :before-close="closeDialog"
+            :close-on-click-modal="false"
+            v-dialog-drag
+        >
+            <!-- <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form-item label="组合名称" prop="combo_name">
+            <el-input v-model="form.combo_name"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('form')">确定</el-button>
+            <el-button @click="closethisDialog">关闭</el-button>
+          </el-form-item>
+
+        </el-form> -->
+            <el-container>
+                <el-header
+                    class="header"
+                    style="height: 37px;"
                 >
-                    <el-tab-pane
-                        label="处置选择"
-                        name="disposal-choice"
-                        class="disposal-choice"
+                    <div class="title">处置选择</div>
+                </el-header>
+                <el-container>
+                    <el-aside
+                        style="height:600px;"
+                        class="aside"
                     >
-                        <div style="display:flex">
-                            <div class="choice-left-content">
-                                <div class="choice-upperleft">
-                                    <div class="title">
-                                        费用大类
-                                    </div>
-                                    <div style="height:300px;overflow: auto">
-                                        <el-table
-                                            style="cursor: pointer;"
-                                            :data="menuData"
-                                            stripe
-                                            border
-                                            :show-header="false"
-                                            highlight-current-row
-                                        >
-                                            <el-table-column prop="category">
-                                            </el-table-column>
-                                        </el-table>
-                                    </div>
-                                </div>
-                                <div class="choice-lowerleft"></div>
-                            </div>
-                            <div class="choice-right-content">
-                                <div class="choice-upperright">
-                                    <div
-                                        style="display:flex"
-                                        class="upperight-top"
-                                    >
-                                        <el-input
-                                            class="upperight-top-input"
-                                            placeholder="请输入内容"
-                                        >
-                                            <el-button
-                                                slot="append"
-                                                icon="el-icon-search"
-                                            ></el-button>
-                                        </el-input>
-                                        <el-radio
-                                            class="upperight-top-radio"
-                                            v-model="radio"
-                                            label="1"
-                                        >非医保项目</el-radio>
-                                        <el-radio
-                                            class="upperight-top-radio"
-                                            v-model="radio"
-                                            label="2"
-                                        >医保项目</el-radio>
-                                        <i
-                                            @click="disCharge"
-                                            class="el-icon-setting form-setting"
-                                        ></i>
-
-                                    </div>
-                                    <div class="upperight-middle">
-                                        <el-table
-                                            :data="tableData"
-                                            border
-                                            highlight-current-row
-                                            height="250"
-                                            style="width: 100%;margin-left:10px;cursor: pointer;"
-                                        >
-                                            <el-table-column
-                                                prop="add"
-                                                label="添加"
-                                                align="center"
-                                                width="60"
-                                            >
-                                                <el-tooltip
-                                                    effect="dark"
-                                                    content="添加"
-                                                    placement="bottom"
-                                                >
-                                                    <el-button
-                                                        circle
-                                                        size="mini"
-                                                        icon="el-icon-plus"
-                                                    ></el-button>
-                                                </el-tooltip>
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="name"
-                                                label="处置编号"
-                                                align="center"
-                                                width="90"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="address"
-                                                label="处置名称"
-                                                align="center"
-                                                width="90"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="date"
-                                                label="单位"
-                                                align="center"
-                                                width="70"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="name"
-                                                label="单价"
-                                                align="center"
-                                                width="70"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="address"
-                                                label="是否医保"
-                                                align="center"
-                                                width="80"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="name"
-                                                label="处置备注"
-                                                align="center"
-                                                width="100"
-                                            >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="address"
-                                                label="费用类型"
-                                                align="center"
-                                            >
-                                            </el-table-column>
-                                        </el-table>
-                                    </div>
-                                    <div class="upperight-bottom">
-                                        <div class="upperight-top-content">
-                                            <div class="upperight-text">已选择的处置项目：</div>
-                                            <el-button
-                                                style="height:40px"
-                                                type="success"
-                                                plain
-                                            ><i class="el-icon-bottom"></i>添加</el-button>
-                                            <el-button
-                                                type="danger"
-                                                plain
-                                                style="height:40px"
-                                            ><i class="el-icon-top"></i>删除</el-button>
-                                        </div>
-                                        <div class="upperight-table">
-                                            <el-table
-                                                :data="tableData2"
-                                                border
-                                                height="230"
-                                                highlight-current-row
-                                                style="width:100%"
-                                            >
-                                                <el-table-column
-                                                    prop="delete"
-                                                    label="删除"
-                                                    align="center"
-                                                    width="60"
-                                                >
-                                                    <template slot-scope="scope">
-                                                        <el-tooltip
-                                                            effect="dark"
-                                                            content="删除"
-                                                            placement="bottom"
-                                                        >
-                                                            <el-button
-                                                                type="danger"
-                                                                size="mini"
-                                                                icon="el-icon-delete"
-                                                                circle
-                                                                @click.stop="del(scope.row, scope.$index)"
-                                                            ></el-button>
-                                                        </el-tooltip>
-                                                    </template>
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="name"
-                                                    label="处置编码"
-                                                    align="center"
-                                                    width="100"
-                                                >
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="address"
-                                                    label="处置名称"
-                                                    align="center"
-                                                    width="130"
-                                                >
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="date"
-                                                    label="单位"
-                                                    align="center"
-                                                    width="100"
-                                                >
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="name"
-                                                    label="单价"
-                                                    align="center"
-                                                    width="100"
-                                                >
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="address"
-                                                    align="center"
-                                                    label="费用类型"
-                                                    width="90"
-                                                >
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="address"
-                                                    align="center"
-                                                >
-                                                </el-table-column>
-                                            </el-table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </el-tab-pane>
-
-                    <el-tab-pane
-                        label="处置组合"
-                        name="disposal-combination"
-                        class="disposal-combination"
-                    >
-                        <div class="combination-content">
-                            <div style="display:flex">
-                                <div class="combination-left-content">
-                                    <div class="upperleft-content">
-                                        <el-input>
-                                            <el-button
-                                                slot="append"
-                                                icon="el-icon-search"
-                                            ></el-button>
-                                        </el-input>
-                                        <div class="combination-upperleft"></div>
-                                    </div>
-                                    <div class="combination-lowerleft"></div>
-                                </div>
-
-                                <div class="combination-right-content">
+                        <el-row>
+                            <div class="cost_type">费用大类</div>
+                        </el-row>
+                        <el-row>
+                            <el-col
+                                :span="24"
+                                class="left_menu"
+                            >
+                                <div class="menu_content">
                                     <el-table
-                                        :data="tableData"
+                                        :data="menuData"
+                                        stripe
                                         border
-                                        show-summary
-                                        height="600px"
-                                        style="width: 100%"
+                                        :show-header="false"
+                                        highlight-current-row
+                                        @row-click="getMenuTableData"
                                     >
-                                        <el-table-column
-                                            prop="date"
-                                            label="删除"
-                                            align="center"
-                                            width="60"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="处置编码"
-                                            align="center"
-                                            width="100"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="address"
-                                            label="处置名称"
-                                            align="center"
-                                            width="100"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="date"
-                                            label="单位"
-                                            align="center"
-                                            width="100"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="单价"
-                                            align="center"
-                                            width="100"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="address"
-                                            align="center"
-                                            label="数量"
-                                            width="80"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="费用"
-                                            align="center"
-                                            width="100"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="address"
-                                            label="费用类型"
-                                            align="center"
-                                        >
+                                        <el-table-column prop="category">
                                         </el-table-column>
                                     </el-table>
+
                                 </div>
-                            </div>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
-        </div>
-        <div
-            slot="footer"
-            class="dialog-footer"
-        >
-            <el-button @click="closeDialog">取 消</el-button>
-            <el-button
-                :loading="commitLoading"
-                type="primary"
-            >确 定</el-button>
-        </div>
-        <disposal-charge :show.sync="dischargeShow"></disposal-charge>
-    </el-dialog>
-</template>
+                            </el-col>
+                        </el-row>
+                    </el-aside>
+                    <el-container>
+                        <el-main class="main">
+                            <el-row>
+                                <div class="search">
+                                    <el-col :span="8">
+                                        <span class="mr10">
+                                            <el-input
+                                                v-model="search.disposal_name"
+                                                placeholder="名字"
+                                            ></el-input>
+                                        </span>
+                                    </el-col>
+                                    <el-col
+                                        :span="2"
+                                        style="margin-left: 10px;"
+                                    >
+                                        <span class="">
+                                            <el-button
+                                                type="primary"
+                                                @click="searchData"
+                                            >查询</el-button>
+                                        </span>
+                                    </el-col>
+                                    <el-col
+                                        :span="2"
+                                        :offset="11"
+                                    >
+                                        <!-- <i
+                            class="fa fa-cog"
+                            style="margin-top:10px;
+                                   font-size:20px;
+                                   cursor:pointer;
+                                   margin-left:10px;
+                                   float:right;"
+                                   @click="showDisposalDialog"
+                            ></i> -->
+                                    </el-col>
 
+                                </div>
+                            </el-row>
+                            <el-table
+                                :data="tableData"
+                                stripe
+                                border
+                                highlight-current-row
+                                height="260px"
+                                @row-click="selectDisposal"
+                            >
+
+                                <el-table-column
+                                    label="添加"
+                                    prop="add"
+                                    width="60px"
+                                >
+                                    <template slot-scope="scope">
+                                        <i
+                                            class="fa fa-plus"
+                                            style="
+                               font-size:20px;
+                               cursor:pointer;
+                               margin-left: 10px;
+                               "
+                                            @click="addDisposal(scope.row)"
+                                        ></i>
+
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    label="处置代码"
+                                    prop="disposal_code"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="处置名称"
+                                    prop="disposal_name"
+                                    width="150px"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="单位"
+                                    prop="unit"
+                                    width="100px"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="单价"
+                                    prop="price"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="是否医保"
+                                    prop="medical_insurance"
+                                    width="80px"
+                                >
+                                    <!--                     <template slot-scope="scope">
+                      <div v-if="scope.row.medical_insurance == 1">
+                         是
+                      </div>
+                      <div v-if="scope.row.medical_insurance == 0">
+                         否
+                      </div>
+                    </template> -->
+                                </el-table-column>
+                                <el-table-column
+                                    label="处置备注"
+                                    prop="remarks"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    label="费用类型"
+                                    prop="category"
+                                >
+                                </el-table-column>
+                            </el-table>
+                            <el-row>
+                                <span style="margin: 5px">已选择处置项目:</span>
+                                <el-button
+                                    style="margin: 5px"
+                                    type="success"
+                                    size="mini"
+                                    @click="addSelectDesposal"
+                                >↓ 添加</el-button>
+                                <el-button
+                                    style="margin: 5px"
+                                    type="warning"
+                                    size="mini"
+                                    @click="delSelectForm"
+                                >↑ 删除</el-button>
+                            </el-row>
+                            <el-row>
+                                <el-table
+                                    :data="form"
+                                    stripe
+                                    border
+                                    highlight-current-row
+                                    height="200px"
+                                    @row-click="selectForm"
+                                    :row-class-name="getSelectFormIndex"
+                                >
+                                    <el-table-column
+                                        label="删除"
+                                        width="60px"
+                                    >
+                                        <template slot-scope="scope">
+                                            <i
+                                                class="fa fa-trash-alt"
+                                                style="
+                                 font-size:20px;
+                                 cursor:pointer;
+                                 margin-left: 10px;
+                                 "
+                                                @click="delDisposal(scope.row,scope.$index)"
+                                            ></i>
+
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="处置代码"
+                                        prop="disposal_code"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="处置名称"
+                                        prop="disposal_name"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="单位"
+                                        prop="unit"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="单价"
+                                        prop="price"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="费用类型"
+                                        prop="category"
+                                    >
+                                    </el-table-column>
+                                </el-table>
+                            </el-row>
+                            <el-row>
+                            </el-row>
+                        </el-main>
+                    </el-container>
+                </el-container>
+                <el-footer class="footer">
+                    <el-row>
+                        <el-col
+                            :span="4"
+                            :offset="20"
+                        >
+                            <el-button
+                                type="primary"
+                                @click="submitForm('form')"
+                            >确定</el-button>
+                            <el-button @click="closethisDialog">关闭</el-button>
+                        </el-col>
+                    </el-row>
+                </el-footer>
+            </el-container>
+        </el-dialog>
+        <!-- 设置弹窗 -->
+        <!-- <disposal-charging
+      :show.sync="disposalChargingDialog"
+    >
+    </disposal-charging> -->
+
+    </div>
+</template> 
 <script>
-import DialogForm from "@/views/base/DialogForm";
-import DisposalCharge from "./DisposalCharge";
+import AddDialogForm from "@views/base/AddDialogForm";
+// import DisposalCharging from "./DisposalChargingDialog"
+
 export default {
-    name: "DisposalChoice",
-
-    mixins: [DialogForm],
-
+    name: "Add",
+    mixins: [AddDialogForm],
     components: {
-        DisposalCharge
+        //   DisposalCharging
     },
-    created() {
-        this.getMenu();
+    props: {
+        itemList: {
+            type: Array
+        },
+        comboId: {
+            type: Number,
+            default: 0
+        }
     },
     data() {
         return {
-            dischargeShow: false,
-            tableData2: [
-                {
-                    date: "02",
-                    name: "王小虎",
-                    address: "上海"
-                },
-                {
-                    date: "22",
-                    name: "王小虎",
-                    address: "上海"
-                },
-                {
-                    date: "201",
-                    name: "王小虎",
-                    address: "上海"
-                }
+            disposalChargingDialog: false,
+            select_disposal: {}, //选择的处置
+            select_form: {}, //选择的表单
+            menuData: [
+                // {
+                //   id:0,
+                //   catepory:'全部'
+                // },
+                // {
+                //   id:1,
+                //   catepory:'西药费'
+                // },
+                // {
+                //   id:2,
+                //   catepory:'放射费'
+                // },
+                // {
+                //   id:3,
+                //   catepory:'检查费'
+                // },
+                // {
+                //   id:4,
+                //   catepory:'诊疗费'
+                // },
+                // {
+                //   id:5,
+                //   catepory:'补牙费'
+                // },
+                // {
+                //   id:6,
+                //   catepory:'手术费'
+                // },
+                // {
+                //   id:7,
+                //   catepory:'正崎费'
+                // },
+                // {
+                //   id:8,
+                //   catepory:'拔牙费'
+                // },
+                // {
+                //   id:9,
+                //   catepory:'修复费'
+                // },
+                // {
+                //   id:10,
+                //   catepory:'其  他'
+                // },
             ],
             tableData: [
-                {
-                    date: "02",
-                    name: "王小虎",
-                    address: "上海"
-                },
-                {
-                    date: "22",
-                    name: "王小虎",
-                    address: "上海"
-                },
-                {
-                    date: "201",
-                    name: "王小虎",
-                    address: "上海"
-                }
+                // {
+                //    id:1,
+                //    disposal_code:7002,
+                //    disposal_name:'必兰麻',
+                //    unit:'项',
+                //    price:50.00,
+                //    medical_insurance:1,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:2,
+                //    disposal_code:7003,
+                //    disposal_name:'保丽净',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:3,
+                //    disposal_code:7005,
+                //    disposal_name:'芬必得',
+                //    unit:'项',
+                //    price:20.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'西药费'
+                // },
+                // {
+                //    id:4,
+                //    disposal_code:5001,
+                //    disposal_name:'口内根尖片',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:5,
+                //    disposal_code:5002,
+                //    disposal_name:'头颅定位侧位片',
+                //    unit:'项',
+                //    price:100.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:6,
+                //    disposal_code:5003,
+                //    disposal_name:'头颅定位正位片',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'放射费'
+                // },
+                // {
+                //    id:7,
+                //    disposal_code:7001,
+                //    disposal_name:'口腔检查',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'检查费'
+                // },
+                // {
+                //    id:8,
+                //    disposal_code:2001,
+                //    disposal_name:'单面洞',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'诊疗费'
+                // },
+                // {
+                //    id:9,
+                //    disposal_code:2005,
+                //    disposal_name:'超声波洁牙',
+                //    unit:'全口',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'手术费'
+                // },
+                // {
+                //    id:10,
+                //    disposal_code:1010,
+                //    disposal_name:'齿槽骨修正术',
+                //    unit:'次',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'手续费'
+                // },
+                // {
+                //    id:11,
+                //    disposal_code:4002,
+                //    disposal_name:'固定矫正',
+                //    unit:'项',
+                //    price:60.00,
+                //    medical_insurance:0,
+                //    remarks:'无',
+                //    cost_type:'正畸费'
+                // }
             ],
-            radio: "1",
-            activeName: "disposal-choice",
-            menuData: []
+            form: [
+                // {
+                //   disposal_id:1,
+                //   disposal_code:2005,
+                //   disposal_name:'超声波洁牙',
+                //   unit:'全口',
+                //   price:120.00,
+                //   cost_type:'诊疗费'
+                // }
+            ],
+            rules: {
+                combo_name: [
+                    {
+                        required: true,
+                        message: "请输入目录名称.",
+                        trigger: "blur"
+                    }
+                ]
+            },
+            search: {
+                disposal_name: ""
+            },
+            //         //要检查的字段
+            // checkField: {
+            //     name: "请输入姓名.",
+            //     phone: "请填写移动电话.",
+            //     password:'请输入密码',
+            //     role:'请选择职位'
+            // },
+            commitLoading: false
+            // tableData:[]
         };
     },
+    created() {},
+    mounted() {},
+    watch: {
+        // refresh(newValue, oldValue) {
+        //   let that = this;
 
+        //   if (newValue) {
+        //     that.getPatientInfo();
+        //   }
+        // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getMenu();
+                // console.log(that.itemList);
+                that.form = that.itemList;
+            }
+        }
+    },
+    computed: {},
     methods: {
-        disCharge() {
-            this.dischargeShow = true;
+        showDisposalDialog() {
+            this.disposalChargingDialog = true;
         },
-        del(row, index) {
+        getSelectFormIndex({ row, rowIndex }) {
+            //获取选中已选择处置的index
+            row.index = rowIndex; //每一行加入索引
+        },
+        selectDisposal(row) {
+            //被选中的处置行
+            // console.log(row);
+            this.select_disposal = row;
+        },
+        selectForm(row, event, column) {
+            console.log(row.index);
+            this.select_form = row;
+        },
+        addSelectDesposal() {
+            //添加被选中的处置
+            this.addDisposal(this.select_disposal);
+        },
+        delSelectForm() {
+            //删除被选中的处置
+            console.log(this.select_form);
+            if (Object.keys(this.select_form).length == 0) {
+                alert("请选择一项");
+            } else {
+                // console.log(this.select_form);
+                this.form = this.form
+                    .slice(0, this.select_form.index)
+                    .concat(
+                        this.form.slice(
+                            parseInt(this.select_form.index, 10) + 1
+                        )
+                    );
+            }
+        },
+        delDisposal(data, index) {
+            //删除处置
+            console.log(index);
+            this.form = this.form
+                .slice(0, index)
+                .concat(this.form.slice(parseInt(index, 10) + 1));
+            //删除元素
+        },
+        addDisposal(data) {
+            //添加处置
+            console.log(data);
+            if (Object.keys(data).length == 0) {
+                alert("请选择一项");
+            } else {
+                let new_data = JSON.parse(JSON.stringify(data));
+                new_data.desposal_id = new_data.id;
+                delete new_data.id;
+                this.form.push(new_data);
+            }
+            // let new_data = JSON.parse(JSON.stringify(data));
+            // new_data.desposal_id = new_data.id;
+            // delete new_data.id;
+            // this.form.push(new_data);
+        },
+        searchData() {
+            //查询
             let that = this;
-            that.tableData2.splice(index, 1);
+            that.getData();
+        },
+        getData(id = "") {
+            //获取列表数据
+            let that = this;
+            let disposal_name = that.search.disposal_name;
+
+            that.$api.disposal
+                .get({ id: id, disposal_name: disposal_name })
+                .then(res => {
+                    that.tableData = res.data;
+                })
+                .catch(res => {});
         },
         getMenu() {
             //获取菜单
@@ -421,6 +589,58 @@ export default {
                     that.menuData = res.data;
                 })
                 .catch(res => {});
+        },
+
+        // getData(){
+        //   //搜索
+        //   console.log(this.search);
+        // },
+        getMenuTableData(row) {
+            let that = this;
+            that.search.disposal_name = "";
+            that.getData(row.id);
+        },
+
+        submitForm(formName) {
+            let that = this;
+            let data = {};
+            data.list = that.form;
+            data.combo_id = that.comboId;
+
+            that.$api.disposal_combo
+                .add(data)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 800
+                        });
+                        that.closethisDialog();
+                        that.$emit("flush");
+                    } else {
+                        that.$message.error(res.msg || "add error.");
+                    }
+                })
+                .catch(res => {
+                    // console.log(res);
+                });
+
+            // this.$refs[formName].validate((valid) => {
+            //   if (valid) {
+            //     this.form.p_id = this.p_id;
+            // console.log(this.form);
+            // console.log(this.comboId);
+            //   } else {
+            //     console.log('error submit!!');
+            //     return false;
+            //   }
+            // });
+        },
+        closethisDialog() {
+            let that = this;
+
+            that.closeDialog();
         }
     }
 };
@@ -428,148 +648,66 @@ export default {
 <style lang="less" scoped>
 //导入全局的颜色
 @import "~@css/var";
-.dispos-content {
-    height: 650px;
-    // border: 1px solid red;
+/deep/ .el-dialog__body {
+    padding: 0 0 0 0;
+}
+/deep/ .el-table__body td {
+    padding: 3px 0;
+}
 
-    .dispos-tabs {
-        border: 1px solid #d8d6d6;
-        width: 100%;
-        margin-right: 10px;
-        height: 100%;
-        box-sizing: border-box;
+/deep/ .el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: @linght-background-color;
+    cursor: pointer;
+}
+.header {
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+    /*padding-top: 10px;*/
+    padding: 10px 0 0 0;
+    .title {
+        color: @color;
+        font-weight: bold;
+        font-size: 16px;
+        border-bottom: 3px solid @color;
+        padding: 0 0 5px 38px;
+        width: 100px;
+    }
+}
+.aside {
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 25px 0 25px;
+    .cost_type {
+        color: @color;
+        font-weight: bold;
+        font-size: 16px;
+        border-bottom: 3px solid @color;
+        padding: 0 0 5px 25px;
+        width: 86px;
+    }
 
-        .tabs {
-            position: relative;
-            height: 100%;
-            width: 100%;
-            /deep/ .el-tabs_content {
-                position: absolute;
-                top: 40px;
-                bottom: 0;
-                left: 0;
-                right: 0;
-            }
-            .disposal-choice {
-                .choice-left-content {
-                    margin-left: 5px;
-                    // border: 1px solid red;
-                    height: 600px;
-                    width: 280px;
-                    .choice-upperleft {
-                        // border: 1px solid red;
-                        height: 350px;
-                        width: 280px;
-                        .title {
-                            padding-top: 10px;
-                            padding-left: 16px;
-                            font-size: 14px;
-                            font-weight: bold;
-                            color: @color;
-                            border-bottom: 4px solid @color;
-                        }
-                    }
-                    .choice-lowerleft {
-                        border: 1px solid black;
-                        height: 245px;
-                    }
-                }
-                .choice-right-content {
-                    // border: 1px solid red;
-                    height: 600px;
-                    width: 100%;
-                    .choice-upperright {
-                        // border: 1px solid red;
-                        width: 690px;
-                        height: 350px;
-                        .upperight-top {
-                            // border: 1px solid red;
-                            width: 680px;
-                            margin-top: 5px;
-                            height: 50px;
-                            .upperight-top-input {
-                                width: 400px;
-                                margin-left: 10px;
-                            }
-                            .upperight-top-radio {
-                                margin-left: 10px;
-                                margin-top: 10px;
-                            }
-                            .form-setting {
-                                font-size: 20px;
-                                margin-top: 8px;
-                                cursor: pointer;
-                            }
-                        }
-                        .upperight-middle {
-                            // border: 1px solid red;
-                            width: 680px;
-                            height: 250px;
-                        }
-                        .upperight-bottom {
-                            // border: 1px solid red;
-                            margin-top: 5px;
-                            width: 690px;
-                            height: 45px;
-                            .upperight-top-content {
-                                display: flex;
-                                .upperight-text {
-                                    margin-top: 10px;
-                                    margin-left: 10px;
-                                    margin-right: 20px;
-                                }
-                            }
-                            .upperight-table {
-                                margin-top: 5px;
-                                width: 680px;
-                                margin-left: 10px;
-                            }
-                        }
-                    }
-                }
-            }
-            .combination-content {
-                // border: 1px solid red;
-                width: 970px;
-                height: 600px;
-                .combination-left-content {
-                    margin-left: 5px;
-                    // border: 1px solid red;
-                    height: 600px;
-                    .upperleft-content {
-                        height: 100;
-                        // border: 1px solid red;
-                        width: 280px;
-                        .combination-upperleft-input {
-                            width: 230px;
-                        }
-                        .combination-upperleft {
-                            border: 1px solid #e3e3e3;
-                            margin-top: 5px;
-                            width: 280px;
-                            height: 350px;
-                        }
-                    }
-                    .combination-lowerleft {
-                        border: 1px solid red;
-                        width: 280px;
-                        margin-top: 5px;
-                        height: 195px;
-                    }
-                }
-                .combination-right-content {
-                    margin-left: 15px;
-                    // border: 1px solid red;
-                    height: 600px;
-                    width: 750px;
-                }
-            }
-            // .disposal-combination {
-            //     border: 1px solid red;
-            //     height: 10px;
-            //     width: 100px;
-            // }
+    .left_menu {
+        border: 1px solid #dbdbdb;
+        height: 560px;
+        .menu_content {
         }
     }
+}
+.main {
+    border: 1px solid #dbdbdb;
+}
+.footer {
+    border: 1px solid #dbdbdb;
+    padding: 10px;
+}
+
+.el-main {
+    padding: 0;
+}
+.search {
+    padding: 10px;
+    border-bottom: 1px solid #e3e3e3;
+    height: 40px;
+    /*width: 100%;*/
 }
 </style>
