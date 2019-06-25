@@ -139,13 +139,22 @@
             >流水单</el-button>
         </div>
         <!-- <div style="flex:">asd</div> -->
-        <charge :show.sync="charge_show"></charge>
-        <refund :show.sync="Refund"></refund>
+        <charge
+            :show.sync="charge_show"
+            :charge="charInfo"
+        ></charge>
+        <refund
+            :show.sync="Refund"
+            :addrefun="charInfo"
+        ></refund>
         <charging-set :show.sync="ChargingSet"></charging-set>
         <invalid :show.sync="Invalid"></invalid>
         <print :show.sync="Print"></print>
         <print-set :show.sync="PrintSet"></print-set>
-        <advance-payment :show.sync="advancepay_show"></advance-payment>
+        <advance-payment
+            :show.sync="advancepay_show"
+            :deposit="charInfo"
+        ></advance-payment>
         <water-single :show.sync="watersin_show"></water-single>
     </div>
 </template>
@@ -174,6 +183,10 @@ export default {
     props: {
         refresh: {
             type: Boolean,
+            required: true
+        },
+        charInfo: {
+            type: Object,
             required: true
         }
     },
@@ -247,13 +260,27 @@ export default {
             }, 6e3);
         },
         Advan_pay() {
+            // let that = this;
+            // if (thta.charInfo.id) {
+            //     this.advancepay_show = true;
+            // } else {
+            //     that.$message.warning("请选择一个患者");
+            // }
+
             this.advancepay_show = true;
         },
         Water_sin() {
             this.watersin_show = true;
         },
         Charge() {
-            this.charge_show = true;
+            let that = this;
+            if (that.charInfo.id) {
+                this.charge_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
+
+            // this.charge_show = true;
         }
     }
 };

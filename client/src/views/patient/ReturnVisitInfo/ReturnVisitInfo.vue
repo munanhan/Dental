@@ -133,10 +133,24 @@ export default {
             }, 6e3);
         },
         Add_Plan() {
-            this.addplan_show = true;
+            let that = this;
+            if (that.returnInfo.id) {
+                that.addplan_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
+
+            // this.addplan_show = true;
         },
         Add_Revisit() {
-            this.addrevisit_show = true;
+            let that = this;
+            if (that.returnInfo.id) {
+                that.addrevisit_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
+
+            // this.addrevisit_show = true;
         },
 
         upateRetrunVisit() {

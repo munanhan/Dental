@@ -123,13 +123,13 @@
                     <el-form-item
                         label="电话"
                         prop="patient_phone"
-                        style="width:300px"
+                        class="box-phone"
                     >
                         <el-input v-model="form.patient_phone"></el-input>
                     </el-form-item>
 
                     <el-form-item
-                        style="margin-left:50px;width:300px"
+                        class="box-email"
                         label="电子邮箱"
                         prop="patient_email"
                     >
@@ -142,7 +142,7 @@
                     <el-form-item
                         label="出生年月"
                         prop="patient_birthday"
-                        style="width:300px"
+                        class="box-birthday"
                     >
                         <el-date-picker
                             v-model="form.patient_birthday"
@@ -248,7 +248,7 @@
                     ></i>
 
                     <el-form-item
-                        style="margin-left:20px;width:300px"
+                        class="box-member"
                         label="会员卡号"
                         prop="member_card"
                     >
@@ -913,6 +913,20 @@ export default {
         overflow: auto;
         border: 1px solid #e3e3e3;
         padding-top: 10px;
+        .box-email {
+            margin-left: 50px;
+            width: 300px;
+        }
+        .box-phone {
+            width: 300px;
+        }
+        .box-birthday {
+            width: 300px;
+        }
+        .box-member {
+            margin-left: 20px;
+            width: 300px;
+        }
     }
 }
 </style>

@@ -454,6 +454,7 @@
                     <charge-info
                         v-if="chargeInfo"
                         :refresh.sync="chargeInfo"
+                        :charInfo="selectPatient"
                     ></charge-info>
                 </el-tab-pane>
 

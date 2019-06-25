@@ -68,7 +68,6 @@
                                             label="2"
                                         >医保项目</el-radio>
                                         <i
-                                            style=""
                                             @click="disCharge"
                                             class="el-icon-setting form-setting"
                                         ></i>
@@ -401,32 +400,7 @@ export default {
             ],
             radio: "1",
             activeName: "disposal-choice",
-            menuData: [
-                // {
-                //     id: 1,
-                //     catepory: "西药费"
-                // },
-                // {
-                //     id: 2,
-                //     catepory: "放射费"
-                // },
-                // {
-                //     id: 3,
-                //     catepory: "检查费"
-                // },
-                // {
-                //     id: 4,
-                //     catepory: "诊疗费"
-                // },
-                // {
-                //     id: 5,
-                //     catepory: "补牙费"
-                // },
-                // {
-                //     id: 6,
-                //     catepory: "手术费"
-                // }
-            ]
+            menuData: []
         };
     },
 
