@@ -280,11 +280,33 @@
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
-                                    <input
-                                        v-model="form.check"
-                                        class="middle-input"
-                                    >
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <template v-for="(item,index) in form.check">
+                                        <input
+                                            v-model="form.check[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal(index)"
+                                            :key="'icon'+index"
+                                        ></i>
+
+                                        <!-- <input
+                                                :key="index"
+                                                :v-model="form.check[index+1]"
+                                                class="middle-input"
+                                            > -->
+
+                                    </template>
+
                                 </tr>
                                 <tr>
                                     <td align="center">辅助检查</td>
@@ -293,6 +315,7 @@
                                         class="middle-input"
                                     >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
+
                                     <!-- <input class="middle-input">
                                     <i class="el-icon-delete-solid middle-i"></i>
                                     <input class="middle-input">
@@ -392,10 +415,11 @@ export default {
             rules: {},
             templateContent: [],
             InitialDiag: [],
+            // initals: [''],
             form: {
                 value1: new Date(),
                 radio: "1",
-                check: "",
+                check: [""],
                 cheack: "",
                 complain: "",
                 history: "",
@@ -442,8 +466,6 @@ export default {
             if (newValue) {
                 let that = this;
                 that.getMenu();
-            } else {
-                this.templateContent = [];
             }
         },
 
@@ -455,7 +477,20 @@ export default {
         }
     },
     methods: {
+        addDisposal() {
+            // this.initals.push("");
+
+            this.form.check.push("");
+
+            // this.form.check.push('');
+        },
+        delDisposal(index) {
+            // console.log(this.form.check);
+
+            this.form.check.splice(index, 1);
+        },
         afterClose() {
+            this.templateContent = [];
             this.$refs["initialform"].resetFields();
         },
         getMenu() {
@@ -539,7 +574,9 @@ export default {
                     that.form.previous = value;
                     break;
                 case "ddddd":
-                    that.form.check = value;
+                    that.form.check = [value];
+                    // console.log(that.form.$set)
+                    // that.$set('form.check', '0', value);
                     break;
                 case "eeeee":
                     that.form.auxiliarycheck = value;
