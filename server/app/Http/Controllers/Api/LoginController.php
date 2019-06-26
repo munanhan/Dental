@@ -23,9 +23,6 @@ class LoginController extends Controller
 
     }
 
-    public function test(){
-        dd(auth('api')->user());
-    }
 
     public function refreshToken()
     {

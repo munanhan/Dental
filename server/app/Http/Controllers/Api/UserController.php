@@ -41,12 +41,6 @@ class UserController extends Controller
         return message('',$user, 200);
     }
 
-    // public function delete(User $user)
-    // {
-    //     $user->delete();
-
-    //     return message('',null, 200);
-    // }
 
     public function getMessage()
     {

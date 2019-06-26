@@ -49,12 +49,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
+                                        @focus="getBaseDemand"
                                     >
                                         <el-option
                                             v-for="item in baseDemandList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.name"
                                         >
                                         </el-option>
                                     </el-select>
@@ -77,12 +78,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
+                                        @focus="getPotentialDemand"
                                     >
                                         <el-option
                                             v-for="item in potentialDemandList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.name"
                                         >
                                         </el-option>
                                     </el-select>
@@ -112,27 +114,7 @@
 
                             </td>
                         </tr>
-                        <!-- <el-form-item
-                            style="border:none;border-top:none;border-bottom:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
-                            label="活动名称"
-                        >
-                            <el-input style=" 
-                                    width:600px;
-                                              border:none;
-                                              border-radius: 0px;
-                                             ">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item
-                            style="border-bottom:none;border-right:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
-                            label="活动名称"
-                        >
-                            <el-input style=" 
-                                             width:600px;
-                                             border-radius: 0px;
-                                             ">
-                            </el-input>
-                        </el-form-item> -->
+
                         <tr>
                             <td align="center">服务建议</td>
                             <td>
@@ -209,10 +191,6 @@ export default {
         PotentialDemand
     },
     props: {
-        // refresh: {
-        //     type: Boolean,
-        //     required: true
-        // },
 
         addConsult: {
             type: Object,
@@ -232,31 +210,11 @@ export default {
         return {
             basneed_show: false,
             potentdeman_show: false,
-            dataEntryPersonList: [
-                {
-                    value: "1009",
-                    table: "1009"
-                }
-            ],
-            baseDemandList: [
-                {
-                    value: "123132",
-                    table: "123132"
-                }
-            ],
+            dataEntryPersonList: [],
+            baseDemandList: [],
             BaseInfo: [],
             doctorList: [],
-
-            potentialDemandList: [
-                {
-                    value: "HTML",
-                    label: "HTML"
-                },
-                {
-                    value: "CSS",
-                    label: "CSS"
-                }
-            ],
+            potentialDemandList: [],
             rules: {},
             form: {
                 main_consult: "",
@@ -272,13 +230,6 @@ export default {
         };
     },
     watch: {
-        // refresh(newValue, oldValue) {
-        //     let that = this;
-        //     // this.data = that.selectPatient;
-        //     // console.log(that.selectPatient);
-        //     if (newValue) {
-        //     }
-        // },
 
         addConsult(newValue, oldValue) {
             let that = this;
@@ -291,11 +242,35 @@ export default {
             let that = this;
 
             if (newValue) {
-                that.getdefaultRecorder();
+                that.getDefaultRecorder();
             }
         }
     },
     methods: {
+
+        getBaseDemand(){
+            let that=this;
+            that.$api.base_demand.get()
+                .then(res=>{
+                    console.log(res.data);
+                    that.baseDemandList=res.data;
+                })
+                .catch(res=>{
+                    console.log(res.data);
+                })
+        },
+
+        getPotentialDemand(){
+            let that=this;
+            that.$api.potential_demand.get()
+                .then(res=>{
+                    that.potentialDemandList=res.data;
+                })
+                .catch(res=>{
+                    console.log(res.data);
+                })
+        },
+
         getReceptionDoctor(type) {
             let that = this;
             that.$api.patient_consult
@@ -314,7 +289,7 @@ export default {
                 });
         },
 
-        getdefaultRecorder() {
+        getDefaultRecorder() {
             let that = this;
             that.$api.patient_consult
                 .defaultRecorder()

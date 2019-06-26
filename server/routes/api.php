@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
  * We’ll have to make changes on the routes file and on the controller:
  */
 
-Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
+Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function(){
 
 
     Route::get('potential_demands', 'PotentialDemandController@index');
@@ -48,6 +48,8 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
     Route::put('base_demands/{baseDemand}', 'BaseDemandController@update');
 
     Route::delete('base_demands/{baseDemand}', 'BaseDemandController@delete');
+
+
 
     /*
      * Patient Visit Config Api

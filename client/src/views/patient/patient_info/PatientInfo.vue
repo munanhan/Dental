@@ -1,6 +1,6 @@
 <template>
     <div class="patient-info">
-        <div class="patien-content">
+        <div class="patient-content">
             <!-- <template slot="title">
                 <span class="base-fz">基本信息</span>
             </template> -->
@@ -259,7 +259,7 @@ export default {
 @import "~@css/var";
 
 .patient-info {
-    .patien-content {
+    .patient-content {
         position: absolute;
         overflow: auto;
         top: 0;

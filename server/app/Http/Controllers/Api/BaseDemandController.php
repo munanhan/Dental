@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Model\BaseDemand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
-class BaseDemandController extends Controller
+class BaseDemandController extends BaseController
 {
-    public function index()
-    {
-        return message('',BaseDemand::all());
-    }
 
     public function show(BaseDemand $baseDemand)
     {
@@ -32,18 +29,4 @@ class BaseDemandController extends Controller
         return message('',$baseDemand,200);
     }
 
-    public function update(Request $request , BaseDemand $baseDemand)
-    {
-        $baseDemand->update($request->all());
-
-        return message('',$baseDemand, 200);
-    }
-
-    public function delete(BaseDemand $baseDemand)
-    {
-
-        $baseDemand->delete();
-
-        return message('',null, 200);
-    }
 }

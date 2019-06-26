@@ -212,7 +212,6 @@ export default {
             }, 6e3);
         },
         add_cons() {
-            //qusahduhsaudasudusadhasudhusa
             let that=this;
             if(that.consultInfo.id ){
                 that.addcons_show = true;

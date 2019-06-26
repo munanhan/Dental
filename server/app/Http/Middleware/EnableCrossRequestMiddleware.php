@@ -32,6 +32,8 @@ class EnableCrossRequestMiddleware
 
 
         if (in_array($origin, $allow_origin)) {
+
+
             
             $IlluminateResponse = self::ILLUMINATE_RESPONSE;
             $SymfonyResponse = self::SYMFONY_RESPONSE;
