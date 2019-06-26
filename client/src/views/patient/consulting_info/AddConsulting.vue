@@ -253,21 +253,6 @@ export default {
 
             that.form["patient_id"] = that.addConsult["id"];
 
-            that.$api.patient_consult
-                .store(that.form)
-                .then(res => {
-                    if (res.code == 200) {
-                        that.$message.success("保存成功");
-
-                        that.$emit("update-type", {
-                            aaa: that.form.main_consult,
-                            bbb: that.form.base_demand,
-                            ccc: that.form.potential_demand,
-                            ddd: that.doctor_solution,
-                            eee: that.service_proposal,
-                        });
-
-<<<<<<< Updated upstream
             that.$api.patient_consult.store(that.form)
                 .then(res=>{
                     if(res.code ==200){
@@ -282,10 +267,6 @@ export default {
                         that.closeDialog();
 
                     }else {
-=======
-                        that.closeDialog();
-                    } else {
->>>>>>> Stashed changes
                         that.$message.error(res.msg);
                     }
                 })
