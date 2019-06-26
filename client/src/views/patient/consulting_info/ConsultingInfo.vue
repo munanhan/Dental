@@ -14,16 +14,16 @@
                 </div> -->
                 <div class="top-title">
                     <div class="top-content">
-                        <div class="top-text">{{item.appointment_date}}</div>
-                        <div class="top-text">{{item.patient_time}}</div>
-                        <div class="top-text">接诊医生：<span>{{item.patient_doctor}}</span></div>
+                        <div class="top-text"></div>
+                        <div class="top-text"></div>
+                        <div class="top-text">接诊医生：<span></span></div>
                     </div>
                     <div class="top-i-content">
 
                         <i class="fa fa-pen top-i"></i>
                         <i
                             class="fa fa-trash-alt top-i"
-                            @click="delDisposal"
+                        
                         ></i>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdasdsa</div>
+                            ></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -55,7 +55,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
 
                     </el-row>
@@ -71,7 +71,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
 
                     </el-row>
@@ -87,7 +87,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -102,7 +102,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -117,7 +117,7 @@
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
 
@@ -163,9 +163,7 @@ export default {
     data() {
         return {
             addcons_show: false,
-            consultingList: [
-            
-            ]
+            consultingList: [],
         };
     },
     created() {},
@@ -183,9 +181,10 @@ export default {
     methods: {
 
         addConsultResult(data){
+            console.log(data);
             let that=this;
             that.consultingList.push(data);
-            console.log(that.consultingList);
+            
         },
         getDisposalRecords() {},
 

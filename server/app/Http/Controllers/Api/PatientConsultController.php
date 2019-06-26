@@ -39,8 +39,8 @@ class PatientConsultController extends BaseController
 
     public function store(Request $request)
     {
-        PatientConsult::create($request->all());
+        $patientConsult=PatientConsult::create($request->all());
 
-        return message('添加成功','',200);
+        return message('添加成功',$patientConsult,200);
     }
 }
