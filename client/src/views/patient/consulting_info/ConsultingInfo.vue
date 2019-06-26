@@ -164,13 +164,7 @@ export default {
         return {
             addcons_show: false,
             consultingList: [
-                {
-                    case_id: "",
-                    appointment_date: "",
-                    patient_time: "",
-                    patient_phone: "",
-                    patient_doctor: ""
-                }
+            
             ]
         };
     },
@@ -191,6 +185,7 @@ export default {
         addConsultResult(data){
             let that=this;
             that.consultingList.push(data);
+            console.log(that.consultingList);
         },
         getDisposalRecords() {},
 
