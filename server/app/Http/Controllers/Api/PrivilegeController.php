@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Model\Role;
+use Illuminate\Support\Facades\Redis;
        
 class PrivilegeController extends BaseController
 {
@@ -88,7 +89,9 @@ class PrivilegeController extends BaseController
 			$data = $res['data'];
 		}
 
-		Session::put('user_auth'.$user['id'],array_filter(array_column($data, 'module')));
+        $privilegeList = serialize(array_filter(array_column($data, 'module')));
+
+		Redis::set('user_auth'.$user['id'],$privilegeList);
 
 		//用户权限
 		return message('成功',$data,200);
