@@ -192,7 +192,6 @@ export default {
         PotentialDemand
     },
     props: {
-
         addConsult: {
             type: Object,
             required: true
@@ -232,7 +231,6 @@ export default {
         };
     },
     watch: {
-
         addConsult(newValue, oldValue) {
             let that = this;
             if (newValue) {
@@ -250,13 +248,26 @@ export default {
         }
     },
     methods: {
+        submitForm() {
+            let that = this;
 
-        submitForm(){
+            that.form["patient_id"] = that.addConsult["id"];
 
-            let that=this;
+            that.$api.patient_consult
+                .store(that.form)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.$message.success("保存成功");
 
-            that.form['patient_id']=that.addConsult['id'];
+                        that.$emit("update-type", {
+                            aaa: that.form.main_consult,
+                            bbb: that.form.base_demand,
+                            ccc: that.form.potential_demand,
+                            ddd: that.doctor_solution,
+                            eee: that.service_proposal,
+                        });
 
+<<<<<<< Updated upstream
             that.$api.patient_consult.store(that.form)
                 .then(res=>{
                     if(res.code ==200){
@@ -271,34 +282,40 @@ export default {
                         that.closeDialog();
 
                     }else {
+=======
+                        that.closeDialog();
+                    } else {
+>>>>>>> Stashed changes
                         that.$message.error(res.msg);
                     }
                 })
-                .catch(res=>{
-                    console.log(res.data)
-                })
+                .catch(res => {
+                    console.log(res.data);
+                });
         },
 
-        getBaseDemand(){
-            let that=this;
-            that.$api.base_demand.get()
-                .then(res=>{
-                    that.baseDemandList=res.data;
+        getBaseDemand() {
+            let that = this;
+            that.$api.base_demand
+                .get()
+                .then(res => {
+                    that.baseDemandList = res.data;
                 })
-                .catch(res=>{
+                .catch(res => {
                     console.log(res.data);
-                })
+                });
         },
 
-        getPotentialDemand(){
-            let that=this;
-            that.$api.potential_demand.get()
-                .then(res=>{
-                    that.potentialDemandList=res.data;
+        getPotentialDemand() {
+            let that = this;
+            that.$api.potential_demand
+                .get()
+                .then(res => {
+                    that.potentialDemandList = res.data;
                 })
-                .catch(res=>{
+                .catch(res => {
                     console.log(res.data);
-                })
+                });
         },
 
         getReceptionDoctor(type) {

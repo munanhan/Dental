@@ -288,14 +288,14 @@
                                         >
                                         <i
                                             v-if="index == 0"
-                                            @click="addDisposal"
+                                            @click="addDisposal('check')"
                                             class="el-icon-circle-plus-outline middle-i"
                                             :key="'icon'+index"
                                         ></i>
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal(index)"
+                                            @click="delDisposal('check')"
                                             :key="'icon'+index"
                                         ></i>
 
@@ -310,34 +310,77 @@
                                 </tr>
                                 <tr>
                                     <td align="center">辅助检查</td>
-                                    <input
-                                        v-model="form.auxiliarycheck"
-                                        class="middle-input"
-                                    >
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
-
-                                    <!-- <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
-                                    <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
-                                    <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i> -->
+                                    <template v-for="(item,index) in form.auxiliarycheck">
+                                        <input
+                                            v-model="form.auxiliarycheck[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('auxiliarycheck')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('auxiliarycheck')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
                                 </tr>
+
                                 <tr>
                                     <td align="center">诊 断</td>
-                                    <input
-                                        v-model="form.diagnosi"
-                                        class="middle-input"
-                                    >
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <template v-for="(item,index) in form.diagnosi">
+                                        <input
+                                            v-model="form.diagnosi[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('diagnosi')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('diagnosi')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
                                 </tr>
+
                                 <tr>
                                     <td align="center">治疗方案</td>
-                                    <input
+                                    <template v-for="(item,index) in form.treatmentOptions">
+                                        <input
+                                            v-model="form.treatmentOptions[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('treatmentOptions')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('treatmentOptions')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
+
+                                    <!-- <input
                                         v-model="form.treatmentOptions"
                                         class="middle-input"
                                     >
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <i class="el-icon-circle-plus-outline middle-i"></i> -->
                                 </tr>
                                 <tr>
                                     <td align="center">治疗</td>
@@ -426,9 +469,9 @@ export default {
                 previous: "",
                 allergy: "",
                 treatment: "",
-                auxiliarycheck: "",
-                diagnosi: "",
-                treatmentOptions: "",
+                auxiliarycheck: [""],
+                diagnosi: [""],
+                treatmentOptions: [""],
                 advice: ""
 
                 // defaultProps: {
@@ -437,9 +480,9 @@ export default {
                 // },
             },
 
-            data: {},
+            data: {}
 
-            aaa: []
+            // aaa: []
         };
     },
     watch: {
@@ -477,18 +520,43 @@ export default {
         }
     },
     methods: {
-        addDisposal() {
-            // this.initals.push("");
-
-            this.form.check.push("");
-
-            // this.form.check.push('');
+        addDisposal(value) {
+            let that = this;
+            switch (value) {
+                case "check":
+                    this.form.check.push("");
+                    break;
+                case "auxiliarycheck":
+                    this.form.auxiliarycheck.push("");
+                    break;
+                case "diagnosi":
+                    this.form.diagnosi.push("");
+                    break;
+                case "treatmentOptions":
+                    this.form.treatmentOptions.push("");
+                    break;
+            }
         },
-        delDisposal(index) {
+
+        delDisposal(index, value) {
             // console.log(this.form.check);
-
-            this.form.check.splice(index, 1);
+            switch (index) {
+                case "check":
+                    this.form.check.splice(index, 1);
+                    break;
+                case "auxiliarycheck":
+                    this.form.auxiliarycheck.splice(index, 1);
+                    break;
+                case "diagnosi":
+                    this.form.diagnosi.splice(index, 1);
+                    break;
+                case "treatmentOptions":
+                    this.form.treatmentOptions.splice(index, 1);
+                    break;
+            }
+            ``;
         },
+
         afterClose() {
             this.templateContent = [];
             this.$refs["initialform"].resetFields();
@@ -544,16 +612,6 @@ export default {
                 .then(res => {
                     if (res.code == 200) {
                         that[dataType] = res.data;
-
-                        // for (var i = 0; i < that.templateContent.length; i++) {
-                        //     var item = that.templateContent[i];
-                        //     item.value = res.data[item.key] || "";
-                        // }
-
-                        // for(var i = 0; i < that.templateContent.length; i++){
-                        //     var item = that.templateContent[i];
-                        //     item.value = "";
-                        // }
                     } else {
                         that.$message.error(res.msg || "数据获取失败.");
                     }
@@ -594,25 +652,19 @@ export default {
                     that.form.advice = value;
                     break;
             }
-            // switch(){
-            //     case:
-
-            //     break;
-
-            //     default:
-            //         break;
-            // }
         }
 
-        // setData(data){
+        // setData(data) {
+        //     {
+        //         aa: "";
+        //     }
+        //     {
+        //     }
 
-        //     { aa : '' }
-        //     { }
-
-        //         for(var i = 0; i < that.templateContent.length; i++){
-        //             var item = that.templateContent[i];
-        //             item.value = res.data[item.key] || '';
-        //         }
+        //     for (var i = 0; i < that.templateContent.length; i++) {
+        //         var item = that.templateContent[i];
+        //         item.value = res.data[item.key] || "";
+        //     }
         // }
     }
 };
