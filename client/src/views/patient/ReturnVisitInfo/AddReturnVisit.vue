@@ -30,7 +30,7 @@
                         label="回访时间"
                     >
                         <el-date-picker
-                            v-model="form.value1"
+                            v-model="form.visit_time"
                             type="date"
                             placeholder="选择日期"
                         >
@@ -39,11 +39,11 @@
                     <el-form-item label="回访人员">
                         <el-select
                             style="width:220px"
-                            v-model="form.value"
+                            v-model="form.review_staff"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in form.reviewStaffList"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value"
@@ -54,11 +54,11 @@
                     <el-form-item label="主治医生">
                         <el-select
                             style="width:220px"
-                            v-model="form.value"
+                            v-model="form.attend_doctor"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
+                                v-for="item in form.attendDoctorList"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value"
@@ -68,19 +68,11 @@
                     </el-form-item>
                     <div style="margin-left:12px">
                         回访状态
-                        <el-radio
-                            style="margin-left:10px"
-                            v-model="form.radio"
-                            label="1"
-                        >已回访</el-radio>
-                        <el-radio
-                            v-model="form.radio"
-                            label="2"
-                        >做计划</el-radio>
-                        <el-radio
-                            v-model="form.radio"
-                            label="3"
-                        >待跟进</el-radio>
+                        <el-radio-group v-model="form.status">
+                            <el-radio :label="0">已回访</el-radio>
+                            <el-radio :label="1">做计划</el-radio>
+                            <el-radio :label="2">待跟进</el-radio>
+                        </el-radio-group>
                     </div>
 
                     <el-form-item
@@ -138,9 +130,18 @@ export default {
     data() {
         return {
             Return_visit: [],
+
+            reviewStaffList:[],
+
+            attendDoctorList:[],
+
             form: {
-                value1: "",
-                radio: "1"
+                visit_time: "",
+                review_staff:"",
+                attend_doctor:"",
+                status:0,
+                review_content:"",
+                review_result:"",
             }
         };
     },

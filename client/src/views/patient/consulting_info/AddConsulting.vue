@@ -10,7 +10,7 @@
     >
         <el-form
             :model="form"
-            ref="ConsultForm"
+            ref="form"
             label-width="100px"
             :rules="rules"
         >
@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import AddDialogForm from "@/views/base/AddDialogForm";
 import BasicNeeds from "./BasicNeeds";
 import PotentialDemand from "./PotentialDemand";
 export default {
@@ -198,7 +198,7 @@ export default {
             required: true
         }
     },
-    mixins: [DialogForm],
+    mixins: [AddDialogForm],
 
     created() {
         let that = this;
@@ -209,6 +209,7 @@ export default {
 
     data() {
         return {
+
             basneed_show: false,
             potentdeman_show: false,
             dataEntryPersonList: [],
@@ -245,6 +246,7 @@ export default {
             if (newValue) {
                 that.getDefaultRecorder();
             }
+
         }
     },
     methods: {
@@ -258,8 +260,16 @@ export default {
             that.$api.patient_consult.store(that.form)
                 .then(res=>{
                     if(res.code ==200){
+
                         that.$message.success('保存成功');
+                        
+                        that.$emit(
+                            "add-item",
+                            JSON.parse(JSON.stringify(res.data))
+                        );
+
                         that.closeDialog();
+
                     }else {
                         that.$message.error(res.msg);
                     }
@@ -317,7 +327,7 @@ export default {
                     that.form.data_entry_person = res.data;
                 })
                 .catch(res => {
-                    console.res.data;
+                    console.log(res.data);
                 });
         },
         basice_need() {
@@ -326,8 +336,13 @@ export default {
         potential_dem() {
             this.potentdeman_show = true;
         },
-        afterClose() {
-            this.$refs["ConsultForm"].resetFields();
+
+        afterClose(){
+            let that=this;
+            for(let key in that.form){
+                // that.form.hasOwnProperty(key)
+                that.form[key] = '';
+            }
         }
     }
 };

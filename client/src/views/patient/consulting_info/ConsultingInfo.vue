@@ -154,6 +154,7 @@
         <add-consulting
             :show.sync="addcons_show"
             :addConsult="consultInfo"
+            @add-item="addConsultResult"
         ></add-consulting>
     </div>
 
@@ -204,6 +205,11 @@ export default {
     },
     computed: {},
     methods: {
+
+        addConsultResult(data){
+            let that=this;
+            that.consultingList.push(data);
+        },
         getDisposalRecords() {},
 
         getDataDone() {
