@@ -171,6 +171,7 @@
             <el-button
                 :loading="commitLoading"
                 type="primary"
+                @click="submitForm"
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
@@ -248,11 +249,30 @@ export default {
     },
     methods: {
 
+        submitForm(){
+
+            let that=this;
+
+            that.form['patient_id']=that.addConsult['id'];
+
+            that.$api.patient_consult.store(that.form)
+                .then(res=>{
+                    if(res.code ==200){
+                        that.$message.success('保存成功');
+                        that.closeDialog();
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res.data)
+                })
+        },
+
         getBaseDemand(){
             let that=this;
             that.$api.base_demand.get()
                 .then(res=>{
-                    console.log(res.data);
                     that.baseDemandList=res.data;
                 })
                 .catch(res=>{

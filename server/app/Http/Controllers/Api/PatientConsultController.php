@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Traits\AttendDoctor;
+use App\Model\PatientConsult;
 use App\Model\Role;
 use Illuminate\Http\Request;
-use App\Model\PatientConsult;
 use Illuminate\Support\Facades\Auth;
 
 class PatientConsultController extends BaseController
@@ -35,5 +35,12 @@ class PatientConsultController extends BaseController
     {
         $data=Auth::user()->name;
         return message('',$data,200);
+    }
+
+    public function store(Request $request)
+    {
+        PatientConsult::create($request->all());
+
+        return message('添加成功','',200);
     }
 }

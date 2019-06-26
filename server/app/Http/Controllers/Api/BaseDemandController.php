@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Session;
 class BaseDemandController extends BaseController
 {
 
-    public function show(BaseDemand $baseDemand)
-    {
-        return message('',$baseDemand);
-    }
-
     public function store(Request $request)
     {
         $baseDemand= BaseDemand::find(request('id'));

@@ -6,17 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PotentialDemand;
 
-class PotentialDemandController extends Controller
+class PotentialDemandController extends BaseController
 {
-    public function index()
-    {
-        return message('',PotentialDemand::all());
-    }
-
-    public function show(PotentialDemand $potentialDemand)
-    {
-        return message('',$potentialDemand);
-    }
 
     public function store(Request $request)
     {
@@ -32,17 +23,4 @@ class PotentialDemandController extends Controller
         return message('',$potentialDemand,200);
     }
 
-    public function update(Request $request , PotentialDemand $potentialDemand)
-    {
-        $potentialDemand->update($request->all());
-
-        return message('',$potentialDemand, 200);
-    }
-
-    public function delete(PotentialDemand $potentialDemand)
-    {
-        $potentialDemand->delete();
-
-        return message('',null, 200);
-    }
 }
