@@ -13,8 +13,14 @@ use App\Auxiliary\MyDb;
 class Test
 {
 	public function index(MyDb $db){
-		$db->set(new BaseModel('users'));
-		dd($db->get()->getData());
+		// $db->set(new BaseModel('users'));
+		// dd($db->get()->getData());
+		$args = [1,2,3];
+		$this->test(...$args);
+	}
+
+	public function test($a,$b){
+		echo $a+$b;
 	}
 
 }
