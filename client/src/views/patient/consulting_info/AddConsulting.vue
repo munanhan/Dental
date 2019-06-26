@@ -262,7 +262,7 @@ export default {
                     if(res.code ==200){
 
                         that.$message.success('保存成功');
-                        
+
                         that.$emit(
                             "add-item",
                             JSON.parse(JSON.stringify(res.data))
