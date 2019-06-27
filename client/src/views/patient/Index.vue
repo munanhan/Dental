@@ -403,7 +403,6 @@
 
             <el-tabs
                 v-model="curTab"
-                style=""
                 class="right_top"
             >
 
@@ -688,21 +687,129 @@ export default {
             that.getTodayWork();
         },
         curTab(newValue, oldValue) {
+                
             let that = this;
 
             // target = that.quickFind[newValue];
             // that[target] = true;
 
             that[newValue] = true;
+
+            switch(newValue){
+
+                case "pationInfo":
+                    let params = {};
+                    params.id = that.selectItem;
+                    that.getPatientData('patient','get',params,'selectPatient');
+                    console.log(that.curTab);
+                    break;
+
+                case "medicalInformation":
+                    that.getPatientData('patient','get','id','medicalInformation');
+                    console.log(that.curTab);
+                    break;
+
+                case "bookingInformation":
+                    that.getPatientData('patient','get','id','bookingInformation');
+                    console.log(that.curTab);
+                    break;
+
+                case "disposalRecords":
+                    that.getPatientData('patient','get','id','disposalRecords');
+                    console.log(that.curTab);
+                    break; 
+
+                case "chargeInfo":
+                    that.getPatientData('patient','get','id','chargeInfo');
+                    console.log(that.curTab);
+                    break;
+
+                case "medicalRecordsInfo":
+                    that.getPatientData('patient','get','id','medicalRecordsInfo');
+                    console.log(that.curTab);
+                    break;
+                    
+                case "returnVisitInfo":
+                    that.getPatientData('patient','get','id','returnVisitInfo');
+                    console.log(that.curTab);
+                    break;   
+                
+                case "consultingInfo" :
+                    that.getPatientData('patient','get','id','consultingInfo');
+                    console.log(that.curTab);
+                    break;
+            }
+
         }
     },
     computed: {},
     methods: {
+
+        getPatientData(url,method,data,ptab){
+            let that=this;   
+            that.$api[url][method](data)
+                .then(res=>{
+                    if(res.code == 200){
+                        ptab = res.data;
+                    }
+                    else{
+
+                    }
+                })
+                .catch(res=>{
+
+                })                
+        },
+        
         //获取id
         getInfoById(id) {
 
             let that = this;
 
+            // switch(that.curTab){
+
+            //     case "pationInfo":
+            //         let params = {};
+            //         params.id = that.selectItem;
+            //         that.getPatientData('patient','get',params,'selectPatient');
+            //         console.log(that.curTab);
+            //         break;
+
+            //     case "medicalInformation":
+            //         that.getPatientData('patient','get','id','medicalInformation');
+            //         console.log(that.curTab);
+            //         break;
+
+            //     case "bookingInformation":
+            //         that.getPatientData('patient','get','id','bookingInformation');
+            //         console.log(that.curTab);
+            //         break;
+
+            //     case "disposalRecords":
+            //         that.getPatientData('patient','get','id','disposalRecords');
+            //         console.log(that.curTab);
+            //         break; 
+
+            //     case "chargeInfo":
+            //         that.getPatientData('patient','get','id','chargeInfo');
+            //         console.log(that.curTab);
+            //         break;
+
+            //     case "medicalRecordsInfo":
+            //         that.getPatientData('patient','get','id','medicalRecordsInfo');
+            //         console.log(that.curTab);
+            //         break;
+                    
+            //     case "returnVisitInfo":
+            //         that.getPatientData('patient','get','id','returnVisitInfo');
+            //         console.log(that.curTab);
+            //         break;   
+                
+            //     case "consultingInfo" :
+            //         that.getPatientData('patient','get','id','consultingInfo');
+            //         console.log(that.curTab);
+            //         break;
+            // }
             //选中
             that.selectItem = id;
 
@@ -727,6 +834,10 @@ export default {
                 .catch(res => {
                     console.log(res.data);
                 });
+        },
+
+        getDataById(){
+
         },
         //获取最近访问
         getRecentVisit() {

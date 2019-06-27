@@ -2,9 +2,19 @@ import request from '../common/request';
 
 const prefix = '/patient_consults';
 
+//全部患者
 export function get(data) {
     return request({
         url: `${prefix}`,
+        method: "get",
+        params: data
+    });
+}
+
+//根据患者id取
+export function getById(data) {
+    return request({
+        url: `${prefix}/show`,
         method: "get",
         params: data
     });
