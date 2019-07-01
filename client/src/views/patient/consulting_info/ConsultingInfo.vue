@@ -137,7 +137,7 @@ export default {
             required: true
         },
         consultInfo: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

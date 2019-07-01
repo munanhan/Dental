@@ -193,7 +193,7 @@ export default {
     },
     props: {
         addConsult: {
-            type: Object,
+           // type: Object,
             required: true
         }
     },

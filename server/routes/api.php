@@ -163,6 +163,10 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::post('patient_disposal', 'PatientDisposalController@store');
 
+    Route::get('patient_disposal/categories', 'PatientDisposalController@categories');
+
+    Route::get('patient_disposal/all_disposals', 'PatientDisposalController@allDisposals');
+
 
     /*
     * Route PatientCharge Api

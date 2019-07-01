@@ -43,7 +43,12 @@
 export default {
     name: "BookingInformation",
     components: {},
-    props: {},
+    props: {
+        bookingInformation:{
+            // type: Object,
+            required: true
+        }
+    },
     data() {
         return {};
     },

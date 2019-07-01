@@ -588,7 +588,7 @@ export default {
         // },
 
         addInitial: {
-            type: Object,
+          //  type: Object,
             required: true
         }
     },

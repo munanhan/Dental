@@ -15,6 +15,6 @@ class PatientTreatmentController extends BaseController
 {
     public function show()
     {
-        return message('',request('id'),200);
+
     }
 }
