@@ -238,8 +238,8 @@ export default {
       this.$api.appointment.attendDoctor().then(res => {
         if (res.code == 200 && res.data.length > 0) {
           this.doctor = res.data;
-          this.left_doctor = this.doctor[0].name;
-          this.right_doctor = this.doctor[1].name;
+          this.left_doctor = this.doctor[0].id;
+          this.right_doctor = this.doctor[1].id;
           this.left_doctor_id = this.doctor[0].id;
           this.right_doctor_id = this.doctor[1].id;
           this.getTodayAppointment();

@@ -46,18 +46,18 @@
             @blur="getPatientByPhone"
           ></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="patient_name" required>
+        <el-form-item label="姓名" prop="patient_name">
           <el-input v-model="formData.patient_name" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
-        <el-form-item label="性别" prop="patient_sex" required>
+        <el-form-item label="性别" prop="patient_sex">
           <el-radio-group v-model="formData.patient_sex">
             <el-radio :label="0">男</el-radio>
             <el-radio :label="1">女</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item prop="patient_age" label="年龄" required>
+        <el-form-item prop="patient_age" label="年龄">
           <el-input v-model="formData.patient_age" type="text" autocomplete="off" placeholder></el-input>
         </el-form-item>
 
@@ -246,43 +246,37 @@ export default {
       title: "新增预约",
       items_o: itemsOptions,
       checked_items: [],
+  
       rules: {
-        patient_phone: telRules.concat({
-          validator: (rule, value, callback) => {
-            if (!/^1[34578]\d{9}$/.test(value)) {
-              callback(new Error("请输入正确手机号码"));
-            } else {
-              callback();
-            }
-          }
-        }),
-        patient_age: ageRules.concat({
-          validator: (rule, value, callback) => {
-            if (!/^\d{2}$/.test(value)) {
-              callback(new Error("请输入正确年龄"));
-            } else {
-              callback();
-            }
-          }
-        }),
         patient_name: [
           {
             required: true,
-            message: "请输入姓名.",
+            message: "请输入姓名",
             trigger: "blur"
           }
         ],
-        patient_sex: [
+        patient_age: [
           {
             required: true,
-            message: "请选择性别.",
+            message: "请输入年龄.",
             trigger: "blur"
+          }
+        ],
+        patient_phone: [
+          {
+            required: true,
+            message: "请输入手机号",
+            trigger: "blur"
+          },
+          {
+            pattern: /^1[3|4|5|7|8|6|9][0-9]{9}$/,
+            message: "请输入正确的手机号"
           }
         ],
         appointment_doctor: [
           {
             required: true,
-            message: "请选择医生.",
+            message: "请选择主治医生",
             trigger: "blur"
           }
         ]
