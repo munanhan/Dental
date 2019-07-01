@@ -732,7 +732,8 @@ export default {
         },
 
         getPatientData(url,method,data){
-            let that=this;   
+            let that=this;
+
             that.$api[url][method](data)
                 .then(res=>{
                     if(res.code == 200){
