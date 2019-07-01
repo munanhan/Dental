@@ -19,6 +19,11 @@ class PatientVisitController extends BaseController
         return message('',$patientVisit);
     }
 
+    public function show()
+    {
+        return '11';
+    }
+
     /*
      * 获取回访人员
      */

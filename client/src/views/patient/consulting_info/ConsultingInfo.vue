@@ -148,8 +148,6 @@ export default {
         };
     },
     created() {
-        let that = this;
-        that.getList();
     },
     mounted() {},
     watch: {
@@ -166,23 +164,6 @@ export default {
     methods: {
         delDisposal(index, value) {
             this.disposa.splice(index, 1);
-        },
-        getList() {
-            let that = this;
-            let id = that.consultInfo.id;
-            that.$api.patient_consult
-                .get({ patient_id: id })
-                .then(res => {
-                    if ((res.code = 200)) {
-                        console.log(res.data);
-                        that.consultingList = res.data;
-                    } else {
-                        console.log(res.msg);
-                    }
-                })
-                .catch(res => {
-                    console.log(res);
-                });
         },
 
         addConsultResult(data) {

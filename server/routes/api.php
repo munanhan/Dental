@@ -103,6 +103,10 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('patients/recent_visit','RecentVisitController@recentVisitPatient');
 
+    Route::get('patients/appoint','PatientAppointController@show');
+
+    Route::get('patients/treat','PatientTreatmentController@show');
+
 
 
 
@@ -149,6 +153,25 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('patient_cases/get_medical_by_id', 'PatientCaseMedicalController@getById');
 
+
+    /*
+    * Route patient_disposal Api
+    */
+    Route::get('patient_disposal', 'PatientDisposalController@index');
+
+    Route::get('patient_disposal/get_by_id', 'PatientDisposalController@show');
+
+    Route::post('patient_disposal', 'PatientDisposalController@store');
+
+
+    /*
+    * Route PatientCharge Api
+    */
+    Route::get('patient_charge', 'PatientChargeController@index');
+
+    Route::get('patient_charge/get_by_id', 'PatientChargeController@show');
+
+    Route::post('patient_charge', 'PatientChargeController@store');
 
     /*
      * Route PatientConsult Api
@@ -250,7 +273,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_visits', 'PatientVisitController@index');
 
-    Route::get('patient_visits/{patientVisit}', 'PatientVisitController@show');
+    Route::get('patient_visits/get_by_id', 'PatientVisitController@show');
 
     Route::post('patient_visits', 'PatientVisitController@store');
 

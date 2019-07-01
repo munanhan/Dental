@@ -1,3 +1,5 @@
+//咨询信息
+
 import request from '../common/request';
 
 const prefix = '/patient_consults';

@@ -8,6 +8,10 @@ use App\Model\PatientCase;
 class PatientCaseController extends BaseController
 {
 
+    public function show()
+    {
+        return '111';
+    }
 
     public function store(Request $request)
     {
@@ -22,19 +26,6 @@ class PatientCaseController extends BaseController
         return message('',$data);
     }
 
-//    public function update(Request $request ,PatientCase $patientCase)
-//    {
-//        $patientCase->update($request->all());
-//
-//        return message('',$patientCase, 200);
-//    }
-//
-//    public function delete(PatientCase $patientCase)
-//    {
-//        $patientCase->delete();
-//
-//        return message('',null, 200);
-//    }
 
     public function createPatientCase(array $data)
     {

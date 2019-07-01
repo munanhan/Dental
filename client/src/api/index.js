@@ -45,6 +45,10 @@ import * as patient_professional from "./patient_professional";
 import * as patient_case_template from "./patient_case_template";
 import * as patient_medical from "./patient_medical";
 import * as patient_consult from "./patient_consult";
+import * as patient_disposal from "./patient_disposal";
+import * as patient_charge from "./patient_charge";
+import * as patient_visit from  "./patient_visit";
+import * as patient_case  from "./patient_case";
 
 
 const apis = {
@@ -95,6 +99,10 @@ const apis = {
     patient_case_template,
     patient_medical,
     patient_consult,
+    patient_disposal,
+    patient_charge,
+    patient_visit,
+    patient_case,
 
 };
 

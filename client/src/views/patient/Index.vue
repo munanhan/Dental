@@ -78,7 +78,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -116,7 +116,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -155,7 +155,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -241,7 +241,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -279,7 +279,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -318,7 +318,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -368,7 +368,7 @@
                                 :key="index"
                                 class="visit-background"
                                 :class="{ 'active': item.id == selectItem }"
-                                @click="getInfoById(item.id)"
+                                @click="isSelect(item.id)"
                             >
                                 <div
                                     class="visit-background-top"
@@ -639,7 +639,9 @@ export default {
         that.getTodayWork(whereTime);
     },
 
-    mounted() {},
+    mounted() {
+
+    },
     watch: {
         activeName(newValue, oldValue) {
             let that = this;
@@ -655,26 +657,7 @@ export default {
                     break;
             }
         },
-        // refresh(newValue, oldValue) {
-        //         let that = this;
 
-        //         if (newValue) {
-        //             for (var key in that.content) {
-        //                 if (that.content[key]) {
-        //                     that[key + "Update"] = true;
-        //                 }
-        //             }
-
-        //             //更新原来的refresh, 防止下次点击时不通知更新
-        //             that.$emit("update:refresh", false);
-        //         }
-        //     },
-        //     selectHandler(index) {
-        //         let that = this;
-        //         that.content.chargeDetail = "ChargeInfo" == index;
-        //         that.chargeDetailUpdate = "ChargeInfo" == index;
-
-        //     },
         workdate(newValue, oldValue) {
             let newV = formatDate(newValue, "yyyy-MM-dd"),
                 now = formatDate(new Date(), "yyyy-MM-dd");
@@ -690,155 +673,88 @@ export default {
                 
             let that = this;
 
-            // target = that.quickFind[newValue];
-            // that[target] = true;
-
             that[newValue] = true;
 
-            switch(newValue){
+            console.log(that.selectItem);
 
-                case "pationInfo":
-                    let params = {};
-                    params.id = that.selectItem;
-                    that.getPatientData('patient','get',params,'selectPatient');
-                    console.log(that.curTab);
-                    break;
-
-                case "medicalInformation":
-                    that.getPatientData('patient','get','id','medicalInformation');
-                    console.log(that.curTab);
-                    break;
-
-                case "bookingInformation":
-                    that.getPatientData('patient','get','id','bookingInformation');
-                    console.log(that.curTab);
-                    break;
-
-                case "disposalRecords":
-                    that.getPatientData('patient','get','id','disposalRecords');
-                    console.log(that.curTab);
-                    break; 
-
-                case "chargeInfo":
-                    that.getPatientData('patient','get','id','chargeInfo');
-                    console.log(that.curTab);
-                    break;
-
-                case "medicalRecordsInfo":
-                    that.getPatientData('patient','get','id','medicalRecordsInfo');
-                    console.log(that.curTab);
-                    break;
-                    
-                case "returnVisitInfo":
-                    that.getPatientData('patient','get','id','returnVisitInfo');
-                    console.log(that.curTab);
-                    break;   
-                
-                case "consultingInfo" :
-                    that.getPatientData('patient','get','id','consultingInfo');
-                    console.log(that.curTab);
-                    break;
+            if(that.selectItem==null){
+                return false;
             }
+
+            that.getSwitch(newValue);
 
         }
     },
     computed: {},
     methods: {
 
-        getPatientData(url,method,data,ptab){
+        getSwitch(module){
+
+            let that=this;
+            let params = {};
+            params.id = that.selectItem;
+
+            switch(module){
+
+                case "pationInfo":
+
+                    that.getPatientData('patient','getPatientByID',params,);
+                    break;
+
+                case "medicalInformation":
+                    that.getPatientData('patient','treat',params,);
+                    break;
+
+                case "bookingInformation":
+                    that.getPatientData('patient','appoint',params,);
+                    break;
+
+                case "disposalRecords":
+                    that.getPatientData('patient_disposal','get',params,);
+                    break;
+
+                case "chargeInfo":
+                    that.getPatientData('patient_charge','get',params,);
+                    break;
+
+                case "medicalRecordsInfo":
+                    that.getPatientData('patient_case','get',params,);
+                    break;
+
+                case "returnVisitInfo":
+                    that.getPatientData('patient_visit','get',params);
+                    break;
+
+                case "consultingInfo" :
+                    that.getPatientData('patient_consult','get',params);
+                    break;
+            }
+        },
+
+        getPatientData(url,method,data){
             let that=this;   
             that.$api[url][method](data)
                 .then(res=>{
                     if(res.code == 200){
-                        ptab = res.data;
-                    }
-                    else{
 
+                        that.selectPatient= res.data;
                     }
                 })
                 .catch(res=>{
-
+                    console.log(res);
                 })                
         },
         
         //获取id
-        getInfoById(id) {
-
+        isSelect(id) {
             let that = this;
-
-            // switch(that.curTab){
-
-            //     case "pationInfo":
-            //         let params = {};
-            //         params.id = that.selectItem;
-            //         that.getPatientData('patient','get',params,'selectPatient');
-            //         console.log(that.curTab);
-            //         break;
-
-            //     case "medicalInformation":
-            //         that.getPatientData('patient','get','id','medicalInformation');
-            //         console.log(that.curTab);
-            //         break;
-
-            //     case "bookingInformation":
-            //         that.getPatientData('patient','get','id','bookingInformation');
-            //         console.log(that.curTab);
-            //         break;
-
-            //     case "disposalRecords":
-            //         that.getPatientData('patient','get','id','disposalRecords');
-            //         console.log(that.curTab);
-            //         break; 
-
-            //     case "chargeInfo":
-            //         that.getPatientData('patient','get','id','chargeInfo');
-            //         console.log(that.curTab);
-            //         break;
-
-            //     case "medicalRecordsInfo":
-            //         that.getPatientData('patient','get','id','medicalRecordsInfo');
-            //         console.log(that.curTab);
-            //         break;
-                    
-            //     case "returnVisitInfo":
-            //         that.getPatientData('patient','get','id','returnVisitInfo');
-            //         console.log(that.curTab);
-            //         break;   
-                
-            //     case "consultingInfo" :
-            //         that.getPatientData('patient','get','id','consultingInfo');
-            //         console.log(that.curTab);
-            //         break;
-            // }
             //选中
             that.selectItem = id;
 
-            that.$api.patient
-                .getPatientByID({ id })
-                .then(res => {
-                    res.data.allergy = (res.data.allergy.length && []).join(
-                        ","
-                    );
-
-                    res.data.anamnesis = (res.data.anamnesis.length && []).join(
-                        ","
-                    );
-
-                    res.data.patient_birthday = formatDate(
-                        res.data.patient_birthday,
-                        "yyyy-MM-dd"
-                    );
-
-                    that.selectPatient = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        getDataById(){
+            that.getSwitch(that.curTab);
 
         },
+
         //获取最近访问
         getRecentVisit() {
             let that = this;
@@ -938,17 +854,11 @@ export default {
             let that = this;
             that[type] = !that[type];
 
-            // if (!patient_expend) {
-            //     this.patient_expend = true;
-            // } else {
-            //     this.patient_expend = false;
-            // }
         },
 
         //tab选中事件
         tabSelectHandler(tabInstance) {
             let that = this;
-
             console.log(tabInstance);
         },
 
