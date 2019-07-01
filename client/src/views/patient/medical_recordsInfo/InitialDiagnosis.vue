@@ -58,7 +58,7 @@
                                     <div
                                         class="lowerleft-content"
                                         v-if="templateContent.main_complain"
-                                        @click="transmission('aaaaa', templateContent.main_complain)"
+                                        @click="transmission('complains', templateContent.main_complain)"
                                     >
                                         <div class="lowerleft-left">主诉</div>
                                         <div class="lowerleft-right">
@@ -68,7 +68,7 @@
                                     <div
                                         class="lowerleft-content"
                                         v-if="templateContent.now_history"
-                                        @click="transmission('bbbbb', templateContent.now_history)"
+                                        @click="transmission('nows', templateContent.now_history)"
                                     >
                                         <div class="lowerleft-left">现病史</div>
                                         <div class="lowerleft-right">
@@ -202,11 +202,23 @@
                                                 <div class="left-top1">部位</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
+
+                                            <!-- <div
+                                                class="lowerleft-content"
+                                                v-if="templateContent.main_complain"
+                                                @click="transmission('complains', templateContent.main_complain)"
+                                            >
+                                                <div class="lowerleft-left">主诉</div>
+                                                <div class="lowerleft-right">
+                                                    {{templateContent.main_complain}}
+                                                </div>
+                                            </div> -->
                                             <div class="left-bottom">
                                                 <div
                                                     class="item"
                                                     v-for="(item,key) in partsEntryData"
                                                     :key="key"
+                                                    @click="parts_table(item)"
                                                 >
                                                     <span>{{item}}</span>
                                                     <i
@@ -243,16 +255,17 @@
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
-                                                <tr>
-                                                    <td
-                                                        class="bottom-left"
-                                                        align="left"
-                                                    >前牙</td>
-                                                    <td
-                                                        class="bottom-right"
-                                                        align="left"
-                                                    >后牙</td>
-                                                </tr>
+                                                <div
+                                                    class="item"
+                                                    v-for="(item,key) in timeData"
+                                                    :key="key"
+                                                >
+                                                    <span>{{item}}</span>
+                                                    <i
+                                                        class="fa fa-caret-right mr-10 filel hide "
+                                                        @click.stop="parts_table(item)"
+                                                    ></i>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="top-left">
@@ -261,16 +274,17 @@
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
-                                                <tr>
-                                                    <td
-                                                        class="bottom-left"
-                                                        align="left"
-                                                    >前牙</td>
-                                                    <td
-                                                        class="bottom-right"
-                                                        align="left"
-                                                    >后牙</td>
-                                                </tr>
+                                                <div
+                                                    class="item"
+                                                    v-for="(item,key) in timeData"
+                                                    :key="key"
+                                                >
+                                                    <span>{{item}}</span>
+                                                    <i
+                                                        class="fa fa-caret-right mr-10 filel hide "
+                                                        @click.stop="parts_table(item)"
+                                                    ></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -386,10 +400,8 @@
                             <table border="1">
                                 <tr>
                                     <td align="center">主 诉</td>
-                                    <input
-                                        v-model="form.complain"
-                                    >
-                                        <!-- @blur="" -->
+                                    <input v-model="form.complain">
+                                    <!-- @blur="" -->
                                     <!-- <textarea style="resize:none;height:20px;margin-bottom:-2px"></textarea> -->
                                 </tr>
                                 <tr>
@@ -631,7 +643,8 @@ export default {
                 }
             ],
             partsEntryData: ["前牙", "后牙", "左上", "右上", "左下", "右下"],
-            propertiesData: ["咬到硬物松动", "要求检查", "疼痛", "牙龈红肿"],
+            propertiesData: ["咬物松动", "要求检查", "疼痛", "牙龈红肿"],
+            timeData: ["前牙", "后牙"],
             selectEntryStatus: false,
             activeName: "medicalTemplates",
             rules: {},
@@ -677,16 +690,19 @@ export default {
                 that.InitialDiag = that.addInitial;
             }
         },
+
         activeName(newValue, oldValue) {
             if (newValue) {
                 let that = this;
                 that.activeName = newValue;
             }
         },
+
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
                 that.getMenu();
+                // taht.getEntryMenu();
             }
         },
 
@@ -704,7 +720,9 @@ export default {
             that.getCaseData("patient_case_template", "templateContent", data);
             // that.form.complain = value;
         },
-        parts_table(data) {},
+        parts_table(data) {
+            console.log(data);
+        },
         afterClose() {
             this.templateContent = [];
             // let that = this;
@@ -738,7 +756,7 @@ export default {
             // console.log(this.form.check);
             switch (index) {
                 case "check":
-                    this.form.check.splice(index, 1);
+                    this.form.check.splice(index - 1, 1);
                     break;
                 case "auxiliarycheck":
                     this.form.auxiliarycheck.splice(index, 1);
@@ -760,6 +778,15 @@ export default {
 
         //     this.$refs["initialform"].resetFields();
         // },
+        // getEntryMenu() {
+        //     let that = this;
+        //     that.$api.patient_case_template
+        //         .index()
+        //         .then(res => {
+        //             that.medicalRecordEntryData = res.data;
+        //         })
+        //         .catch(res => {});
+        // },
 
         getMenu() {
             //获取菜单
@@ -771,9 +798,11 @@ export default {
                 })
                 .catch(res => {});
         },
+
         handleEntryClick(data) {
             data.type == 1 ? (this.selectEntryStatus = true) : null;
         },
+
         handleNodeClick(data) {
             let that = this;
             that.selectNode = data;
@@ -807,6 +836,7 @@ export default {
                 }
             }
         },
+
         getCaseData(apiType, dataType, selectNode = "") {
             //主数据
             let that = this;
@@ -845,10 +875,10 @@ export default {
         transmission(type, value) {
             let that = this;
             switch (type) {
-                case "aaaaa":
+                case "complains":
                     that.form.complain = value;
                     break;
-                case "bbbbb":
+                case "nows":
                     that.form.history = value;
                     break;
                 case "ccccc":
@@ -857,7 +887,7 @@ export default {
                 case "ddddd":
                     that.form.check = [value];
                     // console.log(that.form.$set)
-                    // that.$set('form.check', '0', value);
+                    // that.$set('form.check', '0', v   alue);
                     break;
                 case "eeeee":
                     that.form.auxiliarycheck = [value];
@@ -1044,10 +1074,35 @@ export default {
                                 height: 230px;
                                 margin: 2px;
                                 width: 187px;
-                                .item:nth-of-type(2n) {
-                                    width: 45%;
+                                // .item:nth-of-type(2n) {
+                                //     width: 45%;
+                                //     text-overflow: ellipsis;
+                                //     white-space: nowrap;
+                                //     float: right;
+                                //     // border:1px solid red;
+                                //     cursor: pointer;
+                                //     &:hover {
+                                //         background-color: #98ff79;
+                                //     }
+                                //     span {
+                                //         display: inline-block;
+                                //         margin-right: 10px;
+                                //     }
+                                //     i {
+                                //         display: none;
+                                //         // border: 1px solid red;
+                                //     }
+                                //     &:hover i {
+                                //         display: inline-block;
+                                //         padding-left: 35px;
+                                //         margin-right: 0px;
+                                //         text-align: right;
+                                //     }
+                                // }
+                                .item {
+                                    width: 50%;
                                     text-overflow: ellipsis;
-    white-space: nowrap;
+                                    white-space: nowrap;
                                     float: right;
                                     // border:1px solid red;
                                     cursor: pointer;
@@ -1064,13 +1119,13 @@ export default {
                                     }
                                     &:hover i {
                                         display: inline-block;
-                                        padding-left: 35px;
-                                        margin-right: 0px;
-                                        text-align: right;
+                                        // padding-left: 35px;
+                                        // margin-right: 0px;
+                                        // text-align: right;
                                     }
                                 }
-                                .item:nth-of-type(2n + 1) {
-                                    width: 45%;
+                                .item {
+                                    width: 50%;
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
                                     float: left;
@@ -1081,12 +1136,15 @@ export default {
                                     }
 
                                     i {
+                                        // border: 1px solid red;
+                                        margin-top: 2px;
                                         display: none;
                                     }
                                     &:hover i {
-                                        display: inline-block;
-                                        padding-left: 35px;
-                                        margin-right: 0;
+                                        // display: inline-block;
+                                        // padding-left: 35px;
+                                        // margin-right: 0;
+                                        float: right;
                                     }
                                 }
                                 // .bottom-left {
@@ -1232,5 +1290,10 @@ export default {
     /deep/ .el-tabs__nav-scroll {
         margin-left: 10px;
     }
+}
+/deep/ .el-textarea__inner {
+    border-radius: 0;
+    border: none;
+    resize: none;
 }
 </style>
