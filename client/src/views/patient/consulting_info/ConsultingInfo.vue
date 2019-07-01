@@ -165,7 +165,7 @@ export default {
     computed: {},
     methods: {
         delDisposal(index, value) {
-            this.disposa.splice(index, 1);
+            this.consultingList.splice(index, 1);
         },
         getList() {
             let that = this;

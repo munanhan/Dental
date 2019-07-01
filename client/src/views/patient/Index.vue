@@ -746,7 +746,7 @@ export default {
     methods: {
 
         getPatientData(url,method,data,ptab){
-            let that=this;   
+            let that=this;  
             that.$api[url][method](data)
                 .then(res=>{
                     if(res.code == 200){
