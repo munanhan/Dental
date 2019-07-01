@@ -214,10 +214,10 @@ export default {
             }
         },
 
-        selectPatient(newValue, oldValue) {
+        pationInfo(newValue, oldValue) {
             let that = this;
             if (newValue) {
-                that.data = that.selectPatient;
+                that.data = that.pationInfo;
             }
         }
     },
@@ -245,7 +245,7 @@ export default {
         },
         Modify_info() {
             let that=this;
-            if(that.selectPatient.id){
+            if(that.pationInfo.id){
                 that.modinfo_show = true;
             }else {
                 that.$message.warning('请选择一个患者');
