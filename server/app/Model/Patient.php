@@ -41,15 +41,15 @@ class Patient extends Model
         $this->attributes['allergy']=implode(',',$value);
     }
 
-    public function getAllergyAttribute($value)
-    {
-        return explode(',',$value);
-    }
-
-    public function getAnamnesisAttribute($value)
-    {
-        return explode(',',$value);
-    }
+//    public function getAllergyAttribute($value)
+//    {
+//        return explode(',',$value);
+//    }
+//
+//    public function getAnamnesisAttribute($value)
+//    {
+//        return explode(',',$value);
+//    }
 
     public function setAnamnesisAttribute($value)
     {

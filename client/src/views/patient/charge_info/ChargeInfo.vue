@@ -186,7 +186,7 @@ export default {
             required: true
         },
         charInfo: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

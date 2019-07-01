@@ -102,7 +102,7 @@ export default {
             required: true
         },
         returnInfo: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

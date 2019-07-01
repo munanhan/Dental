@@ -328,7 +328,7 @@ export default {
         // },
 
         charge: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

@@ -117,7 +117,7 @@ export default {
         // },
 
         addReturnVisit: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

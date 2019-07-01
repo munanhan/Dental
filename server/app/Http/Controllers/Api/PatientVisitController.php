@@ -21,7 +21,8 @@ class PatientVisitController extends BaseController
 
     public function show()
     {
-        return '11';
+        $data=PatientVisit::where('patient_id',request('id'))->get();
+        return message('',$data,200);
     }
 
     /*

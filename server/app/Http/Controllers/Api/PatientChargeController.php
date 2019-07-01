@@ -13,7 +13,7 @@ class PatientChargeController extends BaseController
 {
     public function show()
     {
-        return message('',request('id'),200);
+
     }
 
     public function store()

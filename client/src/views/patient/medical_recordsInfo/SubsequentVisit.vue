@@ -351,7 +351,7 @@ export default {
         // },
 
         addSubsequent: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },

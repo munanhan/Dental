@@ -191,8 +191,8 @@ export default {
             type: Boolean,
             required: true
         },
-        selectPatient: {
-            type: Object,
+        pationInfo: {
+           // type: Object,
             required: true
         }
     },

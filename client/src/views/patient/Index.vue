@@ -413,7 +413,7 @@
                 >
                     <patient-info
                         :refresh.sync="pationInfo"
-                        :selectPatient="selectPatient"
+                        :pationInfo="selectPatient"
                     >
 
                     </patient-info>
@@ -428,6 +428,7 @@
                     <medical-information
                         v-if="medicalInformation"
                         :refresh.sync="medicalInformation"
+                        :medicalInformation="selectPatient"
                     ></medical-information>
                 </el-tab-pane>
 
@@ -439,6 +440,7 @@
                     <booking-information
                         v-if="bookingInformation"
                         :refresh.sync="bookingInformation"
+                        :bookingInformation="selectPatient"
                     ></booking-information>
                 </el-tab-pane>
 
@@ -550,7 +552,7 @@ export default {
 
     data() {
         return {
-            selectPatient: {},
+            selectPatient: [],
 
             patient_expend: false,
             input: "",

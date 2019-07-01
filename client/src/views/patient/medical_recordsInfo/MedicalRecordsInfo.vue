@@ -269,7 +269,7 @@ export default {
             required: true
         },
         medicalInfo: {
-            type: Object,
+           // type: Object,
             required: true
         }
     },
