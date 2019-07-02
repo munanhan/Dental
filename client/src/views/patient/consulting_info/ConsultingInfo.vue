@@ -20,7 +20,7 @@
                     </div>
                     <div class="top-i-content">
 
-                        <i class="fa fa-pen top-i"></i>
+                        <i class="fa fa-pen top-i" @click="add_cons"></i>
                         <i
                             @click="delDisposal"
                             class="fa fa-trash-alt top-i"

@@ -221,7 +221,7 @@
                                         </div>
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">{{cccc}}</div>
+                                                <div class="left-top1">性质</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
@@ -426,6 +426,7 @@
                                     <template v-for="(item,index) in form.check">
                                         <input
                                             v-model="form.check[index]"
+                                            @focus="changeType('eee')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -626,6 +627,7 @@ export default {
             bbb: false,
 
             cccc: "备牙",
+            zhengzhuang: "",
 
             medicalRecordEntryData: [
                 {
@@ -737,7 +739,7 @@ export default {
             //处理显示哪个模块
             // if(active == 'aaa'){
             that.aaa = type == "aaa";
-            that.bbb = type === "bbb";
+            that.bbb = type == "bbb";
 
             //找到选中的哪个输入框
             that.type = type;
@@ -759,7 +761,7 @@ export default {
                     that.cccc = "部位";
                     break;
                 case "eee":
-                    that.cccc = "部位";
+                    that.zhengzhuang = "症状";
                     break;
             }
 
@@ -781,6 +783,12 @@ export default {
                     break;
                 case "bbb":
                     that.form.history += text;
+                    break;
+                case "ccc":
+                    that.form.previous += text;
+                    break;
+                case "ddd":
+                    that.form.allergy += text;
                     break;
             }
         },

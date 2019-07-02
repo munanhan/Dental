@@ -170,6 +170,7 @@
                 class="patient-bottom-button"
                 type="primary"
                 porp="modify-inormation"
+                @click="mod_info"
             >修改信息</el-button>
 
         </div>
@@ -186,9 +187,8 @@ export default {
         ModifyInfo
     },
     props: {
-        pationInfo: {
-        },
-        selectID:{},
+        pationInfo: {},
+        selectID: {}
     },
     data() {
         return {
@@ -199,11 +199,13 @@ export default {
     created() {},
     mounted() {},
     watch: {
-
+        
     },
     computed: {},
     methods: {
-
+        mod_info() {
+            this.modinfo_show = true;
+        },
     }
 };
 </script>
