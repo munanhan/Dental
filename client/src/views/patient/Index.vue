@@ -413,6 +413,7 @@
                     v-if="$check_pm('patients_info')"
                 >
                     <patient-info
+                        v-if="pationInfo"
                         :refresh.sync="pationInfo"
                         :pationInfo="selectPatient"
                         :selectID="selectItem"
@@ -571,7 +572,7 @@ export default {
             patient_expend: false,
             input: "",
             search: "",
-            curTab: "pationInfo",
+            curTab: "",
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
