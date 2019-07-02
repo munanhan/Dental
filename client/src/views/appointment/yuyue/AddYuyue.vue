@@ -21,7 +21,7 @@
             placeholder="姓名"
             value
             @keyup.enter="search"
-          >
+          />
           <i class="fas fa-search" @click="search"></i>
         </div>
       </div>
@@ -214,13 +214,7 @@ export default {
     "appointment_doctor"
   ],
   inject: ["getTodayAppointment"],
-  created() {
-    this.$api.appointment.getCaseNumber().then(res => {
-      if (res.code == 200) {
-        this.formData.case_id = res.data.case_id;
-      }
-    });
-  },
+  created() {},
   computed: {
     chooseDate() {
       return this.$store.state.chooseDate;
@@ -246,7 +240,7 @@ export default {
       title: "新增预约",
       items_o: itemsOptions,
       checked_items: [],
-  
+
       rules: {
         patient_name: [
           {
@@ -259,6 +253,13 @@ export default {
           {
             required: true,
             message: "请输入年龄.",
+            trigger: "blur"
+          }
+        ],
+        patient_sex: [
+          {
+            required: true,
+            message: "请选择性别.",
             trigger: "blur"
           }
         ],
@@ -290,6 +291,13 @@ export default {
       this.formData.items = this.checked_items.join(",");
     },
     show(new_show, old_show) {
+      if (new_show) {
+        this.$api.appointment.getCaseNumber().then(res => {
+          if (res.code == 200) {
+            this.formData.case_id = res.data.case_id;
+          }
+        });
+      }
       if (this.yuyue_id) {
         if (new_show) {
           this.$api.appointment
@@ -329,13 +337,9 @@ export default {
         let gray = document.getElementsByClassName("gray");
         if (new_show) {
           if (i != 30) {
-            gray[0].innerHTML = `<div class="double">${
-              this.yuyue_time
-            }-${H}:00 (60m)</div>`;
+            gray[0].innerHTML = `<div class="double">${this.yuyue_time}-${H}:00 (60m)</div>`;
           } else {
-            gray[0].innerHTML = `<div class="double">${
-              this.yuyue_time
-            }-${H}:30 (60m)</div>`;
+            gray[0].innerHTML = `<div class="double">${this.yuyue_time}-${H}:30 (60m)</div>`;
           }
         } else {
           gray[0].innerHTML = "";
