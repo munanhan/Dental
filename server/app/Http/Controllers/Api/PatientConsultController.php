@@ -53,6 +53,11 @@ class PatientConsultController extends BaseController
         return message('添加成功',$patientConsult,200);
     }
 
+    public function update()
+    {
+        PatientConsult::where('id',request('id'))->update(request()->all());
+    }
+
     public function patientInfo()
     {
         $data= $this->getPatientBaseInfo(request('id'));

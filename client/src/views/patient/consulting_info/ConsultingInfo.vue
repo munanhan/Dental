@@ -2,16 +2,11 @@
     <div class="con-content">
         <div class="con-top">
             <div
-                @dblclick="add_cons"
                 class="background"
                 v-for="(item,index) in consultInfo"
                 :key="index"
             >
-                <!-- <div class="top-title">
-                    <div style="margin-right:60px"> &nbsp;&nbsp; 2019-05-16 &nbsp;&nbsp; 14:00 &nbsp;&nbsp;</div>
-                    <div style="margin-right:200px">接诊医生:12121212</div>
-                    <div>录入:1212</div>
-                </div> -->
+
                 <div class="top-title">
                     <div class="top-content">
                         <div class="top-text">{{item.created_at}}</div>
@@ -20,7 +15,7 @@
                     </div>
                     <div class="top-i-content">
 
-                        <i class="fa fa-pen top-i" @click="add_cons"></i>
+                        <i class="fa fa-pen top-i" ></i>
                         <i
                             @click="delDisposal"
                             class="fa fa-trash-alt top-i"
@@ -89,10 +84,7 @@
                         >
                             <div class="font-left">沟通记录:</div>
                             <div>{{item.record}}</div>
-                            <!-- <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div> -->
+
                         </el-col>
                     </el-row>
                     <el-row
@@ -116,7 +108,7 @@
                 <el-button
                     class="con-button"
                     type="primary"
-                    @click="add_cons"
+                    @click="add_cons('add')"
                 >新增</el-button>
             </div>
         </div>
@@ -140,10 +132,7 @@ export default {
     },
 
     props: {
-        consultInfo: {
-            // type: Array,
-            // default: () => []
-        },
+        consultInfo: {},
         selectID: {}
     },
 
@@ -177,19 +166,27 @@ export default {
             let that = this;
 
             if (that.selectID) {
-                that.$api.patient_consult
-                    .patientInfo({ id: that.selectID })
-                    .then(res => {
-                        that.patientInfo = res.data;
-                        that.addcons_show = true;
-                    })
-                    .catch(res => {
-                        console.log(res);
-                    });
-            } else {
+
+                that.getPatientBaseInfo();
+
+            }else {
                 that.$message.warning("请选择一个患者");
             }
-        }
+
+        },
+
+        getPatientBaseInfo(){
+            let that = this;
+            that.$api.patient_consult
+                .patientInfo({ id: that.selectID })
+                .then(res => {
+                    that.patientInfo = res.data;
+                    that.addcons_show = true;
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        },
     }
 };
 </script>
