@@ -52,7 +52,7 @@ export default {
     components: {},
     props: {
         medicalInformation:{
-          //
+
         },
     },
     data() {

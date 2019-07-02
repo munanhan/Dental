@@ -36,8 +36,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">主 诉:</div>
-                            <div>{{item.main_consult}}</div>
+                            <div class="font-left"> 主 诉:{{item.main_consult}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -48,8 +47,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 基本需要:</div>
-                            <div>{{item.base_demand}}</div>
+                            <div class="font-left"> 基本需要:{{item.base_demand}}</div>
                         </el-col>
 
                     </el-row>
@@ -61,8 +59,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">潜在需求:</div>
-                            <div>{{item.potential_demand}}</div>
+                            <div class="font-left">潜在需求:{{item.potential_demand}}</div>
                         </el-col>
 
                     </el-row>
@@ -74,8 +71,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">医生方案:</div>
-                            <div>{{item.doctor_solution}}</div>
+                            <div class="font-left">医生方案:{{item.doctor_solution}}</div>
 
                         </el-col>
                     </el-row>
@@ -87,8 +83,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">沟通记录:</div>
-                            <div>{{item.record}}</div>
+                            <div class="font-left">沟通记录:{{item.record}}</div>
                             <!-- <div
                                 style="flex:1"
                                 class="font-right"
@@ -103,8 +98,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">服务建议:</div>
-                            <div>{{item.service_proposal}}</div>
+                            <div class="font-left">服务建议:{{item.service_proposal}}</div>
                         </el-col>
                     </el-row>
 
@@ -138,22 +132,23 @@ export default {
         AddConsulting
     },
     props: {
-        consultInfo: {
-            // type: Array,
-            // default: () => []
-        },
-        selectID: {}
+        consultInfo: {},
+        selectID:{},
     },
     data() {
         return {
             addcons_show: false,
             consultingList: [],
-            patientInfo: []
+            patientInfo:[],
         };
     },
-    created() {},
+    created() {
+    },
     mounted() {},
-    watch: {},
+    watch: {
+
+
+    },
     computed: {},
     methods: {
         delDisposal(index, value) {
@@ -169,15 +164,15 @@ export default {
             let that = this;
 
             if (that.selectID) {
-                that.$api.patient_consult
-                    .patientInfo({ id: that.selectID })
-                    .then(res => {
-                        that.patientInfo = res.data;
+                that.$api.patient_consult.patientInfo({id: that.selectID})
+                    .then(res=>{
+                        that.patientInfo=res.data;
                         that.addcons_show = true;
                     })
-                    .catch(res => {
+                    .catch(res=>{
                         console.log(res);
-                    });
+                    })
+
             } else {
                 that.$message.warning("请选择一个患者");
             }
@@ -253,7 +248,7 @@ export default {
                     .font-left {
                         width: 80px;
                         font-weight: bold;
-                        // margin-right: 50px;
+                        margin-right: 50px;
                         margin-bottom: 5px;
                     }
                     .font-right {
