@@ -195,6 +195,7 @@
                                 v-model="patientSearch.flag"
                                 placeholder="患者信息"
                                 class="patient-infor"
+                                @change="dialogshow(patientSearch.flag)"
                             >
                                 <el-option
                                     v-for="item in options"
@@ -207,7 +208,7 @@
                             <el-input
                                 v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、电话"
+                                :placeholder="placeholder"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
@@ -339,7 +340,7 @@
                             </div>
 
                         </div>
-                        <div class="botton-content">
+                        <div class="bottom-content">
                             <el-button
                                 type="primary"
                                 @click="add_patient"
@@ -517,6 +518,8 @@
 
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
+
+        <advanced-query :show.sync="advancedque_show"></advanced-query>
     </el-container>
 
 </template>
@@ -536,6 +539,7 @@ import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 import BookingInformation from "./BookingInformation";
 import medicalInformation from "./medicalInformation";
+import AdvancedQuery from "./AdvancedQuery";
 
 export default {
     name: "Patient",
@@ -553,15 +557,17 @@ export default {
         AppointmentVisit,
         ConsultingInfo,
         BookingInformation,
-        medicalInformation
+        medicalInformation,
+        AdvancedQuery
     },
 
     props: {},
 
     data() {
         return {
+            advancedque_show: false,
             selectPatient: [],
-
+            placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",
             search: "",
@@ -649,9 +655,7 @@ export default {
         that.getTodayWork(whereTime);
     },
 
-    mounted() {
-
-    },
+    mounted() {},
     watch: {
         activeName(newValue, oldValue) {
             let that = this;
@@ -680,81 +684,112 @@ export default {
             that.getTodayWork();
         },
         curTab(newValue, oldValue) {
-                
             let that = this;
 
-            if(that.selectItem==null){
+            if (that.selectItem == null) {
                 return false;
             }
 
             that.getSwitch(newValue);
-
         }
     },
     computed: {},
     methods: {
+        dialogshow(value) {
+            switch (value) {
+                case 1:
+                    this.placeholder = "姓名、拼音、电话";
+                    break;
+                case 2:
+                    this.placeholder = "病历号";
+                    break;
+                case 3:
+                    this.placeholder = "会员号";
+                    break;
+                case 4:
+                    this.advancedque_show = true;
+                    break;
+            }
+            // this[value] = true;
+            // this.value = "";
+        },
 
-        getSwitch(module){
-
-            let that=this;
+        getSwitch(module) {
+            let that = this;
             let params = {};
             params.id = that.selectItem;
 
-            switch(module){
-
+            switch (module) {
                 case "pationInfo":
-
-                    that.getPatientData('patient','getPatientByID',params,module);
+                    that.getPatientData(
+                        "patient",
+                        "getPatientByID",
+                        params,
+                        module
+                    );
                     break;
 
                 case "medicalInformation":
-                    that.getPatientData('patient','treat',params,module);
+                    that.getPatientData("patient", "treat", params, module);
                     break;
 
                 case "bookingInformation":
-                    that.getPatientData('patient','appoint',params,module);
+                    that.getPatientData("patient", "appoint", params, module);
                     break;
 
                 case "disposalRecords":
-                    that.getPatientData('patient_disposal','get',params,module);
+                    that.getPatientData(
+                        "patient_disposal",
+                        "get",
+                        params,
+                        module
+                    );
                     break;
 
                 case "chargeInfo":
-                    that.getPatientData('patient_charge','get',params,module);
+                    that.getPatientData(
+                        "patient_charge",
+                        "get",
+                        params,
+                        module
+                    );
                     break;
 
                 case "medicalRecordsInfo":
-                    that.getPatientData('patient_case','get',params,module);
+                    that.getPatientData("patient_case", "get", params, module);
                     break;
 
                 case "returnVisitInfo":
-                    that.getPatientData('patient_visit','get',params,module);
+                    that.getPatientData("patient_visit", "get", params, module);
                     break;
 
-                case "consultingInfo" :
-                    that.getPatientData('patient_consult','get',params,module);
+                case "consultingInfo":
+                    that.getPatientData(
+                        "patient_consult",
+                        "get",
+                        params,
+                        module
+                    );
                     break;
             }
         },
 
-        getPatientData(url,method,data,module){
-            let that=this;
+        getPatientData(url, method, data, module) {
+            let that = this;
 
             that.$api[url][method](data)
-                .then(res=>{
-                    if(res.code == 200){
-
-                        that.selectPatient= res.data;
+                .then(res => {
+                    if (res.code == 200) {
+                        that.selectPatient = res.data;
 
                         that[module] = true;
-
                     }
                 })
-                .catch(res=>{
+                .catch(res => {
                     console.log(res);
-                })                
+                });
         },
-        
+
         //获取id
         isSelect(id) {
             let that = this;
@@ -762,7 +797,6 @@ export default {
             that.selectItem = id;
 
             that.getSwitch(that.curTab);
-
         },
 
         //获取最近访问
@@ -863,7 +897,6 @@ export default {
         expend(type) {
             let that = this;
             that[type] = !that[type];
-
         },
 
         //tab选中事件
@@ -982,7 +1015,7 @@ export default {
                         }
                     }
                 }
-                .botton-content {
+                .bottom-content {
                     position: absolute;
                     left: 0;
                     bottom: 0;

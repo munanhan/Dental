@@ -105,7 +105,7 @@ export default {
             //type: Object,
             required: true
         },
-        selectID:"",
+        selectID:{},
     },
     data() {
         return {

@@ -190,7 +190,7 @@ export default {
         pationInfo: {
             required: true
         },
-        selectID:"",
+        selectID:{},
     },
     data() {
         return {
