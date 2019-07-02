@@ -567,7 +567,7 @@ export default {
     data() {
         return {
             advancedque_show: false,
-            selectPatient: [],
+            selectPatient: {},
             placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",

@@ -264,14 +264,7 @@ export default {
         SubsequentVisit
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        medicalInfo: {
-            // type: Object,
-            required: true
-        },
+        medicalInfo: {},
         selectID:{},
     },
     data() {

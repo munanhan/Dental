@@ -97,21 +97,13 @@ export default {
         AddReturnVisit
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        returnInfo: {
-            //type: Object,
-            required: true
-        },
+        returnInfo: {},
         selectID:{},
     },
     data() {
         return {
             addplan_show: false,
             addrevisit_show: false,
-
             patientInfo:[],
         };
     },
@@ -128,13 +120,7 @@ export default {
     },
     computed: {},
     methods: {
-        getChargeInfo() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         Add_Plan() {
             let that = this;
             if (that.selectID) {
@@ -143,7 +129,6 @@ export default {
                 that.$message.warning("请选择一个患者");
             }
 
-            // this.addplan_show = true;
         },
         Add_Revisit() {
             let that = this;
@@ -163,12 +148,8 @@ export default {
                 that.$message.warning("请选择一个患者");
             }
 
-            // this.addrevisit_show = true;
         },
 
-        upateRetrunVisit() {
-            let that = this;
-        }
     }
 };
 </script>

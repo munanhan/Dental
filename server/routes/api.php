@@ -182,7 +182,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/show', 'PatientConsultController@getById');
+    Route::get('patient_consults/get_by_id', 'PatientConsultController@show');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
