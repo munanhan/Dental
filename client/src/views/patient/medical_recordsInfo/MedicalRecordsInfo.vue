@@ -221,7 +221,7 @@ export default {
     },
     props: {
         medicalInfo: {},
-        selectID:{},
+        selectID: {}
     },
     data() {
         return {

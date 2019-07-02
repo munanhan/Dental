@@ -97,13 +97,13 @@ export default {
     },
     props: {
         returnInfo: {},
-        selectID:{},
+        selectID: {}
     },
     data() {
         return {
             addplan_show: false,
             addrevisit_show: false,
-            patientInfo:[],
+            patientInfo: []
         };
     },
     created() {},
@@ -119,7 +119,6 @@ export default {
     },
     computed: {},
     methods: {
-
         Add_Plan() {
             let that = this;
             if (that.selectID) {
@@ -127,28 +126,25 @@ export default {
             } else {
                 that.$message.warning("请选择一个患者");
             }
-
         },
         Add_Revisit() {
             let that = this;
             if (that.selectID) {
-                that.$api.patient_visit.patientInfo({id:that.selectID})
-                    .then(res=>{
-                        if(res.code==200){
-                            that.patientInfo=res.data;
+                that.$api.patient_visit
+                    .patientInfo({ id: that.selectID })
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.patientInfo = res.data;
                             that.addrevisit_show = true;
                         }
                     })
-                    .catch(res=>{
+                    .catch(res => {
                         console.log(res);
-                    })
-
+                    });
             } else {
                 that.$message.warning("请选择一个患者");
             }
-
-        },
-
+        }
     }
 };
 </script>

@@ -234,11 +234,7 @@ export default {
         },
         getChargeInfo() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
+  
         Advan_pay() {
 
             this.advancepay_show = true;

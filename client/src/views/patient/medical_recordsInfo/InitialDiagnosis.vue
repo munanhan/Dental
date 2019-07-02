@@ -199,27 +199,18 @@
                                     <div class="entry-box-top">
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">部位</div>
+                                                <!-- <div class="left-top1">部位</div> -->
+                                                <div class="left-top1">{{cccc}}</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
-
-                                            <!-- <div
-                                                class="lowerleft-content"
-                                                v-if="templateContent.main_complain"
-                                                @click="transmission('complains', templateContent.main_complain)"
-                                            >
-                                                <div class="lowerleft-left">主诉</div>
-                                                <div class="lowerleft-right">
-                                                    {{templateContent.main_complain}}
-                                                </div>
-                                            </div> -->
                                             <div class="left-bottom">
                                                 <div
                                                     class="item"
                                                     v-for="(item,key) in partsEntryData"
                                                     :key="key"
-                                                    @click="parts_table(item)"
+                                                    @click="appendText(item)"
                                                 >
+                                                    <!-- @click="parts_table(item)" -->
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
@@ -230,7 +221,7 @@
                                         </div>
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">性质</div>
+                                                <div class="left-top1">{{cccc}}</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
@@ -238,6 +229,7 @@
                                                     class="item"
                                                     v-for="(item,key) in propertiesData"
                                                     :key="key"
+                                                    @click="appendText(item)"
                                                 >
                                                     <span>{{item}}</span>
                                                     <i
@@ -400,22 +392,34 @@
                             <table border="1">
                                 <tr>
                                     <td align="center">主 诉</td>
-                                    <input v-model="form.complain">
+                                    <input
+                                        v-model="form.complain"
+                                        @focus="changeType('aaa')"
+                                    >
                                     <!-- @blur="" -->
                                     <!-- <textarea style="resize:none;height:20px;margin-bottom:-2px"></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">现 病 史</td>
-                                    <input v-model="form.history">
+                                    <input
+                                        v-model="form.history"
+                                        @focus="changeType('bbb')"
+                                    >
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
                                 <tr>
                                     <td align="center">既 往 史</td>
-                                    <input v-model="form.previous">
+                                    <input
+                                        v-model="form.previous "
+                                        @focus="changeType('ccc')"
+                                    >
                                 </tr>
                                 <tr>
                                     <td align="center">过 敏 史</td>
-                                    <input v-model="form.allergy">
+                                    <input
+                                        v-model="form.allergy"
+                                        @focus="changeType('ddd')"
+                                    >
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
@@ -582,6 +586,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- <div v-if="aaa" @append-text="appendText"></div>
+                <div v-if="bbb"></div> -->
+                <div>{{cccc}}</div>
+
             </div>
         </el-form>
     </el-dialog>
@@ -612,6 +621,12 @@ export default {
         return {
             selectNode: null,
             initialData: [],
+
+            aaa: false,
+            bbb: false,
+
+            cccc: "备牙",
+
             medicalRecordEntryData: [
                 {
                     type: 0,
@@ -671,7 +686,9 @@ export default {
                 // },
             },
 
-            data: {}
+            data: {},
+
+            type: "aaa"
 
             // aaa: []
         };
@@ -714,6 +731,60 @@ export default {
         }
     },
     methods: {
+        changeType(type) {
+            let that = this;
+
+            //处理显示哪个模块
+            // if(active == 'aaa'){
+            that.aaa = type == "aaa";
+            that.bbb = type === "bbb";
+
+            //找到选中的哪个输入框
+            that.type = type;
+
+            //--------------------------
+
+            // 更改每个模块上面的内容(提示用语)-----------
+            switch (type) {
+                case "aaa":
+                    that.cccc = "部位";
+                    break;
+                case "bbb":
+                    that.cccc = "部位";
+                    break;
+                case "ccc":
+                    that.cccc = "部位";
+                    break;
+                case "ddd":
+                    that.cccc = "部位";
+                    break;
+                case "eee":
+                    that.cccc = "部位";
+                    break;
+            }
+
+            //--------------------------------
+
+            // }
+
+            //里面的框要抛出事件
+            // $emit('append-text', 'aaaa', '新增文字')
+        },
+
+        //处理输入框的追加
+        appendText(text) {
+            let that = this;
+
+            switch (that.type) {
+                case "aaa":
+                    that.form.complain += text;
+                    break;
+                case "bbb":
+                    that.form.history += text;
+                    break;
+            }
+        },
+
         //箭头
         pat_table(data) {
             let that = this;
@@ -801,6 +872,11 @@ export default {
 
         handleEntryClick(data) {
             data.type == 1 ? (this.selectEntryStatus = true) : null;
+        },
+
+        getTemplateMenu() {
+            let that = this;
+            // that.$api.patient_case_template.
         },
 
         handleNodeClick(data) {
