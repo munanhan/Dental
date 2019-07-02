@@ -74,3 +74,25 @@ export function attendDoctor(data){
         params:data,
     })
 }
+
+export function clinicPatientSource(data){
+    return request({
+        url:`${prefix}/clinicPatientSource`,
+        method:'get',
+        params:data,
+    })
+}
+export function clinicVisitData(data){
+    return request({
+        url:`${prefix}/clinicVisitData`,
+        method:'get',
+        params:data,
+    })
+}
+export function clinicAppointData(data){
+    return request({
+        url:`${prefix}/clinicAppointData`,
+        method:'get',
+        params:data,
+    })
+}

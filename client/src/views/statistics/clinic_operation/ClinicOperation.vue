@@ -533,7 +533,7 @@ export default {
             //患者来源人数统计--------------------
             patientNum: {
                 columns: ["type", "num"],
-                rows: [{ type: "1/1", num: 1393 }, { type: "1/2", num: 3530 }]
+                rows: []
             },
             //---------------------------------
 
@@ -865,12 +865,58 @@ export default {
 
         getData() {
             let that = this;
-
-            that.$api.aaaa
-                .bbbb(that.search)
+           
+            that.search.dtfm = typeof that.search.dateRange[0] == 'object'?
+                                that.search.dateRange[0].toLocaleDateString():
+                                that.search.dateRange[0];
+            that.search.dtto = typeof that.search.dateRange[1] == 'object'?
+                                that.search.dateRange[1].toLocaleDateString():
+                                that.search.dateRange[1];
+                             
+            //患者来源人数统计
+            that.$api.appointment
+                .clinicPatientSource(that.search)
                 .then(res => {
                     if (res.code == 200) {
-                        that.tableData = res.data;
+                        that.patientNum.rows = res.data.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
+            // 就诊人数统计
+             that.$api.appointment
+                .clinicVisitData(that.search)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.visitData.rows = res.data.data;
+                    } else {
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
+                    }
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                })
+                .catch(e => {
+                    that.$message.error("获取数据失败，请重试.");
+
+                    //更新原来的refresh, 防止下次点击时不获取新数据
+                    that.$emit("update:refresh", false);
+                });
+            // 预约人数统计
+             that.$api.appointment
+                .clinicAppointData(that.search)
+                .then(res => {
+                    if (res.code == 200) {
+                        that.bookData.rows = res.data.data;
                     } else {
                         that.$message.error(res.msg || "获取数据失败，请重试.");
                     }
