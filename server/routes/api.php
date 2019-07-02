@@ -800,7 +800,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     
 Route::group(['namespace'=>'Api'], function(){
 
-    Route::get('test','ExpenditureController@getBySelect');//测试接口
+    Route::get('test','Test@test');//测试接口
 });
     
 

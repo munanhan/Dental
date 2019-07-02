@@ -280,7 +280,7 @@ use Illuminate\Support\Facades\DB;
                             case 'unique':
                                 $field = $rule_children[1];
                                 //记录字段
-                                if (!array_key_exists($k,$parms) || $parms[$k] == '') {
+                                if (!array_key_exists($k,$parms) || $parms[$k] === '') {
                                     return $field.'必填.';
                                 }
                                 break;
