@@ -186,7 +186,8 @@ export default {
         ModifyInfo
     },
     props: {
-        pationInfo: {},
+        pationInfo: {
+        },
         selectID:{},
     },
     data() {

@@ -415,7 +415,7 @@
                     <patient-info
                         v-if="pationInfo"
                         :refresh.sync="pationInfo"
-                        :pationInfo="selectPatient"
+                        :pationInfo="selectPatientInfo"
                         :selectID="selectItem"
                     >
 
@@ -567,7 +567,8 @@ export default {
     data() {
         return {
             advancedque_show: false,
-            selectPatient: {},
+            selectPatient: [],
+            selectPatientInfo:{},
             placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",
@@ -684,6 +685,7 @@ export default {
             let that = this;
             that.getTodayWork();
         },
+
         curTab(newValue, oldValue) {
             let that = this;
 
@@ -693,6 +695,7 @@ export default {
 
             that.getSwitch(newValue);
         }
+
     },
     computed: {},
     methods: {
@@ -722,12 +725,7 @@ export default {
 
             switch (module) {
                 case "pationInfo":
-                    that.getPatientData(
-                        "patient",
-                        "getPatientByID",
-                        params,
-                        module
-                    );
+                    that.getPatientData("patient", "getPatientByID", params, module);
                     break;
 
                 case "medicalInformation":
@@ -739,21 +737,11 @@ export default {
                     break;
 
                 case "disposalRecords":
-                    that.getPatientData(
-                        "patient_disposal",
-                        "get",
-                        params,
-                        module
-                    );
+                    that.getPatientData("patient_disposal", "get", params, module);
                     break;
 
                 case "chargeInfo":
-                    that.getPatientData(
-                        "patient_charge",
-                        "get",
-                        params,
-                        module
-                    );
+                    that.getPatientData("patient_charge", "get", params, module);
                     break;
 
                 case "medicalRecordsInfo":
@@ -765,12 +753,7 @@ export default {
                     break;
 
                 case "consultingInfo":
-                    that.getPatientData(
-                        "patient_consult",
-                        "get",
-                        params,
-                        module
-                    );
+                    that.getPatientData("patient_consult", "get", params, module);
                     break;
             }
         },
@@ -781,9 +764,16 @@ export default {
             that.$api[url][method](data)
                 .then(res => {
                     if (res.code == 200) {
-                        that.selectPatient = res.data;
-
-                        that[module] = true;
+                        switch (module){
+                            case "pationInfo":
+                                that.selectPatientInfo = res.data;
+                                that[module] = true;
+                                break;
+                            default:
+                                that.selectPatient = res.data;
+                                that[module] = true;
+                                break;
+                        }
                     }
                 })
                 .catch(res => {
