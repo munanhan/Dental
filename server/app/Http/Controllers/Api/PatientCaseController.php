@@ -10,7 +10,7 @@ class PatientCaseController extends BaseController
 
     public function show()
     {
-        return message('','',200);
+        return message('',[],200);
     }
 
     public function store(Request $request)
