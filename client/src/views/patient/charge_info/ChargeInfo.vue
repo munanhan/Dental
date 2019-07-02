@@ -236,7 +236,8 @@ export default {
             if (newValue) {
                 that.getChargeInfo();
             }
-        }
+        },
+        // selectID:{},
     },
     computed: {},
     methods: {
@@ -273,14 +274,14 @@ export default {
             this.watersin_show = true;
         },
         Charge() {
-            let that = this;
-            if (that.charInfo.id) {
-                this.charge_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            // let that = this;
+            // if (that.selectID.id) {
+            //     this.charge_show = true;
+            // } else {
+            //     that.$message.warning("请选择一个患者");
+            // }
 
-            // this.charge_show = true;
+            this.charge_show = true;
         }
     }
 };

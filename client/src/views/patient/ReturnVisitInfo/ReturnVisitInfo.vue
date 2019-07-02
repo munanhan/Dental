@@ -112,7 +112,7 @@ export default {
             addplan_show: false,
             addrevisit_show: false,
 
-            patientInfo:[],
+            patientInfo:{},
         };
     },
     created() {},

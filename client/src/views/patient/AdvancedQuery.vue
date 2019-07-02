@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="修改密码"
+        title="高级查询"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"

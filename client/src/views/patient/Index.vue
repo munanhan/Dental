@@ -520,7 +520,7 @@
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
 
-        <advanced-query :show.sync="advancedque_show"></advanced-query>
+        <!-- <advanced-query :show.sync="advancedque_show"></advanced-query> -->
     </el-container>
 
 </template>
@@ -540,7 +540,7 @@ import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 import BookingInformation from "./BookingInformation";
 import medicalInformation from "./medicalInformation";
-import AdvancedQuery from "./AdvancedQuery";
+// import AdvancedQuery from "./AdvancedQuery";
 
 export default {
     name: "Patient",
@@ -559,14 +559,14 @@ export default {
         ConsultingInfo,
         BookingInformation,
         medicalInformation,
-        AdvancedQuery
+        // AdvancedQuery
     },
 
     props: {},
 
     data() {
         return {
-            advancedque_show: false,
+            // advancedque_show: false,
             selectPatient: [],
             placeholder: "姓名、拼音、电话",
             patient_expend: false,
@@ -607,10 +607,10 @@ export default {
                     id: 3,
                     type: "会员号"
                 },
-                {
-                    id: 4,
-                    type: "检查医生"
-                }
+                // {
+                //     id: 4,
+                //     type: "检查医生"
+                // }
             ],
             value: "",
 
@@ -707,9 +707,9 @@ export default {
                 case 3:
                     this.placeholder = "会员号";
                     break;
-                case 4:
-                    this.advancedque_show = true;
-                    break;
+                // case 4:
+                //     this.advancedque_show = true;
+                //     break;
             }
             // this[value] = true;
             // this.value = "";
