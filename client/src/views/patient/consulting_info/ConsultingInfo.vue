@@ -2,7 +2,7 @@
     <div class="con-content">
         <div class="con-top">
             <div
-                @dblclick="add_cons"
+                @dblclick="edit_cons"
                 class="background"
                 v-for="(item,index) in consultInfo"
                 :key="index"
@@ -20,7 +20,10 @@
                     </div>
                     <div class="top-i-content">
 
-                        <i class="fa fa-pen top-i" @click="add_cons"></i>
+                        <i
+                            class="fa fa-pen top-i"
+                            @click="edit_cons"
+                        ></i>
                         <i
                             @click="delDisposal"
                             class="fa fa-trash-alt top-i"
@@ -125,6 +128,7 @@
             :addConsult="patientInfo"
             @add-item="addConsultResult"
         ></add-consulting>
+        <edit-consulting :show.sync="editcons_show"></edit-consulting>
     </div>
 
 </template>
@@ -132,11 +136,13 @@
 <script>
 import AddConsulting from "./AddConsulting";
 import formatDate from "@/common/util.js";
+import EditConsulting from "./EditConsulting";
 export default {
     name: "ConsultingInfo",
 
     components: {
-        AddConsulting
+        AddConsulting,
+        EditConsulting
     },
 
     props: {
@@ -150,7 +156,8 @@ export default {
     data() {
         return {
             addcons_show: false,
-            patientInfo:[],
+            editcons_show: false,
+            patientInfo: []
         };
     },
 
@@ -163,7 +170,6 @@ export default {
     computed: {},
 
     methods: {
-
         delDisposal(index, value) {
             this.consultInfo.splice(index, 1);
         },
@@ -189,6 +195,9 @@ export default {
             } else {
                 that.$message.warning("请选择一个患者");
             }
+        },
+        edit_cons() {
+            this.editcons_show = true;
         }
     }
 };

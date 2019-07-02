@@ -208,14 +208,15 @@
                                                     class="item"
                                                     v-for="(item,key) in partsEntryData"
                                                     :key="key"
-                                                    @click="appendText(item)"
+                                                    @dblclick="appendText(item)"
                                                 >
                                                     <!-- @click="parts_table(item)" -->
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
-                                                        @click.stop="parts_table(item)"
+                                                        @click="appendText(item)"
                                                     ></i>
+                                                    <!-- @click.stop="parts_table(item)" -->
                                                 </div>
                                             </div>
                                         </div>
@@ -229,12 +230,12 @@
                                                     class="item"
                                                     v-for="(item,key) in propertiesData"
                                                     :key="key"
-                                                    @click="appendText(item)"
+                                                    @dblclick="appendText(item)"
                                                 >
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
-                                                        @click.stop="parts_table(item)"
+                                                        @click="appendText(item)"
                                                     ></i>
                                                 </div>
                                             </div>
@@ -251,11 +252,12 @@
                                                     class="item"
                                                     v-for="(item,key) in timeData"
                                                     :key="key"
+                                                    @dblclick="appendText(item)"
                                                 >
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
-                                                        @click.stop="parts_table(item)"
+                                                        @click="appendText(item)"
                                                     ></i>
                                                 </div>
                                             </div>
@@ -270,12 +272,14 @@
                                                     class="item"
                                                     v-for="(item,key) in timeData"
                                                     :key="key"
+                                                    @dblclick="appendText(item)"
                                                 >
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
-                                                        @click.stop="parts_table(item)"
+                                                        @click="appendText(item)"
                                                     ></i>
+                                                    <!-- @click.stop="parts_table(item)" -->
                                                 </div>
                                             </div>
                                         </div>
@@ -394,7 +398,7 @@
                                     <td align="center">主 诉</td>
                                     <input
                                         v-model="form.complain"
-                                        @focus="changeType('aaa')"
+                                        @focus="changeType('complain')"
                                     >
                                     <!-- @blur="" -->
                                     <!-- <textarea style="resize:none;height:20px;margin-bottom:-2px"></textarea> -->
@@ -403,7 +407,7 @@
                                     <td align="center">现 病 史</td>
                                     <input
                                         v-model="form.history"
-                                        @focus="changeType('bbb')"
+                                        @focus="changeType('history')"
                                     >
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
@@ -411,14 +415,14 @@
                                     <td align="center">既 往 史</td>
                                     <input
                                         v-model="form.previous "
-                                        @focus="changeType('ccc')"
+                                        @focus="changeType('previous')"
                                     >
                                 </tr>
                                 <tr>
                                     <td align="center">过 敏 史</td>
                                     <input
                                         v-model="form.allergy"
-                                        @focus="changeType('ddd')"
+                                        @focus="changeType('allergy')"
                                     >
                                 </tr>
                                 <tr>
@@ -426,7 +430,7 @@
                                     <template v-for="(item,index) in form.check">
                                         <input
                                             v-model="form.check[index]"
-                                            @focus="changeType('eee')"
+                                            @focus="changeType('check')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -439,7 +443,7 @@
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal('check')"
+                                            @click="delDisposal(index, 'check')"
                                             :key="'icon'+index"
                                         ></i>
 
@@ -457,6 +461,7 @@
                                     <template v-for="(item,index) in form.auxiliarycheck">
                                         <input
                                             v-model="form.auxiliarycheck[index]"
+                                            @focus="changeType('auxiliarycheck')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -469,7 +474,7 @@
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal('auxiliarycheck')"
+                                            @click="delDisposal(index, 'auxiliarycheck')"
                                             :key="'icon'+index"
                                         ></i>
                                     </template>
@@ -480,6 +485,7 @@
                                     <template v-for="(item,index) in form.diagnosi">
                                         <input
                                             v-model="form.diagnosi[index]"
+                                            @focus="changeType('diagnosi')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -492,7 +498,7 @@
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal('diagnosi')"
+                                            @click="delDisposal(index, 'diagnosi')"
                                             :key="'icon'+index"
                                         ></i>
                                     </template>
@@ -515,7 +521,7 @@
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal('treatmentOptions')"
+                                            @click="delDisposal(index, 'treatmentOptions')"
                                             :key="'icon'+index"
                                         ></i>
                                     </template>
@@ -548,7 +554,7 @@
                                         <i
                                             v-else
                                             class="fa fa-trash-alt middle-i"
-                                            @click="delDisposal('treatment')"
+                                            @click="delDisposal(index, 'treatment')"
                                             :key="'icon'+index"
                                         ></i>
                                     </template>
@@ -590,7 +596,7 @@
 
                 <!-- <div v-if="aaa" @append-text="appendText"></div>
                 <div v-if="bbb"></div> -->
-                <div>{{cccc}}</div>
+                <!-- <div>{{cccc}}</div> -->
 
             </div>
         </el-form>
@@ -761,7 +767,7 @@ export default {
                     that.cccc = "部位";
                     break;
                 case "eee":
-                    that.zhengzhuang = "症状";
+                    that.cccc = "症状";
                     break;
             }
 
@@ -778,17 +784,27 @@ export default {
             let that = this;
 
             switch (that.type) {
-                case "aaa":
+                case "complain":
                     that.form.complain += text;
                     break;
-                case "bbb":
+                case "history":
                     that.form.history += text;
                     break;
-                case "ccc":
+                case "previous":
                     that.form.previous += text;
                     break;
-                case "ddd":
+                case "allergy":
                     that.form.allergy += text;
+                    break;
+                case "check":
+                    that.$set(that.form.check, 0, (that.form.check[0] += text));
+                    break;
+                case "auxiliarycheck":
+                    that.$set(
+                        that.form.auxiliarycheck,
+                        0,
+                        (that.form.auxiliarycheck[0] += text)
+                    );
                     break;
             }
         },
@@ -833,9 +849,9 @@ export default {
 
         delDisposal(index, value) {
             // console.log(this.form.check);
-            switch (index) {
+            switch (value) {
                 case "check":
-                    this.form.check.splice(index - 1, 1);
+                    this.form.check.splice(index, 1);
                     break;
                 case "auxiliarycheck":
                     this.form.auxiliarycheck.splice(index, 1);
@@ -1199,6 +1215,7 @@ export default {
                                     }
                                     i {
                                         display: none;
+                                        font-size: 16px;
                                         // border: 1px solid red;
                                     }
                                     &:hover i {
@@ -1221,7 +1238,6 @@ export default {
 
                                     i {
                                         // border: 1px solid red;
-                                        margin-top: 2px;
                                         display: none;
                                     }
                                     &:hover i {
