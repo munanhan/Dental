@@ -276,12 +276,7 @@ export default {
     },
     data() {
         return {
-            // FormArr: [
-            //     {
-            //         index: 0,
-            //         value: ""
-            //     }
-            // ],
+
             form: {
                 oral: [
                     {
@@ -325,23 +320,10 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            if (newValue) {
-                that.getMedicalRecordsInfo();
-            }
-        }
     },
     computed: {},
     methods: {
-        getMedicalRecordsInfo() {},
-
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
 
         //初诊
         int_diagn() {
