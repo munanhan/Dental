@@ -4,7 +4,7 @@
             <div
                 @dblclick="add_cons"
                 class="background"
-                v-for="(item,index) in consultingList"
+                v-for="(item,index) in consultInfo"
                 :key="index"
             >
                 <!-- <div class="top-title">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="top-i-content">
 
-                        <i class="fa fa-pen top-i"></i>
+                        <i class="fa fa-pen top-i" @click="add_cons"></i>
                         <i
                             @click="delDisposal"
                             class="fa fa-trash-alt top-i"
@@ -36,7 +36,8 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 主 诉:{{item.main_consult}}</div>
+                            <div class="font-left">主 诉:</div>
+                            <div>{{item.main_consult}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -47,19 +48,8 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 基本需要:{{item.base_demand}}</div>
-                        </el-col>
-
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col
-                            class="bottom-title-col"
-                            :span="24"
-                        >
-                            <div class="font-left">潜在需求:{{item.potential_demand}}</div>
+                            <div class="font-left"> 基本需要:</div>
+                            <div>{{item.base_demand}}</div>
                         </el-col>
 
                     </el-row>
@@ -71,7 +61,21 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">医生方案:{{item.doctor_solution}}</div>
+                            <div class="font-left">潜在需求:</div>
+                            <div>{{item.potential_demand}}</div>
+                        </el-col>
+
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col
+                            class="bottom-title-col"
+                            :span="24"
+                        >
+                            <div class="font-left">医生方案:</div>
+                            <div>{{item.doctor_solution}}</div>
 
                         </el-col>
                     </el-row>
@@ -83,7 +87,8 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">沟通记录:{{item.record}}</div>
+                            <div class="font-left">沟通记录:</div>
+                            <div>{{item.record}}</div>
                             <!-- <div
                                 style="flex:1"
                                 class="font-right"
@@ -98,7 +103,8 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">服务建议:{{item.service_proposal}}</div>
+                            <div class="font-left">服务建议:</div>
+                            <div>{{item.service_proposal}}</div>
                         </el-col>
                     </el-row>
 
@@ -116,7 +122,7 @@
         </div>
         <add-consulting
             :show.sync="addcons_show"
-            :addConsult="consultInfo"
+            :addConsult="patientInfo"
             @add-item="addConsultResult"
         ></add-consulting>
     </div>
@@ -128,60 +134,58 @@ import AddConsulting from "./AddConsulting";
 import formatDate from "@/common/util.js";
 export default {
     name: "ConsultingInfo",
+
     components: {
         AddConsulting
     },
+
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
         consultInfo: {
-            //type: Object,
-            required: true
-        }
+            // type: Array,
+            // default: () => []
+        },
+        selectID: {}
     },
+
     data() {
         return {
             addcons_show: false,
-            consultingList: []
+            patientInfo:[],
         };
     },
-    created() {
-    },
-    mounted() {},
-    watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            // if (newValue) {
-            //     that.getDisposalRecords();
-            // }
-        }
-        // consultingList(newValue, oldValue) {}
-    },
+    created() {},
+
+    mounted() {},
+
+    watch: {},
+
     computed: {},
+
     methods: {
+
         delDisposal(index, value) {
-            this.consultingList.splice(index, 1);
+            this.consultInfo.splice(index, 1);
         },
 
         addConsultResult(data) {
-            console.log(data);
             let that = this;
-            that.consultingList.push(data);
+            that.consultInfo.push(data);
         },
-        // getDisposalRecords() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         add_cons() {
             let that = this;
-            if (that.consultInfo.id) {
-                that.addcons_show = true;
+
+            if (that.selectID) {
+                that.$api.patient_consult
+                    .patientInfo({ id: that.selectID })
+                    .then(res => {
+                        that.patientInfo = res.data;
+                        that.addcons_show = true;
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
             } else {
                 that.$message.warning("请选择一个患者");
             }
@@ -257,7 +261,7 @@ export default {
                     .font-left {
                         width: 80px;
                         font-weight: bold;
-                        margin-right: 50px;
+                        // margin-right: 50px;
                         margin-bottom: 5px;
                     }
                     .font-right {

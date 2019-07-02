@@ -13,7 +13,7 @@ class PatientChargeController extends BaseController
 {
     public function show()
     {
-
+        return message('',[],200);
     }
 
     public function store()

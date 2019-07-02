@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Traits\AttendDoctor;
+use App\Http\Controllers\Traits\PatientBaseInfo;
 use Illuminate\Http\Request;
 
 use App\Model\PatientVisit;
 
 class PatientVisitController extends BaseController
 {
-    use AttendDoctor;
+    use AttendDoctor,PatientBaseInfo;
 
     public function store(Request $request)
     {
@@ -39,6 +40,12 @@ class PatientVisitController extends BaseController
     public function getAttendDoctor()
     {
         return $this->getDoctorByRoleId([1,2,3,8]);
+    }
+
+    public function patientInfo()
+    {
+        $data= $this->getPatientBaseInfo(request('id'));
+        return message('',$data,200);
     }
 
 }

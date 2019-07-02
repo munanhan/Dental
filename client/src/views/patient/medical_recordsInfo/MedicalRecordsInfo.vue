@@ -31,50 +31,6 @@
                             <i class="fa fa-comments medical-top-i"></i>
                         </div>
                     </div>
-                    <!-- <div class="medical-top-title">
-                        <div>
-                            <span>{{item.medical_date}}</span>
-                            <span>{{item.medical_time}}</span>
-                            <span>{{item.medical_diagnosis_judgment}}</span>
-                            <span> {{item.medical_doctor}}</span>
-                        </div>
-                        <div style="margin-left:530px">
-                            <i class="el-icon-edit medical-top-i"></i>
-                            <i class="el-icon-edit medical-top-i"></i>
-                            <i class="fa fa-capsules medical-top-i"></i>
-                            <i class="el-icon-delete-solid medical-top-i"></i>
-                        </div>
-                    </div> -->
-
-                    <!-- 水水水水水水水水水水水水水水水水水水水 -->
-                    <!-- <el-main>
-                            <el-col
-                            :span="24"
-                            class="warp-main"
-                            v-loading=""
-                        >
-                            <el-form
-                                :inline="true"
-                                class="demo-form-inline"
-                                v-for="(item, i) in FormArr"
-                                :key="i"
-                            >
-                                        <el-form-item>
-                                              <el-input v-model="item.value"></el-input>
-                                            </el-form-item>
-                                        <el-button
-                                    type="primary"
-                                    @click="Delete(item.index)"
-                                >删除</el-button>
-                            </el-form>
-                                  <el-button
-                                type="primary"
-                                @click="AddForm"
-                            >增加更多</el-button>
-                               
-                        </el-col>
-                          </el-main> -->
-                    <!-- 水水水水水水水水水水水水水水水水水水水 -->
                     <div class="patient-left">
                         <el-row
                             :gutter="24"
@@ -85,7 +41,7 @@
                                 class="patient-left-col"
                             >
                                 <div> 主诉:</div>
-                                <div class="form-content">{{item.medical_complain}}</div>
+                                <div class="form-content">{{item.main_consult}}</div>
                             </el-col>
 
                         </el-row>
@@ -245,11 +201,11 @@
         </div>
         <initial-diagnosis
             :show.sync="intdiag_show"
-            :addInitial="medicalInfo"
+            :addInitial="selectID"
         ></initial-diagnosis>
         <subsequent-visit
             :show.sync="subvisit_show"
-            :addSubsequent="medicalInfo"
+            :addSubsequent="selectID"
         ></subsequent-visit>
     </div>
 </template>
@@ -264,23 +220,11 @@ export default {
         SubsequentVisit
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        medicalInfo: {
-           // type: Object,
-            required: true
-        }
+        medicalInfo: {},
+        selectID: {}
     },
     data() {
         return {
-            // FormArr: [
-            //     {
-            //         index: 0,
-            //         value: ""
-            //     }
-            // ],
             form: {
                 oral: [
                     {
@@ -323,29 +267,13 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
-
-            if (newValue) {
-                that.getMedicalRecordsInfo();
-            }
-        }
-    },
+    watch: {},
     computed: {},
     methods: {
-        getMedicalRecordsInfo() {},
-
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
-
         //初诊
         int_diagn() {
             let that = this;
-            if (that.medicalInfo.id) {
+            if (that.selectID) {
                 that.intdiag_show = true;
             } else {
                 that.$message.warning("请选择一个患者");
@@ -354,28 +282,12 @@ export default {
         //复诊
         sub_visit() {
             let that = this;
-            if (that.medicalInfo.id) {
+            if (that.selectID) {
                 this.subvisit_show = true;
             } else {
                 that.$message.warning("请选择一个患者");
             }
         }
-
-        //  增删改查
-
-        // AddForm() {
-        //     this.FormArr.push({
-        //         index: this.FormArr.length,
-        //         value: ""
-        //     });
-        //     console.log(this.FormArr);
-        // },
-        // Delete(index) {
-        //     this.FormArr.splice(index, 1);
-        //     for (let i in this.FormArr) {
-        //         this.FormArr[i].index = i;
-        //     }
-        // }
     }
 };
 </script>

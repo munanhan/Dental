@@ -76,7 +76,7 @@
                             <el-row :gutter="20" style="padding: 10px;">
                                 <el-col :span="20" :offset="6">收：
                                     <span v-if="typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)].length != 0">
-                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts']}}
+                                        {{receipts[item.year+'-'+(item.mth &lt; 10?'0'+item.mth:item.mth)+'-'+(item.date &lt; 10?'0'+item.date:item.date)]['receipts']}}
                                     </span>
                                     <span v-else>
                                         0
@@ -84,7 +84,7 @@
                                 </el-col>
                                 <el-col :span="20" :offset="6">支：
                                     <span v-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
-                                        {{expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                        {{expenditure[item.year+'-'+(item.mth &lt;10?'0'+item.mth:item.mth)+'-'+(item.date &lt;10?'0'+item.date:item.date)]['expenditure']}}
                                     </span>
                                     <span v-else>
                                         0
@@ -92,13 +92,13 @@
                                 </el-col>
                                 <el-col :span="20" :offset="6">合：
                                     <span v-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
-                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts'] - expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                        {{receipts[item.year+'-'+(item.mth &lt;10?'0'+item.mth:item.mth)+'-'+(item.date &lt;10?'0'+item.date:item.date)]['receipts'] - expenditure[item.year+'-'+(item.mth &lt;10?'0'+item.mth:item.mth)+'-'+(item.date &lt;10?'0'+item.date:item.date)]['expenditure']}}
                                     </span>
                                     <span v-else-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] =='undefined'">
-                                        {{0 - expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['expenditure']}}
+                                        {{0 - expenditure[item.year+'-'+(item.mth &lt;10?'0'+item.mth:item.mth)+'-'+(item.date &lt;10?'0'+item.date:item.date)]['expenditure']}}
                                     </span>
                                     <span v-else-if="typeof expenditure[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] =='undefined' && typeof receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)] !='undefined'">
-                                        {{receipts[item.year+'-'+(item.mth < 10?'0'+item.mth:item.mth)+'-'+(item.date < 10?'0'+item.date:item.date)]['receipts']}}
+                                        {{receipts[item.year+'-'+(item.mth &lt;10?'0'+item.mth:item.mth)+'-'+(item.date &lt;10?'0'+item.date:item.date)]['receipts']}}
                                     </span>
                                     <span v-else>
                                         0

@@ -16,9 +16,9 @@
         >
             <div class="Advan-content">
                 <div class="Advan-top">
-                    <div class="advan-1"> {{BaseInfo.patient_name}}</div>
-                    <div class="advan-1"> {{BaseInfo.patient_age}}岁</div>
-                    <div class="advan-2"> {{BaseInfo.case_id}}</div>
+                    <div class="advan-1"> {{addConsult.patient_name}}</div>
+                    <div class="advan-1"> {{addConsult.patient_age}}岁</div>
+                    <div class="advan-2"> {{addConsult.case_id}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -192,16 +192,13 @@ export default {
         PotentialDemand
     },
     props: {
-        addConsult: {
-           // type: Object,
-            required: true
-        }
+        addConsult: {}
     },
     mixins: [AddDialogForm],
 
     created() {
-        let that = this;
-        that.BaseInfo = that.addConsult;
+        // let that = this;
+        // that.BaseInfo = that.addConsult;
     },
 
     mounted() {},
@@ -249,7 +246,7 @@ export default {
         submitForm() {
             let that = this;
 
-            that.form["patient_id"] = that.addConsult["id"];
+            that.form["patient_id"] = that.addConsult.id;
 
             that.$api.patient_consult
                 .store(that.form)

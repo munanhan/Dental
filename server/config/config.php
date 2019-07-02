@@ -15,7 +15,7 @@ return [
 
     'expect_route' => [  //排除权限控制的api
                          'api/privilege/get_user_privilege',
-                         'api/user',
+                         'api/user'
                       ],
                       
     'module' => [ //模块用于自动写入日志，

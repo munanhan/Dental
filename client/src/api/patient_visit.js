@@ -11,3 +11,11 @@ export function get(data) {
         params: data
     });
 }
+
+export function patientInfo(data) {
+    return request({
+        url: `${prefix}/patient_info`,
+        method: "get",
+        params: data
+    });
+}

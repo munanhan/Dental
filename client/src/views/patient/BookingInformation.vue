@@ -44,10 +44,7 @@ export default {
     name: "BookingInformation",
     components: {},
     props: {
-        bookingInformation:{
-            // type: Object,
-            required: true
-        }
+        bookingInformation:{}
     },
     data() {
         return {};

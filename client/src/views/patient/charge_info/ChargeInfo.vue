@@ -181,14 +181,7 @@ export default {
         WaterSingle
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        charInfo: {
-            //type: Object,
-            required: true
-        }
+        charInfo: {}
     },
     data() {
         return {
@@ -230,42 +223,19 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            if (newValue) {
-                that.getChargeInfo();
-            }
-        }
     },
     computed: {},
     methods: {
-        // otherIsShow(){
-        //  this.otherShow=false;
-        //   console.log(1111);
-        // },
-        // otherIsNoShow(){
-        //    this.otherShow=true;
-        //   console.log(2222);
-        // },
+
         dialogshow(value) {
             this[value] = true;
             this.value = "";
         },
         getChargeInfo() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
+  
         Advan_pay() {
-            // let that = this;
-            // if (thta.charInfo.id) {
-            //     this.advancepay_show = true;
-            // } else {
-            //     that.$message.warning("请选择一个患者");
-            // }
 
             this.advancepay_show = true;
         },
@@ -279,8 +249,6 @@ export default {
             } else {
                 that.$message.warning("请选择一个患者");
             }
-
-            // this.charge_show = true;
         }
     }
 };

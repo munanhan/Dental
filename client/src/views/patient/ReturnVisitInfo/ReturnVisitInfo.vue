@@ -77,12 +77,11 @@
         <!-- <div style="flex:">asd</div> -->
         <add-plan
             :show.sync="addplan_show"
-            :addPlan="returnInfo"
+            :addPlan="patientInfo"
         ></add-plan>
         <add-return-visit
             :show.sync="addrevisit_show"
-            @update="upateRetrunVisit"
-            :addReturnVisit="returnInfo"
+            :addReturnVisit="patientInfo"
         ></add-return-visit>
     </div>
 </template>
@@ -97,19 +96,14 @@ export default {
         AddReturnVisit
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        returnInfo: {
-            //type: Object,
-            required: true
-        }
+        returnInfo: {},
+        selectID: {}
     },
     data() {
         return {
             addplan_show: false,
-            addrevisit_show: false
+            addrevisit_show: false,
+            patientInfo: []
         };
     },
     created() {},
@@ -125,36 +119,31 @@ export default {
     },
     computed: {},
     methods: {
-        getChargeInfo() {},
-
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         Add_Plan() {
             let that = this;
-            if (that.returnInfo.id) {
+            if (that.selectID) {
                 that.addplan_show = true;
             } else {
                 that.$message.warning("请选择一个患者");
             }
-
-            // this.addplan_show = true;
         },
         Add_Revisit() {
             let that = this;
-            if (that.returnInfo.id) {
-                that.addrevisit_show = true;
+            if (that.selectID) {
+                that.$api.patient_visit
+                    .patientInfo({ id: that.selectID })
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.patientInfo = res.data;
+                            that.addrevisit_show = true;
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
             } else {
                 that.$message.warning("请选择一个患者");
             }
-
-            // this.addrevisit_show = true;
-        },
-
-        upateRetrunVisit() {
-            let that = this;
         }
     }
 };

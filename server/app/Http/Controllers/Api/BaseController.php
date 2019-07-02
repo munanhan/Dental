@@ -64,7 +64,6 @@ class BaseController extends Controller
             $this->parms = $input['parms'];
             $this->pager = $input['pager'];
             $this->date = $input['date'];
-
             if(preg_match("/\w+Controller/",$action[0],$preg)){
                 //匹配控制器
                 request()->attributes->set('config_load','verify_fields.'.$preg[0].'.'.$action[1]);//设置验证参数

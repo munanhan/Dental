@@ -8,15 +8,15 @@ class PatientConsult extends Model
 {
     protected $guarded=['id'];
 
-    public function getBaseDemandAttribute($value)
-    {
-        return explode(',',$value);
-    }
+//    public function getBaseDemandAttribute($value)
+//    {
+//        return explode(',',$value);
+//    }
 
-    public function getPotentialDemandAttribute($value)
-    {
-        return explode(',',$value);
-    }
+//    public function getPotentialDemandAttribute($value)
+//    {
+//        return explode(',',$value);
+//    }
 
     public function setPotentialDemandAttribute($value)
     {

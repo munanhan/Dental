@@ -182,7 +182,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/show', 'PatientConsultController@getById');
+    Route::get('patient_consults/get_by_id', 'PatientConsultController@show');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
@@ -193,6 +193,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::get('patient_consults/doctor_or_record','PatientConsultController@getDoctorOrRecorder');
 
     Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
+
+    Route::get('patient_consults/patient_info','PatientConsultController@patientInfo');
 
     /*
      * Route PatientCategory Api
@@ -284,6 +286,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::put('patient_visits/{patientVisit}', 'PatientVisitController@update');
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
+
+    Route::get('patient_visits/patient_info', 'PatientVisitController@patientInfo');
 
     /*
      * Route PatientAllergy Api
@@ -802,7 +806,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     
 Route::group(['namespace'=>'Api'], function(){
 
-    Route::get('test','ExpenditureController@getBySelect');//测试接口
+    Route::get('test','Test@test');//测试接口
 });
     
 

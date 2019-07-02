@@ -195,6 +195,7 @@
                                 v-model="patientSearch.flag"
                                 placeholder="患者信息"
                                 class="patient-infor"
+                                @change="dialogshow(patientSearch.flag)"
                             >
                                 <el-option
                                     v-for="item in options"
@@ -207,7 +208,7 @@
                             <el-input
                                 v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、电话"
+                                :placeholder="placeholder"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
@@ -339,7 +340,7 @@
                             </div>
 
                         </div>
-                        <div class="botton-content">
+                        <div class="bottom-content">
                             <el-button
                                 type="primary"
                                 @click="add_patient"
@@ -412,8 +413,10 @@
                     v-if="$check_pm('patients_info')"
                 >
                     <patient-info
+                        v-if="pationInfo"
                         :refresh.sync="pationInfo"
-                        :pationInfo="selectPatient"
+                        :pationInfo="selectPatientInfo"
+                        :selectID="selectItem"
                     >
 
                     </patient-info>
@@ -429,6 +432,7 @@
                         v-if="medicalInformation"
                         :refresh.sync="medicalInformation"
                         :medicalInformation="selectPatient"
+                        :selectID="selectItem"
                     ></medical-information>
                 </el-tab-pane>
 
@@ -441,6 +445,7 @@
                         v-if="bookingInformation"
                         :refresh.sync="bookingInformation"
                         :bookingInformation="selectPatient"
+                        :selectID="selectItem"
                     ></booking-information>
                 </el-tab-pane>
 
@@ -452,6 +457,7 @@
                     <disposal-records
                         v-if="disposalRecords"
                         :refresh.sync="disposalRecords"
+                        :selectID="selectItem"
                     ></disposal-records>
                 </el-tab-pane>
 
@@ -464,6 +470,7 @@
                         v-if="chargeInfo"
                         :refresh.sync="chargeInfo"
                         :charInfo="selectPatient"
+                        :selectID="selectItem"
                     ></charge-info>
                 </el-tab-pane>
 
@@ -476,6 +483,7 @@
                         v-if="medicalRecordsInfo"
                         :refresh.sync="medicalRecordsInfo"
                         :medicalInfo="selectPatient"
+                        :selectID="selectItem"
                     ></medical-records-info>
                 </el-tab-pane>
 
@@ -488,6 +496,7 @@
                         v-if="returnVisitInfo"
                         :refresh.sync="returnVisitInfo"
                         :returnInfo="selectPatient"
+                        :selectID="selectItem"
                     ></return-visit-info>
                 </el-tab-pane>
 
@@ -500,6 +509,7 @@
                         v-if="consultingInfo"
                         :refresh.sync="consultingInfo"
                         :consultInfo="selectPatient"
+                        :selectID="selectItem"
                     ></consulting-info>
                 </el-tab-pane>
             </el-tabs>
@@ -509,6 +519,8 @@
 
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
+
+        <!-- <advanced-query :show.sync="advancedque_show"></advanced-query> -->
     </el-container>
 
 </template>
@@ -528,6 +540,7 @@ import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 import BookingInformation from "./BookingInformation";
 import medicalInformation from "./medicalInformation";
+// import AdvancedQuery from "./AdvancedQuery";
 
 export default {
     name: "Patient",
@@ -545,19 +558,22 @@ export default {
         AppointmentVisit,
         ConsultingInfo,
         BookingInformation,
-        medicalInformation
+        medicalInformation,
+        // AdvancedQuery
     },
 
     props: {},
 
     data() {
         return {
+            advancedque_show: false,
             selectPatient: [],
-
+            selectPatientInfo:{},
+            placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",
             search: "",
-            curTab: "pationInfo",
+            curTab: "",
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
@@ -592,10 +608,10 @@ export default {
                     id: 3,
                     type: "会员号"
                 },
-                {
-                    id: 4,
-                    type: "检查医生"
-                }
+                // {
+                //     id: 4,
+                //     type: "检查医生"
+                // }
             ],
             value: "",
 
@@ -641,9 +657,7 @@ export default {
         that.getTodayWork(whereTime);
     },
 
-    mounted() {
-
-    },
+    mounted() {},
     watch: {
         activeName(newValue, oldValue) {
             let that = this;
@@ -671,83 +685,102 @@ export default {
             let that = this;
             that.getTodayWork();
         },
+
         curTab(newValue, oldValue) {
-                
             let that = this;
 
-            that[newValue] = true;
-
-            console.log(that.selectItem);
-
-            if(that.selectItem==null){
+            if (that.selectItem == null) {
                 return false;
             }
 
             that.getSwitch(newValue);
-
         }
+
     },
     computed: {},
     methods: {
+        dialogshow(value) {
+            switch (value) {
+                case 1:
+                    this.placeholder = "姓名、拼音、电话";
+                    break;
+                case 2:
+                    this.placeholder = "病历号";
+                    break;
+                case 3:
+                    this.placeholder = "会员号";
+                    break;
+                // case 4:
+                //     this.advancedque_show = true;
+                //     break;
+            }
+            // this[value] = true;
+            // this.value = "";
+        },
 
-        getSwitch(module){
-
-            let that=this;
+        getSwitch(module) {
+            let that = this;
             let params = {};
             params.id = that.selectItem;
 
-            switch(module){
-
+            switch (module) {
                 case "pationInfo":
-
-                    that.getPatientData('patient','getPatientByID',params,);
+                    that.getPatientData("patient", "getPatientByID", params, module);
                     break;
 
                 case "medicalInformation":
-                    that.getPatientData('patient','treat',params,);
+                    that.getPatientData("patient", "treat", params, module);
                     break;
 
                 case "bookingInformation":
-                    that.getPatientData('patient','appoint',params,);
+                    that.getPatientData("patient", "appoint", params, module);
                     break;
 
                 case "disposalRecords":
-                    that.getPatientData('patient_disposal','get',params,);
+                    that.getPatientData("patient_disposal", "get", params, module);
                     break;
 
                 case "chargeInfo":
-                    that.getPatientData('patient_charge','get',params,);
+                    that.getPatientData("patient_charge", "get", params, module);
                     break;
 
                 case "medicalRecordsInfo":
-                    that.getPatientData('patient_case','get',params,);
+                    that.getPatientData("patient_case", "get", params, module);
                     break;
 
                 case "returnVisitInfo":
-                    that.getPatientData('patient_visit','get',params);
+                    that.getPatientData("patient_visit", "get", params, module);
                     break;
 
-                case "consultingInfo" :
-                    that.getPatientData('patient_consult','get',params);
+                case "consultingInfo":
+                    that.getPatientData("patient_consult", "getById", params, module);
                     break;
             }
         },
 
-        getPatientData(url,method,data){
-            let that=this;
+        getPatientData(url, method, data, module) {
+            let that = this;
 
             that.$api[url][method](data)
-                .then(res=>{
-                    if(res.code == 200){
-
-                        that.selectPatient= res.data;
+                .then(res => {
+                    if (res.code == 200) {
+                        switch (module){
+                            case "pationInfo":
+                                that.selectPatientInfo = res.data;
+                                that[module] = true;
+                                break;
+                            default:
+                                that.selectPatient = res.data;
+                                that[module] = true;
+                                break;
+                        }
                     }
                 })
-                .catch(res=>{
+                .catch(res => {
                     console.log(res);
-                })                
+                });
         },
-        
+
         //获取id
         isSelect(id) {
             let that = this;
@@ -755,7 +788,6 @@ export default {
             that.selectItem = id;
 
             that.getSwitch(that.curTab);
-
         },
 
         //获取最近访问
@@ -856,7 +888,6 @@ export default {
         expend(type) {
             let that = this;
             that[type] = !that[type];
-
         },
 
         //tab选中事件
@@ -975,7 +1006,7 @@ export default {
                         }
                     }
                 }
-                .botton-content {
+                .bottom-content {
                     position: absolute;
                     left: 0;
                     bottom: 0;
