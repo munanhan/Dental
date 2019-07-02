@@ -10,6 +10,7 @@
                         :label="dayStatusWork"
                         name="first"
                         class="work-content"
+                        v-if="$check_pm('patients_today_work')"
                     >
 
                         <div class="work-top-content">
@@ -187,6 +188,7 @@
                         label="全部患者"
                         name="patient"
                         class="patient-content"
+                        v-if="$check_pm('patients_all')"
                     >
                         <div class="top-content">
                             <el-select
@@ -350,6 +352,7 @@
                         label="最近访问"
                         name="visit"
                         class="visit-content"
+                        v-if="$check_pm('patients_recent_visit')"
                     >
                         <div class="visit-top-content">
                             <el-input
@@ -407,6 +410,7 @@
                 <el-tab-pane
                     label="患者信息"
                     name="pationInfo"
+                    v-if="$check_pm('patients_info')"
                 >
                     <patient-info
                         :refresh.sync="pationInfo"
@@ -420,6 +424,7 @@
                 <el-tab-pane
                     label="就诊信息"
                     name="medicalInformation"
+                    v-if="$check_pm('patients_medical_information')"
                 >
                     <medical-information
                         v-if="medicalInformation"
@@ -430,6 +435,7 @@
                 <el-tab-pane
                     label="预约信息"
                     name="bookingInformation"
+                    v-if="$check_pm('patients_appoint_information')"
                 >
                     <booking-information
                         v-if="bookingInformation"
@@ -440,6 +446,7 @@
                 <el-tab-pane
                     label="处置记录"
                     name="disposalRecords"
+                    v-if="$check_pm('patients_disposal')"
                 >
                     <disposal-records
                         v-if="disposalRecords"
@@ -450,50 +457,43 @@
                 <el-tab-pane
                     label="收费信息"
                     name="chargeInfo"
+                    v-if="$check_pm('patients_charge')"
                 >
                     <charge-info
                         v-if="chargeInfo"
                         :refresh.sync="chargeInfo"
+                        :charInfo="selectPatient"
                     ></charge-info>
                 </el-tab-pane>
-
-                <!-- <el-tab-pane
-          label="影像信息"
-          name="imageInfo"
-        >
-          <image-info v-if="imageInfo" :refresh.sync="imageInfo"></image-info>
-        </el-tab-pane> -->
 
                 <el-tab-pane
                     label="病历信息"
                     name="medicalRecordsInfo"
+                    v-if="$check_pm('patients_case')"
                 >
                     <medical-records-info
                         v-if="medicalRecordsInfo"
                         :refresh.sync="medicalRecordsInfo"
+                        :medicalInfo="selectPatient"
                     ></medical-records-info>
                 </el-tab-pane>
-
-                <!-- <el-tab-pane
-          label="外加工"
-          name="outsideProcessing"
-        >
-          <outside-processing v-if="outsideProcessing" :refresh.sync="outsideProcessing"></outside-processing>
-        </el-tab-pane> -->
 
                 <el-tab-pane
                     label="回访信息"
                     name="returnVisitInfo"
+                    v-if="$check_pm('patients_visit')"
                 >
                     <return-visit-info
                         v-if="returnVisitInfo"
                         :refresh.sync="returnVisitInfo"
+                        :returnInfo="selectPatient"
                     ></return-visit-info>
                 </el-tab-pane>
 
                 <el-tab-pane
                     label="咨询信息"
                     name="consultingInfo"
+                    v-if="$check_pm('patients_consult')"
                 >
                     <consulting-info
                         v-if="consultingInfo"
@@ -717,10 +717,12 @@ export default {
                         ","
                     );
 
-                    res.data.patient_birthday=formatDate(res.data.patient_birthday,'yyyy-MM-dd');
+                    res.data.patient_birthday = formatDate(
+                        res.data.patient_birthday,
+                        "yyyy-MM-dd"
+                    );
 
                     that.selectPatient = res.data;
-
                 })
                 .catch(res => {
                     console.log(res.data);

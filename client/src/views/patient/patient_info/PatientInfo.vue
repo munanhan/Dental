@@ -1,6 +1,6 @@
 <template>
     <div class="patient-info">
-        <div class="patien-content">
+        <div class="patient-content">
             <!-- <template slot="title">
                 <span class="base-fz">基本信息</span>
             </template> -->
@@ -244,7 +244,12 @@ export default {
             console.log(val);
         },
         Modify_info() {
-            this.modinfo_show = true;
+            let that=this;
+            if(that.selectPatient.id){
+                that.modinfo_show = true;
+            }else {
+                that.$message.warning('请选择一个患者');
+            }
         }
     }
 };
@@ -254,7 +259,7 @@ export default {
 @import "~@css/var";
 
 .patient-info {
-    .patien-content {
+    .patient-content {
         position: absolute;
         overflow: auto;
         top: 0;

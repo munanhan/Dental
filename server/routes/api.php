@@ -23,16 +23,12 @@ use Illuminate\Http\Request;
  * We’ll have to make changes on the routes file and on the controller:
  */
 
-Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
+Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function(){
 
 
     Route::get('potential_demands', 'PotentialDemandController@index');
 
-    Route::get('potential_demands/{potentialDemand}', 'PotentialDemandController@show');
-
     Route::post('potential_demands', 'PotentialDemandController@store');
-
-    Route::put('potential_demands/{potentialDemand}', 'PotentialDemandController@update');
 
     Route::delete('potential_demands/{potentialDemand}', 'PotentialDemandController@delete');
 
@@ -41,13 +37,11 @@ Route::group(['namespace'=>'Api','middleware' => 'auth:api'], function(){
      */
     Route::get('base_demands', 'BaseDemandController@index');
 
-    Route::get('base_demands/{baseDemand}', 'BaseDemandController@show');
-
     Route::post('base_demands', 'BaseDemandController@store');
 
-    Route::put('base_demands/{baseDemand}', 'BaseDemandController@update');
-
     Route::delete('base_demands/{baseDemand}', 'BaseDemandController@delete');
+
+
 
     /*
      * Patient Visit Config Api
@@ -775,7 +769,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     
 Route::group(['namespace'=>'Api'], function(){
 
-    Route::get('test','Test@index');//测试接口
+    Route::get('test','Test@test');//测试接口
 });
     
 

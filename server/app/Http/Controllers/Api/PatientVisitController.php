@@ -2,21 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Traits\AttendDoctor;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 use App\Model\PatientVisit;
 
-class PatientVisitController extends Controller
+class PatientVisitController extends BaseController
 {
-    public function index()
-    {
-        return message('',PatientVisit::all());
-    }
-
-    public function show(PatientVisit $patientVisit)
-    {
-        return message('',$patientVisit);
-    }
+    use AttendDoctor;
 
     public function store(Request $request)
     {
@@ -26,17 +19,20 @@ class PatientVisitController extends Controller
         return message('',$patientVisit);
     }
 
-    public function update(Request $request ,PatientVisit $patientVisit)
+    /*
+     * 获取回访人员
+     */
+    public function getVisitor()
     {
-        $patientVisit->update($request->all());
-
-        return message('',$patientVisit, 200);
+        return $this->getDoctorByRoleId([1,2,3,8,4,6]);
     }
 
-    public function delete(PatientVisit $patientVisit)
+    /*
+     * 获取主治医生
+     */
+    public function getAttendDoctor()
     {
-        $patientVisit->delete();
-
-        return message('',null, 200);
+        return $this->getDoctorByRoleId([1,2,3,8]);
     }
+
 }

@@ -80,25 +80,10 @@
                                     :value="toDecimal(item.disposa_amount * item.disposa_price)"
                                     disabled
                                 >
-                                <!-- <i
+                                <i
                                     class="fa fa-trash-alt input-i"
-                                    @click.stop="del(scope.row, scope.$item)"
-                                ></i> -->
-                                <template slot-scope="scope">
-                                    <el-tooltip
-                                        effect="dark"
-                                        content="删除"
-                                        placement="bottom"
-                                    >
-                                        <el-button
-                                            type="danger"
-                                            size="mini"
-                                            icon="el-icon-delete"
-                                            circle
-                                            @click.stop="del(scope.row, scope.$index)"
-                                        ></el-button>
-                                    </el-tooltip>
-                                </template>
+                                    @click="delDisposal"
+                                ></i>
                             </div>
                             <div class="underline"></div>
                         </div>
@@ -205,9 +190,17 @@ export default {
         add_teeth() {
             this.addteeth_show = true;
         },
+
+        //新增
         addDisposal() {
             this.disposa.push({});
         },
+
+        //删除
+        delDisposal(index) {
+            this.disposa.splice(index, 1);
+        },
+
         toDecimal: function(x) {
             var f = parseFloat(x);
             if (isNaN(f)) {

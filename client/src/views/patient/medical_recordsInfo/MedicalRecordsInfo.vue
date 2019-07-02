@@ -13,10 +13,7 @@
                     @dblclick="int_diagn"
                 >
                     <!-- <div class="background-1"> -->
-                    <div
-                        class="medical-top-title"
-                        style="display: flex; justify-content: space-around;"
-                    >
+                    <div class="medical-top-title">
                         <div style="flex: 1;">
                             <div class="top">{{item.medical_date}}</div>
                             <div class="top">{{item.medical_time}}</div>
@@ -246,8 +243,14 @@
                 <el-button class="medical-button">正畸病历</el-button>
             </div>
         </div>
-        <initial-diagnosis :show.sync="intdiag_show"></initial-diagnosis>
-        <subsequent-visit :show.sync="subvisit_show"></subsequent-visit>
+        <initial-diagnosis
+            :show.sync="intdiag_show"
+            :addInitial="medicalInfo"
+        ></initial-diagnosis>
+        <subsequent-visit
+            :show.sync="subvisit_show"
+            :addSubsequent="medicalInfo"
+        ></subsequent-visit>
     </div>
 </template>
 
@@ -263,6 +266,10 @@ export default {
     props: {
         refresh: {
             type: Boolean,
+            required: true
+        },
+        medicalInfo: {
+            type: Object,
             required: true
         }
     },
@@ -337,11 +344,21 @@ export default {
 
         //初诊
         int_diagn() {
-            this.intdiag_show = true;
+            let that = this;
+            if (that.medicalInfo.id) {
+                that.intdiag_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
         },
         //复诊
         sub_visit() {
-            this.subvisit_show = true;
+            let that = this;
+            if (that.medicalInfo.id) {
+                this.subvisit_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
         }
 
         //  增删改查
@@ -395,6 +412,8 @@ export default {
             color: #989797;
 
             .medical-top-title {
+                display: flex;
+                justify-content: space-around;
                 font-size: 22px;
                 // border: 1px solid red;
                 .top {

@@ -191,6 +191,7 @@
       :dayTime="dayTime"
       :yuyue_time.sync="yuyue_time"
       :yuyue_id="yuyue_id"
+      :appointment_doctor="appointment_doctor"
     ></add-yuyue>
     <!-- 新增预约  end-->
   </div>
@@ -255,6 +256,7 @@ export default {
       doctor: [],
       left_doctor: null,
       right_doctor: null,
+      appointment_doctor: null,
       left_doctor_id: null,
       right_doctor_id: null,
       statusDialog: false,
@@ -356,7 +358,8 @@ export default {
 
       this.$store.commit("updateChooseDate", upDate);
       let left = typeof this.left_doctor == "number" ? this.left_doctor : null;
-      let right =typeof this.right_doctor == "number" ? this.right_doctor : null;
+      let right =
+        typeof this.right_doctor == "number" ? this.right_doctor : null;
       this.getTodayAppointment(left, right);
       this.myCalender.choosePrevNextDay(upDate);
     },
@@ -367,7 +370,8 @@ export default {
 
       this.$store.commit("updateChooseDate", upDate);
       let left = typeof this.left_doctor == "number" ? this.left_doctor : null;
-      let right =typeof this.right_doctor == "number" ? this.right_doctor : null;
+      let right =
+        typeof this.right_doctor == "number" ? this.right_doctor : null;
       this.getTodayAppointment(left, right);
       this.myCalender.choosePrevNextDay(upDate);
     },
@@ -480,6 +484,9 @@ export default {
         this.yuyue_time = this.target.getAttribute("data-h");
       } else {
         this.yuyue_id = null;
+        this.target.parentNode.getAttribute("class") == "other-center-left"
+          ? (this.appointment_doctor = this.left_doctor)
+          : (this.appointment_doctor = this.right_doctor);
         if (item) {
           let time = this.target.attributes["data-time"].value;
           let yuyueDate = `${item} : ${time}`;

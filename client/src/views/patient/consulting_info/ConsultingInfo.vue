@@ -4,26 +4,27 @@
             <div
                 @dblclick="add_cons"
                 class="background"
+                v-for="(item,index) in consultingList"
+                :key="index"
             >
                 <!-- <div class="top-title">
                     <div style="margin-right:60px"> &nbsp;&nbsp; 2019-05-16 &nbsp;&nbsp; 14:00 &nbsp;&nbsp;</div>
                     <div style="margin-right:200px">接诊医生:12121212</div>
                     <div>录入:1212</div>
                 </div> -->
-                <div
-                    class="top-title"
-                    v-for="(item,index) in consultingList"
-                    :key="index"
-                >
+                <div class="top-title">
                     <div class="top-content">
-                        <div class="top-text">{{item.appointment_date}}</div>
-                        <div class="top-text">{{item.patient_time}}</div>
-                        <div class="top-text">接诊医生：<span>{{item.patient_doctor}}</span></div>
+                        <div class="top-text"></div>
+                        <div class="top-text"></div>
+                        <div class="top-text">接诊医生：<span></span></div>
                     </div>
                     <div class="top-i-content">
 
                         <i class="fa fa-pen top-i"></i>
-                        <i class="fa fa-trash-alt top-i"></i>
+                        <i
+                            class="fa fa-trash-alt top-i"
+                        
+                        ></i>
                     </div>
                 </div>
                 <div class="bottom-title">
@@ -35,14 +36,26 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            > 主 诉:</div>
+                            <div class="font-left"> 主 诉:</div>
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col
+                            class="bottom-title-col"
+                            :span="24"
+                        >
+                            <div class="font-left"> 基本需要:</div>
+                            <div
+                                style="flex:1"
+                                class="font-right"
+                            ></div>
                         </el-col>
 
                     </el-row>
@@ -54,14 +67,11 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            > 基本需要:</div>
+                            <div class="font-left">潜在需求:</div>
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
 
                     </el-row>
@@ -73,33 +83,11 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            >潜在需求:</div>
+                            <div class="font-left">医生方案:</div>
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
-                        </el-col>
-
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col
-                            class="bottom-title-col"
-                            :span="24"
-                        >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            >医生方案:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -110,14 +98,11 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            >沟通记录:</div>
+                            <div class="font-left">沟通记录:</div>
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -128,14 +113,11 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div
-                                style="width:80px"
-                                class="font-left"
-                            >服务建议:</div>
+                            <div class="font-left">服务建议:</div>
                             <div
                                 style="flex:1"
                                 class="font-right"
-                            >asdsadsadsad</div>
+                            ></div>
                         </el-col>
                     </el-row>
 
@@ -154,6 +136,7 @@
         <add-consulting
             :show.sync="addcons_show"
             :addConsult="consultInfo"
+            @add-item="addConsultResult"
         ></add-consulting>
     </div>
 
@@ -175,20 +158,12 @@ export default {
         consultInfo: {
             type: Object,
             required: true
-        },
+        }
     },
     data() {
         return {
             addcons_show: false,
-            consultingList: [
-                {
-                    case_id: "150301012",
-                    appointment_date: "2019-06-03",
-                    patient_time: "10:00",
-                    patient_phone: "13925814457",
-                    patient_doctor: "马医生"
-                }
-            ]
+            consultingList: [],
         };
     },
     created() {},
@@ -204,6 +179,13 @@ export default {
     },
     computed: {},
     methods: {
+
+        addConsultResult(data){
+            console.log(data);
+            let that=this;
+            that.consultingList.push(data);
+            
+        },
         getDisposalRecords() {},
 
         getDataDone() {
@@ -212,7 +194,12 @@ export default {
             }, 6e3);
         },
         add_cons() {
-            this.addcons_show = true;
+            let that = this;
+            if (that.consultInfo.id) {
+                that.addcons_show = true;
+            } else {
+                that.$message.warning("请选择一个患者");
+            }
         }
     }
 };
@@ -282,6 +269,7 @@ export default {
                     margin-bottom: -20px;
                     // border: 1px solid red;
                     .font-left {
+                        width: 80px;
                         font-weight: bold;
                         margin-right: 50px;
                         margin-bottom: 5px;

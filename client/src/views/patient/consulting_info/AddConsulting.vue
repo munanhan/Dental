@@ -10,7 +10,7 @@
     >
         <el-form
             :model="form"
-            ref="ConsultForm"
+            ref="form"
             label-width="100px"
             :rules="rules"
         >
@@ -49,12 +49,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
+                                        @focus="getBaseDemand"
                                     >
                                         <el-option
                                             v-for="item in baseDemandList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.name"
                                         >
                                         </el-option>
                                     </el-select>
@@ -77,12 +78,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
+                                        @focus="getPotentialDemand"
                                     >
                                         <el-option
                                             v-for="item in potentialDemandList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.name"
                                         >
                                         </el-option>
                                     </el-select>
@@ -112,27 +114,7 @@
 
                             </td>
                         </tr>
-                        <!-- <el-form-item
-                            style="border:none;border-top:none;border-bottom:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
-                            label="活动名称"
-                        >
-                            <el-input style=" 
-                                    width:600px;
-                                              border:none;
-                                              border-radius: 0px;
-                                             ">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item
-                            style="border-bottom:none;border-right:none;border:1px solid red;width:100%;margin:0;border:1px solid #e3e3e3;background-color:#f8f8f8"
-                            label="活动名称"
-                        >
-                            <el-input style=" 
-                                             width:600px;
-                                             border-radius: 0px;
-                                             ">
-                            </el-input>
-                        </el-form-item> -->
+
                         <tr>
                             <td align="center">服务建议</td>
                             <td>
@@ -189,6 +171,7 @@
             <el-button
                 :loading="commitLoading"
                 type="primary"
+                @click="submitForm"
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
@@ -198,7 +181,7 @@
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import AddDialogForm from "@/views/base/AddDialogForm";
 import BasicNeeds from "./BasicNeeds";
 import PotentialDemand from "./PotentialDemand";
 export default {
@@ -209,17 +192,12 @@ export default {
         PotentialDemand
     },
     props: {
-        // refresh: {
-        //     type: Boolean,
-        //     required: true
-        // },
-
         addConsult: {
             type: Object,
             required: true
         }
     },
-    mixins: [DialogForm],
+    mixins: [AddDialogForm],
 
     created() {
         let that = this;
@@ -230,33 +208,14 @@ export default {
 
     data() {
         return {
+
             basneed_show: false,
             potentdeman_show: false,
-            dataEntryPersonList: [
-                {
-                    value: "1009",
-                    table: "1009"
-                }
-            ],
-            baseDemandList: [
-                {
-                    value: "123132",
-                    table: "123132"
-                }
-            ],
+            dataEntryPersonList: [],
+            baseDemandList: [],
             BaseInfo: [],
             doctorList: [],
-
-            potentialDemandList: [
-                {
-                    value: "HTML",
-                    label: "HTML"
-                },
-                {
-                    value: "CSS",
-                    label: "CSS"
-                }
-            ],
+            potentialDemandList: [],
             rules: {},
             form: {
                 main_consult: "",
@@ -272,14 +231,6 @@ export default {
         };
     },
     watch: {
-        // refresh(newValue, oldValue) {
-        //     let that = this;
-        //     // this.data = that.selectPatient;
-        //     // console.log(that.selectPatient);
-        //     if (newValue) {
-        //     }
-        // },
-
         addConsult(newValue, oldValue) {
             let that = this;
             if (newValue) {
@@ -291,11 +242,63 @@ export default {
             let that = this;
 
             if (newValue) {
-                that.getdefaultRecorder();
+                that.getDefaultRecorder();
             }
+
         }
     },
     methods: {
+        submitForm() {
+            let that = this;
+
+            that.form["patient_id"] = that.addConsult["id"];
+
+            that.$api.patient_consult.store(that.form)
+                .then(res=>{
+                    if(res.code ==200){
+
+                        that.$message.success('保存成功');
+
+                        that.$emit(
+                            "add-item",
+                            JSON.parse(JSON.stringify(res.data))
+                        );
+
+                        that.closeDialog();
+
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
+
+        getBaseDemand() {
+            let that = this;
+            that.$api.base_demand
+                .get()
+                .then(res => {
+                    that.baseDemandList = res.data;
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
+
+        getPotentialDemand() {
+            let that = this;
+            that.$api.potential_demand
+                .get()
+                .then(res => {
+                    that.potentialDemandList = res.data;
+                })
+                .catch(res => {
+                    console.log(res.data);
+                });
+        },
+
         getReceptionDoctor(type) {
             let that = this;
             that.$api.patient_consult
@@ -314,7 +317,7 @@ export default {
                 });
         },
 
-        getdefaultRecorder() {
+        getDefaultRecorder() {
             let that = this;
             that.$api.patient_consult
                 .defaultRecorder()
@@ -322,7 +325,7 @@ export default {
                     that.form.data_entry_person = res.data;
                 })
                 .catch(res => {
-                    console.res.data;
+                    console.log(res.data);
                 });
         },
         basice_need() {
@@ -331,8 +334,13 @@ export default {
         potential_dem() {
             this.potentdeman_show = true;
         },
-        afterClose() {
-            this.$refs["ConsultForm"].resetFields();
+
+        afterClose(){
+            let that=this;
+            for(let key in that.form){
+                // that.form.hasOwnProperty(key)
+                that.form[key] = '';
+            }
         }
     }
 };

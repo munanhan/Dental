@@ -20,10 +20,10 @@
   </el-form-item> -->
             <div class="plan-content">
                 <div class="plan-top">
-                    <div class="number">1503010120 </div>
-                    <div class="top-font">| *(无病历号) |</div>
-                    <div class="top-font"> 8岁 |</div>
-                    <div class="top-font"> 12300055</div>
+                    <div class="number">{{PlanInfo.patient_name}} </div>
+                    <div class="top-font">| {{PlanInfo.case_id}} |</div>
+                    <div class="top-font"> {{PlanInfo.patient_age}}岁 |</div>
+                    <div class="top-font"> {{PlanInfo.patient_phone}}</div>
                 </div>
                 <div class="plan-middle-content">
                     <div class="plan-middle">
@@ -179,16 +179,31 @@ import DialogForm from "@/views/base/DialogForm";
 import ReturnVisitSetup from "./ReturnVisitSetup";
 export default {
     name: "AddPlan",
+    props: {
+        // refresh: {
+        //     type: Boolean,
+        //     required: true
+        // },
 
+        addPlan: {
+            type: Object,
+            required: true
+        }
+    },
     mixins: [DialogForm],
 
     components: {
         ReturnVisitSetup
     },
 
+    created() {
+        let that = this;
+        that.PlanInfo = that.addPlan;
+    },
     data() {
         return {
             returnvisset_show: false,
+            PlanInfo: [],
             form: {
                 tableData: [
                     {
@@ -244,7 +259,14 @@ export default {
             }
         };
     },
-
+    watch: {
+        addPlan(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.PlanInfo = that.addPlan;
+            }
+        }
+    },
     methods: {
         returnvis_setup() {
             this.returnvisset_show = true;

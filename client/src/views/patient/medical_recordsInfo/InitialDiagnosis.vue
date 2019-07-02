@@ -10,7 +10,7 @@
         top="2vh"
     >
         <el-form
-            ref="form"
+            ref="initialform"
             :model="form"
             label-width="80px"
             :rules="rules"
@@ -23,10 +23,7 @@
                                 label="病历模板"
                                 name="medicalTemplates"
                             >
-                                <div
-                                    class="left-tree"
-                                    style="height:250px;overflow: auto"
-                                >
+                                <div class="left-tree">
                                     <el-tree
                                         :data="initialData"
                                         @node-click="handleNodeClick"
@@ -86,6 +83,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.main_complain"
+                            @click="transmission('aaaaa', templateContent.main_complain)"
                         >
                             <div class="lowerleft-left">主诉</div>
                             <div class="lowerleft-right">
@@ -95,6 +93,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.now_history"
+                            @click="transmission('bbbbb', templateContent.now_history)"
                         >
                             <div class="lowerleft-left">现病史</div>
                             <div class="lowerleft-right">
@@ -104,6 +103,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.previous_history"
+                            @click="transmission('ccccc', templateContent.previous_history)"
                         >
                             <div class="lowerleft-left">既往史</div>
                             <div class="lowerleft-right">
@@ -113,6 +113,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.inspect"
+                            @click="transmission('ddddd', templateContent.inspect)"
                         >
                             <div class="lowerleft-left">检查</div>
                             <div class="lowerleft-right">
@@ -122,6 +123,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.auxiliary"
+                            @click="transmission('eeeee', templateContent.auxiliary)"
                         >
                             <div class="lowerleft-left">辅助检查</div>
                             <div class="lowerleft-right">
@@ -131,6 +133,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.diagnosis"
+                            @click="transmission('fffff', templateContent.diagnosis)"
                         >
                             <div class="lowerleft-left">诊断</div>
                             <div class="lowerleft-right">
@@ -140,6 +143,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.treatment_plan"
+                            @click="transmission('ggggg', templateContent.treatment_plan)"
                         >
                             <div class="lowerleft-left">治疗方案</div>
                             <div class="lowerleft-right">
@@ -149,6 +153,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.treatment"
+                            @click="transmission('hhhhh', templateContent.treatment)"
                         >
                             <div class="lowerleft-left">治疗</div>
                             <div class="lowerleft-right">
@@ -158,6 +163,7 @@
                         <div
                             class="lowerleft-content"
                             v-if="templateContent.doctor_advice"
+                            @click="transmission('iiiii', templateContent.doctor_advice)"
                         >
                             <div class="lowerleft-left">医嘱</div>
                             <div class="lowerleft-right">
@@ -169,9 +175,10 @@
                 <div class="right-content">
                     <div class="right-top">
                         <div class="top1">
-                            <div class="top-num1">1503010120</div>
-                            <div class="top-num2">8岁</div>
+                            <div class="top-num1">{{InitialDiag.case_id}}</div>
+                            <div class="top-num2">{{InitialDiag.patient_age}}岁</div>
                             <el-form-item
+                                class=""
                                 style="margin-top:5px;margin-left:30px"
                                 label="活动名称"
                                 size="small"
@@ -246,10 +253,10 @@
                     <div class="right-middle">
                         <div style="display:flex">
                             <el-button class="middle-button">Ω特殊符号</el-button>
-                            <el-checkbox
+                            <!-- <el-checkbox
                                 class="middle-checkbox"
                                 v-model="form.checked"
-                            ><span style="font-size:15px;color:#000">牙位同步</span></el-checkbox>
+                            ><span style="font-size:15px;color:#000">牙位同步</span></el-checkbox> -->
                         </div>
                         <div class="middle-table">
                             <table border="1">
@@ -260,7 +267,7 @@
                                 </tr>
                                 <tr>
                                     <td align="center">现 病 史</td>
-                                    <input v-bind="form.history">
+                                    <input v-model="form.history">
                                     <!-- <textarea style="resize:none" ></textarea> -->
                                 </tr>
                                 <tr>
@@ -273,38 +280,122 @@
                                 </tr>
                                 <tr>
                                     <td align="center">检 查</td>
-                                    <input class="middle-input">
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <template v-for="(item,index) in form.check">
+                                        <input
+                                            v-model="form.check[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('check')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('check')"
+                                            :key="'icon'+index"
+                                        ></i>
+
+                                        <!-- <input
+                                                :key="index"
+                                                :v-model="form.check[index+1]"
+                                                class="middle-input"
+                                            > -->
+
+                                    </template>
+
                                 </tr>
                                 <tr>
-                                    <td align="center">主页检查</td>
-                                    <input class="middle-input">
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
-                                    <!-- <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
-                                    <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i>
-                                    <input class="middle-input">
-                                    <i class="el-icon-delete-solid middle-i"></i> -->
+                                    <td align="center">辅助检查</td>
+                                    <template v-for="(item,index) in form.auxiliarycheck">
+                                        <input
+                                            v-model="form.auxiliarycheck[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('auxiliarycheck')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('auxiliarycheck')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
                                 </tr>
+
                                 <tr>
                                     <td align="center">诊 断</td>
-                                    <input class="middle-input">
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <template v-for="(item,index) in form.diagnosi">
+                                        <input
+                                            v-model="form.diagnosi[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('diagnosi')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('diagnosi')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
                                 </tr>
+
                                 <tr>
                                     <td align="center">治疗方案</td>
-                                    <input class="middle-input">
-                                    <i class="el-icon-circle-plus-outline middle-i"></i>
+                                    <template v-for="(item,index) in form.treatmentOptions">
+                                        <input
+                                            v-model="form.treatmentOptions[index]"
+                                            class="middle-input"
+                                            :key="index"
+                                        >
+                                        <i
+                                            v-if="index == 0"
+                                            @click="addDisposal('treatmentOptions')"
+                                            class="el-icon-circle-plus-outline middle-i"
+                                            :key="'icon'+index"
+                                        ></i>
+                                        <i
+                                            v-else
+                                            class="fa fa-trash-alt middle-i"
+                                            @click="delDisposal('treatmentOptions')"
+                                            :key="'icon'+index"
+                                        ></i>
+                                    </template>
+
+                                    <!-- <input
+                                        v-model="form.treatmentOptions"
+                                        class="middle-input"
+                                    >
+                                    <i class="el-icon-circle-plus-outline middle-i"></i> -->
                                 </tr>
                                 <tr>
                                     <td align="center">治疗</td>
-                                    <input class="middle-input">
+                                    <input
+                                        v-model="form.treatment"
+                                        class="middle-input"
+                                    >
                                     <i class="el-icon-circle-plus-outline middle-i"></i>
                                 </tr>
                                 <tr>
                                     <td align="center">医嘱</td>
-                                    <input style="height:35px">
+                                    <input
+                                        v-model="form.advice"
+                                        style="height:35px"
+                                    >
                                 </tr>
                             </table>
                             <div class="bottom-image">
@@ -323,8 +414,8 @@
                             slot="footer"
                             class="dialog-footer"
                         >
-                            <div style="margin-top:10px;margin-left:5px">
-                                <el-button>另存模板</el-button>
+                            <div class="button-conten">
+                                <!-- <el-button>另存模板</el-button> -->
                                 <el-button>预约</el-button>
                                 <el-button>回访</el-button>
                                 <el-button type="primary">确 定</el-button>
@@ -344,7 +435,21 @@ export default {
     name: "InitialDiagnosis",
 
     mixins: [DialogForm],
+    props: {
+        // refresh: {
+        //     type: Boolean,
+        //     required: true
+        // },
 
+        addInitial: {
+            type: Object,
+            required: true
+        }
+    },
+    created() {
+        let that = this;
+        that.InitialDiag = that.addInitial;
+    },
     data() {
         return {
             selectNode: null,
@@ -352,15 +457,22 @@ export default {
             activeName: "medicalTemplates",
             rules: {},
             templateContent: [],
+            InitialDiag: [],
+            // initals: [''],
             form: {
                 value1: new Date(),
                 radio: "1",
-                checked: "",
-
+                check: [""],
+                cheack: "",
                 complain: "",
                 history: "",
                 previous: "",
-                allergy: ""
+                allergy: "",
+                treatment: "",
+                auxiliarycheck: [""],
+                diagnosi: [""],
+                treatmentOptions: [""],
+                advice: ""
 
                 // defaultProps: {
                 //   children: "children",
@@ -369,6 +481,8 @@ export default {
             },
 
             data: {}
+
+            // aaa: []
         };
     },
     watch: {
@@ -379,6 +493,12 @@ export default {
         //         that.resizeContent();
         //     }
         // },
+        addInitial(newValue, oldValue) {
+            let that = this;
+            if (newValue) {
+                that.InitialDiag = that.addInitial;
+            }
+        },
         activeName(newValue, oldValue) {
             if (newValue) {
                 let that = this;
@@ -400,6 +520,47 @@ export default {
         }
     },
     methods: {
+        addDisposal(value) {
+            let that = this;
+            switch (value) {
+                case "check":
+                    this.form.check.push("");
+                    break;
+                case "auxiliarycheck":
+                    this.form.auxiliarycheck.push("");
+                    break;
+                case "diagnosi":
+                    this.form.diagnosi.push("");
+                    break;
+                case "treatmentOptions":
+                    this.form.treatmentOptions.push("");
+                    break;
+            }
+        },
+
+        delDisposal(index, value) {
+            // console.log(this.form.check);
+            switch (index) {
+                case "check":
+                    this.form.check.splice(index, 1);
+                    break;
+                case "auxiliarycheck":
+                    this.form.auxiliarycheck.splice(index, 1);
+                    break;
+                case "diagnosi":
+                    this.form.diagnosi.splice(index, 1);
+                    break;
+                case "treatmentOptions":
+                    this.form.treatmentOptions.splice(index, 1);
+                    break;
+            }
+            ``;
+        },
+
+        afterClose() {
+            this.templateContent = [];
+            this.$refs["initialform"].resetFields();
+        },
         getMenu() {
             //获取菜单
             let that = this;
@@ -411,7 +572,6 @@ export default {
                 .catch(res => {});
         },
         handleNodeClick(data) {
-          
             let that = this;
             that.selectNode = data;
 
@@ -452,32 +612,59 @@ export default {
                 .then(res => {
                     if (res.code == 200) {
                         that[dataType] = res.data;
-
-                        // for (var i = 0; i < that.templateContent.length; i++) {
-                        //     var item = that.templateContent[i];
-                        //     item.value = res.data[item.key] || "";
-                        // }
-
-                        // for(var i = 0; i < that.templateContent.length; i++){
-                        //     var item = that.templateContent[i];
-                        //     item.value = "";
-                        // }
                     } else {
                         that.$message.error(res.msg || "数据获取失败.");
                     }
                 })
                 .catch(res => {});
+        },
+
+        transmission(type, value) {
+            let that = this;
+            switch (type) {
+                case "aaaaa":
+                    that.form.complain = value;
+                    break;
+                case "bbbbb":
+                    that.form.history = value;
+                    break;
+                case "ccccc":
+                    that.form.previous = value;
+                    break;
+                case "ddddd":
+                    that.form.check = [value];
+                    // console.log(that.form.$set)
+                    // that.$set('form.check', '0', value);
+                    break;
+                case "eeeee":
+                    that.form.auxiliarycheck = value;
+                    break;
+                case "fffff":
+                    that.form.diagnosi = value;
+                    break;
+                case "ggggg":
+                    that.form.treatmentOptions = value;
+                    break;
+                case "hhhhh":
+                    that.form.treatment = value;
+                    break;
+                case "iiiii":
+                    that.form.advice = value;
+                    break;
+            }
         }
 
-        // setData(data){
+        // setData(data) {
+        //     {
+        //         aa: "";
+        //     }
+        //     {
+        //     }
 
-        //     { aa : '' }
-        //     { }
-
-        //         for(var i = 0; i < that.templateContent.length; i++){
-        //             var item = that.templateContent[i];
-        //             item.value = res.data[item.key] || '';
-        //         }
+        //     for (var i = 0; i < that.templateContent.length; i++) {
+        //         var item = that.templateContent[i];
+        //         item.value = res.data[item.key] || "";
+        //     }
         // }
     }
 };
@@ -496,6 +683,8 @@ export default {
             width: 400px;
             height: 293px;
             .left-tree {
+                height: 250px;
+                overflow: auto;
                 .custom-tree-node {
                     // border: 1px solid #ccc;
                     width: 100%;
@@ -656,6 +845,7 @@ export default {
                         color: #949494;
                         font-size: 25px;
                         padding-top: 35px;
+                        // transition: all 0.2s;
                         padding-left: 40px;
                     }
                 }
@@ -668,6 +858,10 @@ export default {
             border: 1px solid #e6e6e6;
             border-top: none;
             height: 67px;
+            .button-conten {
+                margin-top: 10px;
+                margin-left: 5px;
+            }
         }
     }
     /deep/ .el-tabs__nav-scroll {
