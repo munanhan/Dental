@@ -683,10 +683,6 @@ export default {
                 
             let that = this;
 
-            that[newValue] = true;
-
-            console.log(that.selectItem);
-
             if(that.selectItem==null){
                 return false;
             }
@@ -708,40 +704,40 @@ export default {
 
                 case "pationInfo":
 
-                    that.getPatientData('patient','getPatientByID',params,);
+                    that.getPatientData('patient','getPatientByID',params,module);
                     break;
 
                 case "medicalInformation":
-                    that.getPatientData('patient','treat',params,);
+                    that.getPatientData('patient','treat',params,module);
                     break;
 
                 case "bookingInformation":
-                    that.getPatientData('patient','appoint',params,);
+                    that.getPatientData('patient','appoint',params,module);
                     break;
 
                 case "disposalRecords":
-                    that.getPatientData('patient_disposal','get',params,);
+                    that.getPatientData('patient_disposal','get',params,module);
                     break;
 
                 case "chargeInfo":
-                    that.getPatientData('patient_charge','get',params,);
+                    that.getPatientData('patient_charge','get',params,module);
                     break;
 
                 case "medicalRecordsInfo":
-                    that.getPatientData('patient_case','get',params,);
+                    that.getPatientData('patient_case','get',params,module);
                     break;
 
                 case "returnVisitInfo":
-                    that.getPatientData('patient_visit','get',params);
+                    that.getPatientData('patient_visit','get',params,module);
                     break;
 
                 case "consultingInfo" :
-                    that.getPatientData('patient_consult','get',params);
+                    that.getPatientData('patient_consult','get',params,module);
                     break;
             }
         },
 
-        getPatientData(url,method,data){
+        getPatientData(url,method,data,module){
             let that=this;
 
             that.$api[url][method](data)
@@ -749,6 +745,9 @@ export default {
                     if(res.code == 200){
 
                         that.selectPatient= res.data;
+
+                        that[module] = true;
+
                     }
                 })
                 .catch(res=>{

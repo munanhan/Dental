@@ -152,12 +152,13 @@ export default {
                     .then(res=>{
                         if(res.code==200){
                             that.patientInfo=res.data;
+                            that.addrevisit_show = true;
                         }
                     })
                     .catch(res=>{
                         console.log(res);
                     })
-                that.addrevisit_show = true;
+
             } else {
                 that.$message.warning("请选择一个患者");
             }

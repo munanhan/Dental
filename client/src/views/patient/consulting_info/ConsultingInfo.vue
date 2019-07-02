@@ -4,7 +4,7 @@
             <div
                 @dblclick="add_cons"
                 class="background"
-                v-for="(item,index) in consultingList"
+                v-for="(item,index) in consultInfo"
                 :key="index"
             >
                 <!-- <div class="top-title">
@@ -132,12 +132,9 @@ export default {
         AddConsulting
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
         consultInfo: {
-            required: true
+            type:Array,
+            default: () => []
         },
         selectID:"",
     },
@@ -152,9 +149,7 @@ export default {
     },
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
-        }
+
 
     },
     computed: {},
@@ -168,11 +163,6 @@ export default {
             that.consultingList.push(data);
         },
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         add_cons() {
             let that = this;
 
@@ -180,11 +170,12 @@ export default {
                 that.$api.patient_consult.patientInfo({id: that.selectID})
                     .then(res=>{
                         that.patientInfo=res.data;
+                        that.addcons_show = true;
                     })
                     .catch(res=>{
                         console.log(res);
                     })
-                that.addcons_show = true;
+
             } else {
                 that.$message.warning("请选择一个患者");
             }

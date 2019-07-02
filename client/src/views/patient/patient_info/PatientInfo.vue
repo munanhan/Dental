@@ -187,12 +187,7 @@ export default {
         ModifyInfo
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
         pationInfo: {
-           // type: Object,
             required: true
         },
         selectID:"",
@@ -207,13 +202,6 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
-            // this.data = that.selectPatient;
-            // console.log(that.selectPatient);
-            if (newValue) {
-            }
-        },
 
         pationInfo(newValue, oldValue) {
             let that = this;
