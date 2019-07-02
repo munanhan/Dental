@@ -414,6 +414,7 @@
                     <patient-info
                         :refresh.sync="pationInfo"
                         :pationInfo="selectPatient"
+                        :selectID="selectItem"
                     >
 
                     </patient-info>
@@ -429,6 +430,7 @@
                         v-if="medicalInformation"
                         :refresh.sync="medicalInformation"
                         :medicalInformation="selectPatient"
+                        :selectID="selectItem"
                     ></medical-information>
                 </el-tab-pane>
 
@@ -441,6 +443,7 @@
                         v-if="bookingInformation"
                         :refresh.sync="bookingInformation"
                         :bookingInformation="selectPatient"
+                        :selectID="selectItem"
                     ></booking-information>
                 </el-tab-pane>
 
@@ -452,6 +455,7 @@
                     <disposal-records
                         v-if="disposalRecords"
                         :refresh.sync="disposalRecords"
+                        :selectID="selectItem"
                     ></disposal-records>
                 </el-tab-pane>
 
@@ -464,6 +468,7 @@
                         v-if="chargeInfo"
                         :refresh.sync="chargeInfo"
                         :charInfo="selectPatient"
+                        :selectID="selectItem"
                     ></charge-info>
                 </el-tab-pane>
 
@@ -476,6 +481,7 @@
                         v-if="medicalRecordsInfo"
                         :refresh.sync="medicalRecordsInfo"
                         :medicalInfo="selectPatient"
+                        :selectID="selectItem"
                     ></medical-records-info>
                 </el-tab-pane>
 
@@ -488,6 +494,7 @@
                         v-if="returnVisitInfo"
                         :refresh.sync="returnVisitInfo"
                         :returnInfo="selectPatient"
+                        :selectID="selectItem"
                     ></return-visit-info>
                 </el-tab-pane>
 
@@ -500,6 +507,7 @@
                         v-if="consultingInfo"
                         :refresh.sync="consultingInfo"
                         :consultInfo="selectPatient"
+                        :selectID="selectItem"
                     ></consulting-info>
                 </el-tab-pane>
             </el-tabs>

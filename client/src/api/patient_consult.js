@@ -67,3 +67,17 @@ export function defaultRecorder(data) {
         params: data
     });
 }
+
+/*
+    患者基本信息
+ */
+export function patientInfo(data) {
+    return request({
+        url: `${prefix}/patient_info`,
+        method: "get",
+        params: data
+    });
+}
+
+
+

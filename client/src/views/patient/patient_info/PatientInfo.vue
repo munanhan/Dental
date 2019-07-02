@@ -194,7 +194,8 @@ export default {
         pationInfo: {
            // type: Object,
             required: true
-        }
+        },
+        selectID:"",
     },
     data() {
         return {
@@ -245,7 +246,7 @@ export default {
         },
         Modify_info() {
             let that=this;
-            if(that.pationInfo.id){
+            if(that.selectID){
                 that.modinfo_show = true;
             }else {
                 that.$message.warning('请选择一个患者');

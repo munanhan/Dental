@@ -116,7 +116,7 @@
         </div>
         <add-consulting
             :show.sync="addcons_show"
-            :addConsult="consultInfo"
+            :addConsult="patientInfo"
             @add-item="addConsultResult"
         ></add-consulting>
     </div>
@@ -137,14 +137,15 @@ export default {
             required: true
         },
         consultInfo: {
-            //type: Object,
             required: true
-        }
+        },
+        selectID:"",
     },
     data() {
         return {
             addcons_show: false,
-            consultingList: []
+            consultingList: [],
+            patientInfo:[],
         };
     },
     created() {
@@ -153,12 +154,8 @@ export default {
     watch: {
         refresh(newValue, oldValue) {
             let that = this;
-
-            // if (newValue) {
-            //     that.getDisposalRecords();
-            // }
         }
-        // consultingList(newValue, oldValue) {}
+
     },
     computed: {},
     methods: {
@@ -167,11 +164,9 @@ export default {
         },
 
         addConsultResult(data) {
-            console.log(data);
             let that = this;
             that.consultingList.push(data);
         },
-        // getDisposalRecords() {},
 
         getDataDone() {
             setTimeout(() => {
@@ -180,7 +175,15 @@ export default {
         },
         add_cons() {
             let that = this;
-            if (that.consultInfo.id) {
+
+            if (that.selectID) {
+                that.$api.patient_consult.patientInfo({id: that.selectID})
+                    .then(res=>{
+                        that.patientInfo=res.data;
+                    })
+                    .catch(res=>{
+                        console.log(res);
+                    })
                 that.addcons_show = true;
             } else {
                 that.$message.warning("请选择一个患者");

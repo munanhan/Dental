@@ -194,6 +194,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
 
+    Route::get('patient_consults/patient_info','PatientConsultController@patientInfo');
+
     /*
      * Route PatientCategory Api
      */
@@ -284,6 +286,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::put('patient_visits/{patientVisit}', 'PatientVisitController@update');
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
+
+    Route::get('patient_visits/patient_info', 'PatientVisitController@patientInfo');
 
     /*
      * Route PatientAllergy Api
