@@ -412,6 +412,7 @@
                     v-if="$check_pm('patients_info')"
                 >
                     <patient-info
+                        v-if="pationInfo"
                         :refresh.sync="pationInfo"
                         :pationInfo="selectPatient"
                         :selectID="selectItem"
@@ -565,7 +566,7 @@ export default {
             patient_expend: false,
             input: "",
             search: "",
-            curTab: "pationInfo",
+            curTab: "",
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
@@ -680,7 +681,7 @@ export default {
             that.getTodayWork();
         },
         curTab(newValue, oldValue) {
-                
+
             let that = this;
 
             if(that.selectItem==null){
@@ -695,7 +696,6 @@ export default {
     methods: {
 
         getSwitch(module){
-
             let that=this;
             let params = {};
             params.id = that.selectItem;
