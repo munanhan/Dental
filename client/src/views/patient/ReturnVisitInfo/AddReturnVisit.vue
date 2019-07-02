@@ -117,7 +117,7 @@ export default {
         // },
 
         addReturnVisit: {
-            type: Object,
+            //type: Object,
             required: true
         }
     },
@@ -131,17 +131,17 @@ export default {
         return {
             Return_visit: [],
 
-            reviewStaffList:[],
+            reviewStaffList: [],
 
-            attendDoctorList:[],
+            attendDoctorList: [],
 
             form: {
                 visit_time: "",
-                review_staff:"",
-                attend_doctor:"",
-                status:0,
-                review_content:"",
-                review_result:"",
+                review_staff: "",
+                attend_doctor: "",
+                status: 0,
+                review_content: "",
+                review_result: ""
             }
         };
     },

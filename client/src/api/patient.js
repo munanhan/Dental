@@ -95,6 +95,24 @@ export function getPatientByID(data) {
     })
 }
 
+//获取预约信息
+export function appoint(data) {
+    return request({
+        url: `${prefix}/appoint`,
+        method: 'get',
+        params: data
+    })
+}
+
+//获取就诊信息
+export function treat(data) {
+    return request({
+        url: `${prefix}/treat`,
+        method: 'get',
+        params: data
+    })
+}
+
 
 
 

@@ -1,10 +1,22 @@
+//咨询信息
+
 import request from '../common/request';
 
 const prefix = '/patient_consults';
 
+//全部患者
 export function get(data) {
     return request({
         url: `${prefix}`,
+        method: "get",
+        params: data
+    });
+}
+
+//根据患者id取
+export function getById(data) {
+    return request({
+        url: `${prefix}/get_by_id`,
         method: "get",
         params: data
     });
@@ -55,3 +67,17 @@ export function defaultRecorder(data) {
         params: data
     });
 }
+
+/*
+    患者基本信息
+ */
+export function patientInfo(data) {
+    return request({
+        url: `${prefix}/patient_info`,
+        method: "get",
+        params: data
+    });
+}
+
+
+

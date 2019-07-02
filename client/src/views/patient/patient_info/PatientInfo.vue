@@ -14,27 +14,13 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>患者姓名：<span class="patient-left-color">{{data.patient_name}}</span></div>
+                            <div>患者姓名：<span class="patient-left-color">{{pationInfo.patient_name}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>患者分组：<span class="patient-left-color">{{data.patient_group}}</span></div>
+                            <div>患者分组：<span class="patient-left-color">{{pationInfo.patient_group}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>电 话：<span class="patient-left-color">{{data.patient_phone}}</span></div>
-                        </el-col>
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col :span="8">
-                            <div>病 历 号：<span class="patient-left-color">{{data.case_id}}</span></div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>介 绍 人：<span class="patient-left-color"></span>{{data.introducer}}</div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>职 业：<span class="patient-left-color"></span>{{data.patient_profession}}</div>
+                            <div>电 话：<span class="patient-left-color">{{pationInfo.patient_phone}}</span></div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -42,27 +28,13 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>出生年月：<span class="patient-left-color">{{data.patient_birthday}}</span></div>
+                            <div>病 历 号：<span class="patient-left-color">{{pationInfo.case_id}}</span></div>
                         </el-col>
                         <el-col :span="8">
-                            <div>年 龄：<span class="patient-left-color">{{data.patient_age}}</span></div>
+                            <div>介 绍 人：<span class="patient-left-color"></span>{{pationInfo.introducer}}</div>
                         </el-col>
                         <el-col :span="8">
-                            <div>社 保 号：<span class="patient-left-color">{{data.society_no}}</span></div>
-                        </el-col>
-                    </el-row>
-                    <el-row
-                        :gutter="24"
-                        style="margin:20px"
-                    >
-                        <el-col :span="8">
-                            <div>会员等级：<span class="patient-left-color">{{data.member_level}}</span></div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>会员卡号：<span class="patient-left-color">{{data.member_card}}</span></div>
-                        </el-col>
-                        <el-col :span="8">
-                            <div>电子邮箱：<span class="patient-left-color">{{data.patient_email}}</span></div>
+                            <div>职 业：<span class="patient-left-color"></span>{{pationInfo.patient_profession}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -70,7 +42,35 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>联系地址：<span class="patient-left-color">{{data.patient_address}}</span></div>
+                            <div>出生年月：<span class="patient-left-color">{{pationInfo.patient_birthday}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>年 龄：<span class="patient-left-color">{{pationInfo.patient_age}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>社 保 号：<span class="patient-left-color">{{pationInfo.society_no}}</span></div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col :span="8">
+                            <div>会员等级：<span class="patient-left-color">{{pationInfo.member_level}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>会员卡号：<span class="patient-left-color">{{pationInfo.member_card}}</span></div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>电子邮箱：<span class="patient-left-color">{{pationInfo.patient_email}}</span></div>
+                        </el-col>
+                    </el-row>
+                    <el-row
+                        :gutter="24"
+                        style="margin:20px"
+                    >
+                        <el-col :span="8">
+                            <div>联系地址：<span class="patient-left-color">{{pationInfo.patient_address}}</span></div>
                         </el-col>
 
                     </el-row>
@@ -79,7 +79,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>备 注：<span class="patient-left-color">{{data.patient_content}}</span></div>
+                            <div>备 注：<span class="patient-left-color">{{pationInfo.patient_content}}</span></div>
                         </el-col>
 
                     </el-row>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="patient-right-sex">
                         <template>
-                            <el-radio-group v-model="patient_sex">
+                            <el-radio-group v-model="pationInfo.patient_sex">
                                 <el-radio :label="0">男</el-radio>
                                 <el-radio :label="1">女</el-radio>
                             </el-radio-group>
@@ -113,13 +113,13 @@
                     style="margin:20px"
                 >
                     <el-col :span="7">
-                        <div>民族：<span class="patient-left-color">{{data.nation}}</span></div>
+                        <div>民族：<span class="patient-left-color">{{pationInfo.nation}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>咨 询 师：<span class="patient-left-color">{{data.counselor}}</span></div>
+                        <div>咨 询 师：<span class="patient-left-color">{{pationInfo.counselor}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>患者来源：<span class="patient-left-color">{{data.patient_source}}</span></div>
+                        <div>患者来源：<span class="patient-left-color">{{pationInfo.patient_source}}</span></div>
                     </el-col>
 
                     <!-- <el-col :span="8">
@@ -131,16 +131,16 @@
                     style="margin:20px"
                 >
                     <el-col :span="7">
-                        <div>吸 烟 史：<span class="patient-left-color">{{data.anamnesis}}</span></div>
+                        <div>吸 烟 史：<span class="patient-left-color">{{pationInfo.anamnesis}}</span></div>
                     </el-col>
                     <el-col :span="8">
-                        <div>洁牙习惯：<span class="patient-left-color">{{data.teeth_habits}}</span></div>
+                        <div>洁牙习惯：<span class="patient-left-color">{{pationInfo.teeth_habits}}</span></div>
                     </el-col>
                     <el-col
                         :span="8"
                         style="display:flex"
                     >
-                        <div>刷牙次数：<span class="patient-left-color">{{data.anamnesis}}</span></div>
+                        <div>刷牙次数：<span class="patient-left-color">{{pationInfo.anamnesis}}</span></div>
                         <!-- <div style="color:black;display:flex">
                             <div>5</div>次/天<div style="margin-left:20px">5</div>分钟/次
                         </div> -->
@@ -151,7 +151,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="24">
-                        <div>过 敏 史：<span class="patient-left-color">{{data.allergy}}</span></div>
+                        <div>过 敏 史：<span class="patient-left-color">{{pationInfo.allergy}}</span></div>
                     </el-col>
                 </el-row>
                 <el-row
@@ -159,7 +159,7 @@
                     style="margin:20px"
                 >
                     <el-col :span="24">
-                        <div>既 往 史：<span class="patient-left-color">{{data.anamnesis}}</span></div>
+                        <div>既 往 史：<span class="patient-left-color">{{pationInfo.anamnesis}}</span></div>
                     </el-col>
                 </el-row>
 
@@ -170,7 +170,6 @@
                 class="patient-bottom-button"
                 type="primary"
                 porp="modify-inormation"
-                @click="Modify_info"
             >修改信息</el-button>
 
         </div>
@@ -187,18 +186,12 @@ export default {
         ModifyInfo
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
+        pationInfo: {
         },
-        selectPatient: {
-            type: Object,
-            required: true
-        }
+        selectID:{},
     },
     data() {
         return {
-            data: {},
             modinfo_show: false,
             patient_sex: 0
         };
@@ -206,51 +199,11 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
-            // this.data = that.selectPatient;
-            // console.log(that.selectPatient);
-            if (newValue) {
-            }
-        },
 
-        selectPatient(newValue, oldValue) {
-            let that = this;
-            if (newValue) {
-                that.data = that.selectPatient;
-            }
-        }
     },
     computed: {},
     methods: {
-        getPatientInfo() {
-            let that = this;
 
-            that.$api.patient.aaaa
-                .then(res => {
-                    that.getDataDone();
-                })
-                .catch(res => {
-                    that.getDataDone();
-                });
-        },
-
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
-        handleChange(val) {
-            console.log(val);
-        },
-        Modify_info() {
-            let that=this;
-            if(that.selectPatient.id){
-                that.modinfo_show = true;
-            }else {
-                that.$message.warning('请选择一个患者');
-            }
-        }
     }
 };
 </script>

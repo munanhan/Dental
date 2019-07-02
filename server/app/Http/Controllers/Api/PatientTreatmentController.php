@@ -9,7 +9,12 @@
 namespace App\Http\Controllers\Api;
 
 //诊断
-class PatientTreatment
-{
 
+
+class PatientTreatmentController extends BaseController
+{
+    public function show()
+    {
+        return message('',[],200);
+    }
 }

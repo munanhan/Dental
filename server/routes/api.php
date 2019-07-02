@@ -103,6 +103,10 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('patients/recent_visit','RecentVisitController@recentVisitPatient');
 
+    Route::get('patients/appoint','PatientAppointController@show');
+
+    Route::get('patients/treat','PatientTreatmentController@show');
+
 
 
 
@@ -151,11 +155,34 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
 
     /*
+    * Route patient_disposal Api
+    */
+    Route::get('patient_disposal', 'PatientDisposalController@index');
+
+    Route::get('patient_disposal/get_by_id', 'PatientDisposalController@show');
+
+    Route::post('patient_disposal', 'PatientDisposalController@store');
+
+    Route::get('patient_disposal/categories', 'PatientDisposalController@categories');
+
+    Route::get('patient_disposal/all_disposals', 'PatientDisposalController@allDisposals');
+
+
+    /*
+    * Route PatientCharge Api
+    */
+    Route::get('patient_charge', 'PatientChargeController@index');
+
+    Route::get('patient_charge/get_by_id', 'PatientChargeController@show');
+
+    Route::post('patient_charge', 'PatientChargeController@store');
+
+    /*
      * Route PatientConsult Api
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/show', 'PatientConsultController@getById');
+    Route::get('patient_consults/get_by_id', 'PatientConsultController@show');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
@@ -166,6 +193,8 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::get('patient_consults/doctor_or_record','PatientConsultController@getDoctorOrRecorder');
 
     Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
+
+    Route::get('patient_consults/patient_info','PatientConsultController@patientInfo');
 
     /*
      * Route PatientCategory Api
@@ -250,13 +279,15 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_visits', 'PatientVisitController@index');
 
-    Route::get('patient_visits/{patientVisit}', 'PatientVisitController@show');
+    Route::get('patient_visits/get_by_id', 'PatientVisitController@show');
 
     Route::post('patient_visits', 'PatientVisitController@store');
 
     Route::put('patient_visits/{patientVisit}', 'PatientVisitController@update');
 
     Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
+
+    Route::get('patient_visits/patient_info', 'PatientVisitController@patientInfo');
 
     /*
      * Route PatientAllergy Api

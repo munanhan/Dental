@@ -4,7 +4,7 @@
             <div
                 @dblclick="add_cons"
                 class="background"
-                v-for="(item,index) in consultingList"
+                v-for="(item,index) in consultInfo"
                 :key="index"
             >
                 <!-- <div class="top-title">
@@ -14,16 +14,16 @@
                 </div> -->
                 <div class="top-title">
                     <div class="top-content">
-                        <div class="top-text"></div>
-                        <div class="top-text"></div>
-                        <div class="top-text">接诊医生：<span></span></div>
+                        <div class="top-text">{{item.created_at}}</div>
+                        <div class="top-text">接诊医生：<span>{{item.doctor}}</span></div>
+                        <div class="top-text">录入：<span>{{item.data_entry_person}}</span></div>
                     </div>
                     <div class="top-i-content">
 
                         <i class="fa fa-pen top-i"></i>
                         <i
+                            @click="delDisposal"
                             class="fa fa-trash-alt top-i"
-                        
                         ></i>
                     </div>
                 </div>
@@ -36,11 +36,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 主 诉:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div>
+                            <div class="font-left"> 主 诉:{{item.main_consult}}</div>
                         </el-col>
                     </el-row>
                     <el-row
@@ -51,11 +47,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left"> 基本需要:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div>
+                            <div class="font-left"> 基本需要:{{item.base_demand}}</div>
                         </el-col>
 
                     </el-row>
@@ -67,11 +59,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">潜在需求:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div>
+                            <div class="font-left">潜在需求:{{item.potential_demand}}</div>
                         </el-col>
 
                     </el-row>
@@ -83,11 +71,8 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">医生方案:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div>
+                            <div class="font-left">医生方案:{{item.doctor_solution}}</div>
+
                         </el-col>
                     </el-row>
                     <el-row
@@ -98,11 +83,11 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">沟通记录:</div>
-                            <div
+                            <div class="font-left">沟通记录:{{item.record}}</div>
+                            <!-- <div
                                 style="flex:1"
                                 class="font-right"
-                            ></div>
+                            ></div> -->
                         </el-col>
                     </el-row>
                     <el-row
@@ -113,11 +98,7 @@
                             class="bottom-title-col"
                             :span="24"
                         >
-                            <div class="font-left">服务建议:</div>
-                            <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div>
+                            <div class="font-left">服务建议:{{item.service_proposal}}</div>
                         </el-col>
                     </el-row>
 
@@ -135,7 +116,7 @@
         </div>
         <add-consulting
             :show.sync="addcons_show"
-            :addConsult="consultInfo"
+            :addConsult="patientInfo"
             @add-item="addConsultResult"
         ></add-consulting>
     </div>
@@ -144,59 +125,54 @@
 
 <script>
 import AddConsulting from "./AddConsulting";
-
+import formatDate from "@/common/util.js";
 export default {
     name: "ConsultingInfo",
     components: {
         AddConsulting
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
-        consultInfo: {
-            type: Object,
-            required: true
-        }
+        consultInfo: {},
+        selectID:{},
     },
     data() {
         return {
             addcons_show: false,
             consultingList: [],
+            patientInfo:[],
         };
     },
-    created() {},
+    created() {
+    },
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            if (newValue) {
-                that.getDisposalRecords();
-            }
-        }
+
     },
     computed: {},
     methods: {
+        delDisposal(index, value) {
+            this.consultingList.splice(index, 1);
+        },
 
-        addConsultResult(data){
-            console.log(data);
-            let that=this;
+        addConsultResult(data) {
+            let that = this;
             that.consultingList.push(data);
-            
         },
-        getDisposalRecords() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         add_cons() {
             let that = this;
-            if (that.consultInfo.id) {
-                that.addcons_show = true;
+
+            if (that.selectID) {
+                that.$api.patient_consult.patientInfo({id: that.selectID})
+                    .then(res=>{
+                        that.patientInfo=res.data;
+                        that.addcons_show = true;
+                    })
+                    .catch(res=>{
+                        console.log(res);
+                    })
+
             } else {
                 that.$message.warning("请选择一个患者");
             }
@@ -210,6 +186,7 @@ export default {
 .con-content {
     .con-top {
         // border: 1px solid red;
+        overflow: auto;
         position: absolute;
         right: 0;
         left: 0;

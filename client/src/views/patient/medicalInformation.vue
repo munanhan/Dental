@@ -50,7 +50,11 @@
 export default {
     name: "medicalInformation",
     components: {},
-    props: {},
+    props: {
+        medicalInformation:{
+
+        },
+    },
     data() {
         return {};
     },

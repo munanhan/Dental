@@ -78,7 +78,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -116,7 +116,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -155,7 +155,7 @@
                                             <div
                                                 class="work-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
@@ -195,6 +195,7 @@
                                 v-model="patientSearch.flag"
                                 placeholder="患者信息"
                                 class="patient-infor"
+                                @change="dialogshow(patientSearch.flag)"
                             >
                                 <el-option
                                     v-for="item in options"
@@ -207,7 +208,7 @@
                             <el-input
                                 v-model="patientSearch.keywords"
                                 class="patient-input"
-                                placeholder="姓名、电话"
+                                :placeholder="placeholder"
                                 suffix-icon="el-icon-search"
                             ></el-input>
                             <i class="fa fa-sort-alpha-down patient-i"></i>
@@ -241,7 +242,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -279,7 +280,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -318,7 +319,7 @@
                                             <div
                                                 class="patient-background"
                                                 :class="{ 'active': item.id == selectItem }"
-                                                @click="getInfoById(item.id)"
+                                                @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
                                                     <span class="patient-top1">{{item.patient_name}}</span>
@@ -339,7 +340,7 @@
                             </div>
 
                         </div>
-                        <div class="botton-content">
+                        <div class="bottom-content">
                             <el-button
                                 type="primary"
                                 @click="add_patient"
@@ -368,7 +369,7 @@
                                 :key="index"
                                 class="visit-background"
                                 :class="{ 'active': item.id == selectItem }"
-                                @click="getInfoById(item.id)"
+                                @click="isSelect(item.id)"
                             >
                                 <div
                                     class="visit-background-top"
@@ -403,7 +404,6 @@
 
             <el-tabs
                 v-model="curTab"
-                style=""
                 class="right_top"
             >
 
@@ -413,8 +413,10 @@
                     v-if="$check_pm('patients_info')"
                 >
                     <patient-info
+                        v-if="pationInfo"
                         :refresh.sync="pationInfo"
-                        :selectPatient="selectPatient"
+                        :pationInfo="selectPatientInfo"
+                        :selectID="selectItem"
                     >
 
                     </patient-info>
@@ -429,6 +431,8 @@
                     <medical-information
                         v-if="medicalInformation"
                         :refresh.sync="medicalInformation"
+                        :medicalInformation="selectPatient"
+                        :selectID="selectItem"
                     ></medical-information>
                 </el-tab-pane>
 
@@ -440,6 +444,8 @@
                     <booking-information
                         v-if="bookingInformation"
                         :refresh.sync="bookingInformation"
+                        :bookingInformation="selectPatient"
+                        :selectID="selectItem"
                     ></booking-information>
                 </el-tab-pane>
 
@@ -451,6 +457,7 @@
                     <disposal-records
                         v-if="disposalRecords"
                         :refresh.sync="disposalRecords"
+                        :selectID="selectItem"
                     ></disposal-records>
                 </el-tab-pane>
 
@@ -463,6 +470,7 @@
                         v-if="chargeInfo"
                         :refresh.sync="chargeInfo"
                         :charInfo="selectPatient"
+                        :selectID="selectItem"
                     ></charge-info>
                 </el-tab-pane>
 
@@ -475,6 +483,7 @@
                         v-if="medicalRecordsInfo"
                         :refresh.sync="medicalRecordsInfo"
                         :medicalInfo="selectPatient"
+                        :selectID="selectItem"
                     ></medical-records-info>
                 </el-tab-pane>
 
@@ -487,6 +496,7 @@
                         v-if="returnVisitInfo"
                         :refresh.sync="returnVisitInfo"
                         :returnInfo="selectPatient"
+                        :selectID="selectItem"
                     ></return-visit-info>
                 </el-tab-pane>
 
@@ -499,6 +509,7 @@
                         v-if="consultingInfo"
                         :refresh.sync="consultingInfo"
                         :consultInfo="selectPatient"
+                        :selectID="selectItem"
                     ></consulting-info>
                 </el-tab-pane>
             </el-tabs>
@@ -508,6 +519,8 @@
 
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
+
+        <!-- <advanced-query :show.sync="advancedque_show"></advanced-query> -->
     </el-container>
 
 </template>
@@ -527,6 +540,7 @@ import ConsultingInfo from "@/views/patient/consulting_info/ConsultingInfo";
 import AppointmentVisit from "./AppointmentVisit";
 import BookingInformation from "./BookingInformation";
 import medicalInformation from "./medicalInformation";
+// import AdvancedQuery from "./AdvancedQuery";
 
 export default {
     name: "Patient",
@@ -544,19 +558,22 @@ export default {
         AppointmentVisit,
         ConsultingInfo,
         BookingInformation,
-        medicalInformation
+        medicalInformation,
+        // AdvancedQuery
     },
 
     props: {},
 
     data() {
         return {
-            selectPatient: {},
-
+            advancedque_show: false,
+            selectPatient: [],
+            selectPatientInfo:{},
+            placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",
             search: "",
-            curTab: "pationInfo",
+            curTab: "",
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
@@ -591,10 +608,10 @@ export default {
                     id: 3,
                     type: "会员号"
                 },
-                {
-                    id: 4,
-                    type: "检查医生"
-                }
+                // {
+                //     id: 4,
+                //     type: "检查医生"
+                // }
             ],
             value: "",
 
@@ -656,26 +673,7 @@ export default {
                     break;
             }
         },
-        // refresh(newValue, oldValue) {
-        //         let that = this;
 
-        //         if (newValue) {
-        //             for (var key in that.content) {
-        //                 if (that.content[key]) {
-        //                     that[key + "Update"] = true;
-        //                 }
-        //             }
-
-        //             //更新原来的refresh, 防止下次点击时不通知更新
-        //             that.$emit("update:refresh", false);
-        //         }
-        //     },
-        //     selectHandler(index) {
-        //         let that = this;
-        //         that.content.chargeDetail = "ChargeInfo" == index;
-        //         that.chargeDetailUpdate = "ChargeInfo" == index;
-
-        //     },
         workdate(newValue, oldValue) {
             let newV = formatDate(newValue, "yyyy-MM-dd"),
                 now = formatDate(new Date(), "yyyy-MM-dd");
@@ -687,47 +685,111 @@ export default {
             let that = this;
             that.getTodayWork();
         },
+
         curTab(newValue, oldValue) {
             let that = this;
 
-            // target = that.quickFind[newValue];
-            // that[target] = true;
+            if (that.selectItem == null) {
+                return false;
+            }
 
-            that[newValue] = true;
+            that.getSwitch(newValue);
         }
+
     },
     computed: {},
     methods: {
-        //获取id
-        getInfoById(id) {
+        dialogshow(value) {
+            switch (value) {
+                case 1:
+                    this.placeholder = "姓名、拼音、电话";
+                    break;
+                case 2:
+                    this.placeholder = "病历号";
+                    break;
+                case 3:
+                    this.placeholder = "会员号";
+                    break;
+                // case 4:
+                //     this.advancedque_show = true;
+                //     break;
+            }
+            // this[value] = true;
+            // this.value = "";
+        },
 
+        getSwitch(module) {
+            let that = this;
+            let params = {};
+            params.id = that.selectItem;
+
+            switch (module) {
+                case "pationInfo":
+                    that.getPatientData("patient", "getPatientByID", params, module);
+                    break;
+
+                case "medicalInformation":
+                    that.getPatientData("patient", "treat", params, module);
+                    break;
+
+                case "bookingInformation":
+                    that.getPatientData("patient", "appoint", params, module);
+                    break;
+
+                case "disposalRecords":
+                    that.getPatientData("patient_disposal", "get", params, module);
+                    break;
+
+                case "chargeInfo":
+                    that.getPatientData("patient_charge", "get", params, module);
+                    break;
+
+                case "medicalRecordsInfo":
+                    that.getPatientData("patient_case", "get", params, module);
+                    break;
+
+                case "returnVisitInfo":
+                    that.getPatientData("patient_visit", "get", params, module);
+                    break;
+
+                case "consultingInfo":
+                    that.getPatientData("patient_consult", "get", params, module);
+                    break;
+            }
+        },
+
+        getPatientData(url, method, data, module) {
             let that = this;
 
+            that.$api[url][method](data)
+                .then(res => {
+                    if (res.code == 200) {
+                        switch (module){
+                            case "pationInfo":
+                                that.selectPatientInfo = res.data;
+                                that[module] = true;
+                                break;
+                            default:
+                                that.selectPatient = res.data;
+                                that[module] = true;
+                                break;
+                        }
+                    }
+                })
+                .catch(res => {
+                    console.log(res);
+                });
+        },
+
+        //获取id
+        isSelect(id) {
+            let that = this;
             //选中
             that.selectItem = id;
 
-            that.$api.patient
-                .getPatientByID({ id })
-                .then(res => {
-                    res.data.allergy = (res.data.allergy.length && []).join(
-                        ","
-                    );
-
-                    res.data.anamnesis = (res.data.anamnesis.length && []).join(
-                        ","
-                    );
-
-                    res.data.patient_birthday = formatDate(
-                        res.data.patient_birthday,
-                        "yyyy-MM-dd"
-                    );
-
-                    that.selectPatient = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
+            that.getSwitch(that.curTab);
         },
+
         //获取最近访问
         getRecentVisit() {
             let that = this;
@@ -826,18 +888,11 @@ export default {
         expend(type) {
             let that = this;
             that[type] = !that[type];
-
-            // if (!patient_expend) {
-            //     this.patient_expend = true;
-            // } else {
-            //     this.patient_expend = false;
-            // }
         },
 
         //tab选中事件
         tabSelectHandler(tabInstance) {
             let that = this;
-
             console.log(tabInstance);
         },
 
@@ -951,7 +1006,7 @@ export default {
                         }
                     }
                 }
-                .botton-content {
+                .bottom-content {
                     position: absolute;
                     left: 0;
                     bottom: 0;

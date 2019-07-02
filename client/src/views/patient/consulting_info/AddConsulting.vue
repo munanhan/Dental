@@ -193,7 +193,7 @@ export default {
     },
     props: {
         addConsult: {
-            type: Object,
+           // type: Object,
             required: true
         }
     },
@@ -208,7 +208,6 @@ export default {
 
     data() {
         return {
-
             basneed_show: false,
             potentdeman_show: false,
             dataEntryPersonList: [],
@@ -244,7 +243,6 @@ export default {
             if (newValue) {
                 that.getDefaultRecorder();
             }
-
         }
     },
     methods: {
@@ -253,20 +251,17 @@ export default {
 
             that.form["patient_id"] = that.addConsult["id"];
 
-            that.$api.patient_consult.store(that.form)
-                .then(res=>{
-                    if(res.code ==200){
-
-                        that.$message.success('保存成功');
-
+            that.$api.patient_consult
+                .store(that.form)
+                .then(res => {
+                    if (res.code == 200) {
                         that.$emit(
                             "add-item",
                             JSON.parse(JSON.stringify(res.data))
                         );
 
                         that.closeDialog();
-
-                    }else {
+                    } else {
                         that.$message.error(res.msg);
                     }
                 })
@@ -335,11 +330,11 @@ export default {
             this.potentdeman_show = true;
         },
 
-        afterClose(){
-            let that=this;
-            for(let key in that.form){
+        afterClose() {
+            let that = this;
+            for (let key in that.form) {
                 // that.form.hasOwnProperty(key)
-                that.form[key] = '';
+                that.form[key] = "";
             }
         }
     }

@@ -43,7 +43,9 @@
 export default {
     name: "BookingInformation",
     components: {},
-    props: {},
+    props: {
+        bookingInformation:{}
+    },
     data() {
         return {};
     },

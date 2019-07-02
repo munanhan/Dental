@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 use App\Model\OperationLog;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 use Closure;
@@ -26,8 +27,11 @@ class BaseVerifyFields
         // 暂时屏蔽权限方便测试
          if(!in_array(\Route::current()->uri,$route)){
          //     //排除权限控制的路由api
-             $auth = empty(Session::get('user_auth'.auth('api')->user()['id']))?[]:
-                     Session::get('user_auth'.auth('api')->user()['id']);
+
+
+             $auth = empty(unserialize(Redis::get('user_auth'.auth('api')->user()['id']))) ? []:
+                 unserialize(Redis::get('user_auth'.auth('api')->user()['id']));
+
 
              //权限
              if (!in_array(str_replace('Controller','', $controller), $auth)) {

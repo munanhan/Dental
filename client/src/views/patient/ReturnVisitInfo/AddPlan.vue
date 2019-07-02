@@ -186,7 +186,7 @@ export default {
         // },
 
         addPlan: {
-            type: Object,
+            // type: Object,
             required: true
         }
     },
