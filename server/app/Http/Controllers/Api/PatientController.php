@@ -26,12 +26,8 @@ class PatientController extends BaseController
      */
     public function show()
     {
-        $id=request('id');
-
-        if(isset($id)){
-            $data= Patient::where('id',$id)->first();
+            $data= Patient::where('id',request('id'))->first();
             return message('',$data,200);
-        }
     }
 
     /*

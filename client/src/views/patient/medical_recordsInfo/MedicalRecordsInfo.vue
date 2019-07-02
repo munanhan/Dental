@@ -271,7 +271,8 @@ export default {
         medicalInfo: {
            // type: Object,
             required: true
-        }
+        },
+        selectID:"",
     },
     data() {
         return {
@@ -345,7 +346,7 @@ export default {
         //初诊
         int_diagn() {
             let that = this;
-            if (that.medicalInfo.id) {
+            if (that.selectID) {
                 that.intdiag_show = true;
             } else {
                 that.$message.warning("请选择一个患者");
@@ -354,7 +355,7 @@ export default {
         //复诊
         sub_visit() {
             let that = this;
-            if (that.medicalInfo.id) {
+            if (that.selectID) {
                 this.subvisit_show = true;
             } else {
                 that.$message.warning("请选择一个患者");

@@ -4,7 +4,7 @@
             <div
                 @dblclick="add_cons"
                 class="background"
-                v-for="(item,index) in consultingList"
+                v-for="(item,index) in consultInfo"
                 :key="index"
             >
                 <!-- <div class="top-title">
@@ -116,7 +116,7 @@
         </div>
         <add-consulting
             :show.sync="addcons_show"
-            :addConsult="consultInfo"
+            :addConsult="patientInfo"
             @add-item="addConsultResult"
         ></add-consulting>
     </div>
@@ -132,33 +132,25 @@ export default {
         AddConsulting
     },
     props: {
-        refresh: {
-            type: Boolean,
-            required: true
-        },
         consultInfo: {
-            //type: Object,
-            required: true
-        }
+            type:Array,
+            default: () => []
+        },
+        selectID:"",
     },
     data() {
         return {
             addcons_show: false,
-            consultingList: []
+            consultingList: [],
+            patientInfo:[],
         };
     },
     created() {
     },
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            // if (newValue) {
-            //     that.getDisposalRecords();
-            // }
-        }
-        // consultingList(newValue, oldValue) {}
+
     },
     computed: {},
     methods: {
@@ -167,21 +159,23 @@ export default {
         },
 
         addConsultResult(data) {
-            console.log(data);
             let that = this;
             that.consultingList.push(data);
         },
-        // getDisposalRecords() {},
 
-        getDataDone() {
-            setTimeout(() => {
-                that.$emit("update:refresh", false);
-            }, 6e3);
-        },
         add_cons() {
             let that = this;
-            if (that.consultInfo.id) {
-                that.addcons_show = true;
+
+            if (that.selectID) {
+                that.$api.patient_consult.patientInfo({id: that.selectID})
+                    .then(res=>{
+                        that.patientInfo=res.data;
+                        that.addcons_show = true;
+                    })
+                    .catch(res=>{
+                        console.log(res);
+                    })
+
             } else {
                 that.$message.warning("请选择一个患者");
             }

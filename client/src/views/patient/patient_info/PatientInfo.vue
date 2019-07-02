@@ -187,14 +187,10 @@ export default {
         ModifyInfo
     },
     props: {
-        refresh: {
-            type: Boolean,
+        pationInfo: {
             required: true
         },
-        pationInfo: {
-           // type: Object,
-            required: true
-        }
+        selectID:"",
     },
     data() {
         return {
@@ -206,13 +202,6 @@ export default {
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
-            // this.data = that.selectPatient;
-            // console.log(that.selectPatient);
-            if (newValue) {
-            }
-        },
 
         pationInfo(newValue, oldValue) {
             let that = this;
@@ -245,7 +234,7 @@ export default {
         },
         Modify_info() {
             let that=this;
-            if(that.pationInfo.id){
+            if(that.selectID){
                 that.modinfo_show = true;
             }else {
                 that.$message.warning('请选择一个患者');
