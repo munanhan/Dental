@@ -753,7 +753,7 @@ export default {
                     break;
 
                 case "consultingInfo":
-                    that.getPatientData("patient_consult", "get", params, module);
+                    that.getPatientData("patient_consult", "getById", params, module);
                     break;
             }
         },

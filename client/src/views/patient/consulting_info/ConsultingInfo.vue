@@ -128,36 +128,40 @@ import AddConsulting from "./AddConsulting";
 import formatDate from "@/common/util.js";
 export default {
     name: "ConsultingInfo",
+
     components: {
         AddConsulting
     },
+
     props: {
         consultInfo: {},
         selectID:{},
     },
+
     data() {
         return {
             addcons_show: false,
-            consultingList: [],
             patientInfo:[],
         };
     },
-    created() {
-    },
+
+    created() {},
+
     mounted() {},
-    watch: {
 
+    watch: {},
 
-    },
     computed: {},
+
     methods: {
+
         delDisposal(index, value) {
-            this.consultingList.splice(index, 1);
+            this.consultInfo.splice(index, 1);
         },
 
         addConsultResult(data) {
             let that = this;
-            that.consultingList.push(data);
+            that.consultInfo.push(data);
         },
 
         add_cons() {

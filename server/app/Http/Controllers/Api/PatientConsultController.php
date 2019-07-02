@@ -32,7 +32,7 @@ class PatientConsultController extends BaseController
 
     public function show()
     {
-        $data=PatientConsult::where('patient_id',request('id'))->get();
+        $data=PatientConsult::where('patient_id','=',request('id'))->get();
         return message('',$data,200);
     }
 

@@ -17,7 +17,7 @@ Trait PatientBaseInfo
     {
         return
         DB::table('patients')
-            ->select('patient_name','patient_sex','patient_phone','case_id','patient_age')
+            ->select('id','patient_name','patient_sex','patient_phone','case_id','patient_age')
             ->where('id',$id)->first();
     }
 }

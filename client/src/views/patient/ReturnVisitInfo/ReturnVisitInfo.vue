@@ -81,7 +81,6 @@
         ></add-plan>
         <add-return-visit
             :show.sync="addrevisit_show"
-            @update="upateRetrunVisit"
             :addReturnVisit="patientInfo"
         ></add-return-visit>
     </div>
