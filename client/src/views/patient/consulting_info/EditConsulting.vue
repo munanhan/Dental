@@ -14,9 +14,9 @@
         >
             <div class="Advan-content">
                 <div class="Advan-top">
-                    <div class="advan-1"> {{addConsult.patient_name}}</div>
-                    <div class="advan-1"> {{addConsult.patient_age}}岁</div>
-                    <div class="advan-2"> {{addConsult.case_id}}</div>
+                    <div class="advan-1"> {{editConsult.patient_name}}</div>
+                    <div class="advan-1"> {{editConsult.patient_age}}岁</div>
+                    <div class="advan-2"> {{editConsult.case_id}}</div>
                 </div>
 
                 <div class="Advan-bottom">
@@ -47,10 +47,9 @@
                                         filterable
                                         allow-create
                                         default-first-option
-
                                     >
                                         <el-option
-                                            v-for="item in baseDemandList"
+                                            v-for="item in editBaseDemandList"
                                             :key="item.id"
                                             :label="item.name"
                                             :value="item.id"
@@ -76,10 +75,9 @@
                                         filterable
                                         allow-create
                                         default-first-option
-
                                     >
                                         <el-option
-                                            v-for="item in potentialDemandList"
+                                            v-for="item in editPotentialDemandList"
                                             :key="item.id"
                                             :label="item.name"
                                             :value="item.id"
@@ -129,10 +127,9 @@
                                 v-model="form.doctor"
                                 placeholder="请选择"
                                 style="width:664px"
-
                             >
                                 <el-option
-                                    v-for="item in doctorList"
+                                    v-for="item in editDoctorList"
                                     :key="item.id"
                                     :label="item.name"
                                     :value="item.id"
@@ -147,10 +144,9 @@
                                 v-model="form.data_entry_person"
                                 placeholder="请选择"
                                 style="width:664px"
-
                             >
                                 <el-option
-                                    v-for="item in doctorList"
+                                    v-for="item in editDoctorList"
                                     :key="item.id"
                                     :label="item.name"
                                     :value="item.id"
@@ -167,9 +163,9 @@
             class="dialog-footer"
         >
             <el-button
+                :loading="commitLoading"
                 type="primary"
                 @click="submitForm"
-                :loading="commitLoading"
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
@@ -189,15 +185,16 @@ export default {
 
     components: {
         BasicNeeds,
-        PotentialDemand
+        PotentialDemand,
+
     },
     props: {
-        addConsult: {},
-        baseDemandList:{},
-        potentialDemandList:{},
-        doctorList:{},
+        editConsult: {},
+        editConsultInfo:{},
+        editBaseDemandList:{},
+        editPotentialDemandList:{},
+        editDoctorList:{},
     },
-
 
     created() {
 
@@ -226,22 +223,23 @@ export default {
     watch: {
 
         show(newValue, oldValue) {
+            let that = this;
 
+            if (newValue) {
+                that.form=that.editConsultInfo;
+            }
         }
     },
     methods: {
-
         submitForm() {
             let that = this;
 
-            that.form["patient_id"] = that.addConsult.id;
-
             that.$api.patient_consult
-                .store(that.form)
+                .update(that.form)
                 .then(res => {
                     if (res.code == 200) {
                         that.$emit(
-                            "add-item",
+                            "edit-item",
                             JSON.parse(JSON.stringify(res.data))
                         );
 
@@ -305,7 +303,9 @@ export default {
         .potential {
             .table-select {
                 /deep/ .el-input__inner {
-
+                    // border-top: none;
+                    // border-left: none;
+                    // border-bottom: none;
                     border: none;
                     border-radius: 0px;
                 }
@@ -331,7 +331,6 @@ export default {
             }
         }
 
-
         input {
             width: 660px;
             height: 40px;
@@ -351,6 +350,7 @@ export default {
         .data-entry {
             .table-select {
                 /deep/ .el-input__inner {
+
                     border: none;
                     border-radius: 0px;
                 }

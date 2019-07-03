@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Traits\AttendDoctor;
 use App\Http\Controllers\Traits\PatientBaseInfo;
+use App\Model\BaseDemand;
 use App\Model\PatientConsult;
+use App\Model\PotentialDemand;
 use App\Model\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,26 +15,11 @@ class PatientConsultController extends BaseController
 {
 
     use AttendDoctor,PatientBaseInfo;
-    
-    /*
-     * 接着医生和资料录入人
-     */
-    public function getDoctorOrRecorder()
-    {
-       
-        $user=Auth::user();
-        if($user->is_admin==1){
-            return $this->getDoctorByRoleId(Role::all('id')->toArray());
-        }else{
-            return $this->defaultRecorder();
-        }
-
-    }
 
 
     public function show()
     {
-        $data=PatientConsult::where('patient_id','=',request('id'))->get();
+        $data=PatientConsult::where('patient_id',request('id'))->get();
         return message('',$data,200);
     }
 
@@ -41,7 +28,7 @@ class PatientConsultController extends BaseController
      */
     public function defaultRecorder()
     {
-        $data=Auth::user()->name;
+        $data=Auth::user()->id;
         return message('',$data,200);
     }
 
@@ -55,12 +42,44 @@ class PatientConsultController extends BaseController
 
     public function update()
     {
-        PatientConsult::where('id',request('id'))->update(request()->all());
+        $data=request()->all();
+        PatientConsult::where('id',$data['id'])->update($data);
+
+        $data=PatientConsult::where('id',$data['id'])->get();
+//        $patientConsult=PatientConsult::find($data['id']);
+//        $patientConsult->main_consult=$data['main_consult'];
+//        $patientConsult->base_demand=$data['base_demand'];
+//        $patientConsult->potential_demand=$data['potential_demand'];
+//        $patientConsult->doctor_solution=$data['doctor_solution'];
+//        $patientConsult->service_proposal=$data['service_proposal'];
+//        $patientConsult->doctor=$data['doctor'];
+
+        return message('',$data,200);
+
+
     }
 
-    public function patientInfo()
+
+
+    public function consultInfoList()
     {
-        $data= $this->getPatientBaseInfo(request('id'));
+        if(request('id'))
+        {
+            $this->parms['id']=request('id');
+            $res=$this->getDataById();
+            $res['base_demand']=explode(',',$res['base_demand']);
+            $res['potential_demand']=explode(',',$res['potential_demand']);
+            $data['consultInfo']=$res;
+        }
+        $data['patientInfo']=$this->getPatientBaseInfo(request('patient_id'));
+
+        $data['doctorInfo']=$this->getDoctorByRoleId(Role::all('id')->toArray());
+
+        $data['baseDemand']=BaseDemand::all('id','name');
+
+        $data['potentialDemand']=PotentialDemand::all('id','name');
+
         return message('',$data,200);
+
     }
 }

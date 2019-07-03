@@ -5,6 +5,7 @@
                 class="background"
                 v-for="(item,index) in consultInfo"
                 :key="index"
+                @dblclick="edit_cons(item.id,index)"
             >
 
                 <div class="top-title">
@@ -14,8 +15,11 @@
                         <div class="top-text">录入：<span>{{item.data_entry_person}}</span></div>
                     </div>
                     <div class="top-i-content">
+                        <i
+                            class="fa fa-pen top-i"
+                            @click="edit_cons(item.id,index)"
+                        ></i>
 
-                        <i class="fa fa-pen top-i" ></i>
                         <i
                             @click="delDisposal"
                             class="fa fa-trash-alt top-i"
@@ -115,8 +119,20 @@
         <add-consulting
             :show.sync="addcons_show"
             :addConsult="patientInfo"
+            :baseDemandList="baseDemandList"
+            :potentialDemandList="potentialDemandList"
+            :doctorList="doctorList"
             @add-item="addConsultResult"
         ></add-consulting>
+        <edit-consulting
+                :show.sync="editcons_show"
+                :editConsult="patientInfo"
+                :editConsultInfo="editConsultInfo"
+                :editBaseDemandList="baseDemandList"
+                :editPotentialDemandList="potentialDemandList"
+                :editDoctorList="doctorList"
+                @edit-item="editConsultResult"
+        ></edit-consulting>
     </div>
 
 </template>
@@ -124,11 +140,13 @@
 <script>
 import AddConsulting from "./AddConsulting";
 import formatDate from "@/common/util.js";
+import EditConsulting from "./EditConsulting";
 export default {
     name: "ConsultingInfo",
 
     components: {
-        AddConsulting
+        AddConsulting,
+        EditConsulting
     },
 
     props: {
@@ -139,7 +157,13 @@ export default {
     data() {
         return {
             addcons_show: false,
-            patientInfo:[],
+            editcons_show: false,
+            patientInfo: [],
+            editConsultInfo:[],
+            baseDemandList:[],
+            potentialDemandList:[],
+            doctorList:[],
+            selectIndex:"",
         };
     },
 
@@ -157,6 +181,11 @@ export default {
             this.consultInfo.splice(index, 1);
         },
 
+        editConsultResult(data){
+            let that=this;
+            that.$set(that.consultInfo,that.selectIndex,data);
+        },
+
         addConsultResult(data) {
             let that = this;
             that.consultInfo.push(data);
@@ -165,28 +194,57 @@ export default {
         add_cons() {
             let that = this;
 
-            if (that.selectID) {
-
-                that.getPatientBaseInfo();
-
-            }else {
-                that.$message.warning("请选择一个患者");
-            }
-
-        },
-
-        getPatientBaseInfo(){
-            let that = this;
-            that.$api.patient_consult
-                .patientInfo({ id: that.selectID })
-                .then(res => {
-                    that.patientInfo = res.data;
-                    that.addcons_show = true;
+            that.$api.patient_consult.consultInfo({patient_id:that.selectID})
+                .then(res=>{
+                    if(res.code==200){
+                        that.patientInfo=res.data.patientInfo;
+                        that.baseDemandList=res.data.baseDemand;
+                        that.potentialDemandList=res.data.potentialDemand;
+                        that.doctorList=res.data.doctorInfo;
+                        that.addcons_show=true;
+                    }else {
+                        console.log(res.msg);
+                    }
                 })
-                .catch(res => {
+                .catch(res=>{
                     console.log(res);
-                });
+                })
         },
+
+
+        edit_cons(id,index) {
+            let that=this;
+            that.selectIndex=index;
+            that.$api.patient_consult.consultInfo({id:id,patient_id:that.selectID})
+                .then(res=>{
+                    if(res.code==200){
+
+                        res.data.consultInfo.base_demand = res.data.consultInfo.base_demand.map((item) =>{
+                            return parseInt(item, 10);
+                        });
+
+                        res.data.consultInfo.potential_demand = res.data.consultInfo.potential_demand.map((item) =>{
+                            return parseInt(item, 10);
+                        });
+
+                        that.editConsultInfo=res.data.consultInfo;
+
+                        that.baseDemandList=res.data.baseDemand;
+                        that.patientInfo=res.data.patientInfo;
+                        that.potentialDemandList=res.data.potentialDemand;
+                        that.doctorList=res.data.doctorInfo;
+
+                        that.editcons_show=true;
+                    }else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
+
+        }
+
     }
 };
 </script>

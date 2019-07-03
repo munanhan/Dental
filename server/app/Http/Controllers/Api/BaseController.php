@@ -284,6 +284,14 @@ class BaseController extends Controller
         }
 
         public function getById(){
+            $data = $this->getDataById();
+            if ($data) {
+                return message('获取成功',$data,200);
+            }
+            return message('获取成功',new \stdClass(),200);
+        }
+
+        public function getDataById(){
             //get by id
             // $data = empty($this->join)?$this->model->getById(['id' => $this->parms['id']]):$this->getBySelect()['data'][0];
             if (isset($this->parms['id'])) {
@@ -294,12 +302,7 @@ class BaseController extends Controller
                 //否则取注入的条件作为查询条件
                 $where = $this->parms;
             }
-            $data = $this->model->getById($where);
-            if ($data) {
-                return message('获取成功',$data,200);
-            }
-            // return message('获取失败',[],500);
-            return message('获取成功',new \stdClass(),200);
+            return $this->model->getById($where);
         }
 
         public function addData(){
