@@ -417,47 +417,47 @@ export default {
             visitData: {
                 columns: ["date", "first_visit", "next_visit", "total_visit"],
                 rows: [
-                    {
-                        date: "1/1",
-                        first_visit: 1393,
-                        next_visit: 1093,
-                        total_visit: 0.32
-                    },
-                    {
-                        date: "1/2",
-                        first_visit: 3530,
-                        next_visit: 3230,
-                        total_visit: 0.26
-                    },
-                    {
-                        date: "1/3",
-                        first_visit: 2923,
-                        next_visit: 2623,
-                        total_visit: 0.76
-                    },
-                    {
-                        date: "1/4",
-                        first_visit: 1723,
-                        next_visit: 1423,
-                        total_visit: 0.49
-                    },
-                    {
-                        date: "1/5",
-                        first_visit: 3792,
-                        next_visit: 3492,
-                        total_visit: 0.323
-                    },
-                    {
-                        date: "1/6",
-                        first_visit: 4593,
-                        next_visit: 4293,
-                        total_visit: 0.78
-                    }
+                    // {
+                    //     date: "1/1",
+                    //     first_visit: 1393,
+                    //     next_visit: 1093,
+                    //     total_visit: 0.32
+                    // },
+                    // {
+                    //     date: "1/2",
+                    //     first_visit: 3530,
+                    //     next_visit: 3230,
+                    //     total_visit: 0.26
+                    // },
+                    // {
+                    //     date: "1/3",
+                    //     first_visit: 2923,
+                    //     next_visit: 2623,
+                    //     total_visit: 0.76
+                    // },
+                    // {
+                    //     date: "1/4",
+                    //     first_visit: 1723,
+                    //     next_visit: 1423,
+                    //     total_visit: 0.49
+                    // },
+                    // {
+                    //     date: "1/5",
+                    //     first_visit: 3792,
+                    //     next_visit: 3492,
+                    //     total_visit: 0.323
+                    // },
+                    // {
+                    //     date: "1/6",
+                    //     first_visit: 4593,
+                    //     next_visit: 4293,
+                    //     total_visit: 0.78
+                    // }
                 ]
             },
 
             visitSettings: {
-                stack: { visit: ["first_visit", "next_visit", "total_visit"] },
+                // stack: { visit: ["first_visit", "next_visit", "total_visit"] },
                 area: true,
                 labelMap: {
                     first_visit: "初诊",
@@ -472,47 +472,47 @@ export default {
             businessData: {
                 columns: ["date", "cash", "op_income", "ac_receivable"],
                 rows: [
-                    {
-                        date: "1/1",
-                        cash: 1393,
-                        op_income: 1093,
-                        ac_receivable: 0.32
-                    },
-                    {
-                        date: "1/2",
-                        cash: 3530,
-                        op_income: 3230,
-                        ac_receivable: 0.26
-                    },
-                    {
-                        date: "1/3",
-                        cash: 2923,
-                        op_income: 2623,
-                        ac_receivable: 0.76
-                    },
-                    {
-                        date: "1/4",
-                        cash: 1723,
-                        op_income: 1423,
-                        ac_receivable: 0.49
-                    },
-                    {
-                        date: "1/5",
-                        cash: 3792,
-                        op_income: 3492,
-                        ac_receivable: 0.323
-                    },
-                    {
-                        date: "1/6",
-                        cash: 4593,
-                        op_income: 4293,
-                        ac_receivable: 0.78
-                    }
+                    // {
+                    //     date: "1/1",
+                    //     cash: 1393,
+                    //     op_income: 1093,
+                    //     ac_receivable: 0.32
+                    // },
+                    // {
+                    //     date: "1/2",
+                    //     cash: 3530,
+                    //     op_income: 3230,
+                    //     ac_receivable: 0.26
+                    // },
+                    // {
+                    //     date: "1/3",
+                    //     cash: 2923,
+                    //     op_income: 2623,
+                    //     ac_receivable: 0.76
+                    // },
+                    // {
+                    //     date: "1/4",
+                    //     cash: 1723,
+                    //     op_income: 1423,
+                    //     ac_receivable: 0.49
+                    // },
+                    // {
+                    //     date: "1/5",
+                    //     cash: 3792,
+                    //     op_income: 3492,
+                    //     ac_receivable: 0.323
+                    // },
+                    // {
+                    //     date: "1/6",
+                    //     cash: 4593,
+                    //     op_income: 4293,
+                    //     ac_receivable: 0.78
+                    // }
                 ]
             },
 
             businessSettings: {
-                stack: { business: ["cash", "op_income", "ac_receivable"] },
+                // stack: { business: ["cash", "op_income", "ac_receivable"] },
                 area: true,
                 labelMap: {
                     cash: "现金收入",
@@ -526,7 +526,9 @@ export default {
             //患者来源收费统计-----------------
             patientCost: {
                 columns: ["type", "cost"],
-                rows: [{ type: "1/1", cost: 1393 }, { type: "1/2", cost: 3530 }]
+                rows: [
+                    // { type: "1/1", cost: 1393 }, { type: "1/2", cost: 3530 }
+                ]
             },
             //--------------------------
 
@@ -540,7 +542,9 @@ export default {
             //收费分类统计--------------------------
             classificationOfCharges: {
                 columns: ["type", "num"],
-                rows: [{ type: "1/1", num: 1393 }, { type: "1/2", num: 3530 }]
+                rows: [
+                    // { type: "1/1", num: 1393 }, { type: "1/2", num: 3530 }
+                ]
             },
             //-----------------------------------
 
@@ -548,47 +552,47 @@ export default {
             bookData: {
                 columns: ["date", "first_book", "next_book", "total_book"],
                 rows: [
-                    {
-                        date: "1/1",
-                        first_book: 1393,
-                        next_book: 1093,
-                        total_book: 0.32
-                    },
-                    {
-                        date: "1/2",
-                        first_book: 3530,
-                        next_book: 3230,
-                        total_book: 0.26
-                    },
-                    {
-                        date: "1/3",
-                        first_book: 2923,
-                        next_book: 2623,
-                        total_book: 0.76
-                    },
-                    {
-                        date: "1/4",
-                        first_book: 1723,
-                        next_book: 1423,
-                        total_book: 0.49
-                    },
-                    {
-                        date: "1/5",
-                        first_book: 3792,
-                        next_book: 3492,
-                        total_book: 0.323
-                    },
-                    {
-                        date: "1/6",
-                        first_book: 4593,
-                        next_book: 4293,
-                        total_book: 0.78
-                    }
+                    // {
+                    //     date: "1/1",
+                    //     first_book: 1393,
+                    //     next_book: 1093,
+                    //     total_book: 0.32
+                    // },
+                    // {
+                    //     date: "1/2",
+                    //     first_book: 3530,
+                    //     next_book: 3230,
+                    //     total_book: 0.26
+                    // },
+                    // {
+                    //     date: "1/3",
+                    //     first_book: 2923,
+                    //     next_book: 2623,
+                    //     total_book: 0.76
+                    // },
+                    // {
+                    //     date: "1/4",
+                    //     first_book: 1723,
+                    //     next_book: 1423,
+                    //     total_book: 0.49
+                    // },
+                    // {
+                    //     date: "1/5",
+                    //     first_book: 3792,
+                    //     next_book: 3492,
+                    //     total_book: 0.323
+                    // },
+                    // {
+                    //     date: "1/6",
+                    //     first_book: 4593,
+                    //     next_book: 4293,
+                    //     total_book: 0.78
+                    // }
                 ]
             },
 
             bookSettings: {
-                stack: { business: ["first_book", "next_book", "total_book"] },
+                // stack: { business: ["first_book", "next_book", "total_book"] },
                 labelMap: {
                     first_book: "初诊预约",
                     next_book: "复诊预约",
@@ -612,18 +616,18 @@ export default {
                     "root_canal_therapy"
                 ],
                 rows: [
-                    {
-                        tooth_extraction: 1393,
-                        denture: 1393,
-                        dressing_change: 1093,
-                        tooth_filling: 131321,
-                        wearing_teeth: 131,
-                        surgery: 13122,
-                        remove_stitches: 133,
-                        root_canal_equipment: 13257,
-                        trial_crown: 12154,
-                        root_canal_therapy: 2344
-                    }
+                    // {
+                    //     tooth_extraction: 1393,
+                    //     denture: 1393,
+                    //     dressing_change: 1093,
+                    //     tooth_filling: 131321,
+                    //     wearing_teeth: 131,
+                    //     surgery: 13122,
+                    //     remove_stitches: 133,
+                    //     root_canal_equipment: 13257,
+                    //     trial_crown: 12154,
+                    //     root_canal_therapy: 2344
+                    // }
                 ]
             },
 
@@ -647,8 +651,8 @@ export default {
             reservation_status: {
                 columns: ["type", "status"],
                 rows: [
-                    { type: "1/1", status: 1393 },
-                    { type: "1/2", status: 3530 }
+                    // { type: "1/1", status: 1393 },
+                    // { type: "1/2", status: 3530 }
                 ]
             },
             //--------------------------------
@@ -897,6 +901,7 @@ export default {
                 .clinicVisitData(that.search)
                 .then(res => {
                     if (res.code == 200) {
+
                         that.visitData.rows = res.data.data;
                     } else {
                         that.$message.error(res.msg || "获取数据失败，请重试.");

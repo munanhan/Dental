@@ -23,7 +23,6 @@ class BaseVerifyFields
         $controller = $request->attributes->get('controller');
 
         $route = empty(config('config.expect_route'))?[]:config('config.expect_route');
-
         // 暂时屏蔽权限方便测试
          if(!in_array(\Route::current()->uri,$route)){
          //     //排除权限控制的路由api
