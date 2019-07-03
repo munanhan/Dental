@@ -121,7 +121,7 @@ export default {
     let year = d.getFullYear();
     let month = d.getMonth() + 1;
     let day = new Date(year, month, 0).getDate();
-    this.getMonthData(year,month);
+    this.getMonthData(year, month);
   },
 
   mounted() {
@@ -139,16 +139,6 @@ export default {
     }
   },
   updated() {
-    // let grays = document.getElementsByClassName("month-blue");
-    // if (grays.length != 0) {
-    //   this.yuyue_month_res.forEach((item, index) => {
-    //     if (grays[index]) {
-    //       grays[index].innerHTML = `<div class="add-month"><p><span>${
-    //         item.name
-    //       }</span> : <span>${item.items}</span></p></div>`;
-    //     }
-    //   });
-    // }
     let grays = document.getElementsByClassName("month-blue");
     grays = Array.from(grays);
 
@@ -156,9 +146,7 @@ export default {
       let strhtml = ele.innerHTML + '<div class="add-month">';
       this.yuyue_month_res.forEach((item, index) => {
         if (ele.getAttribute("data") == item.appointment_date) {
-          strhtml += `<div data-id="${item.appointment_date}" data-h="${
-            item.start_time
-          }"><p><span>${item.patient_name}</span> : <span>${item.items}</span>
+          strhtml += `<div data-id="${item.appointment_date}" data-h="${item.start_time}"><p><span>${item.patient_name}</span> : <span>${item.items}</span>
                               </div>`;
         }
       });
@@ -172,8 +160,8 @@ export default {
       handler: function(val, oldval) {
         val.forEach((ele, index) => {
           if (ele.select == "月" && ele.active == true) {
-            if(this.selectMonth){
-              this.getMonthData(this.selectYear,this.selectMonth);
+            if (this.selectMonth) {
+              this.getMonthData(this.selectYear, this.selectMonth);
             }
             // this.$api.appointment
             //   .getMonthAppointment({ start, end })
@@ -215,9 +203,9 @@ export default {
     }
   },
   methods: {
-    getMonthData(year,month) {
-      let lastMonth = month -1;
-      let nextMonth = month +1;
+    getMonthData(year, month) {
+      let lastMonth = month - 1;
+      let nextMonth = month + 1;
       lastMonth = lastMonth < 10 ? "0" + lastMonth : lastMonth;
       nextMonth = nextMonth < 10 ? "0" + nextMonth : nextMonth;
       let end = `${year}-${nextMonth}-31`;
@@ -325,13 +313,13 @@ export default {
       }
 
       that.setDate(date);
-       this.getMonthData(this.selectYear,this.selectMonth);
+      this.getMonthData(this.selectYear, this.selectMonth);
     },
 
     //选中的日期
     selectDate(item) {
-      let li0 = document.getElementById("li0");
-      li0.click();
+      //有问题
+
       let date =
         item.year +
         "-" +
@@ -340,11 +328,14 @@ export default {
         (item.date < 10 ? "0" + item.date : item.date);
 
       this.$store.commit("updateChooseDate", date);
-      this.$api.appointment.getTodayAppointment({ date }).then(res => {
-        if (res.code == 200) {
-          this.$emit("OnUpdateYuyueRes", res.data);
-        }
-      });
+      let li0 = document.getElementById("li0");
+      li0.click();
+
+      // this.$api.appointment.getTodayAppointment({ date }).then(res => {
+      //   if (res.code == 200) {
+      //     this.$emit("OnUpdateYuyueRes", res.data);
+      //   }
+      // });
 
       // console.log(item);
       //  this.$nextTick(function() {
@@ -386,7 +377,7 @@ export default {
   transition: all 0.2s;
 }
 
-.recon-calendar.yuyue-month{
+.recon-calendar.yuyue-month {
   position: absolute;
   top: -36px;
   right: 0;

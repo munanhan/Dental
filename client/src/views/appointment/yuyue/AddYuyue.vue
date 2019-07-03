@@ -452,6 +452,7 @@ export default {
       });
     },
     afterClose() {
+      this.checked_items = []
       this.$refs["addYuyueFrom"].resetFields();
     }
   },

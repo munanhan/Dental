@@ -20,7 +20,7 @@
           placeholder="姓名、电话查询"
           value
           @keyup.enter="search"
-        >
+        />
         <i class="fas fa-search" @click="search"></i>
       </div>
     </div>
@@ -64,7 +64,7 @@
       </div>
     </div>
     <div class="date-body">
-      <div v-show="navBar[0].active" class="day">
+      <div v-if="navBar[0].active" class="day">
         <el-row class="day-header">
           <div>
             <span>24h</span>
@@ -162,13 +162,13 @@
           </div>
         </el-row>
       </div>
-      <div v-show="navBar[1].active" class="week">
+      <div v-if="navBar[1].active" class="week">
         <yuyue-week ref="week" :weekStart="weekStart" :weekEnd="weekEnd" :weekArr="weekArr"></yuyue-week>
       </div>
       <div v-show="navBar[2].active" class="month">
         <yuyue-month ref="month" :update.sync="navBar[2].active" @OnUpdateYuyueRes="updateYuyueRes"></yuyue-month>
       </div>
-      <div v-show="navBar[3].active" class="list">
+      <div v-if="navBar[3].active" class="list">
         <!-- <test></test>  -->
         <yuyue-list></yuyue-list>
       </div>
@@ -242,7 +242,12 @@ export default {
           this.right_doctor = this.doctor[1].id;
           this.left_doctor_id = this.doctor[0].id;
           this.right_doctor_id = this.doctor[1].id;
-          this.getTodayAppointment();
+          // this.getTodayAppointment();
+          // let left =
+          //   typeof this.left_doctor == "number" ? this.left_doctor : null;
+          // let right =
+          //   typeof this.right_doctor == "number" ? this.right_doctor : null;
+          // this.getTodayAppointment(left, right);
         }
       });
     });
@@ -308,7 +313,20 @@ export default {
       }
     };
   },
-
+  watch: {
+    navBar: {
+      handler: function(val, oldVal) {
+        if (val[0].active) {
+          let left =
+            typeof this.left_doctor == "number" ? this.left_doctor : null;
+          let right =
+            typeof this.right_doctor == "number" ? this.right_doctor : null;
+          this.getTodayAppointment(left, right);
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     changeYuyue(direction) {
       if (direction == "left") {
