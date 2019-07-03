@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Notification } from "element-ui";
 import { setCookie, getCookie } from "./util";
-import qs from 'qs';
 
 let instance = null,
     refreshTokenUrl = "/api/refreshment",
     oauthToken = getCookie("token");
+
+
 
 // refreshTokenUrl = apiBaseURL + refreshTokenUrl;
 
@@ -37,13 +38,6 @@ try {
         withCredentials: true, //允许携带cookie
     });
 }
-
-//防止空数据的时候，axios会把空参数删除
-instance.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8;';
-
-instance.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';
-instance.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8;';
 
 // const instance = axios.create({
 //     baseURL: "/api", // api的base_url
@@ -125,13 +119,6 @@ instance.interceptors.request.use(
         //设置头
         if (oauthToken) {
             config.headers.Authorization = oauthToken;
-        }
-
-        if(config.method.toUpperCase() == 'PUT' || config.method.toUpperCase() == 'POST'){
-            //用qs转化，然后使用application/x-www-form-urlencoded;charset=utf-8;
-            //不然无法设置application/x-www-form-urlencoded;charset=utf-8;
-            //这是axios的bug
-            config.data = qs.stringify(config.data);
         }
 
         //set 默认值
