@@ -5,7 +5,7 @@
             
                 
                 <yuyue-left ></yuyue-left>
-                <yuyue-right ></yuyue-right>
+                <yuyue-right ref="yuyue_right"></yuyue-right>
               
               
         </el-container>
