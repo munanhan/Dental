@@ -405,8 +405,9 @@ export default {
     selectToday(date = "") {
       //选择今天
       var now = date == 1 ? new Date() : new Date(date); //当前日期 (1代表是取今天,值来源于单选radio的label)
-      this.search.dtfm = now.toLocaleDateString();
-      this.search.dtto = now.toLocaleDateString();
+      this.search.dtfm = this.formatDate(now);
+      this.search.dtto = this.formatDate(now);
+
       this.calculation();
       this.getData();
     },
@@ -420,6 +421,7 @@ export default {
       nowYear += nowYear < 2000 ? 1900 : 0; //
 
       var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+
       this.search.dtfm = this.formatDate(weekStartDate); //本周第一天
 
       var weekEndDate = new Date(
@@ -504,6 +506,7 @@ export default {
 
     formatDate(date, option = "") {
       //时间转化
+
       var myyear = date.getFullYear();
       var mymonth = date.getMonth() + 1;
       var myweekday = date.getDate();

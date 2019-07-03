@@ -114,11 +114,11 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      * Route OperationLog Api
      * created for yu
      */
-    Route::get('operation_log', 'operationLogController@operationLogList');//日志列表
+    Route::get('operation_log', 'OperationLogController@operationLogList');//日志列表
 
-    Route::get('operation_log/get_user_list','operationLogController@getUserList');//下拉用户列表
+    Route::get('operation_log/get_user_list','OperationLogController@getUserList');//下拉用户列表
 
-    Route::get('operation_log/get_module_list','operationLogController@getModuleList');//下拉模块选项
+    Route::get('operation_log/get_module_list','OperationLogController@getModuleList');//下拉模块选项
 
 
 
