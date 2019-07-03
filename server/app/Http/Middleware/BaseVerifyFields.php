@@ -31,7 +31,6 @@ class BaseVerifyFields
              $auth = empty(unserialize(Redis::get('user_auth'.auth('api')->user()['id']))) ? []:
                  unserialize(Redis::get('user_auth'.auth('api')->user()['id']));
 
-
              //权限
              if (!in_array(str_replace('Controller','', $controller), $auth)) {
                  return message('没有权限.',[],403);
