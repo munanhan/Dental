@@ -34,10 +34,10 @@ class ClinicOperationController extends BaseController
         // $data=$request->all();
         // $parmas['start'] = $data['dateRange'][0];
         // $parmas['end'] = $data['dateRange'][1];
-        // ,sum(1) as total_visit
+       
 
         $sql = "select appointment_date as date,sum(type=0) as first_visit,
-        sum(type=1) as next_visit	from appointments 
+        sum(type=1) as next_visit ,sum(1) as total_visit from appointments 
         where date(appointment_date) BETWEEN :dtfm and :dtto and status='2' group by appointment_date;";
 
         $res = getData($sql,$this->date);
@@ -50,10 +50,10 @@ class ClinicOperationController extends BaseController
         // $data=$request->all();
         // $parmas['start'] = $data['dateRange'][0];
         // $parmas['end'] = $data['dateRange'][1];
-        // ,sum(1) as total_book 
+        
 
         $sql = "select appointment_date as date,sum(type=0) as first_book,
-        sum(type=1) as next_book from appointments 
+        sum(type=1) as next_book,sum(1) as total_book  from appointments 
         where date(appointment_date) BETWEEN :dtfm and :dtto group by appointment_date;";
 
         $res = getData($sql,$this->date);
