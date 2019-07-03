@@ -115,7 +115,6 @@ instance.interceptors.request.use(
 
         config.url = rejectParams(config.url, config.params || config.data);
 
-
         //设置头
         if (oauthToken) {
             config.headers.Authorization = oauthToken;
