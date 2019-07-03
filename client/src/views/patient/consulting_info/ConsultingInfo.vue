@@ -224,7 +224,7 @@ export default {
                         });
 
                         res.data.consultInfo.potential_demand = res.data.consultInfo.potential_demand.map((item) =>{
-                            return parseInt(item, 10);
+                            return parseInt(item, 10) ;
                         });
 
                         that.editConsultInfo=res.data.consultInfo;

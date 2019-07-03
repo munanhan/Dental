@@ -20,6 +20,20 @@ class PatientConsult extends Model
         $this->attributes['base_demand']=implode(',',$value);
     }
 
+    public function getPotentialDemandAttribute($value)
+    {
+        dd($value);
+        PotentialDemand::find($value);
+        $this->attributes['potential_demand']=implode(',',$value);
+    }
+
+    public function getBaseDemandAttribute($value)
+    {
+        dd($value);
+        BaseDemand::find($value);
+        $this->attributes['base_demand']=implode(',',$value);
+    }
+
     public function getDoctorAttribute($value)
     {
         $user=User::find($value);

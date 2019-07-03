@@ -67,8 +67,8 @@ class PatientConsultController extends BaseController
         {
             $this->parms['id']=request('id');
             $res=$this->getDataById();
-            $res['base_demand']=explode(',',$res['base_demand']);
-            $res['potential_demand']=explode(',',$res['potential_demand']);
+            $res['base_demand']= $res['base_demand']? explode(',',$res['base_demand']) : [];
+            $res['potential_demand']=$res['potential_demand']? explode(',',$res['potential_demand']) : [];
             $data['consultInfo']=$res;
         }
         $data['patientInfo']=$this->getPatientBaseInfo(request('patient_id'));
