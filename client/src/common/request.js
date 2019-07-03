@@ -7,8 +7,11 @@ let instance = null,
     oauthToken = getCookie("token");
 
 //防止空数据的时候，axios会把空参数删除
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
+instance.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8;';
+
+instance.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';
+instance.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8;';
 
 // refreshTokenUrl = apiBaseURL + refreshTokenUrl;
 
