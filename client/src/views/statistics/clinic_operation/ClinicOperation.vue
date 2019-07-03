@@ -458,7 +458,7 @@ export default {
 
             visitSettings: {
                 // stack: { visit: ["first_visit", "next_visit", "total_visit"] },
-                area: true,
+                // area: true,
                 labelMap: {
                     first_visit: "初诊",
                     next_visit: "复诊",
