@@ -68,6 +68,7 @@ class DisposalComboController extends BaseController
                 $res = $this->model->insertData($insert);
 
                 if ($res) {
+                    $this->insertLog();
                     return message('成功',$this->parms,200);
                 }
                 else{
@@ -123,6 +124,7 @@ class DisposalComboController extends BaseController
             $this->model->deleteData(['combo_id' => $combo_id]);
 
             if($this->model->insertData($insert)){
+                $this->insertLog();
                 return message('成功',[],200);
             }
             else{
@@ -135,6 +137,7 @@ class DisposalComboController extends BaseController
             //删
             $res = $this->model->deleteData(['disposal_id' => $id]);
             if ($res) {
+                $this->insertLog();
                 return message('删除成功',null, 200);
             }
             else{

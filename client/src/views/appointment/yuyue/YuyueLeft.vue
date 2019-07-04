@@ -93,7 +93,7 @@
                   <div>
                     <el-radio v-model="search.statusRadio" label="3">过期</el-radio>
                   </div>
-                   <div>
+                  <div>
                     <el-radio v-model="search.statusRadio" label="4">流失</el-radio>
                   </div>
                 </div>
@@ -121,8 +121,18 @@ export default {
   name: "",
   created() {
     let self = this;
+    this.searchData()
     Bus.$on("send", function(val) {
       self.navBarChange = val;
+    });
+    Bus.$on("pager_current", function(val) {
+      self.search.current = val;
+      self.searchData()
+    });
+    Bus.$on("pager_size", function(val) {
+      self.search.size = val; 
+     
+       self.searchData()
     });
   },
   components: {
@@ -141,7 +151,7 @@ export default {
   },
   data() {
     return {
-      
+      d: new Date(),
       isRight: true,
       rightClass: "fas fa-align-right",
       leftClass: "fas fa-align-left",
@@ -150,9 +160,11 @@ export default {
       tableData: [],
       search: {
         //搜索参数
-        dtfm: "",
-        dtto: "",
+        dtfm: new Date().toLocaleDateString(),
+        dtto: new Date().toLocaleDateString(),
         statusRadio: "全部",
+        current: 1,
+        size: 10
         // ct_user: "",
         // patient: "",
         // module: ""
@@ -366,9 +378,14 @@ export default {
       that.$api.appointment
         .getListAppointment(that.search)
         .then(res => {
-          that.tableData = res.data;
-           Bus.$emit("tableData", that.tableData);
-        //   console.log(that.tableData);
+        if(res.code == 200){
+       
+          that.tableData = res[0].data;
+          that.total = res[1].data[0].total;
+          Bus.$emit("tableData", that.tableData);
+          Bus.$emit("total", that.total);
+        }
+          //   console.log(that.tableData);
         })
         .catch(res => {});
     }
@@ -424,11 +441,11 @@ export default {
       .search {
         padding: 10px;
         width: 95%;
-        .status-radio{
-            text-align: center;
-            div{
-                padding:10px
-            }
+        .status-radio {
+          text-align: center;
+          div {
+            padding: 10px;
+          }
         }
         .search_font {
           margin-right: 10px;

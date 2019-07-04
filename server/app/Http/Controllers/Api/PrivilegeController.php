@@ -60,6 +60,7 @@ class PrivilegeController extends BaseController
 			if(!$this->model->insertData($permission)){
 				return false;
 			}
+			$this->insertLog();
 			return true;
 		};
 
