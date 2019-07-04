@@ -9,10 +9,8 @@
         width="800px"
     >
         <el-form
-            :model="form"
-            ref="form"
+            v-model="form"
             label-width="100px"
-            :rules="rules"
         >
             <div class="Advan-content">
                 <div class="Advan-top">
@@ -49,13 +47,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
-                                        @focus="getBaseDemand"
+
                                     >
                                         <el-option
                                             v-for="item in baseDemandList"
                                             :key="item.id"
                                             :label="item.name"
-                                            :value="item.name"
+                                            :value="item.id"
                                         >
                                         </el-option>
                                     </el-select>
@@ -78,13 +76,13 @@
                                         filterable
                                         allow-create
                                         default-first-option
-                                        @focus="getPotentialDemand"
+
                                     >
                                         <el-option
                                             v-for="item in potentialDemandList"
                                             :key="item.id"
                                             :label="item.name"
-                                            :value="item.name"
+                                            :value="item.id"
                                         >
                                         </el-option>
                                     </el-select>
@@ -131,7 +129,7 @@
                                 v-model="form.doctor"
                                 placeholder="请选择"
                                 style="width:664px"
-                                @focus="getReceptionDoctor(1)"
+
                             >
                                 <el-option
                                     v-for="item in doctorList"
@@ -149,10 +147,10 @@
                                 v-model="form.data_entry_person"
                                 placeholder="请选择"
                                 style="width:664px"
-                                @focus="getReceptionDoctor(2)"
+
                             >
                                 <el-option
-                                    v-for="item in dataEntryPersonList"
+                                    v-for="item in doctorList"
                                     :key="item.id"
                                     :label="item.name"
                                     :value="item.id"
@@ -169,9 +167,9 @@
             class="dialog-footer"
         >
             <el-button
-                :loading="commitLoading"
                 type="primary"
                 @click="submitForm"
+                :loading="commitLoading"
             >保存</el-button>
             <el-button @click="closeDialog">退出</el-button>
         </div>
@@ -181,24 +179,28 @@
 </template>
 
 <script>
-import AddDialogForm from "@/views/base/AddDialogForm";
+import DialogForm from "../../base/DialogForm";
 import BasicNeeds from "./BasicNeeds";
 import PotentialDemand from "./PotentialDemand";
 export default {
     name: "AddConsulting",
+
+    mixins: [DialogForm],
 
     components: {
         BasicNeeds,
         PotentialDemand
     },
     props: {
-        addConsult: {}
+        addConsult: {},
+        baseDemandList:{},
+        potentialDemandList:{},
+        doctorList:{},
     },
-    mixins: [AddDialogForm],
+
 
     created() {
-        // let that = this;
-        // that.BaseInfo = that.addConsult;
+
     },
 
     mounted() {},
@@ -207,16 +209,11 @@ export default {
         return {
             basneed_show: false,
             potentdeman_show: false,
-            dataEntryPersonList: [],
-            baseDemandList: [],
-            BaseInfo: [],
-            doctorList: [],
-            potentialDemandList: [],
-            rules: {},
+
             form: {
                 main_consult: "",
-                base_demand: "",
-                potential_demand: "",
+                base_demand: [],
+                potential_demand: [],
                 doctor_solution: "",
                 record: "",
                 service_proposal: "",
@@ -227,22 +224,13 @@ export default {
         };
     },
     watch: {
-        addConsult(newValue, oldValue) {
-            let that = this;
-            if (newValue) {
-                that.BaseInfo = that.addConsult;
-            }
-        },
 
         show(newValue, oldValue) {
-            let that = this;
 
-            if (newValue) {
-                that.getDefaultRecorder();
-            }
         }
     },
     methods: {
+
         submitForm() {
             let that = this;
 
@@ -256,7 +244,7 @@ export default {
                             "add-item",
                             JSON.parse(JSON.stringify(res.data))
                         );
-
+                        that.$message.success(res.msg);
                         that.closeDialog();
                     } else {
                         that.$message.error(res.msg);
@@ -267,59 +255,6 @@ export default {
                 });
         },
 
-        getBaseDemand() {
-            let that = this;
-            that.$api.base_demand
-                .get()
-                .then(res => {
-                    that.baseDemandList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        getPotentialDemand() {
-            let that = this;
-            that.$api.potential_demand
-                .get()
-                .then(res => {
-                    that.potentialDemandList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        getReceptionDoctor(type) {
-            let that = this;
-            that.$api.patient_consult
-                .receptionDoctor()
-                .then(res => {
-                    if (res.code == 200) {
-                        if (type == 1) {
-                            that.doctorList = res.data;
-                        } else {
-                            that.dataEntryPersonList = res.data;
-                        }
-                    }
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        getDefaultRecorder() {
-            let that = this;
-            that.$api.patient_consult
-                .defaultRecorder()
-                .then(res => {
-                    that.form.data_entry_person = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
         basice_need() {
             this.basneed_show = true;
         },
@@ -330,7 +265,7 @@ export default {
         afterClose() {
             let that = this;
             for (let key in that.form) {
-                // that.form.hasOwnProperty(key)
+
                 that.form[key] = "";
             }
         }
@@ -358,7 +293,7 @@ export default {
         }
     }
     .Advan-bottom {
-        // border:1px solid red;
+
         .basic-needs {
             .table-select {
                 /deep/ .el-input__inner {
@@ -370,9 +305,7 @@ export default {
         .potential {
             .table-select {
                 /deep/ .el-input__inner {
-                    // border-top: none;
-                    // border-left: none;
-                    // border-bottom: none;
+
                     border: none;
                     border-radius: 0px;
                 }
@@ -398,17 +331,6 @@ export default {
             }
         }
 
-        // .aaa{
-        //     display: flex;
-
-        //     .left{
-        //         flex: 1;
-        //     }
-
-        //     .icon{
-        //         width: 100px;
-        //     }
-        // }
 
         input {
             width: 660px;
@@ -429,18 +351,12 @@ export default {
         .data-entry {
             .table-select {
                 /deep/ .el-input__inner {
-                    // border-right: none;
-                    // border-left: none;
-                    // border-bottom: none;
                     border: none;
                     border-radius: 0px;
                 }
             }
         }
-        // .el-select {
-        //     width: 664px;
-        //     height: 40px;
-        // }
+
     }
     .form-setting {
         text-align: right;

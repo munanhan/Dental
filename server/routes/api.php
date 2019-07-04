@@ -182,7 +182,9 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('patient_consults', 'PatientConsultController@index');
 
-    Route::get('patient_consults/get_by_id', 'PatientConsultController@show');
+    Route::get('patient_consults/patient_id', 'PatientConsultController@show');
+
+    Route::get('patient_consults/get_by_id', 'PatientConsultController@getById');
 
     Route::post('patient_consults', 'PatientConsultController@store');
 
@@ -190,11 +192,11 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::delete('patient_consults/{id}', 'PatientConsultController@delete');
 
-    Route::get('patient_consults/doctor_or_record','PatientConsultController@getDoctorOrRecorder');
+    Route::get('patient_consults/consult_info','PatientConsultController@consultInfoList');
 
     Route::get('patient_consults/default_record','PatientConsultController@defaultRecorder');
 
-    Route::get('patient_consults/patient_info','PatientConsultController@patientInfo');
+
 
     /*
      * Route PatientCategory Api

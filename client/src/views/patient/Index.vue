@@ -753,13 +753,15 @@ export default {
                     break;
 
                 case "consultingInfo":
-                    that.getPatientData("patient_consult", "getById", params, module);
+                    that.getPatientData("patient_consult", "getByPatientId", params, module);
                     break;
             }
         },
 
         getPatientData(url, method, data, module) {
             let that = this;
+
+            console.log(url, method, data, module)
 
             that.$api[url][method](data)
                 .then(res => {

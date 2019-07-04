@@ -2,16 +2,12 @@
     <div class="con-content">
         <div class="con-top">
             <div
-                @dblclick="edit_cons"
                 class="background"
                 v-for="(item,index) in consultInfo"
                 :key="index"
+                @dblclick="edit_cons(item.id,index)"
             >
-                <!-- <div class="top-title">
-                    <div style="margin-right:60px"> &nbsp;&nbsp; 2019-05-16 &nbsp;&nbsp; 14:00 &nbsp;&nbsp;</div>
-                    <div style="margin-right:200px">接诊医生:12121212</div>
-                    <div>录入:1212</div>
-                </div> -->
+
                 <div class="top-title">
                     <div class="top-content">
                         <div class="top-text">{{item.created_at}}</div>
@@ -19,13 +15,13 @@
                         <div class="top-text">录入：<span>{{item.data_entry_person}}</span></div>
                     </div>
                     <div class="top-i-content">
-
                         <i
                             class="fa fa-pen top-i"
-                            @click="edit_cons"
+                            @click="edit_cons(item.id,index)"
                         ></i>
+
                         <i
-                            @click="delDisposal"
+                            @click="delConsultInfo(item.id,index)"
                             class="fa fa-trash-alt top-i"
                         ></i>
                     </div>
@@ -92,10 +88,7 @@
                         >
                             <div class="font-left">沟通记录:</div>
                             <div>{{item.record}}</div>
-                            <!-- <div
-                                style="flex:1"
-                                class="font-right"
-                            ></div> -->
+
                         </el-col>
                     </el-row>
                     <el-row
@@ -119,16 +112,27 @@
                 <el-button
                     class="con-button"
                     type="primary"
-                    @click="add_cons"
+                    @click="add_cons('add')"
                 >新增</el-button>
             </div>
         </div>
         <add-consulting
             :show.sync="addcons_show"
             :addConsult="patientInfo"
+            :baseDemandList="baseDemandList"
+            :potentialDemandList="potentialDemandList"
+            :doctorList="doctorList"
             @add-item="addConsultResult"
         ></add-consulting>
-        <edit-consulting :show.sync="editcons_show"></edit-consulting>
+        <edit-consulting
+                :show.sync="editcons_show"
+                :editConsult="patientInfo"
+                :editConsultInfo="editConsultInfo"
+                :editBaseDemandList="baseDemandList"
+                :editPotentialDemandList="potentialDemandList"
+                :editDoctorList="doctorList"
+                @edit-item="editConsultResult"
+        ></edit-consulting>
     </div>
 
 </template>
@@ -146,10 +150,7 @@ export default {
     },
 
     props: {
-        consultInfo: {
-            // type: Array,
-            // default: () => []
-        },
+        consultInfo: {},
         selectID: {}
     },
 
@@ -157,7 +158,12 @@ export default {
         return {
             addcons_show: false,
             editcons_show: false,
-            patientInfo: []
+            patientInfo: [],
+            editConsultInfo:[],
+            baseDemandList:[],
+            potentialDemandList:[],
+            doctorList:[],
+            selectIndex:"",
         };
     },
 
@@ -170,8 +176,29 @@ export default {
     computed: {},
 
     methods: {
-        delDisposal(index, value) {
-            this.consultInfo.splice(index, 1);
+
+        delConsultInfo(id,index) {
+            let that=this;
+            that.$api.patient_consult.del({id:id})
+                .then(res=>{
+                    if(res.code==200){
+                        that.consultInfo.splice(index, 1);
+                        that.$message.success(res.msg);
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
+
+        },
+
+        editConsultResult(data){
+
+            let that=this;
+
+            that.$set(that.consultInfo,that.selectIndex,data);
         },
 
         addConsultResult(data) {
@@ -182,23 +209,58 @@ export default {
         add_cons() {
             let that = this;
 
-            if (that.selectID) {
-                that.$api.patient_consult
-                    .patientInfo({ id: that.selectID })
-                    .then(res => {
-                        that.patientInfo = res.data;
-                        that.addcons_show = true;
-                    })
-                    .catch(res => {
-                        console.log(res);
-                    });
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            that.$api.patient_consult.consultInfo({patient_id:that.selectID})
+                .then(res=>{
+                    if(res.code==200){
+                        that.patientInfo=res.data.patientInfo;
+                        that.baseDemandList=res.data.baseDemand;
+                        that.potentialDemandList=res.data.potentialDemand;
+                        that.doctorList=res.data.doctorInfo;
+                        that.addcons_show=true;
+                    }else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
         },
-        edit_cons() {
-            this.editcons_show = true;
+
+
+        edit_cons(id,index) {
+            let that=this;
+
+            that.selectIndex=index;
+
+            that.$api.patient_consult.consultInfo({id:id,patient_id:that.selectID})
+                .then(res=>{
+                    if(res.code==200){
+
+                        res.data.consultInfo.base_demand = res.data.consultInfo.base_demand.map((item) =>{
+                            return parseInt(item, 10);
+                        });
+
+                        res.data.consultInfo.potential_demand = res.data.consultInfo.potential_demand.map((item) =>{
+                            return parseInt(item, 10) ;
+                        });
+
+                        that.editConsultInfo=res.data.consultInfo;
+                        that.baseDemandList=res.data.baseDemand;
+                        that.patientInfo=res.data.patientInfo;
+                        that.potentialDemandList=res.data.potentialDemand;
+                        that.doctorList=res.data.doctorInfo;
+
+                        that.editcons_show=true;
+                    }else {
+                        console.log(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
+
         }
+
     }
 };
 </script>

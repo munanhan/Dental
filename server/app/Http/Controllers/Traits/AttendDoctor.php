@@ -8,9 +8,9 @@ Trait AttendDoctor
     {
         $user=Auth::user();
         if($user->is_admin==1){
-            return message('',$this->getUserByRoleId($roleId,$user->clinic_id));
+            return $this->getUserByRoleId($roleId,$user->clinic_id);
         }else{
-            return message(Auth::user());
+            return Auth::user();
         }
     }
 
@@ -19,7 +19,7 @@ Trait AttendDoctor
   */
     public function getUserByRoleId(Array $roles,$clinicId)
     {
-        return Auth::user()->whereHas('roles',function ($query)use($roles,$clinicId){
+        return Auth::user()->select('id','name')->whereHas('roles',function ($query)use($roles,$clinicId){
             $query->whereIn('roles.id',$roles)->where('clinic_id',$clinicId);
         })->get();
     }

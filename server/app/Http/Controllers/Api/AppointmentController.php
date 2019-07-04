@@ -136,27 +136,29 @@ class AppointmentController extends BaseController
     }
     public function getListAppointment(Request $request){
         $data=$request->all();
-        if($data['dtfm'] > $data['dtto']){
-            $start = $data['dtto'];
-            $end = $data['dtfm'];
-        }else{
-            $end = $data['dtto'];
-            $start = $data['dtfm'];
+        $parms['dtfm'] = isset($data['dtfm'])?$data['dtfm']:0;
+        $parms['dtto'] = isset($data['dtto'])?$data['dtto'].' 23:59:59':date('Y-m-d').' 23:59:59';//日期
+       
+        $sql = "select b.*,a.patient_name,a.patient_age,a.case_id,a.patient_sex,a.patient_phone,a.patient_content,a.patient_source";
+        $countSql  = "select count(1) as total";
+        $commonsql = " from patients a LEFT JOIN appointments b on a.id = b.patient_id where date(appointment_date) BETWEEN :dtfm and :dtto and b.flag = 1";
+        if($data['statusRadio'] != '全部'){
+            $commonsql .= " and b.status = ".$data['statusRadio'];
         }
-        $appoinment =new Appointment();
-        if($data['statusRadio'] == '全部'){
-            $res =$appoinment->where('flag',1)->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->leftJoin('patients','appointments.patient_id','=','patients.id')->
-            get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
+        $sql .=$commonsql;
+        $countSql .= $commonsql;
+     
+        $total = getData($countSql,$parms);
+ 
+        
+        $sql .= " limit :current , :size";
+        $parms['current'] = ($data['current']-1) * $data['size'];
+        $parms['size'] = +$data['size'];
+        $res = getData($sql,$parms);
 
-        }else{
-            $res =$appoinment->where('flag',1)->where('appointment_date','>=',$start)->where('appointment_date','<=',$end)->where('status',$data['statusRadio'])
-                ->leftJoin('patients','appointments.patient_id','=','patients.id')->
-                get(['appointments.*','patients.patient_name','patients.patient_age','patients.case_id','patients.patient_sex','patients.patient_phone','patients.patient_content','patients.patient_source']);
-
-        }
 
 
-        return message('获取成功',$res,200);
+        return [$res,$total];
     }
     //获取某个月的数据
     public function getMonthAppointment(Request $request){
