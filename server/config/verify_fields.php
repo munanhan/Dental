@@ -59,7 +59,7 @@ return [
                           ],
 
     'CompanyController' => [ 
-                              'getById' =>  [ 'id' => 'unique:id|type:int' ],
+                              // 'getById' =>  [ 'id' => 'unique:id|type:int' ],
                               'update' => [ 'id' => 'unique:id|type:int',
                                             'contact' => 'unique:企业联系人|type:string',
                                             'phone' => 'unique:联系电话|type:int'

@@ -12,6 +12,8 @@ use App\Exports\BaseExport;
 use App\Imports\BaseImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
+use App\Model\Privilege;
 
 class BaseController extends Controller
 {
@@ -126,10 +128,27 @@ class BaseController extends Controller
             //要是用这个功能需要去config文件里面添加对应的模块以及名称，模块key为对应的表名，value为模块名称
             $_log = [ 'addData' => '添加', 'delete' => '删除','update' => '修改' ];
 
-            $module = config('config.module.'.$this->table);
+            $set_module = function(){
+                $module_list = Privilege::where('module','<>','')->get(['p_name','module'])->toArray();
+                foreach ($module_list as $k => $v) {
+                    if ($v['module'] == '' && $v['p_name'] == '') {
+                        continue;
+                    }
+                    $list[$v['module']] = $v['p_name']; 
+                }
+                Redis::set('module_list',serialize($list));
+                return $list;
+            };
+
+            $module_list = Redis::get('module_list') == ''?$set_module():unserialize(Redis::get('module_list'));
+            // Redis::set('module_list',);
+
+            // $module = config('config.module.'.$this->table);
             //模块
+            $module = isset($module_list[str_replace('Controller','', $this->controller)])?
+                            $module_list[str_replace('Controller','', $this->controller)]:'';
 
-
+            
             if ($module && array_key_exists($this->action, $_log) || !empty($parms)) {
                 //日志
                 $log = [ 'operation_type' => isset($parms['operation_type'])?
