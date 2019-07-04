@@ -244,7 +244,7 @@ export default {
                             "add-item",
                             JSON.parse(JSON.stringify(res.data))
                         );
-
+                        that.$message.success(res.msg);
                         that.closeDialog();
                     } else {
                         that.$message.error(res.msg);

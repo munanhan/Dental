@@ -21,7 +21,7 @@
                         ></i>
 
                         <i
-                            @click="delDisposal"
+                            @click="delConsultInfo(item.id,index)"
                             class="fa fa-trash-alt top-i"
                         ></i>
                     </div>
@@ -177,12 +177,27 @@ export default {
 
     methods: {
 
-        delDisposal(index, value) {
-            this.consultInfo.splice(index, 1);
+        delConsultInfo(id,index) {
+            let that=this;
+            that.$api.patient_consult.del({id:id})
+                .then(res=>{
+                    if(res.code==200){
+                        that.consultInfo.splice(index, 1);
+                        that.$message.success(res.msg);
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
+
         },
 
         editConsultResult(data){
+
             let that=this;
+
             that.$set(that.consultInfo,that.selectIndex,data);
         },
 
@@ -214,7 +229,9 @@ export default {
 
         edit_cons(id,index) {
             let that=this;
+
             that.selectIndex=index;
+
             that.$api.patient_consult.consultInfo({id:id,patient_id:that.selectID})
                 .then(res=>{
                     if(res.code==200){
@@ -228,7 +245,6 @@ export default {
                         });
 
                         that.editConsultInfo=res.data.consultInfo;
-
                         that.baseDemandList=res.data.baseDemand;
                         that.patientInfo=res.data.patientInfo;
                         that.potentialDemandList=res.data.potentialDemand;

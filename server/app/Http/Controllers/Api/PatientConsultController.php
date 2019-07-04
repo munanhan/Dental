@@ -20,7 +20,9 @@ class PatientConsultController extends BaseController
     public function show()
     {
         $data=PatientConsult::where('patient_id',request('id'))->get();
+
         return message('',$data,200);
+
     }
 
     /*
@@ -43,18 +45,20 @@ class PatientConsultController extends BaseController
     public function update()
     {
         $data=request()->all();
-        PatientConsult::where('id',$data['id'])->update($data);
 
-        $data=PatientConsult::where('id',$data['id'])->get();
-//        $patientConsult=PatientConsult::find($data['id']);
-//        $patientConsult->main_consult=$data['main_consult'];
-//        $patientConsult->base_demand=$data['base_demand'];
-//        $patientConsult->potential_demand=$data['potential_demand'];
-//        $patientConsult->doctor_solution=$data['doctor_solution'];
-//        $patientConsult->service_proposal=$data['service_proposal'];
-//        $patientConsult->doctor=$data['doctor'];
+        $id=$data['id'];
 
-        return message('',$data,200);
+        $data['base_demand']=empty($data['base_demand'])? "" : implode(',',$data['base_demand']);
+
+        $data['potential_demand']=empty($data['potential_demand']) ?  "" : implode(',',$data['potential_demand']);
+
+        unset($data['id']);
+
+        PatientConsult::where('id',$id)->update($data);
+
+        $data=PatientConsult::where('id',$id)->first();
+
+        return message('更新成功！',$data,200);
 
 
     }
