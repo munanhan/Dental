@@ -74,19 +74,58 @@
                             <el-radio :label="2">待跟进</el-radio>
                         </el-radio-group>
                     </div>
+                    <div>
+                        <div class="returncontent">
+                            <div
+                                @click="return_select"
+                                class="returncontent2"
+                                style="display:flex"
+                            >
+                                <i class="el el-icon-chat-dot-square return-i"></i>
+                                <div class="return-div">回访内容语
+                                    <div class="return-select" :class="{'block':isblock}">
+                                        <el-table
+                                            style="cursor: pointer;"
+                                            :data="menuData"
+                                            stripe
+                                            border
+                                            :show-header="false"
+                                            highlight-current-row
+                                             @selection-change="handleSelectionChange"
+                                        >
+                                            <el-table-column prop="catepory" label="类别">
+                                                 <!-- <template slot-scope="scope">{{ scope.row.id }}</template> -->
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
 
-                    <el-form-item
-                        style="margin-top:20px"
-                        label="回访内容"
-                    >
-                        <input>
-                        <!-- <el-input style="height:20px;width:470px"></el-input> -->
-                    </el-form-item>
-                    <el-form-item
-                        style="margin-top:20px"
-                        label="回访结果"
-                    >
-                        <input style="height:50px;width:470px">
+                            </div>
+
+                            <i
+                                @click="return_content"
+                                class="el-icon-setting return-i2"
+                            ></i>
+                        </div>
+
+                        <el-form-item label="回访内容">
+                            <textarea style="margin-top:10px;resize:none;height:50px;width:470px"></textarea>
+                            <!-- <el-input style="height:20px;width:470px"></el-input> -->
+                        </el-form-item>
+
+                    </div>
+                    <div class="review-results">
+                        <div
+                            class="review-results2"
+                            style="display:flex"
+                        >
+                            <i class="el el-icon-chat-dot-square results-i"></i>
+                            <div class="results-div">结果常用语</div>
+                        </div>
+                        <i class="el-icon-setting results-i2"></i>
+                    </div>
+                    <el-form-item label="回访结果">
+                        <textarea style="margin-top:10px;resize:none;height:50px;width:470px"></textarea>
                     </el-form-item>
                 </div>
             </div>
@@ -102,14 +141,23 @@
                 @click.stop.prevent="commit"
             >确 定</el-button>
         </div>
+
+        <return-content :show.sync="retcontent_show"></return-content>
+
     </el-dialog>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import ReturnContent from "./ReturnContent";
+
 export default {
     name: "AddReturnVisit",
     mixins: [DialogForm],
+
+    components: {
+        ReturnContent
+    },
     props: {
         // refresh: {
         //     type: Boolean,
@@ -129,12 +177,27 @@ export default {
 
     data() {
         return {
+            retcontent_show: false,
             Return_visit: [],
-
+            isblock:false,
             reviewStaffList: [],
 
             attendDoctorList: [],
 
+            menuData: [
+                {
+                    id: 1,
+                    catepory: "西药费"
+                },
+                {
+                    id: 2,
+                    catepory: "放射费"
+                },
+                {
+                    id: 3,
+                    catepory: "检查费"
+                }
+            ],
             form: {
                 visit_time: "",
                 review_staff: "",
@@ -156,10 +219,19 @@ export default {
     },
 
     methods: {
+        handleSelectionChange(val){
+            console.log(val);
+        },
         commit() {
             let that = this;
 
             that.$emit("update", {});
+        },
+        return_content() {
+            this.retcontent_show = true;
+        },
+        return_select() {
+            this.isblock = !this.isblock;
         }
     }
 };
@@ -192,6 +264,88 @@ export default {
             height: 50px;
             width: 470px;
             margin-top: 13px;
+        }
+        .returncontent {
+            margin-left: 80px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: -5px;
+            display: flex;
+            // border: 1px solid red;
+            width: 400px;
+            .returncontent2 {
+                .return-i {
+                    font-size: 18px;
+                }
+                .return-div {
+                    font-size: 14px;
+                    margin-left: 5px;
+                    // &:hover .return-select {
+                    //     display: block;
+                    // }
+                    .return-select {
+                        display: none;
+                        margin-left: -20px;
+                        margin-top: 10px;
+                        height: 100px;
+                        position: absolute;
+                        z-index: 99;
+                        width: 300px;
+                    }
+                    .block{
+                        display: block;
+                    }
+                }
+                &:hover {
+                    color: #7092ff;
+                    cursor: pointer;
+                    .return-div {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .return-i2 {
+                margin-left: 10px;
+                font-size: 16px;
+                &:hover {
+                    cursor: pointer;
+                    color: #7092ff;
+                }
+            }
+        }
+
+        .review-results {
+            margin-left: 80px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: -5px;
+            display: flex;
+            // border: 1px solid red;
+            width: 400px;
+            .review-results2 {
+                .results-i {
+                    font-size: 18px;
+                }
+                .results-div {
+                    font-size: 14px;
+                    margin-left: 5px;
+                }
+                &:hover {
+                    color: #7092ff;
+                    cursor: pointer;
+                    .results-div {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .results-i2 {
+                margin-left: 10px;
+                font-size: 16px;
+                &:hover {
+                    cursor: pointer;
+                    color: #7092ff;
+                }
+            }
         }
     }
 }
