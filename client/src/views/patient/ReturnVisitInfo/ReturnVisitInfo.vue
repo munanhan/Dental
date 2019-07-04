@@ -77,11 +77,11 @@
         <!-- <div style="flex:">asd</div> -->
         <add-plan
             :show.sync="addplan_show"
-            :addPlan="patientInfo"
+            :addPlan="planPatientInfo"
         ></add-plan>
         <add-return-visit
             :show.sync="addrevisit_show"
-            :addReturnVisit="patientInfo"
+            :addReturnVisit="visitPatientInfo"
         ></add-return-visit>
     </div>
 </template>
@@ -103,7 +103,8 @@ export default {
         return {
             addplan_show: false,
             addrevisit_show: false,
-            patientInfo: []
+            planPatientInfo: [],
+            visitPatientInfo:[],
         };
     },
     created() {},
@@ -121,28 +122,38 @@ export default {
     methods: {
         Add_Plan() {
             let that = this;
-            if (that.selectID) {
-                that.addplan_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            that.getBaseInfo('plan');
         },
         Add_Revisit() {
             let that = this;
+            that.getBaseInfo('visit');
+        },
+
+        getBaseInfo(flag){
+            let that = this;
+
             if (that.selectID) {
+
                 that.$api.patient_visit
                     .patientInfo({ id: that.selectID })
                     .then(res => {
                         if (res.code == 200) {
-                            that.patientInfo = res.data;
-                            that.addrevisit_show = true;
+
+                            if(flag=="plan"){
+                                that.planPatientInfo= res.data;
+
+                                that.addplan_show = true;
+                            }else {
+                                that.visitPatientInfo= res.data;
+
+                                that.addrevisit_show = true;
+                            }
+
                         }
                     })
                     .catch(res => {
                         console.log(res);
                     });
-            } else {
-                that.$message.warning("请选择一个患者");
             }
         }
     }
