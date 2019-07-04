@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="会员等级维护"
+            title="(口腔内科 - 粘膜病 - 性质)词条设置"
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog membership-grade"
@@ -100,20 +100,21 @@
             </div>
 
         </el-dialog>
-        <add-membership-grade :show.sync="add_grade_show"></add-membership-grade>
+
+        <!-- <add-membership-grade :show.sync="add_grade_show"></add-membership-grade> -->
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
-import AddMembershipGrade from "./AddMembershipGrade";
+// import AddMembershipGrade from "./AddMembershipGrade";
 
 export default {
-    name: "MembershipGrade",
+    name: "PartsEntry",
     mixins: [DialogForm],
 
     components: {
-        AddMembershipGrade
+        // AddMembershipGrade
     },
     props: {},
 
@@ -126,12 +127,8 @@ export default {
                 sel: null,
                 columns: [
                     {
-                        field: "name",
-                        title: "会员等级"
-                    },
-                    {
                         field: "discount",
-                        title: "会员折扣"
+                        title: "性质"
                     }
                 ],
                 data: []

@@ -198,7 +198,7 @@ export default {
 
         //删除
         delDisposal(index) {
-            this.disposa.splice(index, 1);
+            this.disposa.splice(index - 1, 1);
         },
 
         toDecimal: function(x) {

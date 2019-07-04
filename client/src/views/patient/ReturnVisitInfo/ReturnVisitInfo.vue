@@ -141,8 +141,6 @@ export default {
                     .catch(res => {
                         console.log(res);
                     });
-            } else {
-                that.$message.warning("请选择一个患者");
             }
         }
     }
