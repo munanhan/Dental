@@ -54,7 +54,7 @@ class OperationLogController extends BaseController
     public function getModuleList(){
     	//获取模块下拉
     	try{
-    		$data = Privilege::get(['module']);
+    		$data = Privilege::where('module','<>','')->get(['id','p_name']);
 	    	$message = '成功';
 	    	$code = 200;
     	}catch(\Exception $e){

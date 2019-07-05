@@ -17,6 +17,7 @@
         >
             <div class="charge-content">
                 <div class="charge-top">
+                    <div class="left"> {{ChargeList.patient_name}} </div>
                     <div class="left">{{ChargeList.case_id}}</div>
                     <div class="left">{{ChargeList.patient_age}}岁</div>
                     <div class="left">{{ChargeList.case_id}}</div>

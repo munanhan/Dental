@@ -201,11 +201,11 @@
         </div>
         <initial-diagnosis
             :show.sync="intdiag_show"
-            :addInitial="selectID"
+            :addInitial="InitialPatientInfo"
         ></initial-diagnosis>
         <subsequent-visit
             :show.sync="subvisit_show"
-            :addSubsequent="selectID"
+            :addSubsequent="subsequentPatientInfo"
         ></subsequent-visit>
     </div>
 </template>
@@ -225,6 +225,8 @@ export default {
     },
     data() {
         return {
+            InitialPatientInfo: [],
+            subsequentPatientInfo: [],
             form: {
                 oral: [
                     {
@@ -273,20 +275,40 @@ export default {
         //初诊
         int_diagn() {
             let that = this;
-            if (that.selectID) {
-                that.intdiag_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            that.intdiag_show = true;
+            // if (that.selectID) {
+            //     that.$api.patient_visit
+            //         .patientInfo({ id: that.selectID })
+            //         .then(res => {
+            //             if (res.code == 200) {
+            //                 that.InitialPatientInfo = res.data;
+            //                 that.intdiag_show = true;
+            //             }
+            //         })
+            //         .catch(res => {
+            //             console.log(res);
+            //         });
+            // } else {
+            //     that.$message.warning("请选择一个患者");
+            // }
         },
         //复诊
         sub_visit() {
             let that = this;
-            if (that.selectID) {
-                this.subvisit_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            that.subvisit_show = true;
+            // if (that.selectID) {
+            //     that.$api.patient_visit
+            //         .patientInfo({ id: that.selectID })
+            //         .then(res => {
+            //             if (res.code == 200) {
+            //                 that.subsequentPatientInfo = res.data;
+            //                 that.subvisit_show = true;
+            //             }
+            //         })
+            //         .catch(res => {
+            //             console.log(res);
+            //         });
+            // }
         }
     }
 };

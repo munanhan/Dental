@@ -87,6 +87,7 @@ class DisposalController extends BaseController
                 }
                 $res = Disposal::create($parms);
                 if ($res) {
+                    $this->insertLog();
                     return message('新增成功',$res,200);
                 }
                 else{
@@ -114,6 +115,7 @@ class DisposalController extends BaseController
                 $res = Disposal::where('id',$parms['id'])->update($parms);
 
                 if ($res) {
+                    $this->insertLog();
                     return message('修改成功',$parms,200);
                 }
                 else{
@@ -125,6 +127,7 @@ class DisposalController extends BaseController
                 //删
                 $res = Disposal::destroy($id);
                 if ($res) {
+                    $this->insertLog();
                     return message('删除成功',null, 200);
                 }
                 else{

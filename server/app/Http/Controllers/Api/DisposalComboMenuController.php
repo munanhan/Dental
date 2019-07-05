@@ -41,6 +41,7 @@ class DisposalComboMenuController extends BaseController
 
                 $res = DisposalComboMenu::create($parms);
                 if ($res) {
+                    $this->insertLog();
                     return message('新增成功',$res,200);
                 }
                 else{
@@ -64,6 +65,7 @@ class DisposalComboMenuController extends BaseController
 
                 if ($res) {
                     $data = DisposalComboMenu::where('id',$parms['id'])->first();
+                    $this->insertLog();
                     return message('修改成功',$data,200);
                 }
                 else{
@@ -79,7 +81,7 @@ class DisposalComboMenuController extends BaseController
                 DisposalComboMenu::destroy($ids);
                 // DisposalComboMenu::where('p_id',$id)->delete();
                 DisposalCombo::whereIn('combo_id',$ids)->delete();
-
+                $this->insertLog();
                 return message('删除成功',null, 200);
             }
 }

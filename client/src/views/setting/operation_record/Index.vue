@@ -88,9 +88,9 @@
           <el-select v-model="search.module" placeholder="请选择" class="search_input">
             <el-option
               v-for="item in module_list"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.p_name"
+              :value="item.p_name"
             ></el-option>
           </el-select>
         </el-row>

@@ -77,11 +77,15 @@
         <!-- <div style="flex:">asd</div> -->
         <add-plan
             :show.sync="addplan_show"
-            :addPlan="patientInfo"
+            :addPlan="patients"
         ></add-plan>
         <add-return-visit
             :show.sync="addrevisit_show"
-            :addReturnVisit="patientInfo"
+            :addReturnVisit="patients"
+            :addAttendDoctorList="doctors"
+            :addVisitorList="visitors"
+            :addContentList="visit_contents"
+            :addResultList="visit_results"
         ></add-return-visit>
     </div>
 </template>
@@ -103,7 +107,11 @@ export default {
         return {
             addplan_show: false,
             addrevisit_show: false,
-            patientInfo: []
+            patients:[],
+            doctors:[],
+            visitors:[],
+            visit_results:[],
+            visit_contents:[],
         };
     },
     created() {},
@@ -121,28 +129,39 @@ export default {
     methods: {
         Add_Plan() {
             let that = this;
-            if (that.selectID) {
-                that.addplan_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
-            }
+            that.getBaseInfo('plan');
         },
         Add_Revisit() {
             let that = this;
+            that.getBaseInfo('visit');
+        },
+
+        getBaseInfo(flag){
+            let that = this;
+
             if (that.selectID) {
+
                 that.$api.patient_visit
-                    .patientInfo({ id: that.selectID })
+                    .visitInfo({ id: that.selectID })
                     .then(res => {
                         if (res.code == 200) {
-                            that.patientInfo = res.data;
-                            that.addrevisit_show = true;
+                            that.patients= res.data.patient;
+                            that.doctors=res.data.attend_doctor;
+                            that.visitors=res.data.visitor;
+                            that.visit_results=res.data.visit_result;
+                            that.visit_contents=res.data.visit_content;
+
+                            if(flag=="plan"){
+                                that.addplan_show = true;
+                            }else {
+                                that.addrevisit_show = true;
+                            }
+
                         }
                     })
                     .catch(res => {
                         console.log(res);
                     });
-            } else {
-                that.$message.warning("请选择一个患者");
             }
         }
     }

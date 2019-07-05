@@ -49,13 +49,13 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
      */
     Route::get('visit_items', 'VisitItemController@index');
 
-    Route::get('visit_items/{visitItem}', 'VisitItemController@show');
+    Route::get('visit_items/get_by_id', 'VisitItemController@getById');
 
     Route::post('visit_items', 'VisitItemController@store');
 
-    Route::put('visit_items/{visitItem}', 'VisitItemController@update');
+    Route::put('visit_items/', 'VisitItemController@update');
 
-    Route::delete('visit_items/{visitItem}', 'VisitItemController@delete');
+    Route::delete('visit_items/{id}', 'VisitItemController@delete');
 
     //批量删除
     Route::delete('visit_items','VisitItemController@deleteById');
@@ -285,11 +285,11 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::post('patient_visits', 'PatientVisitController@store');
 
-    Route::put('patient_visits/{patientVisit}', 'PatientVisitController@update');
+    Route::put('patient_visits/', 'PatientVisitController@update');
 
-    Route::delete('patient_visits/{patientVisit}', 'PatientVisitController@delete');
+    Route::delete('patient_visits/{id}', 'PatientVisitController@delete');
 
-    Route::get('patient_visits/patient_info', 'PatientVisitController@patientInfo');
+    Route::get('patient_visits/visit_info', 'PatientVisitController@visitInfo');
 
     /*
      * Route PatientAllergy Api

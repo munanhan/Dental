@@ -17,11 +17,11 @@
             <div class="visit-content">
                 <div class="visit-top">
                     <div style="display:flex;font-size:16px;">
-                        <div class="number">{{Return_visit.patient_name}} </div>
-                        <div class="top-font"> {{Return_visit.patient_sex}} </div>
-                        <div class="top-font"> {{Return_visit.case_id}} </div>
-                        <div class="top-font"> {{Return_visit.patient_age}}岁 </div>
-                        <div class="top-font"> {{Return_visit.patient_phone}}</div>
+                        <div class="number">{{addReturnVisit.patient_name}} </div>
+                        <div class="top-font"> {{addReturnVisit.patient_sex}} </div>
+                        <div class="top-font"> {{addReturnVisit.case_id}} </div>
+                        <div class="top-font"> {{addReturnVisit.patient_age}}岁 </div>
+                        <div class="top-font"> {{addReturnVisit.patient_phone}}</div>
                     </div>
                 </div>
                 <div class="visit-bottom">
@@ -43,10 +43,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.reviewStaffList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in addVisitorList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -58,10 +58,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.attendDoctorList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in addAttendDoctorList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -74,19 +74,98 @@
                             <el-radio :label="2">待跟进</el-radio>
                         </el-radio-group>
                     </div>
+                    <div>
+                        <div class="returncontent">
+                            <div
+                                @click="isblock = !isblock"
+                                class="returncontent2"
+                                style="display:flex"
+                            >
+                                <i class="el el-icon-chat-dot-square return-i"></i>
+                                <div class="return-div">回访内容语
+                                    <div
+                                        class="return-select"
+                                        :class="{'block':isblock}"
+                                    >
+                                        <el-table
+                                            style="cursor: pointer;"
+                                            :data="addContentList"
+                                            stripe
+                                            border
+                                            :show-header="false"
+                                            highlight-current-row
+                                        >
+                                            <el-table-column prop="name">
+                                                <template slot-scope="scope">
+                                                    <span
+                                                        @click="selectType(scope.row.name)"
+                                                        style="display:inline-block;width:100%"
+                                                    >
+                                                        {{ scope.row.name }}
+                                                    </span>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
 
-                    <el-form-item
-                        style="margin-top:20px"
-                        label="回访内容"
-                    >
-                        <input>
-                        <!-- <el-input style="height:20px;width:470px"></el-input> -->
-                    </el-form-item>
-                    <el-form-item
-                        style="margin-top:20px"
-                        label="回访结果"
-                    >
-                        <input style="height:50px;width:470px">
+                            </div>
+                            <i
+                                @click="return_content"
+                                class="el-icon-setting return-i2"
+                            ></i>
+                        </div>
+
+                        <el-form-item label="回访内容">
+                            <textarea
+                                v-model="recontent"
+                                style="margin-top:10px;resize:none;height:50px;width:470px"
+                            ></textarea>
+                            <!-- <el-input style="height:20px;width:470px"></el-input> -->
+                        </el-form-item>
+                    </div>
+
+                    <div class="review-results">
+                        <div
+                            @click="resultsblock = !resultsblock"
+                            class="review-results2"
+                            style="display:flex"
+                        >
+                            <i class="el el-icon-chat-dot-square results-i"></i>
+                            <div class="results-div">结果常用语
+                                <div
+                                    class="return-select"
+                                    :class="{'block':resultsblock}"
+                                >
+                                    <el-table
+                                        style="cursor: pointer;"
+                                        :data="addResultList"
+                                        stripe
+                                        border
+                                        :show-header="false"
+                                        highlight-current-row
+                                    >
+                                        <el-table-column prop="name">
+                                            <template slot-scope="scope">
+                                                <span
+                                                    @click="resultselectType(scope.row.name)"
+                                                    style="display:inline-block;width:100%"
+                                                >
+                                                    {{ scope.row.name }}
+                                                </span>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="el-icon-setting results-i2"></i>
+                    </div>
+                    <el-form-item label="回访结果">
+                        <textarea
+                            v-model="revresult"
+                            style="margin-top:10px;resize:none;height:50px;width:470px"
+                        ></textarea>
                     </el-form-item>
                 </div>
             </div>
@@ -102,38 +181,45 @@
                 @click.stop.prevent="commit"
             >确 定</el-button>
         </div>
+
+        <return-content :show.sync="retcontent_show"></return-content>
+
     </el-dialog>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import ReturnContent from "./ReturnContent";
+
 export default {
     name: "AddReturnVisit",
     mixins: [DialogForm],
-    props: {
-        // refresh: {
-        //     type: Boolean,
-        //     required: true
-        // },
 
-        addReturnVisit: {
-            //type: Object,
-            required: true
-        }
+    components: {
+        ReturnContent
+    },
+    props: {
+        addReturnVisit: {},
+        addAttendDoctorList:{},
+        addVisitorList:{},
+        addContentList:{},
+        addResultList:{}
     },
 
     created() {
-        let that = this;
-        that.Return_visit = that.addReturnVisit;
+        // let that = this;
+        // that.Return_visit = that.addReturnVisit;
     },
 
     data() {
         return {
-            Return_visit: [],
+            retcontent_show: false,
+            // Return_visit: [],
+            isblock: false,
+            resultsblock: false,
 
-            reviewStaffList: [],
-
-            attendDoctorList: [],
+            recontent: [],
+            revresult: [],
 
             form: {
                 visit_time: "",
@@ -147,20 +233,88 @@ export default {
     },
 
     watch: {
-        addReturnVisit(newValue, oldValue) {
+        // addReturnVisit(newValue, oldValue) {
+        //     let that = this;
+        //     if (newValue) {
+        //         that.Return_visit = that.addReturnVisit;
+        //     }
+        // },
+
+        isblock(newValue, oldValue) {
             let that = this;
+
             if (newValue) {
-                that.Return_visit = that.addReturnVisit;
+                //绑定事件
+
+                // click
+                // do...addde
+                setTimeout(() => {
+                    document.addEventListener("click", that.checkHideSearch);
+                });
+
+                // block = false;
+            }
+        },
+
+        resultsblock(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                //绑定事件
+
+                // click
+                // do...addde
+                setTimeout(() => {
+                    document.addEventListener("click", that.checkHideSearch);
+                });
+
+                // block = false;
             }
         }
     },
 
     methods: {
+        //回访内容语
+        selectType(catepory) {
+            let that = this;
+            that.recontent.push(catepory);
+        },
+
+        checkHideSearch() {
+            let that = this;
+
+            that.isblock = false;
+
+            document.removeEventListener("click", that.checkHideSearch);
+        },
+
+        //结束常用语
+        resultselectType(catepory) {
+            let that = this;
+            that.revresult.push(catepory);
+        },
+
+        resultHideSearch() {
+            let that = this;
+
+            that.resultsblock = false;
+
+            document.removeEventListener("click", that.resultHideSearch);
+        },
+
         commit() {
             let that = this;
 
             that.$emit("update", {});
+        },
+
+        return_content() {
+            this.retcontent_show = true;
         }
+
+        // return_select() {
+        //     this.isblock = !this.isblock;
+        // }
     }
 };
 </script>
@@ -192,6 +346,97 @@ export default {
             height: 50px;
             width: 470px;
             margin-top: 13px;
+        }
+        .returncontent {
+            margin-left: 80px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: -5px;
+            display: flex;
+            // border: 1px solid red;
+            width: 400px;
+            .returncontent2 {
+                .return-i {
+                    font-size: 18px;
+                }
+                .return-div {
+                    font-size: 14px;
+                    margin-left: 5px;
+                    .return-select {
+                        display: none;
+                        margin-left: -20px;
+                        margin-top: 10px;
+                        height: 100px;
+                        position: absolute;
+                        z-index: 99;
+                        width: 300px;
+                    }
+                    .block {
+                        display: block;
+                    }
+                }
+                &:hover {
+                    color: #7092ff;
+                    cursor: pointer;
+                    .return-div {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .return-i2 {
+                margin-left: 10px;
+                font-size: 16px;
+                &:hover {
+                    cursor: pointer;
+                    color: #7092ff;
+                }
+            }
+        }
+
+        .review-results {
+            margin-left: 80px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: -5px;
+            display: flex;
+            // border: 1px solid red;
+            width: 400px;
+            .review-results2 {
+                .results-i {
+                    font-size: 18px;
+                }
+                .results-div {
+                    font-size: 14px;
+                    margin-left: 5px;
+                    .return-select {
+                        display: none;
+                        margin-left: -20px;
+                        margin-top: 10px;
+                        height: 100px;
+                        position: absolute;
+                        z-index: 99;
+                        width: 300px;
+                    }
+                    .block {
+                        display: block;
+                    }
+                }
+                &:hover {
+                    color: #7092ff;
+                    cursor: pointer;
+                    .results-div {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .results-i2 {
+                margin-left: 10px;
+                font-size: 16px;
+                &:hover {
+                    cursor: pointer;
+                    color: #7092ff;
+                }
+            }
         }
     }
 }
