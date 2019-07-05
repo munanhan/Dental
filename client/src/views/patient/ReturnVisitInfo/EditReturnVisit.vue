@@ -17,11 +17,12 @@
             <div class="visit-content">
                 <div class="visit-top">
                     <div style="display:flex;font-size:16px;">
-                        <div class="number">{{addReturnVisit.patient_name}} </div>
-                        <div class="top-font"> {{addReturnVisit.patient_sex}} </div>
-                        <div class="top-font"> {{addReturnVisit.case_id}} </div>
-                        <div class="top-font"> {{addReturnVisit.patient_age}}岁 </div>
-                        <div class="top-font"> {{addReturnVisit.patient_phone}}</div>
+                        <!-- <div class="number"> {{editPatientInfo.patient_name}}</div> -->
+                        <div class="number"> {{editPatientInfo.patient_name}}</div>
+                        <div class="top-font">{{editPatientInfo.patient_sex}} </div>
+                        <div class="top-font">  {{editPatientInfo.case_id}}</div>
+                        <div class="top-font">  {{editPatientInfo.patient_age}}岁 </div>
+                        <div class="top-font"> {{editPatientInfo.patient_phone}}</div>
                     </div>
                 </div>
                 <div class="visit-bottom">
@@ -44,7 +45,7 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in addVisitorList"
+                                v-for="item in editVisitorList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -59,7 +60,7 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in addAttendDoctorList"
+                                v-for="item in editAttendDoctorList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -90,7 +91,7 @@
                                     >
                                         <el-table
                                             style="cursor: pointer;"
-                                            :data="addContentList"
+                                            :data="editContentList"
                                             stripe
                                             border
                                             :show-header="false"
@@ -140,7 +141,7 @@
                                 >
                                     <el-table
                                         style="cursor: pointer;"
-                                        :data="addResultList"
+                                        :data="editResultList"
                                         stripe
                                         border
                                         :show-header="false"
@@ -201,11 +202,12 @@ export default {
         ReturnContent
     },
     props: {
-        addReturnVisit: {},
-        addAttendDoctorList: {},
-        addVisitorList: {},
-        addContentList: {},
-        addResultList: {}
+        editInfo: {},
+        editPatientInfo: {},
+        editVisitorList: {},
+        editContentList:{},
+        editResultList:{},
+        editAttendDoctorList:{},
     },
 
     created() {},
@@ -265,6 +267,13 @@ export default {
                     document.addEventListener("click", that.resultHideSearch);
                 });
             }
+        },
+
+        show(newValue, oldValue) {
+            let that = this;
+            that.editInfo.attend_doctor=parseInt(that.editInfo.attend_doctor);
+            that.editInfo.review_staff=parseInt(that.editInfo.review_staff);
+            that.form=that.editInfo;
         }
     },
 
@@ -340,14 +349,12 @@ export default {
             this.retcontent_show = true;
         },
 
-
         afterClose() {
             let that = this;
             for (let key in that.form) {
                 that.form[key] = "";
             }
         }
-
     }
 };
 </script>
