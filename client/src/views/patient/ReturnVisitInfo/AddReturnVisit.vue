@@ -32,10 +32,8 @@
                         <el-date-picker
                             v-model="form.visit_time"
                             type="date"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期"
-                            format="yyyy-MM-dd HH:mm"
-                            value-format="yyyy-MM-dd HH:mm"
-                            @change="getradio"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -121,7 +119,7 @@
 
                         <el-form-item label="回访内容">
                             <textarea
-                                v-model="form.recontent"
+                                v-model="form.review_content"
                                 style="margin-top:10px;resize:none;height:50px;width:470px"
                             ></textarea>
                             <!-- <el-input style="height:20px;width:470px"></el-input> -->
@@ -166,7 +164,7 @@
                     </div>
                     <el-form-item label="回访结果">
                         <textarea
-                            v-model="form.revresult"
+                            v-model="form.review_result"
                             style="margin-top:10px;resize:none;height:50px;width:470px"
                         ></textarea>
                     </el-form-item>
@@ -191,9 +189,9 @@
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import DialogForm from "../../base/DialogForm";
 import ReturnContent from "./ReturnContent";
-import { trim } from "@common/util";
+import { trim ,formatDate} from "@common/util";
 
 export default {
     name: "AddReturnVisit",
@@ -210,38 +208,37 @@ export default {
         addResultList: {}
     },
 
-    created() {
-        // let that = this;
-        // that.Return_visit = that.addReturnVisit;
-    },
+    created() {},
 
     data() {
         return {
             retcontent_show: false,
-            // Return_visit: [],
             isblock: false,
             resultsblock: false,
 
             form: {
-                visit_time: new Date(),
+                visit_time: formatDate(new Date(),'yyyy-MM-dd'),
                 review_staff: "",
                 attend_doctor: "",
-                status: "",
-                // review_content: "",
-                // review_result: ""
-                recontent: "",
-                revresult: ""
+                status: 0,
+                review_content: "",
+                review_result: ""
             }
         };
     },
 
     watch: {
-        // addReturnVisit(newValue, oldValue) {
-        //     let that = this;
-        //     if (newValue) {
-        //         that.Return_visit = that.addReturnVisit;
-        //     }
-        // },
+
+        'form.visit_time':{
+            handler(newValue,oldValue){
+                if(newValue){
+                    let that=this;
+                    new Date(newValue).getTime() >new Date().getTime()
+                        ? (that.form.status=1)
+                        : (that.form.status=0)
+                }
+            }
+        },
 
         isblock(newValue, oldValue) {
             let that = this;
@@ -272,20 +269,19 @@ export default {
     },
 
     methods: {
-        getradio(value) {
-            let that = this;
-            let d = +new Date();
-            +new Date(value) > d
-                ? (that.form.status = 1)
-                : (that.form.status = 0);
-        },
+        // selectTime(value) {
+        //      let that = this;
+        //      new Date(value).getTime() >new Date()
+        //          ? (that.form.status=1)
+        //          : (that.form.status=0)
+        // },
 
         //回访内容语
         selectType(catepory) {
             let that = this,
-                text = trim(that.form.recontent);
+                text = trim(that.form.review_content);
 
-            that.form.recontent = text
+            that.form.review_content = text
                 ? text + "," + catepory
                 : text + catepory;
             // that.recontent.push(catepory);
@@ -302,9 +298,9 @@ export default {
         //结束常用语
         resultselectType(catepory) {
             let that = this,
-                text = trim(that.form.revresult);
+                text = trim(that.form.review_result);
 
-            that.form.revresult = text
+            that.form.review_result = text
                 ? text + "," + catepory
                 : text + catepory;
         },
@@ -320,6 +316,23 @@ export default {
         commit() {
             let that = this;
 
+            that.form.patient_id=that.addReturnVisit.id;
+
+            that.$api.patient_visit.store(that.form)
+                .then(res=>{
+                    if(res.code==200){
+                        that.$emit("add-item",JSON.parse(JSON.stringify(res.data)));
+
+                        that.$message.success(res.msg);
+
+                        that.closeDialog();
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                });
             that.$emit("update", {});
         },
 
