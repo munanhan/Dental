@@ -77,13 +77,16 @@
                     <div>
                         <div class="returncontent">
                             <div
-                                @click="return_select"
+                                @click="isblock = !isblock"
                                 class="returncontent2"
                                 style="display:flex"
                             >
                                 <i class="el el-icon-chat-dot-square return-i"></i>
                                 <div class="return-div">回访内容语
-                                    <div class="return-select" :class="{'block':isblock}">
+                                    <div
+                                        class="return-select"
+                                        :class="{'block':isblock}"
+                                    >
                                         <el-table
                                             style="cursor: pointer;"
                                             :data="menuData"
@@ -91,17 +94,22 @@
                                             border
                                             :show-header="false"
                                             highlight-current-row
-                                             @selection-change="handleSelectionChange"
                                         >
-                                            <el-table-column prop="catepory" label="类别">
-                                                 <!-- <template slot-scope="scope">{{ scope.row.id }}</template> -->
+                                            <el-table-column prop="catepory">
+                                                <template slot-scope="scope">
+                                                    <span
+                                                        @click="selectType(scope.row.catepory)"
+                                                        style="display:inline-block;width:100%"
+                                                    >
+                                                        {{ scope.row.catepory }}
+                                                    </span>
+                                                </template>
                                             </el-table-column>
                                         </el-table>
                                     </div>
                                 </div>
 
                             </div>
-
                             <i
                                 @click="return_content"
                                 class="el-icon-setting return-i2"
@@ -109,23 +117,55 @@
                         </div>
 
                         <el-form-item label="回访内容">
-                            <textarea style="margin-top:10px;resize:none;height:50px;width:470px"></textarea>
+                            <textarea
+                                v-model="recontent"
+                                style="margin-top:10px;resize:none;height:50px;width:470px"
+                            ></textarea>
                             <!-- <el-input style="height:20px;width:470px"></el-input> -->
                         </el-form-item>
-
                     </div>
+
                     <div class="review-results">
                         <div
+                            @click="resultsblock = !resultsblock"
                             class="review-results2"
                             style="display:flex"
                         >
                             <i class="el el-icon-chat-dot-square results-i"></i>
-                            <div class="results-div">结果常用语</div>
+                            <div class="results-div">结果常用语
+                                <div
+                                    class="return-select"
+                                    :class="{'block':resultsblock}"
+                                >
+                                    <el-table
+                                        style="cursor: pointer;"
+                                        :data="resultmenuData"
+                                        stripe
+                                        border
+                                        :show-header="false"
+                                        highlight-current-row
+                                    >
+                                        <el-table-column prop="catepory">
+                                            <template slot-scope="scope">
+                                                <span
+                                                    @click="resultselectType(scope.row.catepory)"
+                                                    style="display:inline-block;width:100%"
+                                                >
+                                                    {{ scope.row.catepory }}
+                                                </span>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </div>
+                            </div>
                         </div>
                         <i class="el-icon-setting results-i2"></i>
                     </div>
                     <el-form-item label="回访结果">
-                        <textarea style="margin-top:10px;resize:none;height:50px;width:470px"></textarea>
+                        <textarea
+                            v-model="revresult"
+                            style="margin-top:10px;resize:none;height:50px;width:470px"
+                        ></textarea>
                     </el-form-item>
                 </div>
             </div>
@@ -179,10 +219,13 @@ export default {
         return {
             retcontent_show: false,
             Return_visit: [],
-            isblock:false,
+            isblock: false,
+            resultsblock: false,
             reviewStaffList: [],
 
             attendDoctorList: [],
+            recontent: [],
+            revresult: [],
 
             menuData: [
                 {
@@ -196,6 +239,16 @@ export default {
                 {
                     id: 3,
                     catepory: "检查费"
+                }
+            ],
+            resultmenuData: [
+                {
+                    id: 1,
+                    catepory: "西药费"
+                },
+                {
+                    id: 2,
+                    catepory: "放射费"
                 }
             ],
             form: {
@@ -215,24 +268,83 @@ export default {
             if (newValue) {
                 that.Return_visit = that.addReturnVisit;
             }
+        },
+
+        isblock(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                //绑定事件
+
+                // click
+                // do...addde
+                setTimeout(() => {
+                    document.addEventListener("click", that.checkHideSearch);
+                });
+
+                // block = false;
+            }
+        },
+
+        resultsblock(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                //绑定事件
+
+                // click
+                // do...addde
+                setTimeout(() => {
+                    document.addEventListener("click", that.checkHideSearch);
+                });
+
+                // block = false;
+            }
         }
     },
 
     methods: {
-        handleSelectionChange(val){
-            console.log(val);
+        //回访内容语
+        selectType(catepory) {
+            let that = this;
+            that.recontent.push(catepory);
         },
+
+        checkHideSearch() {
+            let that = this;
+
+            that.isblock = false;
+
+            document.removeEventListener("click", that.checkHideSearch);
+        },
+
+        //结束常用语
+        resultselectType(catepory) {
+            let that = this;
+            that.revresult.push(catepory);
+        },
+
+        resultHideSearch() {
+            let that = this;
+
+            that.resultsblock = false;
+
+            document.removeEventListener("click", that.resultHideSearch);
+        },
+
         commit() {
             let that = this;
 
             that.$emit("update", {});
         },
+
         return_content() {
             this.retcontent_show = true;
-        },
-        return_select() {
-            this.isblock = !this.isblock;
         }
+
+        // return_select() {
+        //     this.isblock = !this.isblock;
+        // }
     }
 };
 </script>
@@ -280,9 +392,6 @@ export default {
                 .return-div {
                     font-size: 14px;
                     margin-left: 5px;
-                    // &:hover .return-select {
-                    //     display: block;
-                    // }
                     .return-select {
                         display: none;
                         margin-left: -20px;
@@ -292,7 +401,7 @@ export default {
                         z-index: 99;
                         width: 300px;
                     }
-                    .block{
+                    .block {
                         display: block;
                     }
                 }
@@ -329,6 +438,18 @@ export default {
                 .results-div {
                     font-size: 14px;
                     margin-left: 5px;
+                    .return-select {
+                        display: none;
+                        margin-left: -20px;
+                        margin-top: 10px;
+                        height: 100px;
+                        position: absolute;
+                        z-index: 99;
+                        width: 300px;
+                    }
+                    .block {
+                        display: block;
+                    }
                 }
                 &:hover {
                     color: #7092ff;
