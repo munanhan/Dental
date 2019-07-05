@@ -18,10 +18,10 @@ class PatientVisitController extends BaseController
     {
 
         $data=$request->all();
-        return $data;
+
         $patientVisit=PatientVisit::create($request->all());
 
-        return message('',$patientVisit);
+        return message('添加成功',$patientVisit,200);
     }
 
     public function show()

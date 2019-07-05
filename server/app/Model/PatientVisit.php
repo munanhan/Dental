@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientVisit extends Model
 {
-    protected $guarded=['id','patient_id'];
+    protected $guarded=['id'];
 
     public function patient()
     {
