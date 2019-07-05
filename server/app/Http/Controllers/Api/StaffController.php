@@ -86,6 +86,7 @@ class StaffController extends BaseController
 
         $data2 = RoleUser::create($role);
         if ($data && $data2) {
+            $this->insertLog();
             return message('成功', [], 200);
         }
         else{
@@ -98,6 +99,7 @@ class StaffController extends BaseController
         $res = User::destroy($id);
         $res2 = RoleUser::where('user_id',$id)->delete();
         if ($res & $res2) {
+            $this->insertLog();
             return message('删除成功',null, 200);
         }
         else{
@@ -157,6 +159,7 @@ class StaffController extends BaseController
         $res2 = RoleUser::where('user_id',$parms['id'])->update($role);
 
         if ($res && $res2) {
+            $this->insertLog();
             return message('修改成功',[], 200);
         }
         else{

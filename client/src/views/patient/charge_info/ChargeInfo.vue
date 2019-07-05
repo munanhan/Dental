@@ -141,7 +141,7 @@
         <!-- <div style="flex:">asd</div> -->
         <charge
             :show.sync="charge_show"
-            :charge="charInfo"
+            :charge="chargePatientInfo"
         ></charge>
         <refund
             :show.sync="Refund"
@@ -181,10 +181,12 @@ export default {
         WaterSingle
     },
     props: {
-        charInfo: {}
+        charInfo: {},
+        selectID: {}
     },
     data() {
         return {
+            chargePatientInfo: [],
             Refund: false,
             ChargingSet: false,
             Invalid: false,
@@ -222,21 +224,16 @@ export default {
     },
     created() {},
     mounted() {},
-    watch: {
-
-    },
+    watch: {},
     computed: {},
     methods: {
-
         dialogshow(value) {
             this[value] = true;
             this.value = "";
         },
         getChargeInfo() {},
 
-  
         Advan_pay() {
-
             this.advancepay_show = true;
         },
         Water_sin() {
@@ -244,10 +241,18 @@ export default {
         },
         Charge() {
             let that = this;
-            if (that.charInfo.id) {
-                this.charge_show = true;
-            } else {
-                that.$message.warning("请选择一个患者");
+            if (that.selectID) {
+                that.$api.patient_visit
+                    .patientInfo({ id: that.selectID })
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.chargePatientInfo = res.data;
+                            that.charge_show = true;
+                        }
+                    })
+                    .catch(res => {
+                        console.log(res);
+                    });
             }
         }
     }

@@ -199,9 +199,11 @@
                                     <div class="entry-box-top">
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <!-- <div class="left-top1">部位</div> -->
-                                                <div class="left-top1">{{cccc}}</div>
-                                                <i class="el-icon-setting form-setting"></i>
+                                                <div class="left-top1">{{tab1}}</div>
+                                                <i
+                                                    @click="parts_entry"
+                                                    class="el-icon-setting form-setting"
+                                                ></i>
                                             </div>
                                             <div class="left-bottom">
                                                 <div
@@ -210,20 +212,21 @@
                                                     :key="key"
                                                     @dblclick="appendText(item)"
                                                 >
-                                                    <!-- @click="parts_table(item)" -->
                                                     <span>{{item}}</span>
                                                     <i
                                                         class="fa fa-caret-right mr-10 filel hide "
                                                         @click="appendText(item)"
                                                     ></i>
-                                                    <!-- @click.stop="parts_table(item)" -->
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">性质</div>
-                                                <i class="el-icon-setting form-setting"></i>
+                                                <div class="left-top1">{{tab2}}</div>
+                                                <i
+                                                    @click="quality_entry"
+                                                    class="el-icon-setting form-setting"
+                                                ></i>
                                             </div>
                                             <div class="left-bottom">
                                                 <div
@@ -244,7 +247,7 @@
                                     <div class="entry-box-top">
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">时间</div>
+                                                <div class="left-top1">{{tab3}}</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
@@ -264,7 +267,7 @@
                                         </div>
                                         <div class="top-left">
                                             <div class="left-top">
-                                                <div class="left-top1">其他</div>
+                                                <div class="left-top1">{{tab4}}</div>
                                                 <i class="el-icon-setting form-setting"></i>
                                             </div>
                                             <div class="left-bottom">
@@ -279,7 +282,6 @@
                                                         class="fa fa-caret-right mr-10 filel hide "
                                                         @click="appendText(item)"
                                                     ></i>
-                                                    <!-- @click.stop="parts_table(item)" -->
                                                 </div>
                                             </div>
                                         </div>
@@ -509,6 +511,7 @@
                                     <template v-for="(item,index) in form.treatmentOptions">
                                         <input
                                             v-model="form.treatmentOptions[index]"
+                                            @focus="changeType('treatmentOptions')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -542,6 +545,7 @@
                                     <template v-for="(item,index) in form.treatment">
                                         <input
                                             v-model="form.treatment[index]"
+                                            @focus="changeType('treatment')"
                                             class="middle-input"
                                             :key="index"
                                         >
@@ -563,12 +567,13 @@
                                     <td align="center">医 嘱</td>
                                     <input
                                         v-model="form.advice"
+                                        @focus="changeType('advice')"
                                         style="height:35px"
                                     >
                                 </tr>
                             </table>
                             <div class="bottom-image">
-                                <div style="margin-top:10px">添加患者影像（可添加6张）</div>
+                                <div class="bottom-num">添加患者影像（可添加6张）</div>
                                 <div class="add-image">
                                     <div class="bottom-box">
                                         <i class="fa fa-plus bottom-i"></i>
@@ -598,6 +603,8 @@
                 <div v-if="bbb"></div> -->
                 <!-- <div>{{cccc}}</div> -->
 
+                <parts-entry :show.sync="partsentry_show"></parts-entry>
+                <quality-entry :show.sync="qualityentry_show"></quality-entry>
             </div>
         </el-form>
     </el-dialog>
@@ -605,8 +612,16 @@
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import PartsEntry from "./PartsEntry";
+import QualityEntry from "./QualityEntry";
+
 export default {
     name: "InitialDiagnosis",
+
+    components: {
+        PartsEntry,
+        QualityEntry
+    },
 
     mixins: [DialogForm],
     props: {
@@ -627,13 +642,18 @@ export default {
     data() {
         return {
             selectNode: null,
+            partsentry_show: false,
+            qualityentry_show: false,
             initialData: [],
 
-            aaa: false,
-            bbb: false,
+            // aaa: false,
+            // bbb: false,
 
-            cccc: "备牙",
-            zhengzhuang: "",
+            tab1: "部位",
+            tab2: "性质",
+            tab3: "时间",
+            tab4: "其他",
+            // zhengzhuang: "",
 
             medicalRecordEntryData: [
                 {
@@ -709,6 +729,7 @@ export default {
         //         that.resizeContent();
         //     }
         // },
+
         addInitial(newValue, oldValue) {
             let that = this;
             if (newValue) {
@@ -739,13 +760,21 @@ export default {
         }
     },
     methods: {
+        //部位 i 标签弹窗
+        parts_entry() {
+            this.partsentry_show = true;
+        },
+        //性质 i 标签弹窗
+        quality_entry() {
+            this.qualityentry_show = true;
+        },
         changeType(type) {
             let that = this;
 
             //处理显示哪个模块
             // if(active == 'aaa'){
-            that.aaa = type == "aaa";
-            that.bbb = type == "bbb";
+            // that.aaa = type == "aaa";
+            // that.bbb = type == "bbb";
 
             //找到选中的哪个输入框
             that.type = type;
@@ -754,20 +783,72 @@ export default {
 
             // 更改每个模块上面的内容(提示用语)-----------
             switch (type) {
-                case "aaa":
-                    that.cccc = "部位";
+                case "complain":
+                    that.tab1 = "部位";
+                    that.tab2 = "性质";
+                    that.tab3 = "时间";
+                    that.tab4 = "其他";
                     break;
-                case "bbb":
-                    that.cccc = "部位";
+                case "history":
+                    that.tab1 = "部位";
+                    that.tab2 = "性质";
+                    that.tab3 = "时间";
+                    that.tab4 = "其他";
                     break;
-                case "ccc":
-                    that.cccc = "部位";
+                case "previous":
+                    that.tab1 = "部位";
+                    that.tab2 = "性质";
+                    that.tab3 = "时间";
+                    that.tab4 = "其他";
                     break;
-                case "ddd":
-                    that.cccc = "部位";
+                case "allergy":
+                    that.tab1 = "部位";
+                    that.tab2 = "性质";
+                    that.tab3 = "时间";
+                    that.tab4 = "其他";
                     break;
-                case "eee":
-                    that.cccc = "症状";
+                case "check":
+                    that.tab1 = "部位";
+                    that.tab2 = "症状";
+                    that.tab3 = "诊法";
+                    that.tab4 = "程度";
+                    break;
+                case "auxiliarycheck":
+                    that.tab1 = "部位";
+                    that.tab2 = "症状";
+                    that.tab3 = "诊法";
+                    that.tab4 = "程度";
+                    break;
+
+                //诊断
+                case "diagnosi":
+                    // that.tab2 = "症状";
+                    // that.tab3 = "诊法";
+                    // that.tab4 = "程度";
+                    break;
+
+                //治疗方案
+                case "treatmentOptions":
+                    that.tab1 = "备牙";
+                    that.tab2 = "填充";
+                    that.tab3 = "药物";
+                    that.tab4 = "其他";
+                    break;
+
+                //治疗
+                case "treatment":
+                    that.tab1 = "备牙";
+                    that.tab2 = "填充";
+                    that.tab3 = "药物";
+                    that.tab4 = "其他";
+                    break;
+
+                //医嘱
+                case "advice":
+                    // that.tab1 = "备牙";
+                    // that.tab2 = "填充";
+                    // that.tab3 = "药物";
+                    // that.tab4 = "其他";
                     break;
             }
 
@@ -787,24 +868,57 @@ export default {
                 case "complain":
                     that.form.complain += text;
                     break;
+
                 case "history":
                     that.form.history += text;
                     break;
+
                 case "previous":
                     that.form.previous += text;
                     break;
+
                 case "allergy":
                     that.form.allergy += text;
                     break;
+
                 case "check":
                     that.$set(that.form.check, 0, (that.form.check[0] += text));
                     break;
+
                 case "auxiliarycheck":
                     that.$set(
                         that.form.auxiliarycheck,
                         0,
                         (that.form.auxiliarycheck[0] += text)
                     );
+                    break;
+
+                case "diagnosi":
+                    that.$set(
+                        that.form.diagnosi,
+                        0,
+                        (that.form.diagnosi[0] += text)
+                    );
+                    break;
+
+                case "treatmentOptions":
+                    that.$set(
+                        that.form.treatmentOptions,
+                        0,
+                        (that.form.treatmentOptions[0] += text)
+                    );
+                    break;
+
+                case "treatment":
+                    that.$set(
+                        that.form.treatment,
+                        0,
+                        (that.form.treatment[0] += text)
+                    );
+                    break;
+
+                case "advice":
+                    that.form.advice += text;
                     break;
             }
         },
@@ -1355,6 +1469,9 @@ export default {
             // border: 1px solid red;
             background-color: white;
             height: 160px;
+            .bottom-num {
+                margin-top: 10px;
+            }
             .add-image {
                 margin-bottom: 20px;
                 margin-top: 20px;

@@ -29,6 +29,7 @@ class CostCategoryController extends BaseController
     	}
     	$res = CostCategory::create($parms);
     	if ($res) {
+            $this->insertLog();
     		return message('成功',$res,200);
     	}
     	else{
@@ -41,6 +42,7 @@ class CostCategoryController extends BaseController
     	$res = CostCategory::destroy($id);
     	if ($res) {
             Disposal::where('cate_id',$id)->delete();
+            $this->insertLog();
     		return message('成功',[],200);
     	}
     	else{
@@ -53,6 +55,7 @@ class CostCategoryController extends BaseController
     	$parms = $this->parms;
     	$res = CostCategory::where('id',$parms['id'])->update($parms);
     	if ($res) {
+            $this->insertLog();
     		return message('成功',$parms,200);
     	}
     	else{
