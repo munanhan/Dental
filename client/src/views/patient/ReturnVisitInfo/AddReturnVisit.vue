@@ -17,11 +17,11 @@
             <div class="visit-content">
                 <div class="visit-top">
                     <div style="display:flex;font-size:16px;">
-                        <div class="number">{{Return_visit.patient_name}} </div>
-                        <div class="top-font"> {{Return_visit.patient_sex}} </div>
-                        <div class="top-font"> {{Return_visit.case_id}} </div>
-                        <div class="top-font"> {{Return_visit.patient_age}}岁 </div>
-                        <div class="top-font"> {{Return_visit.patient_phone}}</div>
+                        <div class="number">{{addReturnVisit.patient_name}} </div>
+                        <div class="top-font"> {{addReturnVisit.patient_sex}} </div>
+                        <div class="top-font"> {{addReturnVisit.case_id}} </div>
+                        <div class="top-font"> {{addReturnVisit.patient_age}}岁 </div>
+                        <div class="top-font"> {{addReturnVisit.patient_phone}}</div>
                     </div>
                 </div>
                 <div class="visit-bottom">
@@ -43,10 +43,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.reviewStaffList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in addVisitorList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -58,10 +58,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.attendDoctorList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in addAttendDoctorList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -89,19 +89,19 @@
                                     >
                                         <el-table
                                             style="cursor: pointer;"
-                                            :data="menuData"
+                                            :data="addContentList"
                                             stripe
                                             border
                                             :show-header="false"
                                             highlight-current-row
                                         >
-                                            <el-table-column prop="catepory">
+                                            <el-table-column prop="name">
                                                 <template slot-scope="scope">
                                                     <span
-                                                        @click="selectType(scope.row.catepory)"
+                                                        @click="selectType(scope.row.name)"
                                                         style="display:inline-block;width:100%"
                                                     >
-                                                        {{ scope.row.catepory }}
+                                                        {{ scope.row.name }}
                                                     </span>
                                                 </template>
                                             </el-table-column>
@@ -139,19 +139,19 @@
                                 >
                                     <el-table
                                         style="cursor: pointer;"
-                                        :data="resultmenuData"
+                                        :data="addResultList"
                                         stripe
                                         border
                                         :show-header="false"
                                         highlight-current-row
                                     >
-                                        <el-table-column prop="catepory">
+                                        <el-table-column prop="name">
                                             <template slot-scope="scope">
                                                 <span
-                                                    @click="resultselectType(scope.row.catepory)"
+                                                    @click="resultselectType(scope.row.name)"
                                                     style="display:inline-block;width:100%"
                                                 >
-                                                    {{ scope.row.catepory }}
+                                                    {{ scope.row.name }}
                                                 </span>
                                             </template>
                                         </el-table-column>
@@ -199,58 +199,28 @@ export default {
         ReturnContent
     },
     props: {
-        // refresh: {
-        //     type: Boolean,
-        //     required: true
-        // },
-
-        addReturnVisit: {
-            //type: Object,
-            required: true
-        }
+        addReturnVisit: {},
+        addAttendDoctorList:{},
+        addVisitorList:{},
+        addContentList:{},
+        addResultList:{}
     },
 
     created() {
-        let that = this;
-        that.Return_visit = that.addReturnVisit;
+        // let that = this;
+        // that.Return_visit = that.addReturnVisit;
     },
 
     data() {
         return {
             retcontent_show: false,
-            Return_visit: [],
+            // Return_visit: [],
             isblock: false,
             resultsblock: false,
-            reviewStaffList: [],
 
-            attendDoctorList: [],
             recontent: [],
             revresult: [],
 
-            menuData: [
-                {
-                    id: 1,
-                    catepory: "西药费"
-                },
-                {
-                    id: 2,
-                    catepory: "放射费"
-                },
-                {
-                    id: 3,
-                    catepory: "检查费"
-                }
-            ],
-            resultmenuData: [
-                {
-                    id: 1,
-                    catepory: "西药费"
-                },
-                {
-                    id: 2,
-                    catepory: "放射费"
-                }
-            ],
             form: {
                 visit_time: "",
                 review_staff: "",
@@ -263,12 +233,12 @@ export default {
     },
 
     watch: {
-        addReturnVisit(newValue, oldValue) {
-            let that = this;
-            if (newValue) {
-                that.Return_visit = that.addReturnVisit;
-            }
-        },
+        // addReturnVisit(newValue, oldValue) {
+        //     let that = this;
+        //     if (newValue) {
+        //         that.Return_visit = that.addReturnVisit;
+        //     }
+        // },
 
         isblock(newValue, oldValue) {
             let that = this;

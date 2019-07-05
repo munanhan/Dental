@@ -77,11 +77,15 @@
         <!-- <div style="flex:">asd</div> -->
         <add-plan
             :show.sync="addplan_show"
-            :addPlan="planPatientInfo"
+            :addPlan="patients"
         ></add-plan>
         <add-return-visit
             :show.sync="addrevisit_show"
-            :addReturnVisit="visitPatientInfo"
+            :addReturnVisit="patients"
+            :addAttendDoctorList="doctors"
+            :addVisitorList="visitors"
+            :addContentList="visit_contents"
+            :addResultList="visit_results"
         ></add-return-visit>
     </div>
 </template>
@@ -103,8 +107,11 @@ export default {
         return {
             addplan_show: false,
             addrevisit_show: false,
-            planPatientInfo: [],
-            visitPatientInfo:[],
+            patients:[],
+            doctors:[],
+            visitors:[],
+            visit_results:[],
+            visit_contents:[],
         };
     },
     created() {},
@@ -138,14 +145,15 @@ export default {
                     .visitInfo({ id: that.selectID })
                     .then(res => {
                         if (res.code == 200) {
+                            that.patients= res.data.patient;
+                            that.doctors=res.data.attend_doctor;
+                            that.visitors=res.data.visitor;
+                            that.visit_results=res.data.visit_result;
+                            that.visit_contents=res.data.visit_content;
 
                             if(flag=="plan"){
-                                that.planPatientInfo= res.data.patient;
-
                                 that.addplan_show = true;
                             }else {
-                                that.visitPatientInfo= res.data.patient;
-
                                 that.addrevisit_show = true;
                             }
 
