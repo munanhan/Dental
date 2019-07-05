@@ -32,6 +32,7 @@
                         <el-date-picker
                             v-model="form.visit_time"
                             type="date"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期"
                         >
                         </el-date-picker>
@@ -188,7 +189,7 @@
 </template>
 
 <script>
-import DialogForm from "@/views/base/DialogForm";
+import DialogForm from "../../base/DialogForm";
 import ReturnContent from "./ReturnContent";
 
 export default {
@@ -206,21 +207,15 @@ export default {
         addResultList:{}
     },
 
-    created() {
-        // let that = this;
-        // that.Return_visit = that.addReturnVisit;
-    },
+    created() {},
 
     data() {
         return {
             retcontent_show: false,
-            // Return_visit: [],
             isblock: false,
             resultsblock: false,
-
             recontent: [],
             revresult: [],
-
             form: {
                 visit_time: "",
                 review_staff: "",
@@ -233,12 +228,6 @@ export default {
     },
 
     watch: {
-        // addReturnVisit(newValue, oldValue) {
-        //     let that = this;
-        //     if (newValue) {
-        //         that.Return_visit = that.addReturnVisit;
-        //     }
-        // },
 
         isblock(newValue, oldValue) {
             let that = this;
@@ -304,7 +293,26 @@ export default {
 
         commit() {
             let that = this;
+            that.form.patient_id=that.addReturnVisit.id;
 
+            console.log(that.form);
+            return ;
+            that.$api.patient_visit.store(that.form)
+                .then(res=>{
+                    if(res.code==200){
+
+                        console.log(res.data);
+
+                        that.$emit("add-item",JSON.parse(JSON.stringify(res.data)));
+                        that.$message.success(res.msg);
+                        that.closeDialog();
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                });
             that.$emit("update", {});
         },
 

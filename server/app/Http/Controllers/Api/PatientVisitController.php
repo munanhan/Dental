@@ -17,6 +17,8 @@ class PatientVisitController extends BaseController
     public function store(Request $request)
     {
 
+        $data=$request->all();
+        return $data;
         $patientVisit=PatientVisit::create($request->all());
 
         return message('',$patientVisit);

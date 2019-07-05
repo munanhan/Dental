@@ -19,3 +19,11 @@ export function visitInfo(data) {
         params: data
     });
 }
+
+export function store(data) {
+    return request({
+        url: `${prefix}`,
+        method: "post",
+        data: data
+    });
+}
