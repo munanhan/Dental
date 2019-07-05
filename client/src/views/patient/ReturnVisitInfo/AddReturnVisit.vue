@@ -326,12 +326,6 @@ export default {
         return_content() {
             this.retcontent_show = true;
         },
-        // afterClose() {
-        //     console.log("kh");
-        //     this.$refs["form"].resetFields();
-        //      console.log("kh110");
-
-        // }
 
         afterClose() {
             let that = this;
@@ -339,15 +333,7 @@ export default {
                 that.form[key] = "";
             }
         }
-
-        // return_select() {
-        //     this.isblock = !this.isblock;
-        // }
     }
-    // afterClose() {
-    // //   this.checked_items = []
-    //   this.$refs["form"].resetFields();
-    // }
 };
 </script>
 <style lang="less" scoped>
