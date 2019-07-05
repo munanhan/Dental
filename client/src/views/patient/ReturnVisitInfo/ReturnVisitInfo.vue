@@ -135,16 +135,16 @@ export default {
             if (that.selectID) {
 
                 that.$api.patient_visit
-                    .patientInfo({ id: that.selectID })
+                    .visitInfo({ id: that.selectID })
                     .then(res => {
                         if (res.code == 200) {
 
                             if(flag=="plan"){
-                                that.planPatientInfo= res.data;
+                                that.planPatientInfo= res.data.patient;
 
                                 that.addplan_show = true;
                             }else {
-                                that.visitPatientInfo= res.data;
+                                that.visitPatientInfo= res.data.patient;
 
                                 that.addrevisit_show = true;
                             }

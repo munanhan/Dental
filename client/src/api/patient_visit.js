@@ -12,9 +12,9 @@ export function get(data) {
     });
 }
 
-export function patientInfo(data) {
+export function visitInfo(data) {
     return request({
-        url: `${prefix}/patient_info`,
+        url: `${prefix}/visit_info`,
         method: "get",
         params: data
     });
