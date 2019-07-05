@@ -15,7 +15,7 @@
                 <div class="left-content">
                     <div class="left-top">
                         <div class="top-1">计划组合</div>
-                        <el-button class="top-2">增加</el-button>
+                        <el-button @click="addproject_port" class="top-2">增加</el-button>
                     </div>
                     <div class="left-bottom">
 
@@ -114,22 +114,27 @@
 
             </div>
         </el-dialog>
+        <add-project-portfolio :show.sync="addprotfolio_show"></add-project-portfolio>
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import AddProjectPortfolio from "./AddProjectPortfolio";
 
 export default {
     name: "ReturnVisitSetup",
     mixins: [DialogForm],
 
-    components: {},
+    components: {
+        AddProjectPortfolio
+    },
     props: {},
 
     data() {
         return {
             addmed_show: false,
+            addprotfolio_show: false,
             tableHeight: "340px",
             tableData: [],
             anamnesis_menu: {
@@ -164,6 +169,9 @@ export default {
     },
     computed: {},
     methods: {
+        addproject_port() {
+            this.addprotfolio_show = true;
+        },
         getAnamnesisList() {
             let that = this;
             that.$api.anamnesis
