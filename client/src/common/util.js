@@ -330,7 +330,7 @@ export const treeToArray = function(data, parent, level, expandedAll, context) {
 };
 
 /* 删除前后空格 */
-const trim = function(string) {
+export function trim(string) {
     return (string || "").replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, "");
 };
 

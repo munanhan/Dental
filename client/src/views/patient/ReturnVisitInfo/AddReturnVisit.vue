@@ -33,6 +33,9 @@
                             v-model="form.visit_time"
                             type="date"
                             placeholder="选择日期"
+                            format="yyyy-MM-dd HH:mm"
+                            value-format="yyyy-MM-dd HH:mm"
+                            @change="getradio"
                         >
                         </el-date-picker>
                     </el-form-item>
@@ -118,7 +121,7 @@
 
                         <el-form-item label="回访内容">
                             <textarea
-                                v-model="recontent"
+                                v-model="form.recontent"
                                 style="margin-top:10px;resize:none;height:50px;width:470px"
                             ></textarea>
                             <!-- <el-input style="height:20px;width:470px"></el-input> -->
@@ -163,7 +166,7 @@
                     </div>
                     <el-form-item label="回访结果">
                         <textarea
-                            v-model="revresult"
+                            v-model="form.revresult"
                             style="margin-top:10px;resize:none;height:50px;width:470px"
                         ></textarea>
                     </el-form-item>
@@ -190,6 +193,7 @@
 <script>
 import DialogForm from "@/views/base/DialogForm";
 import ReturnContent from "./ReturnContent";
+import { trim } from "@common/util";
 
 export default {
     name: "AddReturnVisit",
@@ -200,10 +204,10 @@ export default {
     },
     props: {
         addReturnVisit: {},
-        addAttendDoctorList:{},
-        addVisitorList:{},
-        addContentList:{},
-        addResultList:{}
+        addAttendDoctorList: {},
+        addVisitorList: {},
+        addContentList: {},
+        addResultList: {}
     },
 
     created() {
@@ -218,16 +222,15 @@ export default {
             isblock: false,
             resultsblock: false,
 
-            recontent: [],
-            revresult: [],
-
             form: {
-                visit_time: "",
+                visit_time: new Date(),
                 review_staff: "",
                 attend_doctor: "",
-                status: 0,
-                review_content: "",
-                review_result: ""
+                status: "",
+                // review_content: "",
+                // review_result: ""
+                recontent: "",
+                revresult: ""
             }
         };
     },
@@ -261,23 +264,31 @@ export default {
 
             if (newValue) {
                 //绑定事件
-
-                // click
-                // do...addde
                 setTimeout(() => {
-                    document.addEventListener("click", that.checkHideSearch);
+                    document.addEventListener("click", that.resultHideSearch);
                 });
-
-                // block = false;
             }
         }
     },
 
     methods: {
+        getradio(value) {
+            let that = this;
+            let d = +new Date();
+            +new Date(value) > d
+                ? (that.form.status = 1)
+                : (that.form.status = 0);
+        },
+
         //回访内容语
         selectType(catepory) {
-            let that = this;
-            that.recontent.push(catepory);
+            let that = this,
+                text = trim(that.form.recontent);
+
+            that.form.recontent = text
+                ? text + "," + catepory
+                : text + catepory;
+            // that.recontent.push(catepory);
         },
 
         checkHideSearch() {
@@ -290,8 +301,12 @@ export default {
 
         //结束常用语
         resultselectType(catepory) {
-            let that = this;
-            that.revresult.push(catepory);
+            let that = this,
+                text = trim(that.form.revresult);
+
+            that.form.revresult = text
+                ? text + "," + catepory
+                : text + catepory;
         },
 
         resultHideSearch() {
@@ -310,12 +325,29 @@ export default {
 
         return_content() {
             this.retcontent_show = true;
+        },
+        // afterClose() {
+        //     console.log("kh");
+        //     this.$refs["form"].resetFields();
+        //      console.log("kh110");
+
+        // }
+
+        afterClose() {
+            let that = this;
+            for (let key in that.form) {
+                that.form[key] = "";
+            }
         }
 
         // return_select() {
         //     this.isblock = !this.isblock;
         // }
     }
+    // afterClose() {
+    // //   this.checked_items = []
+    //   this.$refs["form"].resetFields();
+    // }
 };
 </script>
 <style lang="less" scoped>
