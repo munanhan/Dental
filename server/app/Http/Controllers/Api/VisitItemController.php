@@ -10,13 +10,4 @@ use Illuminate\Support\Facades\Auth;
 class VisitItemController extends BaseController
 {
 
-    public function deleteById(Request $request)
-    {
-        $id=$request->all();
-
-        dd($id);
-        $visitItem=VisitItem::destroy($id);
-
-        return message('',$visitItem);
-    }
 }

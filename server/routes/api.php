@@ -44,21 +44,65 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
 
     /*
-     * Patient Visit Config Api
+     * Patient VisitItem Config Api
      * author by han
      */
     Route::get('visit_items', 'VisitItemController@index');
 
     Route::get('visit_items/get_by_id', 'VisitItemController@getById');
 
-    Route::post('visit_items', 'VisitItemController@store');
+    Route::post('visit_items', 'VisitItemController@addData');
 
     Route::put('visit_items/', 'VisitItemController@update');
 
     Route::delete('visit_items/{id}', 'VisitItemController@delete');
 
-    //批量删除
-    Route::delete('visit_items','VisitItemController@deleteById');
+
+    /*
+    * Patient VisitContent Config Api
+    * author by han
+    */
+
+    Route::get('visit_contents', 'VisitContentController@index');
+
+    Route::get('visit_contents/get_by_id', 'VisitContentController@getById');
+
+    Route::post('visit_contents', 'VisitContentController@addData');
+
+    Route::put('visit_contents/', 'VisitContentController@update');
+
+    Route::delete('visit_contents/{id}', 'VisitContentController@delete');
+
+
+    /*
+    * Patient VisitCombo Config Api
+    * author by han
+    */
+
+    Route::get('visit_combos', 'VisitComboController@index');
+
+    Route::get('visit_combos/get_by_id', 'VisitComboController@getById');
+
+    Route::post('visit_combos', 'VisitComboController@addData');
+
+    Route::put('visit_combos/', 'VisitComboController@update');
+
+    Route::delete('visit_combos/{id}', 'VisitComboController@delete');
+
+    /*
+    * Patient VisitResult Config Api
+    * author by han
+    */
+
+    Route::get('visit_results', 'VisitResultController@index');
+
+    Route::get('visit_results/get_by_id', 'VisitResultController@getById');
+
+    Route::post('visit_results', 'VisitResultController@addData');
+
+    Route::put('visit_results/', 'VisitResultController@update');
+
+    Route::delete('visit_results/{id}', 'VisitResultController@delete');
 
 
     /*

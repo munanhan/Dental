@@ -346,12 +346,12 @@ export default {
 
         // }
 
-        afterClose() {
-            let that = this;
-            for (let key in that.form) {
-                that.form[key] = "";
-            }
-        }
+        // afterClose() {
+        //     let that = this;
+        //     for (let key in that.form) {
+        //         that.form[key] = "";
+        //     }
+        // }
 
         // return_select() {
         //     this.isblock = !this.isblock;
