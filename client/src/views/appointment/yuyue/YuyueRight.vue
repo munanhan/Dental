@@ -236,8 +236,8 @@ export default {
       this.getWeekStartEnd(this.chooseDate);
       //获取预约医生数据、
       this.$api.appointment.attendDoctor().then(res => {
-        if (res.code == 200 && res.data.length > 0) {
-          this.doctor = res.data;
+        if (res.length > 0) {
+          this.doctor = res;
           this.left_doctor = this.doctor[0].id;
           this.right_doctor = this.doctor[1].id;
           this.left_doctor_id = this.doctor[0].id;

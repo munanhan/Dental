@@ -317,7 +317,7 @@ export default {
       } else {
         //获取预约医生数据、
         this.$api.appointment.attendDoctor().then(res => {
-          this.doctor = res.data;
+          this.doctor = res;
         });
       }
       this.formData.appointment_date = this.yuyue_date
