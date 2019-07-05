@@ -20,7 +20,6 @@ export default {
 
     methods: {
         closeDialog() {
-
             let that = this;
             that.$emit("update:show", false);
             setTimeout(() => {
