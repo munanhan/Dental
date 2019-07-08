@@ -217,7 +217,7 @@ export default {
             resultsblock: false,
 
             form: {
-                visit_time: formatDate(new Date(),'yyyy-MM-dd'),
+                visit_time: "",
                 review_staff: "",
                 attend_doctor: "",
                 status: 0,
@@ -229,16 +229,16 @@ export default {
 
     watch: {
 
-        'form.visit_time':{
-            handler(newValue,oldValue){
-                if(newValue){
-                    let that=this;
-                    new Date(newValue).getTime() >new Date().getTime()
-                        ? (that.form.status=1)
-                        : (that.form.status=0)
-                }
-            }
-        },
+        // 'form.visit_time':{
+        //     handler(newValue,oldValue){
+        //         if(newValue){
+        //             let that=this;
+        //             new Date(newValue).getTime() >new Date().getTime()
+        //                 ? (that.form.status=1)
+        //                 : (that.form.status=0)
+        //         }
+        //     }
+        // },
 
         isblock(newValue, oldValue) {
             let that = this;
@@ -246,13 +246,10 @@ export default {
             if (newValue) {
                 //绑定事件
 
-                // click
-                // do...addde
                 setTimeout(() => {
                     document.addEventListener("click", that.checkHideSearch);
                 });
 
-                // block = false;
             }
         },
 
@@ -269,12 +266,6 @@ export default {
     },
 
     methods: {
-        // selectTime(value) {
-        //      let that = this;
-        //      new Date(value).getTime() >new Date()
-        //          ? (that.form.status=1)
-        //          : (that.form.status=0)
-        // },
 
         //回访内容语
         selectType(catepory) {
@@ -284,7 +275,7 @@ export default {
             that.form.review_content = text
                 ? text + "," + catepory
                 : text + catepory;
-            // that.recontent.push(catepory);
+
         },
 
         checkHideSearch() {
