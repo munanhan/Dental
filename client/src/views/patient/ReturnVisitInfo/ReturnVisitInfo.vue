@@ -6,99 +6,99 @@
             height="802px"
             :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
             highlight-current-row
-            @current-change="handleCurrentChange"
-            :data="returnInfo"
+
+            :data="visitInfo"
         >
-            <el-table-column
-                prop="status"
-                label="回访状态"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="review_staff"
-                label="回访人"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="attend_doctor"
-                label="主治医生"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="visit_time"
-                label="回访时间"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="review_content"
-                label="回访内容"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="review_result"
-                label="回访结果"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="created_at"
-                label="创建时间"
-                width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="就诊日期"
-                width="180"
-            >
-            </el-table-column>
+
+                <el-table-column
+                    prop="status"
+                    label="回访状态"
+                    width="90"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="review_staff"
+                    label="回访人"
+                    width="90"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="attend_doctor"
+                    label="主治医生"
+                    width="90"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="visit_time"
+                    label="回访时间"
+                    width="170"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="review_content"
+                    label="回访内容"
+
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="review_result"
+                    label="回访结果"
+                    width="200"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="created_at"
+                    label="创建时间"
+                    width="170"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="editVisit(scope.$index,scope.row)" type="text" size="small">修改</el-button>
+                        <el-button @click="delVisit(scope.$index,scope.row)" type="text" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+
         </el-table>
         <div class="charge-bottom">
             <el-button
                 class="button"
-                @click="Add_Plan"
+                @click="addPlan"
             >新增计划</el-button>
             <el-button
                 class="button"
                 type="primary"
-                @click="Add_Revisit"
+                @click="addVisit"
             >新增回访</el-button>
-            <el-button
-                class="button"
-                @click="edit_returnvisit"
-            >修改</el-button>
-            <el-button
-                class="button"
-                @click="del"
-            >删除</el-button>
+
         </div>
-        <!-- <div style="flex:">asd</div> -->
+
         <add-plan
-            :show.sync="addplan_show"
+            :show.sync="add_plan_show"
             :addPlan="patients"
         ></add-plan>
-        <!-- @flush="flushData" -->
+
         <add-return-visit
-            :show.sync="addrevisit_show"
+            :show.sync="add_visit_show"
             :addReturnVisit="patients"
             :addAttendDoctorList="doctors"
             :addVisitorList="visitors"
             :addContentList="visit_contents"
             :addResultList="visit_results"
+            @add-item="addSuccess"
         ></add-return-visit>
         <edit-return-visit
-            :show.sync="editrevis_show"
-            :editInfo="selectItem"
+            :show.sync="edit_visit_show"
+            :editInfo="editInfo"
             :editPatientInfo="patients"
             :editAttendDoctorList="doctors"
             :editVisitorList="visitors"
             :editContentList="visit_contents"
             :editResultList="visit_results"
+            @edit-item="updateSuccess"
         ></edit-return-visit>
     </div>
 </template>
@@ -116,100 +116,102 @@ export default {
         EditReturnVisit
     },
     props: {
-        returnInfo: {},
-        selectID: {}
+        visitInfo: {},
+        selectPatientID: {}
     },
     data() {
         return {
-            addplan_show: false,
-            editrevis_show: false,
-            addrevisit_show: false,
+            add_plan_show: false,
+            edit_visit_show: false,
+            add_visit_show: false,
             patients: [],
             doctors: [],
             visitors: [],
             visit_results: [],
             visit_contents: [],
-            selectItem: null
+            editInfo:[],
+            selectIndex:"",
         };
     },
     created() {},
     mounted() {},
     watch: {
-        refresh(newValue, oldValue) {
-            let that = this;
 
-            if (newValue) {
-                that.getChargeInfo();
-            }
-        }
     },
     computed: {},
     methods: {
-        handleCurrentChange(val) {
+
+        addSuccess(data){
             let that = this;
-            that.selectItem = val;
+            that.visitInfo.push(data);
         },
 
-        edit_returnvisit() {
-            let that = this;
-            that.getBaseInfo("edit");
-            that.editrevis_show = true;
+        updateSuccess(data){
+            let that=this;
+
+            that.$set(that.visitInfo,that.selectIndex,data);
         },
 
-        del() {},
-
-        // flushData() {
-        //     //刷新数据
-        //     let that = this;
-        //     that.getData(that.comboId);
-        // },
-
-        // getData(id) {
-        //     //获取数据
-        //     let that = this;
-
-        //     that.table = res.data;
-        //     // console.log(res.data);
-        // },
-
-        Add_Plan() {
+        editVisit(index,row) {
             let that = this;
-            that.getBaseInfo("plan");
-        },
-        Add_Revisit() {
-            let that = this;
-            // console.log(111111111111111111111);
-            that.getBaseInfo("visit");
+            that.selectIndex=index;
+            that.getBaseInfo("edit_visit",row.id);
         },
 
-        getBaseInfo(flag) {
+        delVisit(index,row) {
+            let that=this;
+            that.$api.patient_visit.del({id:row.id})
+                .then(res=>{
+                    if(res.code==200){
+                        that.visitInfo.splice(index, 1);
+                        that.$message.success(res.msg);
+                    }else {
+                        that.$message.error(res.msg);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
+        },
+
+        addPlan() {
             let that = this;
+            that.getBaseInfo("add_plan",null);
+        },
 
-            if (that.selectID) {
-                that.$api.patient_visit
-                    .visitInfo({ id: that.selectID })
-                    .then(res => {
-                        if (res.code == 200) {
-                            that.patients = res.data.patient;
-                            that.doctors = res.data.attend_doctor;
-                            that.visitors = res.data.visitor;
-                            that.visit_results = res.data.visit_result;
-                            that.visit_contents = res.data.visit_content;
+        addVisit() {
+            let that = this;
+            that.getBaseInfo("add_visit",null);
+        },
 
-                            if (flag == "plan") {
-                                that.addplan_show = true;
-                            }
-                            if (visit) {
-                                that.addrevisit_show = true;
-                            } else {
-                                that.editrevis_show = true;
-                            }
+        getBaseInfo(flag,id) {
+            let that = this;
+            that.$api.patient_visit
+                .visitInfo({ patient_id: that.selectPatientID ,id:id })
+                .then(res => {
+                    if (res.code == 200) {
+                        that.patients = res.data.patient;
+                        that.doctors = res.data.attend_doctor;
+                        that.visitors = res.data.visitor;
+                        that.visit_results = res.data.visit_result;
+                        that.visit_contents = res.data.visit_content;
+
+                        if (flag == "add_plan") {
+                            that.add_plan_show = true;
                         }
-                    })
-                    .catch(res => {
-                        console.log(res);
-                    });
-            }
+
+                        if (flag == "add_visit") {
+                            that.add_visit_show = true;
+                        }
+                        if(flag=="edit_visit") {
+                            that.editInfo=res.data.visit_info;
+                            that.edit_visit_show = true;
+                        }
+                    }
+                })
+                .catch(res => {
+                    console.log(res);
+                });
         }
     }
 };

@@ -7,6 +7,7 @@
         :close-on-click-modal="false"
         :append-to-body="true"
         v-dialog-drag
+        width="500px"
     >
         <!-- :model="changePwd" -->
         <el-form
@@ -20,6 +21,7 @@
                 prop="combination"
             >
                 <el-input
+                    style="width:350px"
                     v-model="form.combination"
                     type="text"
                     autocomplete="off"

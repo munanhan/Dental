@@ -27,3 +27,19 @@ export function store(data) {
         data: data
     });
 }
+
+export function update(data) {
+    return request({
+        url: `${prefix}`,
+        method: "put",
+        data: data
+    });
+}
+
+export function del(data) {
+    return request({
+        url: `${prefix}/:id`,
+        method: "delete",
+        params: data
+    });
+}

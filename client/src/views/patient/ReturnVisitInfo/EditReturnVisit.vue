@@ -150,7 +150,7 @@
                                         <el-table-column prop="name">
                                             <template slot-scope="scope">
                                                 <span
-                                                    @click="resultselectType(scope.row.name)"
+                                                    @click="resultSelectType(scope.row.name)"
                                                     style="display:inline-block;width:100%"
                                                 >
                                                     {{ scope.row.name }}
@@ -219,7 +219,7 @@ export default {
             resultsblock: false,
 
             form: {
-                visit_time: formatDate(new Date(),'yyyy-MM-dd'),
+                visit_time: "",
                 review_staff: "",
                 attend_doctor: "",
                 status: 0,
@@ -231,30 +231,27 @@ export default {
 
     watch: {
 
-        'form.visit_time':{
-            handler(newValue,oldValue){
-                if(newValue){
-                    let that=this;
-                    new Date(newValue).getTime() >new Date().getTime()
-                        ? (that.form.status=1)
-                        : (that.form.status=0)
-                }
-            }
-        },
+        // 'form.visit_time':{
+        //     handler(newValue,oldValue){
+        //
+        //         if(newValue){
+        //             let that=this;
+        //             new Date(newValue).getTime() >new Date().getTime()
+        //                 ? (that.form.status=1)
+        //                 : (that.form.status=0)
+        //         }
+        //     }
+        // },
 
         isblock(newValue, oldValue) {
             let that = this;
 
             if (newValue) {
-                //绑定事件
 
-                // click
-                // do...addde
                 setTimeout(() => {
                     document.addEventListener("click", that.checkHideSearch);
                 });
 
-                // block = false;
             }
         },
 
@@ -271,29 +268,20 @@ export default {
 
         show(newValue, oldValue) {
             let that = this;
-            that.editInfo.attend_doctor=parseInt(that.editInfo.attend_doctor);
-            that.editInfo.review_staff=parseInt(that.editInfo.review_staff);
             that.form=that.editInfo;
         }
     },
 
     methods: {
-        // selectTime(value) {
-        //      let that = this;
-        //      new Date(value).getTime() >new Date()
-        //          ? (that.form.status=1)
-        //          : (that.form.status=0)
-        // },
 
         //回访内容语
-        selectType(catepory) {
+        selectType(content) {
             let that = this,
                 text = trim(that.form.review_content);
 
             that.form.review_content = text
-                ? text + "," + catepory
-                : text + catepory;
-            // that.recontent.push(catepory);
+                ? text + "," + content
+                : text + content;
         },
 
         checkHideSearch() {
@@ -305,13 +293,13 @@ export default {
         },
 
         //结束常用语
-        resultselectType(catepory) {
+        resultSelectType(result) {
             let that = this,
                 text = trim(that.form.review_result);
 
             that.form.review_result = text
-                ? text + "," + catepory
-                : text + catepory;
+                ? text + "," + result
+                : text + result;
         },
 
         resultHideSearch() {
@@ -324,13 +312,10 @@ export default {
 
         commit() {
             let that = this;
-
-            that.form.patient_id=that.addReturnVisit.id;
-
-            that.$api.patient_visit.store(that.form)
+            that.$api.patient_visit.update(that.form)
                 .then(res=>{
                     if(res.code==200){
-                        that.$emit("add-item",JSON.parse(JSON.stringify(res.data)));
+                        that.$emit("edit-item",JSON.parse(JSON.stringify(res.data)));
 
                         that.$message.success(res.msg);
 
@@ -342,7 +327,7 @@ export default {
                 .catch(res=>{
                     console.log(res);
                 });
-            that.$emit("update", {});
+
         },
 
         return_content() {

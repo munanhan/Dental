@@ -112,7 +112,7 @@
                             其他计划
                         </div>
                         <el-form-item
-                            label="主治医生"
+                            label="计划时间"
                             style="margin-top:10px"
                         >
                             <el-select

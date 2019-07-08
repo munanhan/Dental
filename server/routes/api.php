@@ -329,7 +329,7 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::post('patient_visits', 'PatientVisitController@store');
 
-    Route::put('patient_visits/', 'PatientVisitController@update');
+    Route::put('patient_visits', 'PatientVisitController@update');
 
     Route::delete('patient_visits/{id}', 'PatientVisitController@delete');
 
