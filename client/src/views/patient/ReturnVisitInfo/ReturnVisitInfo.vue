@@ -19,6 +19,7 @@
                 <el-table-column
                     prop="review_staff"
                     label="回访人"
+                    width="180"
                 >
                 </el-table-column>
                 <el-table-column
@@ -36,6 +37,7 @@
                 <el-table-column
                     prop="review_content"
                     label="回访内容"
+                    width="180"
                 >
                 </el-table-column>
                 <el-table-column
@@ -53,6 +55,7 @@
                 <el-table-column
                     prop="address"
                     label="就诊日期"
+                    width="180"
                 >
                 </el-table-column>
 
@@ -91,14 +94,14 @@
             :addContentList="visit_contents"
             :addResultList="visit_results"
         ></add-return-visit>
-        <edit-return-visit 
-        :show.sync="editrevis_show"
-        :editInfo="selectItem"
-        :editPatientInfo="patients"
-        :editAttendDoctorList="doctors"
-        :editVisitorList="visitors"
-        :editContentList="visit_contents"
-        :editResultList="visit_results"
+        <edit-return-visit
+            :show.sync="editrevis_show"
+            :editInfo="selectItem"
+            :editPatientInfo="patients"
+            :editAttendDoctorList="doctors"
+            :editVisitorList="visitors"
+            :editContentList="visit_contents"
+            :editResultList="visit_results"
         ></edit-return-visit>
     </div>
 </template>
@@ -122,7 +125,7 @@ export default {
     data() {
         return {
             addplan_show: false,
-            editrevis_show:false,
+            editrevis_show: false,
             addrevisit_show: false,
             patients: [],
             doctors: [],
@@ -152,8 +155,8 @@ export default {
 
         edit_returnvisit() {
             let that = this;
-            that.getBaseInfo('edit');
-            that.editrevis_show=true;
+            that.getBaseInfo("edit");
+            that.editrevis_show = true;
         },
 
         del() {},
@@ -178,6 +181,7 @@ export default {
         },
         Add_Revisit() {
             let that = this;
+            // console.log(111111111111111111111);
             that.getBaseInfo("visit");
         },
 
@@ -197,7 +201,8 @@ export default {
 
                             if (flag == "plan") {
                                 that.addplan_show = true;
-                            }if (visit) {
+                            }
+                            if (visit) {
                                 that.addrevisit_show = true;
                             } else {
                                 that.editrevis_show = true;

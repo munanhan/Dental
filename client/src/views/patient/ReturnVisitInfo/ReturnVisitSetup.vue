@@ -15,7 +15,10 @@
                 <div class="left-content">
                     <div class="left-top">
                         <div class="top-1">计划组合</div>
-                        <el-button @click="addproject_port" class="top-2">增加</el-button>
+                        <el-button
+                            @click="addproject_port"
+                            class="top-2"
+                        >增加</el-button>
                     </div>
                     <div class="left-bottom">
 
@@ -59,20 +62,6 @@
                                 show-overflow-tooltip
                             >
                                 <template slot-scope="scope">
-                                    <!-- <el-button
-                                    v-if="scope.row.isSet"
-                                    size="mini"
-                                    @click="store(scope.row,scope.$index)"
-                                >保存
-                                </el-button>
-
-                                <el-button
-                                    v-else
-                                    size="mini"
-                                    @click="edit(scope.row,scope.$index)"
-                                >修改
-                                </el-button> -->
-
                                     <el-button
                                         v-if="!scope.row.isSet"
                                         size="mini"
@@ -80,14 +69,6 @@
                                         @click="del(scope.row,scope.$index)"
                                     >删除
                                     </el-button>
-
-                                    <!-- <el-button
-                                    v-else
-                                    size="mini"
-                                    type="danger"
-                                    @click="cancel(scope.row,scope.$index)"
-                                >取消
-                                </el-button> -->
 
                                 </template>
                             </el-table-column>
