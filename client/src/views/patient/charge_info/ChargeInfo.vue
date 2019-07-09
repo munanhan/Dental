@@ -231,7 +231,7 @@ export default {
             this[value] = true;
             this.value = "";
         },
-        getChargeInfo() {},
+
 
         Advan_pay() {
             this.advancepay_show = true;

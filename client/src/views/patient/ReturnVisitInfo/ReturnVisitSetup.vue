@@ -15,17 +15,22 @@
                 <div class="left-content">
                     <div class="left-top">
                         <div class="top-1">计划组合</div>
-                        <el-button class="top-2">增加</el-button>
+                        <el-button
+                            size="small"
+                            @click="addproject_port"
+                            class="top-2"
+                        >增加</el-button>
                     </div>
                     <div class="left-bottom">
 
                     </div>
                 </div>
                 <div class="right-content">
-                    <div
-                        style="flex:1;text-align:right"
-                        class="content"
-                    >
+                    <div class="right-top">
+                        <div style="margin-top:5px">计划事项</div>
+                    </div>
+
+                    <div class="right-tab-content">
                         <el-table
                             border
                             class="width100 mb-10"
@@ -34,6 +39,11 @@
                             :height="tableHeight"
                         >
                             <el-table-column type="index"></el-table-column>
+                            <el-table-column
+                                type="selection"
+                                width="55"
+                            >
+                            </el-table-column>
                             <el-table-column
                                 v-for="(item,index) in anamnesis_menu.columns"
                                 :key="index"
@@ -52,26 +62,25 @@
                                     <span v-else>{{scope.row[item.field]}}</span>
                                 </template>
                             </el-table-column>
-
                             <el-table-column
                                 label="操作"
                                 align="center"
                                 show-overflow-tooltip
                             >
                                 <template slot-scope="scope">
-                                    <!-- <el-button
-                                    v-if="scope.row.isSet"
-                                    size="mini"
-                                    @click="store(scope.row,scope.$index)"
-                                >保存
-                                </el-button>
+                                    <el-button
+                                        v-if="scope.row.isSet"
+                                        size="mini"
+                                        @click="store(scope.row,scope.$index)"
+                                    >保存
+                                    </el-button>
 
-                                <el-button
-                                    v-else
-                                    size="mini"
-                                    @click="edit(scope.row,scope.$index)"
-                                >修改
-                                </el-button> -->
+                                    <el-button
+                                        v-else
+                                        size="mini"
+                                        @click="edit(scope.row,scope.$index)"
+                                    >修改
+                                    </el-button>
 
                                     <el-button
                                         v-if="!scope.row.isSet"
@@ -81,20 +90,19 @@
                                     >删除
                                     </el-button>
 
-                                    <!-- <el-button
-                                    v-else
-                                    size="mini"
-                                    type="danger"
-                                    @click="cancel(scope.row,scope.$index)"
-                                >取消
-                                </el-button> -->
+                                    <el-button
+                                        v-else
+                                        size="mini"
+                                        type="danger"
+                                        @click="cancel(scope.row,scope.$index)"
+                                    >取消
+                                    </el-button>
 
                                 </template>
                             </el-table-column>
 
                         </el-table>
                     </div>
-
                 </div>
             </div>
             <div
@@ -109,27 +117,31 @@
                     新增
                 </el-button>
 
-                <el-button @click="closeDialog">关闭
-                </el-button>
+                <el-button @click="closeDialog">关闭</el-button>
 
             </div>
         </el-dialog>
+        <add-project-portfolio :show.sync="addprotfolio_show"></add-project-portfolio>
     </div>
 </template>
 
 <script>
 import DialogForm from "@/views/base/DialogForm";
+import AddProjectPortfolio from "./AddProjectPortfolio";
 
 export default {
     name: "ReturnVisitSetup",
     mixins: [DialogForm],
 
-    components: {},
+    components: {
+        AddProjectPortfolio
+    },
     props: {},
 
     data() {
         return {
             addmed_show: false,
+            addprotfolio_show: false,
             tableHeight: "340px",
             tableData: [],
             anamnesis_menu: {
@@ -164,6 +176,9 @@ export default {
     },
     computed: {},
     methods: {
+        addproject_port() {
+            this.addprotfolio_show = true;
+        },
         getAnamnesisList() {
             let that = this;
             that.$api.anamnesis
@@ -309,9 +324,19 @@ export default {
             }
         }
         .right-content {
-            border: 1px solid #e3e3e3;
-            padding: 10px;
             width: 100%;
+            .right-top {
+                height: 23px;
+                color: #000;
+                font-size: 16px;
+                margin-bottom: 7px;
+            }
+            .right-tab-content {
+                flex: 1;
+                text-align: right;
+                border: 1px solid #e3e3e3;
+                height: 465px;
+            }
         }
     }
 }

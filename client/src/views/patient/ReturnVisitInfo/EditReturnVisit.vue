@@ -17,11 +17,12 @@
             <div class="visit-content">
                 <div class="visit-top">
                     <div style="display:flex;font-size:16px;">
-                        <div class="number">{{addReturnVisit.patient_name}} </div>
-                        <div class="top-font"> {{addReturnVisit.patient_sex}} </div>
-                        <div class="top-font"> {{addReturnVisit.case_id}} </div>
-                        <div class="top-font"> {{addReturnVisit.patient_age}}岁 </div>
-                        <div class="top-font"> {{addReturnVisit.patient_phone}}</div>
+                        <!-- <div class="number"> {{editPatientInfo.patient_name}}</div> -->
+                        <div class="number"> {{editPatientInfo.patient_name}}</div>
+                        <div class="top-font">{{editPatientInfo.patient_sex}} </div>
+                        <div class="top-font">  {{editPatientInfo.case_id}}</div>
+                        <div class="top-font">  {{editPatientInfo.patient_age}}岁 </div>
+                        <div class="top-font"> {{editPatientInfo.patient_phone}}</div>
                     </div>
                 </div>
                 <div class="visit-bottom">
@@ -44,7 +45,7 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in addVisitorList"
+                                v-for="item in editVisitorList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -59,7 +60,7 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in addAttendDoctorList"
+                                v-for="item in editAttendDoctorList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -90,7 +91,7 @@
                                     >
                                         <el-table
                                             style="cursor: pointer;"
-                                            :data="addContentList"
+                                            :data="editContentList"
                                             stripe
                                             border
                                             :show-header="false"
@@ -140,7 +141,7 @@
                                 >
                                     <el-table
                                         style="cursor: pointer;"
-                                        :data="addResultList"
+                                        :data="editResultList"
                                         stripe
                                         border
                                         :show-header="false"
@@ -149,7 +150,7 @@
                                         <el-table-column prop="name">
                                             <template slot-scope="scope">
                                                 <span
-                                                    @click="resultselectType(scope.row.name)"
+                                                    @click="resultSelectType(scope.row.name)"
                                                     style="display:inline-block;width:100%"
                                                 >
                                                     {{ scope.row.name }}
@@ -201,11 +202,12 @@ export default {
         ReturnContent
     },
     props: {
-        addReturnVisit: {},
-        addAttendDoctorList: {},
-        addVisitorList: {},
-        addContentList: {},
-        addResultList: {}
+        editInfo: {},
+        editPatientInfo: {},
+        editVisitorList: {},
+        editContentList:{},
+        editResultList:{},
+        editAttendDoctorList:{},
     },
 
     created() {},
@@ -231,6 +233,7 @@ export default {
 
         // 'form.visit_time':{
         //     handler(newValue,oldValue){
+        //
         //         if(newValue){
         //             let that=this;
         //             new Date(newValue).getTime() >new Date().getTime()
@@ -244,7 +247,6 @@ export default {
             let that = this;
 
             if (newValue) {
-                //绑定事件
 
                 setTimeout(() => {
                     document.addEventListener("click", that.checkHideSearch);
@@ -262,20 +264,24 @@ export default {
                     document.addEventListener("click", that.resultHideSearch);
                 });
             }
+        },
+
+        show(newValue, oldValue) {
+            let that = this;
+            that.form=that.editInfo;
         }
     },
 
     methods: {
 
         //回访内容语
-        selectType(catepory) {
+        selectType(content) {
             let that = this,
                 text = trim(that.form.review_content);
 
             that.form.review_content = text
-                ? text + "," + catepory
-                : text + catepory;
-
+                ? text + "," + content
+                : text + content;
         },
 
         checkHideSearch() {
@@ -287,13 +293,13 @@ export default {
         },
 
         //结束常用语
-        resultselectType(catepory) {
+        resultSelectType(result) {
             let that = this,
                 text = trim(that.form.review_result);
 
             that.form.review_result = text
-                ? text + "," + catepory
-                : text + catepory;
+                ? text + "," + result
+                : text + result;
         },
 
         resultHideSearch() {
@@ -306,13 +312,10 @@ export default {
 
         commit() {
             let that = this;
-
-            that.form.patient_id=that.addReturnVisit.id;
-
-            that.$api.patient_visit.store(that.form)
+            that.$api.patient_visit.update(that.form)
                 .then(res=>{
                     if(res.code==200){
-                        that.$emit("add-item",JSON.parse(JSON.stringify(res.data)));
+                        that.$emit("edit-item",JSON.parse(JSON.stringify(res.data)));
 
                         that.$message.success(res.msg);
 
@@ -324,13 +327,12 @@ export default {
                 .catch(res=>{
                     console.log(res);
                 });
-            that.$emit("update", {});
+
         },
 
         return_content() {
             this.retcontent_show = true;
         },
-
 
         afterClose() {
             let that = this;
@@ -338,7 +340,6 @@ export default {
                 that.form[key] = "";
             }
         }
-
     }
 };
 </script>

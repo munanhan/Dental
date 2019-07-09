@@ -19,7 +19,7 @@ class PatientVisitController extends BaseController
 
         $patientVisit=PatientVisit::create($request->all());
 
-        return message('',$patientVisit);
+        return message('添加成功',$patientVisit,200);
     }
 
     public function show()
@@ -47,10 +47,29 @@ class PatientVisitController extends BaseController
     public function visitInfo(){
         $data['visitor']=$this->getVisitor();
         $data['attend_doctor']=$this->getAttendDoctor();
-        $data['patient']=$this->patientInfo(request('id'));
+        $data['patient']=$this->patientInfo(request('patient_id'));
         $data['visit_content']=$this->getVisitContent();
         $data['visit_result']=$this->getVisitResult();
+        if(isset($this->parms['id'])){
+            $data['visit_info']=$this->getDataById();
+        }
         return message('',$data,200);
+    }
+
+
+    public function update()
+    {
+        $data=request()->all();
+
+        $id=$data['id'];
+
+        unset($data['id']);
+
+        PatientVisit::where('id',$id)->update($data);
+
+        $data=PatientVisit::where('id',$id)->first();
+
+        return message('更新成功！',$data,200);
     }
 
 
