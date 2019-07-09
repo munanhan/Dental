@@ -342,6 +342,10 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
     Route::get('appointment/clinicVisitData','ClinicOperationController@clinicVisitData');
 
     Route::get('appointment/clinicAppointData','ClinicOperationController@clinicAppointData');
+
+    Route::get('appointment/clinicAppointItemData','ClinicOperationController@clinicAppointItemData');
+
+    Route::get('appointment/clinicAppointStatusData','ClinicOperationController@clinicAppointStatusData');
 });
 
 

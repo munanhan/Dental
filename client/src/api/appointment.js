@@ -96,3 +96,17 @@ export function clinicAppointData(data){
         params:data,
     })
 }
+export function clinicAppointItemData(data){
+    return request({
+        url:`${prefix}/clinicAppointItemData`,
+        method:'get',
+        params:data,
+    })
+}
+export function clinicAppointStatusData(data){
+    return request({
+        url:`${prefix}/clinicAppointStatusData`,
+        method:'get',
+        params:data,
+    })
+}
