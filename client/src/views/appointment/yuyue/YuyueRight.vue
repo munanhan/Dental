@@ -12,7 +12,7 @@
       </ul>
       <div class="add-yuyue" @click="addYuyue()">新增预约</div>
       <div class="net-yuyue">网上预约</div>
-      <div class="search">
+      <!-- <div class="search">
         <input
           type="text"
           ref="inputSearch"
@@ -22,7 +22,7 @@
           @keyup.enter="search"
         />
         <i class="fas fa-search" @click="search"></i>
-      </div>
+      </div> -->
     </div>
     <div class="date-header">
       <div v-show="navBar[0].active" class="header-day">

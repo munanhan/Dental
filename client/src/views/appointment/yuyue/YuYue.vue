@@ -22,7 +22,6 @@
     export default {
         name: '',
         created(){
-          
         },
         components: {
             YuyueLeft,
