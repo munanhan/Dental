@@ -75,41 +75,41 @@
                     style="width:100%"
                     height="300px"
                     :header-cell-style="{backgroundColor:'#e3e3e3',color:'#3a3a3a'}"
-                    @row-dblclick="selectRow"
+                    @row-click="selectRow"
                     ref="searchTable"
                     :row-class-name="rowClassName"
                 >
                     <!-- @row-dblclick="selectRow" -->
                     <el-table-column
-                        prop="phone"
+                        prop="patient_phone"
                         label="电话"
                         align="center"
                         width="120px"
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="medical"
+                        prop="case_id"
                         label="病历号"
                         align="center"
                         width="120px"
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="name"
+                        prop="patient_name"
                         label="姓名"
                         align="center"
                         width="100px"
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="returnVisit"
+                        prop="appointment_doctor"
                         label="复诊医生"
                         align="center"
                         width="100px"
                     >
                     </el-table-column>
                     <el-table-column
-                        prop="returnDate"
+                        prop="appointment_date"
                         label="复诊日期"
                         align="center"
                         width="120px"
@@ -174,9 +174,9 @@
                     <el-form-item
                         style="margin-left:50px;width:300px"
                         label="类 别"
-                        prop="diagnose_status"
+                        prop="type"
                     >
-                        <el-radio-group v-model="form.diagnose_status">
+                        <el-radio-group v-model="form.type">
                             <el-radio :label="0">初诊</el-radio>
                             <el-radio :label="1">复诊</el-radio>
                         </el-radio-group>
@@ -187,11 +187,11 @@
                 <div style="display:flex">
                     <el-form-item
                         label="就诊日期"
-                        prop="treatment_date"
+                        prop="appointment_date"
                         style="width:300px"
                     >
                         <el-date-picker
-                            v-model="form.treatment_date"
+                            v-model="form.appointment_date"
                             type="date"
                             placeholder="选择日期"
                             :picker-options="pickerOptions"
@@ -201,18 +201,17 @@
                     </el-form-item>
                     <el-form-item
                         label="主治医生"
-                        prop="attend_doctor"
+                        prop="appointment_doctor"
                         style="margin-left:50px;"
                     >
                         <el-select
-                            v-model="form.attend_doctor"
+                            v-model="form.appointment_doctor"
                             style="width:220px"
                             placeholder="请选择"
-                            @focus="attendDoctor"
                         >
                             <el-option
-                                v-for="item in attendDoctorList"
-                                :key="item.value"
+                                v-for="item in addPatient.attend_doctors"
+                                :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
                             >
@@ -231,10 +230,9 @@
                             v-model="form.member_id"
                             style="width:220px"
                             placeholder="请选择"
-                            @focus="member"
                         >
                             <el-option
-                                v-for="item in memberList"
+                                v-for="item in addPatient.members"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -268,13 +266,12 @@
                             v-model="form.patient_category"
                             style="width:220px"
                             placeholder="请选择"
-                            @focus="category"
                         >
                             <el-option
-                                v-for="item in categoryList"
-                                :key="item.value"
+                                v-for="item in addPatient.categories"
+                                :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -301,13 +298,12 @@
                             v-model="form.teeth_habits"
                             style="width:220px"
                             placeholder="请选择"
-                            @focus="teethHabit"
                         >
                             <el-option
-                                v-for="item in teethHabitList"
-                                :key="item.value"
+                                v-for="item in addPatient.teeth_habits"
+                                :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -358,13 +354,12 @@
                             allow-create
                             default-first-option
                             placeholder="请选择"
-                            @focus="allergy"
                         >
                             <el-option
-                                v-for="item in allergyList"
+                                v-for="item in addPatient.allergies"
                                 :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -388,13 +383,12 @@
                             allow-create
                             default-first-option
                             placeholder="请选择"
-                            @focus="anamnesis"
                         >
                             <el-option
-                                v-for="item in anamnesisList"
-                                :key="item.value"
+                                v-for="item in addPatient.anamneses"
+                                :key="item.id"
                                 :label="item.name"
-                                :value="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -460,6 +454,10 @@ export default {
         TeethcleaningHabits
     },
 
+    props:{
+        addPatient:{},
+    },
+
     data() {
         return {
             category_show: false,
@@ -473,39 +471,7 @@ export default {
                     return time.getTime() > Date.now();
                 }
             },
-            tableData: [
-                {
-                    id: 0,
-                    phone: "13553819974",
-                    medical: "2016091102",
-                    name: "",
-                    returnVisit: "",
-                    returnDate: "1996-02-10"
-                },
-
-                {
-                    id: 1,
-                    phone: "15923819974",
-                    medical: "2016091102",
-                    name: "",
-                    returnVisit: "",
-                    returnDate: "1996-02-10"
-                },
-                {
-                    id: 2,
-                    phone: "13523819974",
-                    medical: "2016091102",
-                    name: "",
-                    returnVisit: "",
-                    returnDate: "1996-02-10"
-                }
-            ],
-            categoryList: [],
-            memberList: [],
-            allergyList: [],
-            anamnesisList: [],
-            teethHabitList: [],
-            attendDoctorList: [],
+            tableData: [],
 
             rules: {
                 patient_name: [
@@ -572,9 +538,9 @@ export default {
                 patient_email: "",
                 allergy: "",
                 anamnesis: "",
-                attend_doctor: "",
-                treatment_date: "",
-                diagnose_status: 0,
+                appointment_doctor: "",
+                appointment_date: "",
+                type: 0,
                 society_no: ""
             },
 
@@ -582,7 +548,9 @@ export default {
             showNameTimer: null,
 
             //搜索框选中
-            searchSelectIdx: null
+            searchSelectIdx: null,
+
+            stopNotify: false
         };
     },
 
@@ -594,7 +562,7 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getCaseNo();
+                that.form.case_id=that.addPatient.case_id;
             }
         },
         "form.patient_birthday": {
@@ -612,9 +580,13 @@ export default {
 
                 clearTimeout(that.showNameTimer);
 
-                that.showNameTimer = setTimeout(() => {
-                    that.searchAll(newName);
-                }, 300);
+                if(that.stopNotify){
+                    that.stopNotify = false;
+                }else if(newName){
+                    that.showNameTimer = setTimeout(() => {
+                        that.searchAll(newName);
+                    }, 300);
+                }
             }
         }
     },
@@ -624,14 +596,15 @@ export default {
         searchAll(value) {
             let that = this;
 
-            that.searchSelectIdx = 1;
+            that.searchSelectIdx = 0;
 
             if (value) {
-                that.showNameSearch = true;
+                // that.showNameSearch = true;
 
                 that.$api.patient.searchAll({ search_all: value }).then(res => {
                     if (res.code == 200 && res.data.length) {
                         that.tableData = res.data;
+
                         that.showNameSearch = true;
 
                         that.searchSelectIdx = 0;
@@ -651,12 +624,13 @@ export default {
             }
         },
 
-        hideSearch(event) {
+        hideSearch() {
             let that = this;
 
             // that.tableData = [];
 
             that.showNameSearch = false;
+            that.stopNotify = true;
 
             document.removeEventListener("keydown", that.checkHideSearch);
             document.removeEventListener("click", that.checkHideSearch);
@@ -721,20 +695,8 @@ export default {
         selectRow(row) {
             let that = this;
 
-            that.form.patient_name = row.id;
-        },
-
-        attendDoctor() {
-            let that = this;
-
-            that.$api.patient
-                .getAttendDoctor()
-                .then(res => {
-                    that.attendDoctorList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
+            that.hideSearch();
+            that.form = row;
         },
 
         resetForm(form) {
@@ -757,71 +719,6 @@ export default {
                     ? 1
                     : 0);
             that.form.patient_age = age;
-        },
-
-        anamnesis() {
-            let that = this;
-
-            that.$api.anamnesis
-                .get()
-                .then(res => {
-                    that.anamnesisList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        allergy() {
-            let that = this;
-
-            that.$api.allergy
-                .get()
-                .then(res => {
-                    that.allergyList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        teethHabit() {
-            let that = this;
-
-            that.$api.teethHabit
-                .get()
-                .then(res => {
-                    that.teethHabitList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        category() {
-            let that = this;
-
-            that.$api.category
-                .get()
-                .then(res => {
-                    that.categoryList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-
-        member() {
-            let that = this;
-
-            that.$api.patient_member
-                .get()
-                .then(res => {
-                    that.memberList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
         },
 
         submitFrom(form) {
@@ -870,17 +767,6 @@ export default {
             this.teeth_habit_show = true;
         },
 
-        getCaseNo() {
-            let that = this;
-            that.$api.patient
-                .caseNo()
-                .then(res => {
-                    that.form.case_id = res.data.case_id;
-                })
-                .catch(res => {
-                    console.log(res);
-                });
-        }
     }
 };
 </script>

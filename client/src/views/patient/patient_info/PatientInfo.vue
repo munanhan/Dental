@@ -1,9 +1,7 @@
 <template>
     <div class="patient-info">
         <div class="patient-content">
-            <!-- <template slot="title">
-                <span class="base-fz">基本信息</span>
-            </template> -->
+
             <div
                 class="patient-body"
                 style="display:flex"
@@ -56,7 +54,7 @@
                         style="margin:20px"
                     >
                         <el-col :span="8">
-                            <div>会员等级：<span class="patient-left-color">{{pationInfo.member_level}}</span></div>
+                            <div>会员等级：<span class="patient-left-color">{{pationInfo.member_id}}</span></div>
                         </el-col>
                         <el-col :span="8">
                             <div>会员卡号：<span class="patient-left-color">{{pationInfo.member_card}}</span></div>
@@ -122,16 +120,13 @@
                         <div>患者来源：<span class="patient-left-color">{{pationInfo.patient_source}}</span></div>
                     </el-col>
 
-                    <!-- <el-col :span="8">
-                        <div>初诊时间：{{data.treatment_date}}</div>
-                    </el-col> -->
                 </el-row>
                 <el-row
                     :gutter="24"
                     style="margin:20px"
                 >
                     <el-col :span="7">
-                        <div>吸 烟 史：<span class="patient-left-color">{{pationInfo.anamnesis}}</span></div>
+                        <div>吸 烟 史：<span class="patient-left-color">{{pationInfo.smoke_day}}次/天</span></div>
                     </el-col>
                     <el-col :span="8">
                         <div>洁牙习惯：<span class="patient-left-color">{{pationInfo.teeth_habits}}</span></div>
@@ -140,10 +135,8 @@
                         :span="8"
                         style="display:flex"
                     >
-                        <div>刷牙次数：<span class="patient-left-color">{{pationInfo.anamnesis}}</span></div>
-                        <!-- <div style="color:black;display:flex">
-                            <div>5</div>次/天<div style="margin-left:20px">5</div>分钟/次
-                        </div> -->
+                        <div>刷牙次数：<span class="patient-left-color">{{pationInfo.brush_day}}次/天 {{pationInfo.brush_minutes}}分钟/次</span></div>
+
                     </el-col>
                 </el-row>
                 <el-row
@@ -171,10 +164,15 @@
                 type="primary"
                 porp="modify-inormation"
                 @click="mod_info"
+
             >修改信息</el-button>
 
         </div>
-        <modify-info :show.sync="modinfo_show"></modify-info>
+        <modify-info
+                :show.sync="modinfo_show"
+                :editInfo="edit_patient"
+                @edit-item="updateSuccess"
+        ></modify-info>
     </div>
 </template>
 
@@ -187,24 +185,50 @@ export default {
         ModifyInfo
     },
     props: {
-        pationInfo: {},
-        selectID: {}
+        patientInfo: {},
     },
     data() {
         return {
             modinfo_show: false,
-            patient_sex: 0
+            patient_sex: 0,
+            edit_patient:{},
+            pationInfo:{},
         };
     },
     created() {},
     mounted() {},
     watch: {
-        
+        patientInfo: {
+            handler(newValue, oldValue) {
+                let that=this;
+                that.pationInfo=that.patientInfo;
+            },
+            immediate: true
+        }
     },
     computed: {},
     methods: {
+
+        updateSuccess(data){
+
+            let that=this;
+            that.pationInfo=data;
+        },
+
         mod_info() {
-            this.modinfo_show = true;
+            let that=this;
+            that.$api.patient.getPatientResource({id:that.pationInfo.id})
+                .then(res=>{
+                    if(res.code==200){
+                        that.edit_patient=res.data;
+                        this.modinfo_show = true;
+                    }else {
+                        console.log(res);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                });
         },
     }
 };

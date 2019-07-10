@@ -35,22 +35,22 @@ export function update(data) {
     })
 };
 //获取病历号
-export function caseNo(data) {
-    return request({
-        url: `${prefix}/generate`,
-        method: 'get',
-        params: data
-    })
-}
+// export function caseNo(data) {
+//     return request({
+//         url: `${prefix}/generate`,
+//         method: 'get',
+//         params: data
+//     })
+// }
 
 //获取主治医师
-export function getAttendDoctor(data) {
-    return request({
-        url: `${prefix}/attend_doctor`,
-        method: 'get',
-        params: data
-    })
-}
+// export function getAttendDoctor(data) {
+//     return request({
+//         url: `${prefix}/attend_doctor`,
+//         method: 'get',
+//         params: data
+//     })
+// }
 export function searchAll(data) {
     return request({
         url: `${prefix}/search_by_name`,
@@ -90,6 +90,14 @@ export function recentVisit(data) {
 export function getPatientByID(data) {
     return request({
         url: `${prefix}/get_by_id`,
+        method: 'get',
+        params: data
+    })
+}
+
+export function getPatientResource(data) {
+    return request({
+        url: `${prefix}/resource`,
         method: 'get',
         params: data
     })

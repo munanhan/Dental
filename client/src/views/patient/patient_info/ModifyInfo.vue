@@ -10,7 +10,7 @@
         top="1vh"
     >
         <el-form
-            ref="Modifyform"
+            ref="form"
             :model="form"
             label-width="80px"
             :rules="rules"
@@ -28,7 +28,7 @@
                 <el-form-item
                     label="病历号"
                     class="left-width"
-                    prop="medical_record"
+                    prop="case_id"
                 >
                     <el-input
                         :disabled="true"
@@ -40,12 +40,12 @@
                 <el-form-item
                     label="姓名"
                     class="left-width"
-                    prop="name"
+                    prop="patient_name"
                 >
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.patient_name"></el-input>
                 </el-form-item>
                 <el-form-item label="性别">
-                    <el-radio-group v-model="form.sex">
+                    <el-radio-group v-model="form.patient_sex">
                         <el-radio :label="0">男</el-radio>
                         <el-radio :label="1">女</el-radio>
                         <el-radio :label="2">未填</el-radio>
@@ -54,8 +54,9 @@
                 <el-form-item label="出生年月">
                     <el-date-picker
                         style="width:260px"
-                        v-model="form.birthday"
+                        v-model="form.patient_birthday"
                         type="date"
+                        value-format="yy-mm-dd"
                         placeholder="选择日期"
                     >
                     </el-date-picker>
@@ -63,18 +64,18 @@
                 <el-form-item
                     label="年龄(岁)"
                     class="left-width"
-                    prop="age"
+                    prop="patient_age"
                 >
-                    <el-input v-model="form.age"></el-input>
+                    <el-input v-model="form.patient_age"></el-input>
                 </el-form-item>
 
                 <div style="display:flex">
                     <el-form-item
                         label="电话"
-                        prop="phone"
+                        prop="patient_phone"
                         style="width:340px"
                     >
-                        <el-input v-model="form.phone"></el-input>
+                        <el-input v-model="form.patient_phone"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -86,10 +87,9 @@
                             style="width:260px"
                             v-model="form.member_id"
                             placeholder="请选择"
-                            @focus="member"
                         >
                             <el-option
-                                v-for="item in memberList"
+                                v-for="item in editInfo.members"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -104,23 +104,23 @@
                     <el-form-item
                         label="会员卡号"
                         class="right-width"
-                        prop="member_gard"
+                        prop="member_card"
                     >
-                        <el-input v-model="form.member_gard"></el-input>
+                        <el-input v-model="form.member_card"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
                     <el-form-item label="职业">
                         <el-select
-                            v-model="form.value"
+                            v-model="form.patient_profession"
                             placeholder="请选择"
                             style="width:260px"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.professions"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -132,33 +132,45 @@
                     <el-form-item
                         label="社保号"
                         class="right-width"
-                        prop="society"
+                        prop="society_no"
                     >
-                        <el-input v-model="form.society"></el-input>
+                        <el-input v-model="form.society_no"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
                     <el-form-item
                         label="电子邮箱"
                         class="left-width"
-                        prop="email"
+                        prop="patient_email"
                     >
-                        <el-input v-model="form.email"></el-input>
+                        <el-input v-model="form.patient_email"></el-input>
                     </el-form-item>
                     <el-form-item
                         label="患者分组"
                         class="right-width"
                         style="margin-left:30px"
-                        prop="group"
+                        prop="patient_group"
                     >
-                        <el-input v-model="form.group"></el-input>
+                        <el-select
+                                v-model="form.patient_group"
+                                placeholder="请选择"
+                                style="width:260px"
+                        >
+                            <el-option
+                                    v-for="item in grouList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div style="display:flex">
                     <el-form-item
                         label="患者备注"
                         class="left-width"
-                        prop="email"
+                        prop="patient_content"
                     >
                         <el-input v-model="form.patient_content"></el-input>
                     </el-form-item>
@@ -166,7 +178,7 @@
                         label="民族"
                         class="right-width"
                         style="margin-left:30px"
-                        prop="group"
+                        prop="nation"
                     >
                         <el-input v-model="form.nation"></el-input>
                     </el-form-item>
@@ -176,7 +188,7 @@
                         label="介绍人"
                         class="left-width"
                     >
-                        <el-input></el-input>
+                        <el-input v-model="form.introducer"></el-input>
                     </el-form-item>
                     <el-form-item
                         label="咨询师"
@@ -185,14 +197,14 @@
                     >
                         <el-select
                             style="width:250px"
-                            v-model="form.value"
+                            v-model="form.counselor"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.attend_doctors"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -201,31 +213,26 @@
                 <div style="display:flex">
                     <el-form-item label="联系地址">
                         <el-input
-                            v-model="form.address"
+                            v-model="form.patient_address"
                             style="width:620px"
                         ></el-input>
-                        <!-- <el-select
-                            style="width:620px"
-                            v-model="form.value"
-                            placeholder="请选择"
-                        >
-                            <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-select> -->
                     </el-form-item>
                 </div>
                 <div style="display:flex">
-                    <el-form-item
-                        label="患者印象"
-                        class="left-width"
-                        prop=""
-                    >
-                        <el-input></el-input>
+                    <el-form-item label="患者印象">
+                        <el-select
+                                style="width:250px"
+                                v-model="form.patient_impression"
+                                placeholder="请选择"
+                        >
+                            <el-option
+                                    v-for="item in editInfo.impressions"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <i
                         class="el-icon-setting form-setting"
@@ -234,14 +241,14 @@
                     <el-form-item label="电网咨询">
                         <el-select
                             style="width:250px"
-                            v-model="form.value"
+                            v-model="form.grid_consulting"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.attend_doctors"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -261,14 +268,14 @@
                     >
                         <el-select
                             style="width:250px"
-                            v-model="form.value"
+                            v-model="form.patient_source"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.source"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -280,14 +287,14 @@
                     <el-form-item label="患者分类">
                         <el-select
                             style="width:250px"
-                            v-model="form.value"
+                            v-model="form.patient_category"
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in form.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.categories"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -311,10 +318,10 @@
                             default-first-option
                         >
                             <el-option
-                                v-for="item in form.allergyList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.allergies"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -327,21 +334,21 @@
                 <div style="display:flex">
                     <el-form-item
                         label="既 往 史"
-                        prop="pastMedicalhistory"
+                        prop="anamnesis"
                     >
                         <el-select
                             style="width:620px"
-                            v-model="form.pastMedicalhistory"
+                            v-model="form.anamnesis"
                             multiple
                             filterable
                             allow-create
                             default-first-option
                         >
                             <el-option
-                                v-for="item in form.pastMedicalhistoryList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.anamneses"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -394,17 +401,16 @@
                     >
                         <el-select
                             style="width:620px"
-                            v-model="form.teeth"
-                            multiple
+                            v-model="form.teeth_habits"
                             filterable
                             allow-create
                             default-first-option
                         >
                             <el-option
-                                v-for="item in form.teethList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                v-for="item in editInfo.teeth_habits"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
                             >
                             </el-option>
                         </el-select>
@@ -424,6 +430,7 @@
             <el-button
                 :loading="commitLoading"
                 type="primary"
+                @click="submit('form')"
             >确 定</el-button>
             <!-- <el-button @click="new_relat">新增关系</el-button> -->
             <el-button @click="closeDialog">取 消</el-button>
@@ -447,7 +454,7 @@
 import AddDialogForm from "@/views/base/AddDialogForm";
 import MembershipGrade from "./MembershipGrade";
 import professional from "./professional";
-// import ContactAddress from "./ContactAddress";
+
 import PatientsImpression from "./PatientsImpression";
 import PatientsSource from "./PatientsSource";
 import ClassificationPatients from "./ClassificationPatients";
@@ -472,6 +479,11 @@ export default {
         TeethcleaningHabits,
         NewRelationship
     },
+
+    props:{
+        editInfo:{},
+    },
+
     data() {
         return {
             memgrade_show: false,
@@ -484,90 +496,94 @@ export default {
             pastmed_show: false,
             teethhab_show: false,
             newrelat_show: false,
-            memberList: [],
+
+            grouList:[
+                {
+                    id:0,
+                    name:"最近患者"
+                },
+                {
+                    id:1,
+                    name:"黑名单"
+                },
+                {
+                    id:2,
+                    name:"治疗完成"
+                }
+            ],
             form: {
                 member_id: "",
-                teethList: [
-                    {
-                        value: "选项1",
-                        label: "不干净"
-                    }
-                ],
-                pastMedicalhistoryList: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    }
-                ],
-                allergyList: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    }
-                ],
-                // options: [
-                //     {
-                //         value: "选项1",
-                //         label: "黄金糕"
-                //     },
-                //     {
-                //         value: "选项2",
-                //         label: "双皮奶"
-                //     },
-                //     {
-                //         value: "选项3",
-                //         label: "蚵仔煎"
-                //     },
-                //     {
-                //         value: "选项4",
-                //         label: "龙须面"
-                //     },
-                //     {
-                //         value: "选项5",
-                //         label: "北京烤鸭"
-                //     }
-                // ],
-                birthday: "",
-                age: "",
-                value: "",
-                group: "",
+                patient_birthday: "",
+                patient_age: "",
+                patient_source: "",
+                patient_category:"",
+                patient_profession:"",
+                society_no:"",
+                patient_group: "",
                 case_id: "",
-                phone: "",
-                sex: 2,
-                name: "",
-                teeth: "",
-                member_gard: "",
-                email: "",
-                medical_record: "",
+                patient_phone: "",
+                patient_sex:"",
+                patient_name: "",
+                introducer:"",
+                counselor:"",
+                patient_impression:"",
+                grid_consulting:"",
+                allergy:[],
+                anamnesis:[],
+                brush_day:"",
+                brush_minutes:"",
+                smoke_day:"",
+                teeth_habits: "",
+                member_card: "",
+                patient_email: "",
                 patient_content: "",
                 nation: "",
-                address: ""
+                patient_address: ""
             },
             rules: {
-                name: [
+                patient_name: [
                     { required: true, message: "请输入姓名", trigger: "blur" }
-                    // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+
                 ],
-                medical_record: [
-                    { required: true, message: "请输入病历号", trigger: "blur" }
-                    // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                ],
-                phone: [
+
+                patient_phone: [
                     { required: true, message: "请输入手机号", trigger: "blur" }
-                    // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+
                 ]
             }
         };
     },
     watch: {
         show(newValue, oldValue) {
-            if (newValue) {
-                let that = this;
-                that.getCaseNo();
-            }
+            let that=this;
+            that.form=that.editInfo.patient_info;
         }
     },
     methods: {
+
+        submit(form){
+            let that = this;
+            that.$refs[form].validate(valid => {
+                if (valid) {
+                    that.$api.patient
+                        .update(that.form)
+                        .then(res => {
+                            if (res.code == 200) {
+                                that.$emit("edit-item",JSON.parse(JSON.stringify(res.data)));
+                                that.$message.success('修改成功');
+                                that.closeDialog();
+                            } else {
+                                that.$message.error("修改失败");
+                            }
+                        })
+                        .catch(res => {
+                            console.log(res.msg);
+                        });
+                } else {
+                    return false;
+                }
+            });
+        },
         mem_grade() {
             this.memgrade_show = true;
         },
@@ -598,35 +614,7 @@ export default {
         new_relat() {
             this.newrelat_show = true;
         },
-        afterClose() {
-            this.$refs["Modifyform"].resetFields();
-        },
-        //获取会员下拉信息
-        member() {
-            let that = this;
 
-            that.$api.patient_member
-                .get()
-                .then(res => {
-                    that.memberList = res.data;
-                })
-                .catch(res => {
-                    console.log(res.data);
-                });
-        },
-        //病历号获取
-        getCaseNo() {
-            let that = this;
-            that.$api.patient
-                .caseNo()
-                .then(res => {
-                    // console.log(res.data);
-                    that.form.case_id = res.data.case_id;
-                })
-                .catch(res => {
-                    console.log(res);
-                });
-        }
     }
 };
 </script>

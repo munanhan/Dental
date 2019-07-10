@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Traits\AttendDoctor;
 use App\Http\Controllers\Traits\CaseNumber;
+use App\Http\Controllers\Traits\PatientBaseInfo;
 use App\Model\Appointment;
 use App\Model\Patient;
 use App\Model\PatientDisposal;
@@ -19,7 +20,7 @@ class PatientController extends BaseController
 
     const DEFAULT_LENGTH=3;
 
-    use AttendDoctor,CaseNumber;
+    use AttendDoctor,CaseNumber,PatientBaseInfo;
 
     /*
      * 根据id展示患者
@@ -37,11 +38,11 @@ class PatientController extends BaseController
     {
         $patient=$request->all();
 
-        $appointment['type']=$patient['diagnose_status'];
-        $appointment['appointment_date']=$patient['treatment_date'];
-        $appointment['appointment_doctor']=$patient['attend_doctor'];
+        $appointment['type']=$patient['type'];
+        $appointment['appointment_date']=$patient['appointment_date'];
+        $appointment['appointment_doctor']=$patient['appointment_doctor'];
 
-        $exclude=['diagnose_status','treatment_date','attend_doctor'];
+        $exclude=['type','appointment_date','appointment_doctor'];
         foreach ($exclude as $key){
             if(array_key_exists($key,$patient)){
                 unset($patient[$key]);
@@ -51,8 +52,8 @@ class PatientController extends BaseController
         $patientModel=Patient::where(['patient_phone'=>$patient['patient_phone']])->first();
         if($patientModel){
             if(Appointment::where(['patient_id'=>$patientModel->id,
-                'treatment_date'=>$appointment['appointment_date'],
-                'attend_doctor'=>$appointment['appointment_doctor']])->first()){
+                'appointment_date'=>$appointment['appointment_date'],
+                'appointment_doctor'=>$appointment['appointment_doctor']])->first()){
                 return message('该医生今天已经接诊过该患者，请更换医生或日期！','',400);
             }else{
                 Patient::where('patient_phone',$patient['patient_phone'])->update($patient);
@@ -81,13 +82,20 @@ class PatientController extends BaseController
      */
     public function update()
     {
-        $patient=$this->parms;
+        $this->parms['allergy']=empty($this->parms['allergy']) ? "" :implode(',',$this->parms['allergy']);
+        $this->parms['anamnesis']=empty($this->parms['anamnesis']) ? "" :implode(',',$this->parms['anamnesis']);
 
-        $id=$patient['id'];
+        if(Patient::where('id',$this->parms['id'])->update($this->parms)){
 
-        Patient::where('id',$id)->update($patient);
+            $data=Patient::where('id',$this->parms['id'])->first();
 
-        return message('',$this->parms, 200);
+            return message('更新成功！',$data, 200);
+
+        }else{
+
+            return message('更新失败','',404);
+        }
+
     }
 
     /*
@@ -122,8 +130,30 @@ class PatientController extends BaseController
 
     public function searchByName()
     {
-        $keywords=request('keywords');
-        $data=$this->patientByGroup(2,1,$keywords);
+        $keywords=request('search_all');
+
+        $data=$this->patientByGroup('',1,$keywords);
+
+        $data=json_decode(json_encode($data),true);
+
+        if(!empty($data)){
+            foreach ($data as $k=>$d){
+
+                $d['allergy']= empty($d['allergy']) ? [] : explode(',',$d['allergy']);
+                $d['anamnesis']= empty($d['anamnesis']) ? [] : explode(',',$d['anamnesis']);
+
+                if(!empty($d['allergy'])){
+                    $d['allergy']=array_value_to_int($d['allergy']);
+                }
+
+                if(!empty($d['anamnesis'])){
+                    $d['anamnesis']=array_value_to_int($d['anamnesis']);
+                }
+
+                $data[$k]=$d;
+            }
+        }
+
         return message('',$data,200);
     }
 
@@ -166,7 +196,7 @@ class PatientController extends BaseController
         DB::table('patients as p')
             ->leftJoin('appointments as apt','p.id','=','apt.patient_id')
             ->leftJoin('patient_orders as o','p.id','=','o.patient_id')
-            ->selectRaw('p.id,case_id,patient_name,patient_age,patient_sex,patient_phone,member_id,member_card,allergy,anamnesis,patient_category,patient_group,SUM(o.arrearage) as arrearage,apt.status,start_time,over_time,apt.type,appointment_doctor,appointment_date,items')
+            ->selectRaw('p.*,SUM(o.arrearage) as arrearage,apt.status,start_time,over_time,apt.type,appointment_doctor,appointment_date,items')
             ->whereRaw('1=1')
             ->whereNull('p.deleted_at')
             ->groupBy('p.id');
@@ -189,7 +219,34 @@ class PatientController extends BaseController
         return $this->CaseNumber();
     }
 
-    
+    public function resource()
+    {
+        $data['anamneses']=$this->getPatientConfig('App\Model\PatientAnamnesis');
+        $data['teeth_habits']=$this->getPatientConfig('App\Model\PatientTeethHabit');
+        $data['members']=$this->getPatientConfig('App\Model\PatientMember');
+        $data['impressions']=$this->getPatientConfig('App\Model\PatientImpression');
+        $data['allergies']=$this->getPatientConfig('App\Model\PatientAllergy');
+        $data['categories']=$this->getPatientConfig('App\Model\PatientCategory');
+        $data['source']=$this->getPatientConfig('App\Model\PatientSource');
+        $data['professions']=$this->getPatientConfig('App\Model\PatientProfession');
+        $data['case_id']=$this->getCaseNumber();
+        $data['attend_doctors']=$this->attendDoctor();
+        if(isset($this->parms['id'])){
+            $data['patient_info']=$this->getDataById();
+            $data['patient_info']['allergy']=empty($data['patient_info']['allergy']) ? [] :explode(',',$data['patient_info']['allergy']);
+            $data['patient_info']['anamnesis']=empty($data['patient_info']['anamnesis']) ? [] : explode(',',$data['patient_info']['anamnesis']);
+
+            if($data['patient_info']['allergy']){
+                $data['patient_info']['allergy']=array_value_to_int($data['patient_info']['allergy']);
+            }
+
+            if($data['patient_info']['anamnesis']){
+                $data['patient_info']['anamnesis']=array_value_to_int($data['patient_info']['anamnesis']);
+            }
+        }
+        return message('',$data,200);
+
+    }
 
 
 }

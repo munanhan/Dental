@@ -25,9 +25,7 @@ Trait CaseNumber{
 
         $seq=$this->getSequence($sequence);
 
-        $serial['case_id']=$date.$seq;
-
-        return message('',$serial);
+        return $date.$seq;
 
     }
 

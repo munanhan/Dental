@@ -38,22 +38,117 @@ class Patient extends Model
 
     public function setAllergyAttribute($value)
     {
-        $this->attributes['allergy']=implode(',',$value);
+        $value=empty($value) ? "" : implode(',',$value);
+        $this->attributes['allergy']=$value;
     }
 
-//    public function getAllergyAttribute($value)
-//    {
-//        return explode(',',$value);
-//    }
-//
-//    public function getAnamnesisAttribute($value)
-//    {
-//        return explode(',',$value);
-//    }
+    public function getAllergyAttribute($value)
+    {
+        $data="";
+        if(empty($value)){
+            return $data;
+        }else{
+            $value=explode(',',$value);
+            $allergy=PatientAllergy::whereIn('id',$value)->select('name')->get();
+            $result=json_decode(json_encode($allergy),true);
+
+            $data=implode(',',array_column($result,'name'));
+
+            return $data;
+        }
+
+    }
+
+    public function getTeethHabitsAttribute($value)
+    {
+        $teeth=PatientTeethHabit::where('id',$value)->first();
+        return $teeth->name;
+    }
+
+    public function getAnamnesisAttribute($value)
+    {
+        $data="";
+        if(empty($value)){
+            return $data;
+        }else{
+            $value=explode(',',$value);
+            $allergy=PatientAnamnesis::whereIn('id',$value)->select('name')->get();
+            $result=json_decode(json_encode($allergy),true);
+
+            $data=implode(',',array_column($result,'name'));
+
+            return $data;
+        }
+    }
+
+    public function getPatientBirthdayAttribute($value)
+    {
+        return date('Y-m-d',strtotime($value));
+    }
+
+    public function getMemberIdAttribute($value)
+    {
+        $member=PatientMember::where('id',$value)->first();
+        return $member->name;
+    }
+
+    public function getPatientProfessionAttribute($value)
+    {
+        $member=PatientProfession::where('id',$value)->first();
+        return $member->name;
+    }
+
+    public function getPatientSexAttribute($value)
+    {
+        $group=[
+            0=>'男',
+            1=>'女',
+            2=>'未填'
+        ];
+        return $group[$value];
+    }
+
+    public function getPatientSourceAttribute($value)
+    {
+        $member=PatientSource::where('id',$value)->first();
+        return $member->name;
+    }
+
+    public function getPatientCategoryAttribute($value)
+    {
+        $member=PatientCategory::where('id',$value)->first();
+        return $member->name;
+    }
+
+    public function getCounselorAttribute($value)
+    {
+        return $this->getUserById($value)->name;
+    }
+
+    public function getGridConsultingAttribute($value)
+    {
+        return $this->getUserById($value)->name;
+    }
+
+    protected function getUserById($id)
+    {
+        return User::where('id',$id)->first();
+    }
 
     public function setAnamnesisAttribute($value)
     {
-        $this->attributes['anamnesis']= implode(',',$value);
+        $value=empty($value) ? "" : implode(',',$value);
+        $this->attributes['anamnesis']= $value;
+    }
+
+    public function getPatientGroupAttribute($value)
+    {
+        $group=[
+          0=>'最近患者',
+          1=>'黑名单',
+          2=>'治疗完成'
+        ];
+        return $group[$value];
     }
 
 }

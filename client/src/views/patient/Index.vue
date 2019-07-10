@@ -415,8 +415,7 @@
                     <patient-info
                         v-if="pationInfo"
                         :refresh.sync="pationInfo"
-                        :pationInfo="selectPatientInfo"
-                        :selectID="selectItem"
+                        :patientInfo="selectPatientInfo"
                     >
 
                     </patient-info>
@@ -515,7 +514,10 @@
             </el-tabs>
         </div>
         <!-- 新增患者 -->
-        <add-patient :show.sync="addp_show"></add-patient>
+        <add-patient
+                :show.sync="addp_show"
+                :addPatient="add_patient_resource"
+        ></add-patient>
 
         <!-- 复诊预约 -->
         <appointment-visit :show.sync="appvisit_show"></appointment-visit>
@@ -577,6 +579,8 @@ export default {
             activeName: "first",
             addp_show: false,
             appvisit_show: false,
+
+            add_patient_resource:[],
 
             workdate: new Date(),
             //当天工作
@@ -903,7 +907,24 @@ export default {
         },
         //新增患者
         add_patient() {
-            this.addp_show = true;
+            let that=this;
+            that.patientResource();
+        },
+
+        patientResource() {
+            let that=this;
+            that.$api.patient.getPatientResource()
+                .then(res=>{
+                    if(res.code==200){
+                        that.add_patient_resource=res.data;
+                        that.addp_show = true;
+                    }else {
+                        console.log(res);
+                    }
+                })
+                .catch(res=>{
+                    console.log(res);
+                })
         },
         //
         app_visit() {

@@ -127,17 +127,19 @@ Route::group(['namespace'=>'Api','middleware' => ['auth:api','check']], function
 
     Route::get('patients/get_by_id', 'PatientController@show');
 
+    Route::get('patients/resource', 'PatientController@resource');
+
     Route::post('patients', 'PatientController@store');
 
     Route::put('patients', 'PatientController@update');
 
     Route::delete('patients/{id}', 'PatientController@delete');
 
-    Route::get('patients/generate','PatientController@getCaseNumber');
+//    Route::get('patients/generate','PatientController@getCaseNumber');
 
     Route::get('patients/search_by_name','PatientController@searchByName');
 
-    Route::get('patients/attend_doctor','PatientController@attendDoctor');
+//    Route::get('patients/attend_doctor','PatientController@attendDoctor');
 
     Route::get('patients/today_work','TodayWorkController@todayWork');
 
