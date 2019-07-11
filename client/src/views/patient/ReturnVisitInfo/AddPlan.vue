@@ -108,7 +108,7 @@
                             </el-select>
                         </el-form-item>
                     </div>
-                    <div style="border:1px solid #e3e3e3;height:180px;margin-top:-10px;background:rgb(246, 246, 246)">
+                    <div class="xxx" style="border:1px solid #e3e3e3;height:180px;margin-top:-10px;background:rgb(246, 246, 246)">
                         <div style="margin-left:10px;margin-top:10px">
                             其他计划
                         </div>

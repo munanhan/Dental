@@ -157,15 +157,36 @@
                                                 :class="{ 'active': item.id == selectItem }"
                                                 @click="isSelect(item.id)"
                                             >
-                                                <div class="work-background-top">
+                                                <!-- <div class="work-background-top">
                                                     <span class="work-top1">{{item.patient_name}}</span>
                                                     <span class="work-top2">{{item.member_id}}</span>
                                                     <span class="work-top3">{{item.appointment_date}}</span>
+                                                </div> -->
+                                                <div class="work-background-top">
+                                                    <span class="patient-name">{{item.patient_name}}</span>
+                                                    <div class="patient-icon">
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="patient-date">{{item.appointment_date}}</span>
                                                 </div>
-                                                <div class="work-background-bottom">
+                                                <!-- <div class="work-background-bottom">
                                                     <span class="work-bottom">{{item.patient_phone}}</span>
                                                     <span class="work-bottom">{{item.appointment_doctor}}</span>
                                                     {{item.case_id}}
+                                                </div> -->
+                                                <div class="work-background-bottom">
+                                                    <span class="patient-bottom1">{{item.patient_phone}}</span>
+                                                    <span class="patient-bottom2">{{item.appointment_doctor}}</span>
+                                                    {{item.medical_record}}
+                                                    <i class="fa fa-trash-alt input-i hide"></i>
+
                                                 </div>
                                             </div>
                                         </li>
@@ -245,14 +266,25 @@
                                                 @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.patient_name}}</span>
-                                                    <span class="patient-top2">{{item.member_id}}</span>
-                                                    <span class="patient-top3">{{item.appointment_date}}</span>
+                                                    <span class="patient-name">{{item.patient_name}}</span>
+                                                    <div class="patient-icon">
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">银牌会员:1503010</span>
+                                                        </div>
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="patient-date">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
                                                     <span class="patient-bottom1">{{item.patient_phone}}</span>
                                                     <span class="patient-bottom2">{{item.appointment_doctor}}</span>
                                                     {{item.medical_record}}
+                                                    <i @click="delDisposal" class="fa fa-trash-alt input-i hide"></i>
+
                                                 </div>
                                             </div>
                                         </li>
@@ -283,9 +315,18 @@
                                                 @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.patient_name}}</span>
-                                                    <span class="patient-top2">{{item.member_id}}</span>
-                                                    <span class="patient-top3">{{item.appointment_date}}</span>
+                                                    <span class="patient-name">{{item.patient_name}}</span>
+                                                    <div class="patient-icon">
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="patient-date">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
                                                     <span class="patient-bottom1">{{item.patient_phone}}</span>
@@ -322,9 +363,18 @@
                                                 @click="isSelect(item.id)"
                                             >
                                                 <div class="patient-background-top">
-                                                    <span class="patient-top1">{{item.patient_name}}</span>
-                                                    <span class="patient-top2">{{item.member_id}}</span>
-                                                    <span class="patient-top3">{{item.appointment_date}}</span>
+                                                    <span class="patient-name">{{item.patient_name}}</span>
+                                                    <div class="patient-icon">
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                        <div class="item">
+                                                            <span class="icon">{{item.member_id}}</span>
+                                                            <span class="tip">123156</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="patient-date">{{item.appointment_date}}</span>
                                                 </div>
                                                 <div class="patient-background-bottom">
                                                     <span class="patient-bottom1">{{item.patient_phone}}</span>
@@ -515,8 +565,8 @@
         </div>
         <!-- 新增患者 -->
         <add-patient
-                :show.sync="addp_show"
-                :addPatient="add_patient_resource"
+            :show.sync="addp_show"
+            :addPatient="add_patient_resource"
         ></add-patient>
 
         <!-- 复诊预约 -->
@@ -560,7 +610,7 @@ export default {
         AppointmentVisit,
         ConsultingInfo,
         BookingInformation,
-        medicalInformation,
+        medicalInformation
         // AdvancedQuery
     },
 
@@ -570,7 +620,7 @@ export default {
         return {
             advancedque_show: false,
             selectPatient: [],
-            selectPatientInfo:{},
+            selectPatientInfo: {},
             placeholder: "姓名、拼音、电话",
             patient_expend: false,
             input: "",
@@ -580,7 +630,7 @@ export default {
             addp_show: false,
             appvisit_show: false,
 
-            add_patient_resource:[],
+            add_patient_resource: [],
 
             workdate: new Date(),
             //当天工作
@@ -611,7 +661,7 @@ export default {
                 {
                     id: 3,
                     type: "会员号"
-                },
+                }
                 // {
                 //     id: 4,
                 //     type: "检查医生"
@@ -699,10 +749,13 @@ export default {
 
             that.getSwitch(newValue);
         }
-
     },
     computed: {},
     methods: {
+        delDisposal(index) {
+            this.patientsRecent.splice(index - 1, 1);
+        },
+
         dialogshow(value) {
             switch (value) {
                 case 1:
@@ -729,7 +782,12 @@ export default {
 
             switch (module) {
                 case "pationInfo":
-                    that.getPatientData("patient", "getPatientByID", params, module);
+                    that.getPatientData(
+                        "patient",
+                        "getPatientByID",
+                        params,
+                        module
+                    );
                     break;
 
                 case "medicalInformation":
@@ -741,11 +799,21 @@ export default {
                     break;
 
                 case "disposalRecords":
-                    that.getPatientData("patient_disposal", "get", params, module);
+                    that.getPatientData(
+                        "patient_disposal",
+                        "get",
+                        params,
+                        module
+                    );
                     break;
 
                 case "chargeInfo":
-                    that.getPatientData("patient_charge", "get", params, module);
+                    that.getPatientData(
+                        "patient_charge",
+                        "get",
+                        params,
+                        module
+                    );
                     break;
 
                 case "medicalRecordsInfo":
@@ -757,7 +825,12 @@ export default {
                     break;
 
                 case "consultingInfo":
-                    that.getPatientData("patient_consult", "getByPatientId", params, module);
+                    that.getPatientData(
+                        "patient_consult",
+                        "getByPatientId",
+                        params,
+                        module
+                    );
                     break;
             }
         },
@@ -768,7 +841,7 @@ export default {
             that.$api[url][method](data)
                 .then(res => {
                     if (res.code == 200) {
-                        switch (module){
+                        switch (module) {
                             case "pationInfo":
                                 that.selectPatientInfo = res.data;
                                 that[module] = true;
@@ -905,24 +978,25 @@ export default {
         },
         //新增患者
         add_patient() {
-            let that=this;
+            let that = this;
             that.patientResource();
         },
 
         patientResource() {
-            let that=this;
-            that.$api.patient.getPatientResource()
-                .then(res=>{
-                    if(res.code==200){
-                        that.add_patient_resource=res.data;
+            let that = this;
+            that.$api.patient
+                .getPatientResource()
+                .then(res => {
+                    if (res.code == 200) {
+                        that.add_patient_resource = res.data;
                         that.addp_show = true;
-                    }else {
+                    } else {
                         console.log(res);
                     }
                 })
-                .catch(res=>{
+                .catch(res => {
                     console.log(res);
-                })
+                });
         },
         //
         app_visit() {
@@ -1075,24 +1149,44 @@ export default {
                 background-color: #eeffcd;
             }
             .work-background-top {
-                margin-bottom: 20px;
-                margin-left: 10px;
-                .work-top1 {
-                    // margin-right: 100px;
-                    font-weight: bold;
-                    color: #000;
+                display: flex;
+                justify-content: space-between;
+                // border: 1px solid;
+                width: 100%;
+                .patient-name {
+                    // border: 1px solid;
+                    margin-left: 5px;
                 }
-                .work-top2 {
-                    // margin-right: 120px;
-                    margin-left: 10px;
-                    background-color: #d30f0f;
-                    font-size: 10px;
-                    color: white;
+                .patient-icon {
+                    flex: auto;
+                    display: flex;
+                    margin-left: 5px;
+                    // justify-content: center;
+                    .item {
+                        margin-left: 5px;
+                        // border: 1px solid;
+                        position: relative;
+                        .icon {
+                            width: 30px;
+                            display: inline-block;
+                            // border: 1px solid;
+                            &:hover + .tip {
+                                display: block;
+                            }
+                        }
+
+                        .tip {
+                            display: none;
+                            position: absolute;
+                            top: 30px;
+                            background-color: #fff;
+                            border: 1px solid;
+                            color: #000;
+                        }
+                    }
                 }
-                .work-top3 {
-                    color: #747474;
-                    font-size: 13px;
-                    float: right;
+                .patient-date {
+                    // border: 1px solid;
                     margin-right: 5px;
                 }
             }
@@ -1147,30 +1241,75 @@ export default {
             &.active {
                 background-color: #eeffcd;
             }
-
             .patient-background-top {
-                margin-bottom: 20px;
-                margin-left: 10px;
-                .patient-top1 {
-                    font-weight: bold;
-                    color: #000;
+                display: flex;
+                justify-content: space-between;
+                // border: 1px solid;
+                width: 100%;
+                .patient-name {
+                    // border: 1px solid;
+                    margin-left: 5px;
                 }
-                .patient-top2 {
-                    margin-left: 10px;
-                    background-color: #d30f0f;
-                    font-size: 10px;
-                    color: white;
+                .patient-icon {
+                    flex: auto;
+                    display: flex;
+                    margin-left: 5px;
+                    // justify-content: center;
+                    .item {
+                        margin-left: 5px;
+                        // border: 1px solid;
+                        position: relative;
+                        .icon {
+                            width: 30px;
+                            display: inline-block;
+                            // border: 1px solid;
+                            &:hover + .tip {
+                                display: block;
+                            }
+                        }
+
+                        .tip {
+                            display: none;
+                            position: absolute;
+                            width: 140px;
+                            top: 30px;
+                            background-color: #fff;
+                            border: 1px solid;
+                            color: #000;
+                        }
+                    }
                 }
-                .patient-top3 {
-                    color: #747474;
-                    font-size: 13px;
-                    float: right;
+                .patient-date {
+                    // border: 1px solid;
                     margin-right: 5px;
                 }
             }
+            // .patient-background-top {
+            //     margin-bottom: 20px;
+            //     margin-left: 10px;
+            //     .patient-top1 {
+            //         font-weight: bold;
+            //         color: #000;
+            //     }
+            //     .patient-top2 {
+            //         margin-left: 10px;
+            //         background-color: #d30f0f;
+            //         font-size: 10px;
+            //         color: white;
+            //         width: 10px;
+            //     }
+            //     .patient-top3 {
+            //         color: #747474;
+            //         font-size: 13px;
+            //         float: right;
+            //         margin-right: 5px;
+            //     }
+            // }
             .patient-background-bottom {
-                margin-left: 30px;
                 font-size: 14px;
+                margin-top: 20px;
+                margin-left: 5px;
+                // border: 1px solid red;
                 color: #747474;
                 .patient-bottom1 {
                     margin-right: 20px;
@@ -1178,10 +1317,25 @@ export default {
                 .patient-bottom2 {
                     margin-right: 20px;
                 }
+                .hide {
+                    // position: absolute;
+                    float: right;
+                    font-size: 20px;
+                    margin-right: 5px;
+                    display: none;
+
+                    &:hover {
+                        display: block;
+                        color: @color;
+                    }
+                }
             }
             &:hover {
                 color: @color;
                 border-color: @color;
+            }
+            &:hover .hide {
+                display: block;
             }
         }
     }
