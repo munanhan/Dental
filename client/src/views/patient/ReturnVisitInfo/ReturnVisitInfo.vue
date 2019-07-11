@@ -78,7 +78,7 @@
 
         <add-plan
             :show.sync="add_plan_show"
-            :addPlan="patients"
+            :addPlanPatients="patients"
         ></add-plan>
 
         <add-return-visit
@@ -153,19 +153,30 @@ export default {
         },
 
         editVisit(index,row) {
+
             let that = this;
+
             that.selectIndex=index;
+
             that.getBaseInfo("edit_visit",row.id);
+
         },
 
         delVisit(index,row) {
+
             let that=this;
+
             that.$api.patient_visit.del({id:row.id})
                 .then(res=>{
+
                     if(res.code==200){
+
                         that.visitInfo.splice(index, 1);
+
                         that.$message.success(res.msg);
+
                     }else {
+
                         that.$message.error(res.msg);
                     }
                 })

@@ -765,8 +765,6 @@ export default {
         getPatientData(url, method, data, module) {
             let that = this;
 
-            console.log(url, method, data, module)
-
             that.$api[url][method](data)
                 .then(res => {
                     if (res.code == 200) {
@@ -899,11 +897,11 @@ export default {
         //tab选中事件
         tabSelectHandler(tabInstance) {
             let that = this;
-            console.log(tabInstance);
+
         },
 
         handleClick(tab, event) {
-            console.log(tab, event);
+
         },
         //新增患者
         add_patient() {
@@ -932,7 +930,7 @@ export default {
         }
     },
     handleNodeClick(data) {
-        console.log(data);
+
     }
 };
 </script>

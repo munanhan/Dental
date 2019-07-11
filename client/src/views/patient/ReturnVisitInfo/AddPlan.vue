@@ -20,10 +20,10 @@
   </el-form-item> -->
             <div class="plan-content">
                 <div class="plan-top">
-                    <div class="number">{{PlanInfo.patient_name}} </div>
-                    <div class="top-font">| {{PlanInfo.case_id}} |</div>
-                    <div class="top-font"> {{PlanInfo.patient_age}}岁 |</div>
-                    <div class="top-font"> {{PlanInfo.patient_phone}}</div>
+                    <div class="number">{{addPlanPatients.patient_name}} </div>
+                    <div class="top-font">| {{addPlanPatients.case_id}} |</div>
+                    <div class="top-font"> {{addPlanPatients.patient_age}}岁 |</div>
+                    <div class="top-font"> {{addPlanPatients.patient_phone}}</div>
                 </div>
                 <div class="plan-middle-content">
                     <div class="plan-middle">
@@ -37,13 +37,14 @@
                                 placeholder="请选择"
                             >
                                 <el-option
-                                    v-for="item in form.options"
+                                    v-for="item in options"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
                                 >
                                 </el-option>
                             </el-select>
+
                         </el-form-item>
                         <i
                             class="el-icon-setting form-setting"
@@ -98,7 +99,7 @@
                                 placeholder="请选择"
                             >
                                 <el-option
-                                    v-for="item in form.options"
+                                    v-for="item in options"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -170,7 +171,10 @@
             <el-button @click="closeDialog">取 消</el-button>
             <el-button type="primary">确 定</el-button>
         </div>
-        <return-visit-setup :show.sync="returnvisset_show"></return-visit-setup>
+        <return-visit-setup
+                :show.sync="returnvisset_show"
+        >
+        </return-visit-setup>
     </el-dialog>
 </template>
 
@@ -180,15 +184,7 @@ import ReturnVisitSetup from "./ReturnVisitSetup";
 export default {
     name: "AddPlan",
     props: {
-        // refresh: {
-        //     type: Boolean,
-        //     required: true
-        // },
-
-        addPlan: {
-            // type: Object,
-            required: true
-        }
+        addPlanPatients: {},
     },
     mixins: [DialogForm],
 
@@ -197,13 +193,33 @@ export default {
     },
 
     created() {
-        let that = this;
-        that.PlanInfo = that.addPlan;
     },
     data() {
         return {
             returnvisset_show: false,
             PlanInfo: [],
+            options: [
+                {
+                    value: "选项1",
+                    label: "黄金糕"
+                },
+                {
+                    value: "选项2",
+                    label: "双皮奶"
+                },
+                {
+                    value: "选项3",
+                    label: "蚵仔煎"
+                },
+                {
+                    value: "选项4",
+                    label: "龙须面"
+                },
+                {
+                    value: "选项5",
+                    label: "北京烤鸭"
+                }
+            ],
             form: {
                 tableData: [
                     {
@@ -233,28 +249,7 @@ export default {
                     }
                 ],
                 multipleSelection: [],
-                options: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
+
                 value: ""
             }
         };

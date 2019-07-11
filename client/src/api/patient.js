@@ -7,7 +7,7 @@ export function get(data) {
     return request({
         url: `${prefix}`,
         method: 'get',
-        data: data
+        params: data
     })
 };
 

@@ -18,11 +18,11 @@
         >
             <el-form-item
                 label="组合名称"
-                prop="combination"
+                prop="name"
             >
                 <el-input
                     style="width:350px"
-                    v-model="form.combination"
+                    v-model="form.name"
                     type="text"
                     autocomplete="off"
                 ></el-input>
@@ -33,7 +33,7 @@
             slot="footer"
         >
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="submit('form')">确 定</el-button>
             <!-- :loading="commitLoading" -->
         </div>
     </el-dialog>
@@ -49,17 +49,34 @@ export default {
     data() {
         return {
             form: {
-                combination: ""
+                name: ""
             },
-            rules: {}
-
-            // commitLoading: false
+            rules: {
+                name:{
+                    required: true,
+                    message: "请输入组合名称",
+                    trigger: "blur"
+                },
+            }
         };
     },
 
     methods: {
-        afterClose() {
-            this.$refs["form"].resetFields();
+        submit(form){
+            let that=this;
+            that.$refs[form].validate(validate=>{
+                if(validate){
+                    that.$api.visit_combo.store(that.form)
+                        .then(res=>{
+                            if(res.code==200){
+                                that.$emit('add-item',JSON.parse(JSON.stringify(res.data)));
+                                that.closeDialog();
+                                that.$message.success(res.msg);
+                            }
+                        })
+                        .catch(console.log(res))
+                }
+            })
         }
     }
 };

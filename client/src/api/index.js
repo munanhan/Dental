@@ -49,6 +49,8 @@ import * as patient_disposal from "./patient_disposal";
 import * as patient_charge from "./patient_charge";
 import * as patient_visit from  "./patient_visit";
 import * as patient_case  from "./patient_case";
+import * as visit_combo from "./visit_combo";
+import * as visit_items from "./visit_items";
 
 
 const apis = {
@@ -103,6 +105,8 @@ const apis = {
     patient_charge,
     patient_visit,
     patient_case,
+    visit_combo,
+    visit_items,
 
 };
 
