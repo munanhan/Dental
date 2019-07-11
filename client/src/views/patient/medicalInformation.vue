@@ -6,24 +6,9 @@
         >
             <el-card>
                 <div style="display:flex">
-                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4> <i
+                    <h4 style="">项目：{{牙周手术}} 类型：初诊 主治医生：1212 状态：预约</h4> <i
                         style="cursor: pointer;font-size:20px;margin-left:30px;margin-top:15px"
                         class="el-icon-edit"
-                    ></i>
-                </div>
-                <p>备注：</p>
-            </el-card>
-        </el-timeline-item>
-        <el-timeline-item
-            timestamp="2018/4/3"
-            placement="top"
-        >
-            <el-card>
-                <div style="display:flex">
-                    <h4 style="">项目：牙周手术 类型：初诊 主治医生：1212 状态：预约</h4>
-                    <i
-                        style="cursor: pointer;font-size:20px;margin-left:30px;margin-top:15px"
-                        class="el-icon-edit "
                     ></i>
                 </div>
                 <p>备注：</p>
@@ -51,9 +36,7 @@ export default {
     name: "medicalInformation",
     components: {},
     props: {
-        medicalInformation:{
-
-        },
+        medicalInformation: {}
     },
     data() {
         return {};
